@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CanNotDirectlySaveAChildObject" xml:space="preserve">
+    <value>Can not directly save a child object</value>
+  </data>
+  <data name="ObjectIsStillBeingEditedAndCanNotBeSaved" xml:space="preserve">
+    <value>Object is still being edited and can not be saved</value>
+  </data>
+  <data name="DataLayerServiceCanTBeNull" xml:space="preserve">
+    <value>DataLayerService can't be null.</value>
+  </data>
+  <data name="UnableToReadKeyOrIv" xml:space="preserve">
+    <value>Unable to read key or iv.</value>
+  </data>
+  <data name="CouldNotGenerateModuleBuilder" xml:space="preserve">
+    <value>Could not generate module builder</value>
+  </data>
+  <data name="CouldNotGenerateAssembly" xml:space="preserve">
+    <value>Could not generate assembly: </value>
+  </data>
+  <data name="CouldNotDefineType" xml:space="preserve">
+    <value>Could not DefineType </value>
+  </data>
+  <data name="CouldNotCreateType" xml:space="preserve">
+    <value>Could not CreateType </value>
+  </data>
+  <data name="IEndpointBehaviorTypeSpecifiedMustHaveAPublicEmptyConstructor" xml:space="preserve">
+    <value>IEndpointBehaviorType specified in the FlatWsdlServiceBehaviorAttribute constructor must have a public empty constructor.</value>
+  </data>
+  <data name="IdentityCanNotBeNull" xml:space="preserve">
+    <value>Identity can not be null.</value>
+  </data>
+  <data name="NameCannotBeNull" xml:space="preserve">
+    <value>Name cannot be null.</value>
+  </data>
+  <data name="TypeCannotBeNull" xml:space="preserve">
+    <value>Type cannot be null.</value>
+  </data>
+  <data name="CertificateFileNameFormatNotValidFilePassword" xml:space="preserve">
+    <value>Certificate file name format not valid. 'file|password'</value>
+  </data>
+  <data name="MinPoolSizeCannotBeNegative" xml:space="preserve">
+    <value>minPoolSize cannot be negative</value>
+  </data>
+  <data name="MaxPoolSizeCannotBeNegative" xml:space="preserve">
+    <value>maxPoolSize cannot be negative</value>
+  </data>
+  <data name="MinPoolSizeCannotBeGreaterThanMaxPoolSize" xml:space="preserve">
+    <value>minPoolSize cannot be greater than maxPoolSize</value>
+  </data>
+  <data name="CreationTimeoutCannotBeNegative" xml:space="preserve">
+    <value>creationTimeout cannot be negative</value>
+  </data>
+  <data name="TypeIsAlreadyRegisteredInTheObjectPool" xml:space="preserve">
+    <value>Type {0} is already registered in the object pool</value>
+  </data>
+  <data name="InvalidConnectionStringId" xml:space="preserve">
+    <value>Invalid ConnectionStringId ({0})</value>
+  </data>
+  <data name="CodeFieldNameNotSpecifiedUnableToFetchByCode" xml:space="preserve">
+    <value>Code Field Name not specified. Unable to Fetch by code.</value>
+  </data>
+  <data name="LinqEntityAttributeNotDefined" xml:space="preserve">
+    <value>LinqEntityAttribute not defined.</value>
+  </data>
+  <data name="ErrorMasterObjectsCanNotSupportChildDeleteMethod" xml:space="preserve">
+    <value>Error: Master Objects Can Not support ChildDelete Method</value>
+  </data>
+  <data name="ObjectIsNotValidAndCanNotBeSaved" xml:space="preserve">
+    <value>Object is not valid and can not be saved</value>
+  </data>
+  <data name="ObjectIsNotChildAndCanNotBeSaved" xml:space="preserve">
+    <value>Object is not Child and can not be saved</value>
+  </data>
+  <data name="ErrorReadingField0FormTheDataSource" xml:space="preserve">
+    <value>Error Reading Field: {0} form the Data Source.</value>
+  </data>
+  <data name="Type0CannotBeUnregisteredBecauseThereAreActiveThreadsWaitingForAnObject" xml:space="preserve">
+    <value>The type {0} cannot be unregistered because there are active threads waiting for an object.</value>
+  </data>
+  <data name="Type0IsNotRegisteredInTheObjectPool" xml:space="preserve">
+    <value>Type {0} is not registered in the object pool.</value>
+  </data>
+  <data name="AnObjectOfType0WasNotAvailableFromThePool" xml:space="preserve">
+    <value>An object of type {0} was not available from the pool</value>
+  </data>
+  <data name="PageMustBeGreaterOrEqualTo1" xml:space="preserve">
+    <value>page must be greater or equal to 1</value>
+  </data>
+  <data name="Code0WasNotPresentInDataSetCollection" xml:space="preserve">
+    <value>Code: {0} was not present in data set collection</value>
+  </data>
+  <data name="MustBeGreaterOrEqualThan1" xml:space="preserve">
+    <value>{0} must be greater or equal than {1}</value>
+  </data>
+  <data name="ValueIsNotAnEmail" xml:space="preserve">
+    <value>{0} value is not an email</value>
+  </data>
+  <data name="ValueMustBeBetween1And2" xml:space="preserve">
+    <value>{0} value must be between {1} and {2}</value>
+  </data>
+  <data name="ValueIsNotCorrectlyFormatted" xml:space="preserve">
+    <value>{0} value is not correctly formatted</value>
+  </data>
+  <data name="IsRequired" xml:space="preserve">
+    <value>{0} is required</value>
+  </data>
+  <data name="ValueIsNotOfTheCorrectType" xml:space="preserve">
+    <value>{0} value is not of the correct type</value>
+  </data>
+  <data name="UnableToStartProvider" xml:space="preserve">
+    <value>Unable to start provider</value>
+  </data>
+</root>

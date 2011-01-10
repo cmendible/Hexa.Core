@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{AB2FC350-3CC5-4122-AE8D-FAD9A5E5F108}"
+	ProjectSection(SolutionItems) = preProject
+		license.txt = license.txt
+		log4net.license.txt = log4net.license.txt
+		Microsoft.Public.license.txt = Microsoft.Public.license.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core", "Hexa.Core\Hexa.Core.csproj", "{F25CB899-7469-4870-82C8-939989F60322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Tests", "Hexa.Core.Tests\Hexa.Core.Tests.csproj", "{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.NHibernate", "Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj", "{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A97AC9F6-5CF5-4B28-B383-6919556AC143}"
+	ProjectSection(SolutionItems) = preProject
+		BuildAndTest.msbuild = BuildAndTest.msbuild
+		Doxyfile = Doxyfile
+		Hexa.Core.snk = Hexa.Core.snk
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F25CB899-7469-4870-82C8-939989F60322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25CB899-7469-4870-82C8-939989F60322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25CB899-7469-4870-82C8-939989F60322}.Debug|x86.ActiveCfg = Debug|x86
+		{F25CB899-7469-4870-82C8-939989F60322}.Debug|x86.Build.0 = Debug|x86
+		{F25CB899-7469-4870-82C8-939989F60322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25CB899-7469-4870-82C8-939989F60322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25CB899-7469-4870-82C8-939989F60322}.Release|x86.ActiveCfg = Release|x86
+		{F25CB899-7469-4870-82C8-939989F60322}.Release|x86.Build.0 = Release|x86
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Debug|x86.ActiveCfg = Debug|x86
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Debug|x86.Build.0 = Debug|x86
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|x86.ActiveCfg = Release|x86
+		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|x86.Build.0 = Release|x86
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Cfm.Core.Web
+	EndGlobalSection
+EndGlobal

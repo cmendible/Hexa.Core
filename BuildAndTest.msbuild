@@ -1,0 +1,64 @@
+﻿<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="RebuildSolution">
+
+  <PropertyGroup>
+    <ProjectDirectory>$(MSBuildProjectDirectory)</ProjectDirectory>
+  </PropertyGroup>
+
+  <!-- This is needed by MSBuild to locate the Gallio task -->
+  <UsingTask AssemblyFile="$(ProjectDirectory)\libs\Gallio\Gallio.MsBuildTasks.dll" TaskName="Gallio" />
+
+  <!-- Specify the Solutions to build -->
+  <ItemGroup>
+    <ProjectFiles Include="$(ProjectDirectory)/*.sln" />
+  </ItemGroup>
+
+  <Target Name="RebuildSolution" >
+    <Message Text="Starting to Build" Importance="high" />
+    <Message Text="Building: @(ProjectFiles)" Importance="high" />
+
+    <!-- Builds Solutions -->
+    <MSBuild Projects="@(ProjectFiles)"
+       Properties="Configuration=Release"
+       Targets="Build" />
+
+    <Message Text="Starting Tests..." Importance="high" />
+
+    <!-- Finds test DLL's -->
+    <CreateItem Include="$(ProjectDirectory)/**/bin/Release/*.Tests.dll">
+      <Output TaskParameter="Include" ItemName="TestFiles"/>
+    </CreateItem>
+
+    <Message Text="TestFiles: @(TestFiles)" Importance="high"/>
+
+    <Message Text="Cleaning up old test results..." Importance="high" />
+
+    <PropertyGroup>
+      <TestResultsDirectory>$(ProjectDirectory)\TestResults</TestResultsDirectory>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <FilesToDelete Include="$(TestResultsDirectory)\**\*.*"/>
+    </ItemGroup>
+
+    <Delete Files="@(FilesToDelete)" />
+
+    <RemoveDir Directories="$(TestResultsDirectory)"
+           ContinueOnError="true" />
+
+    <!-- Runs Tests -->
+    <Gallio IgnoreFailures="true" Files="@(TestFiles)"
+            PluginDirectories="$(ProjectDirectory)\libs\Gallio\"
+            ReportDirectory="$(TestResultsDirectory)"
+            ReportTypes="html;xml">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Gallio>
+    <Error Text="Tests execution failed" Condition=" '$(ExitCode)' != 0 And '@(TestFiles)' != '' " />
+
+    <Message Text="Build Completed..." Importance="high" />
+
+  </Target>
+
+</Project>
