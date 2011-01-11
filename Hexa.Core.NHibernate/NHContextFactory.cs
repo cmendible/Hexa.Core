@@ -82,6 +82,7 @@ namespace Hexa.Core.Domain
                 cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
                     .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
                     .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
+                    .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
                     .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
 					.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.BatchSize, "100"))
                     .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"))
