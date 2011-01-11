@@ -35,7 +35,7 @@ namespace Hexa.Core.Domain
             if (auditable == null)
                 return false;
 
-            var name = ApplicationContext.User != null ?ApplicationContext.User.Identity.Name: "Unknown";
+            var name = ApplicationContext.User != null ? ApplicationContext.User.Identity.Name : "Unknown";
 
             Set(e.Persister, e.State, "CreatedBy", name);
             Set(e.Persister, e.State, "UpdatedBy", name);
@@ -52,15 +52,19 @@ namespace Hexa.Core.Domain
             if (auditable == null)
                 return false;
 
-            var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
-            foreach (var idx in changedPropertiesIdx)
+            var logger = ServiceLocator.TryGetInstance<IAuditableEntityLogger>();
+            if (logger != null)
             {
-                var tableName = e.Persister.EntityName;
-                var properyName = e.Persister.PropertyNames[idx];
-                var oldValue = e.OldState[idx];
-                var newValue = e.State[idx];
+                var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
+                foreach (var idx in changedPropertiesIdx)
+                {
+                    var tableName = e.Persister.EntityName;
+                    var propertyName = e.Persister.PropertyNames[idx];
+                    var oldValue = e.OldState[idx];
+                    var newValue = e.State[idx];
 
-                //Register this using logging or a table.
+                    logger.Log(tableName, propertyName, oldValue, newValue);
+                }
             }
 
             var name = ApplicationContext.User != null ? ApplicationContext.User.Identity.Name : "Unknown";
