@@ -97,6 +97,9 @@
     <AssemblyOriginatorKeyFile>..\Hexa.Core.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\libs\NHibernate\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\Gallio\Gallio.dll</HintPath>
@@ -104,6 +107,9 @@
     <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\Gallio\MbUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\libs\NHibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\libs\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
@@ -138,9 +144,13 @@
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
-    <Compile Include="Domain\BaseRepository.cs" />
-    <Compile Include="Domain\BaseRepositoryTestsBase.cs" />
-    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
+    <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />
+    <Compile Include="Core.Domain.Tests\Entity.cs" />
+    <Compile Include="Data\Repositories\HumanRepository.cs" />
+    <Compile Include="Domain\Human.cs" />
+    <Compile Include="Data\Mappings\HumanMap.cs" />
+    <Compile Include="Domain\Repositories\IHumanRepository.cs" />
     <Compile Include="ObjectPool\Pooling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -148,7 +158,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Domain\Specifications.cs" />
+    <Compile Include="Core.Domain.Tests\Specifications.cs" />
+    <Compile Include="Sql\SqlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">
@@ -167,6 +178,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj">
+      <Project>{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}</Project>
+      <Name>Hexa.Core.NHibernate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hexa.Core\Hexa.Core.csproj">
       <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>
       <Name>Hexa.Core</Name>
