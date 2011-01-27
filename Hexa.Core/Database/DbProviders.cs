@@ -22,6 +22,9 @@ namespace Hexa.Core.Database
         OracleDataProvider,  
 
         [EnumMember(Value = "Npgsql")]
-        PostgreSQLProvider
+        PostgreSQLProvider,
+
+        [EnumMember(Value = "System.Data.SqlServerCe.3.5")]
+        SqlCe
     }
 }

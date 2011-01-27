@@ -39,6 +39,7 @@ namespace Hexa.Core.Domain
         private static DbProvider _DbProvider;
         private static string _connectionString;
         private static bool _InMemoryDatabase;
+        private static bool _SqlCeDatabase;
 
         public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider, Assembly mappingsAssembly, IoCContainer container)
         {
@@ -65,11 +66,23 @@ namespace Hexa.Core.Domain
                         cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
                             .Raw("format_sql", "true")
                             .ConnectionString(_connectionString));
+
+                        _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
+
+                        break;
+                    }
+                    case DbProvider.SqlCe:
+                    {
+                        cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
+                                .Raw("format_sql", "true")
+                                .ConnectionString(_connectionString))
+                                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
+                        
+                        _SqlCeDatabase = true;
+
                         break;
                     }
                 }
-
-                _InMemoryDatabase = (provider == DbProvider.SQLiteProvider && _connectionString.ToUpperInvariant().Contains(":MEMORY:"));
 
                 Guard.IsNotNull(cfg, string.Format("Db provider {0} is currently not supported.", _DbProvider.GetEnumMemberValue()));
 
@@ -159,7 +172,7 @@ namespace Hexa.Core.Domain
 
         public void ValidateDatabaseSchema()
         {
-            if (!_InMemoryDatabase)
+            if (!_InMemoryDatabase && !_SqlCeDatabase)
                 new SchemaValidator(_builtConfiguration).Validate();
         }
 

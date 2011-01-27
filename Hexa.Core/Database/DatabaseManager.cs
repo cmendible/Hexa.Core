@@ -26,6 +26,7 @@ namespace Hexa.Core.Database
         public const string MsSqlProvider = "System.Data.SqlClient";
         public const string OracleDataProvider = "Oracle.DataAccess.Client";
         public const string PostgreSQLProvider = "Npgsql";
+        public const string SqlCe = "System.Data.SqlServerCe.3.5";
 
         /// <summary>
         /// Gets the db provider factory.
@@ -73,7 +74,7 @@ namespace Hexa.Core.Database
                 builder.Remove("Database");
             }
             // SQLite! (XXX: MsSql has 'Data Source' as a means to specify Server address)
-            if (providerName == SQLiteProvider && builder.TryGetValue("Data Source", out tmp))
+            if ((providerName == SQLiteProvider || providerName == SqlCe) && builder.TryGetValue("Data Source", out tmp))
             {
                 dbname = tmp.ToString();
                 builder.Remove("Data Source");
@@ -163,6 +164,9 @@ namespace Hexa.Core.Database
                         return File.Exists(dbName);
                 }
 
+                if (providerName == SqlCe)
+                    return File.Exists(dbName);
+
                 switch (providerName)
                 {
                     case MsSqlProvider:
@@ -211,6 +215,22 @@ namespace Hexa.Core.Database
                 // Do nothing..
                 return;
             }
+            if (providerName == SqlCe)
+            {
+                if (File.Exists(dbName))
+                    File.Delete(dbName);
+
+                var type = Type.GetType("System.Data.SqlServerCe.SqlCeEngine, System.Data.SqlServerCe");
+                var localConnectionString = type.GetProperty("LocalConnectionString");
+                var createDatabase = type.GetMethod("CreateDatabase");
+
+                object engine = Activator.CreateInstance(type);
+                localConnectionString.SetValue(engine, string.Format("Data Source='{0}';", dbName), null);
+
+                createDatabase.Invoke(engine, new object[0]);
+
+                return;
+            }
             else if (providerName == OracleDataProvider)
             {
                 throw new NotImplementedException();
@@ -230,7 +250,7 @@ namespace Hexa.Core.Database
                     var fname = Path.GetFileNameWithoutExtension(dbFile);
                     var pathname = Path.Combine(Path.GetDirectoryName(dbFile), fname);
 
-                    command.AppendFormat(CultureInfo.InvariantCulture, 
+                    command.AppendFormat(CultureInfo.InvariantCulture,
                         "ON PRIMARY (NAME = {0}, FILENAME = '{1}.mdf', SIZE = 10MB) " +
                         "LOG ON (NAME = {0}_log, FILENAME = '{1}.ldf', SIZE = 2MB)",
                         fname, pathname
@@ -260,6 +280,10 @@ namespace Hexa.Core.Database
                 {
                     File.Delete(dbName);
                 }
+            }
+            else if (providerName == SqlCe)
+            {
+                File.Delete(dbName);
             }
             else if (providerName == MsSqlProvider)
             {
