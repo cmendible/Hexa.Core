@@ -86,7 +86,7 @@ namespace Hexa.Core.Logging
             {
                 try
                 {
-                    if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                    if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Session != null)
                         return HttpContext.Current.Session.SessionID;
 
                     return null;
@@ -122,7 +122,7 @@ namespace Hexa.Core.Logging
                 {
                     GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
                     GlobalContext.Properties["User"] = new UserLogContext();
-                    GlobalContext.Properties["SessionId"] = new UserLogContext();
+                    GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
                 }
 
                 _initialized = true;
