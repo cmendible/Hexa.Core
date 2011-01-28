@@ -54,7 +54,7 @@ namespace Hexa.Core.Logging
             }
         }
 
-        private class UserAddressLogContext
+        private class UserHostAddressLogContext
         {
             public override string ToString()
             {
@@ -80,9 +80,27 @@ namespace Hexa.Core.Logging
             }
         }
 
+        private class UserSessionIdLogContext
+        {
+            public override string ToString()
+            {
+                try
+                {
+                    if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                        return HttpContext.Current.Session.SessionID;
+
+                    return null;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         private static bool _initialized;
 
-        private bool _isWebContext()
+        private static bool _isWebContext()
         {
             if (HttpContext.Current != null)
                 return true;
@@ -102,8 +120,9 @@ namespace Hexa.Core.Logging
                 // Register log4net context loggers..
                 if (_isWebContext())
                 {
-                    GlobalContext.Properties["UserAddress"] = new UserAddressLogContext();
+                    GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
                     GlobalContext.Properties["User"] = new UserLogContext();
+                    GlobalContext.Properties["SessionId"] = new UserLogContext();
                 }
 
                 _initialized = true;
