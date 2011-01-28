@@ -34,97 +34,94 @@ namespace Hexa.Core.Domain
 {
     public sealed class NHContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
-        private static ISessionFactory _sessionFactory;
-        private static Configuration _builtConfiguration;
-        private static DbProvider _DbProvider;
-        private static string _connectionString;
-        private static bool _InMemoryDatabase;
-        private static bool _SqlCeDatabase;
+        private ISessionFactory _sessionFactory;
+        private Configuration _builtConfiguration;
+        private DbProvider _DbProvider;
+        private string _connectionString;
+        private bool _InMemoryDatabase;
+        private bool _SqlCeDatabase;
 
         public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider, Assembly mappingsAssembly, IoCContainer container)
         {
-            if (_sessionFactory == null)
+            _DbProvider = provider;
+            _connectionString = connectionString;
+
+            FluentConfiguration cfg = null;
+
+            switch (_DbProvider)
             {
-                _DbProvider = provider;
-                _connectionString = connectionString;
-
-                FluentConfiguration cfg = null;
-
-                switch (_DbProvider)
+                case DbProvider.MsSqlProvider:
                 {
-                    case DbProvider.MsSqlProvider:
-                    {
-                        cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
+                    cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
+                        .Raw("format_sql", "true")
+                        .ConnectionString(_connectionString))
+                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
+
+                    break;
+                }
+                case DbProvider.SQLiteProvider:
+                {
+                    cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
+                        .Raw("format_sql", "true")
+                        .ConnectionString(_connectionString));
+
+                    _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
+
+                    break;
+                }
+                case DbProvider.SqlCe:
+                {
+                    cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
                             .Raw("format_sql", "true")
                             .ConnectionString(_connectionString))
                             .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
-
-                        break;
-                    }
-                    case DbProvider.SQLiteProvider:
-                    {
-                        cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
-                            .Raw("format_sql", "true")
-                            .ConnectionString(_connectionString));
-
-                        _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
-
-                        break;
-                    }
-                    case DbProvider.SqlCe:
-                    {
-                        cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
-                                .Raw("format_sql", "true")
-                                .ConnectionString(_connectionString))
-                                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
                         
-                        _SqlCeDatabase = true;
+                    _SqlCeDatabase = true;
 
-                        break;
-                    }
+                    break;
                 }
-
-                Guard.IsNotNull(cfg, string.Format("Db provider {0} is currently not supported.", _DbProvider.GetEnumMemberValue()));
-
-                var pinfo = typeof(FluentConfiguration)
-                    .GetProperty("Configuration", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-
-                var nhConfiguration = pinfo.GetValue(cfg, null);
-                container.RegisterInstance<Configuration>(nhConfiguration);
-
-                cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
-                    .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
-                    .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
-                    .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
-                    .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
-					.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.BatchSize, "100"))
-                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"))
-                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.DefaultSchema, "dbo"))
-                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.GenerateStatistics, "true"));
-
-                if (!string.IsNullOrEmpty(cacheProvider))
-                {
-                    cfg.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.CacheProvider, cacheProvider)) //"NHibernate.Cache.HashtableCacheProvider"
-                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseSecondLevelCache, "true"))
-                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseQueryCache, "true"));
-                }
-
-                _builtConfiguration = cfg.BuildConfiguration();
-                _builtConfiguration.SetProperty(NHibernate.Cfg.Environment.ProxyFactoryFactoryClass, 
-                    typeof(NHibernate.ByteCode.Castle.ProxyFactoryFactory).AssemblyQualifiedName);
-
-                #region Add Validation Listeners to NHibernate pipeline....
-
-                _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                    _builtConfiguration.EventListeners.PreInsertEventListeners.Concat<IPreInsertEventListener>(
-                    new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
-
-                _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                    _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat<IPreUpdateEventListener>(
-                    new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
-
-                #endregion
             }
+
+            Guard.IsNotNull(cfg, string.Format("Db provider {0} is currently not supported.", _DbProvider.GetEnumMemberValue()));
+
+            var pinfo = typeof(FluentConfiguration)
+                .GetProperty("Configuration", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+            var nhConfiguration = pinfo.GetValue(cfg, null);
+            container.RegisterInstance<Configuration>(nhConfiguration);
+
+            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
+                .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
+                .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
+                .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
+                .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
+				.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.BatchSize, "100"))
+                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"))
+                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.DefaultSchema, "dbo"))
+                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.GenerateStatistics, "true"));
+
+            if (!string.IsNullOrEmpty(cacheProvider))
+            {
+                cfg.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.CacheProvider, cacheProvider)) //"NHibernate.Cache.HashtableCacheProvider"
+                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseSecondLevelCache, "true"))
+                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseQueryCache, "true"));
+            }
+
+            _builtConfiguration = cfg.BuildConfiguration();
+            _builtConfiguration.SetProperty(NHibernate.Cfg.Environment.ProxyFactoryFactoryClass, 
+                typeof(NHibernate.ByteCode.Castle.ProxyFactoryFactory).AssemblyQualifiedName);
+
+            #region Add Validation Listeners to NHibernate pipeline....
+
+            _builtConfiguration.SetListeners(ListenerType.PreInsert,
+                _builtConfiguration.EventListeners.PreInsertEventListeners.Concat<IPreInsertEventListener>(
+                new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
+
+            _builtConfiguration.SetListeners(ListenerType.PreUpdate,
+                _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat<IPreUpdateEventListener>(
+                new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
+
+            #endregion
         }
 
         private void _CreateSessionFactory()

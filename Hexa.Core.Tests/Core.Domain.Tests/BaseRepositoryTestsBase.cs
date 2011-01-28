@@ -33,7 +33,6 @@ namespace Hexa.Core.Domain.Tests
     /// For view all tests correctly in a TestView windows please add column Full Class Name
     /// </summary>
     /// <typeparam name="TEntity">Inner type of respository</typeparam>
-    [TestFixture]
     public abstract class RepositoryTestsBase<TEntity>
         where TEntity : class
     {

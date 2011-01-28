@@ -17,21 +17,22 @@ using Hexa.Core.Tests.Data;
 namespace Hexa.Core.Tests.Sql
 {
     [TestFixture]
-    public class SqlTests : BaseDatabaseTest
+    public class SqlCeTests : BaseDatabaseTest
     {
         protected override NHContextFactory CreateNHContextFactory()
         {
-            return new NHContextFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty, typeof(Entity).Assembly, ApplicationContext.Container);
+            return new NHContextFactory(DbProvider.SqlCe, ConnectionString(), string.Empty, typeof(Entity).Assembly, ApplicationContext.Container);
         }
 
         protected override string ConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["Sql.Connection"].ConnectionString;
+            return ConfigurationManager.ConnectionStrings["SqlCe.Connection"].ConnectionString;
         }
 
+        private Guid _humanUniqueId;
+
         [Test]
-        [Rollback]
-        public Guid Add_Human()
+        public void Add_Human()
         {
             Human human = new Human();
             human.Name = "Martin";
@@ -48,33 +49,29 @@ namespace Hexa.Core.Tests.Sql
             Assert.IsFalse(human.UniqueId == Guid.Empty);
             Assert.AreEqual("Martin", human.Name);
 
-            return human.UniqueId;
+            _humanUniqueId = human.UniqueId;
         }
 
         [Test]
-        [Rollback]
+        [DependsOn("Add_Human")]
         public void Query_Human()
         {
-            var uniqueId = Add_Human();
-
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+                var results = repo.GetFilteredElements(u => u.UniqueId == _humanUniqueId);
                 Assert.IsTrue(results.Count() > 0);
             }
         }
 
         [Test]
-        [Rollback]
+        [DependsOn("Add_Human")]
         public void Update_Human()
         {
-            var uniqueId = Add_Human();
-
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+                var results = repo.GetFilteredElements(u => u.UniqueId == _humanUniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
                 var human2Update = results.First();
@@ -87,20 +84,20 @@ namespace Hexa.Core.Tests.Sql
             repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                Assert.AreEqual("Maria", repo.GetFilteredElements(u => u.UniqueId == uniqueId).Single().Name);
+                Assert.AreEqual("Maria", repo.GetFilteredElements(u => u.UniqueId == _humanUniqueId).Single().Name);
             }
         }
 
         [Test]
-        [Rollback]
+        [DependsOn("Add_Human")]
+        [DependsOn("Update_Human")]
+        [DependsOn("Query_Human")]
         public void Delete_Human()
         {
-            var uniqueId = Add_Human();
-
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+                var results = repo.GetFilteredElements(u => u.UniqueId == _humanUniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
                 var human2Delete = results.First();
@@ -113,8 +110,9 @@ namespace Hexa.Core.Tests.Sql
             repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == uniqueId).Count());
+                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == _humanUniqueId).Count());
             }
         }
+
     }
 }
