@@ -17,14 +17,11 @@
 
 #endregion
 
-using System;
-using System.Web;
-using System.Threading;
 using System.Security.Principal;
-
-using SL = Microsoft.Practices.ServiceLocation;
-
+using System.Threading;
+using System.Web;
 using log4net;
+using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core
 {

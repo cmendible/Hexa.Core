@@ -1,11 +1,10 @@
 using System;
+using System.Data.Common;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Data.Common;
-using System.Globalization;
-
 using log4net;
 
 namespace Hexa.Core.Database

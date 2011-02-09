@@ -17,9 +17,9 @@
 
 #endregion
 
+using FluentNHibernate.Mapping;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
-using FluentNHibernate.Mapping;
 
 namespace Hexa.Core.Domain
 {

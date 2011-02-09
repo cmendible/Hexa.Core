@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IdentityModel.Policy;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.IdentityModel.Policy;
 
 namespace Hexa.Core.ServiceModel
 {

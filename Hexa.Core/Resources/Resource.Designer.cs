@@ -10,7 +10,6 @@
 
 namespace Hexa.Core.Resources
 {
-    using System;
 
 
     /// <summary>

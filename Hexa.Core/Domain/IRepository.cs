@@ -11,8 +11,8 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using Hexa.Core.Domain.Specification;
 using System.Linq.Expressions;
+using Hexa.Core.Domain.Specification;
 
 namespace Hexa.Core.Domain
 {

@@ -19,11 +19,9 @@
 
 using System;
 
-using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Persister.Entity;
 
-using Hexa.Core.Validation;
 
 namespace Hexa.Core.Domain
 {

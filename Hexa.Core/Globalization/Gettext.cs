@@ -45,12 +45,11 @@
  */
 
 using System; /* String, InvalidOperationException, Console */
-using System.Linq;
-using System.Globalization; /* CultureInfo */
-using System.Resources; /* ResourceManager, ResourceSet, IResourceReader */
-using System.Reflection; /* Assembly, ConstructorInfo */
 using System.Collections; /* Hashtable, ICollection, IEnumerator, IDictionaryEnumerator */
+using System.Globalization; /* CultureInfo */
 using System.IO; /* Path, FileNotFoundException, Stream */
+using System.Reflection; /* Assembly, ConstructorInfo */
+using System.Resources; /* ResourceManager, ResourceSet, IResourceReader */
 using System.Text; /* StringBuilder */
 
 namespace GNU.Gettext

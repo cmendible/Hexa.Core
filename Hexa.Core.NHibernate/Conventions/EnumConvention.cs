@@ -1,7 +1,7 @@
 ﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 
 namespace Hexa.Core.Domain
 {

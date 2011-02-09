@@ -19,8 +19,8 @@
 
 using System;
 using System.Collections;
-using System.Threading;
 using System.Globalization;
+using System.Threading;
 
 namespace Hexa.Core
 {

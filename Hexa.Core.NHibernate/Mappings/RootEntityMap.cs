@@ -17,19 +17,8 @@
 
 #endregion
 
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 
-using NHibernate;
-using NHibernate.Engine;
 using NHibernate.Dialect;
-using NHibernate.Mapping;
-using NHibernate.Util;
-using FluentNHibernate;
-using FluentNHibernate.Mapping;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Utils;
 
 namespace Hexa.Core.Domain
 {

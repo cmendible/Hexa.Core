@@ -17,10 +17,10 @@
 
 #endregion
 
-using System.Web;
 using System.Collections.Generic;
-using System.ServiceModel;
 using System.Runtime.Remoting.Messaging;
+using System.ServiceModel;
+using System.Web;
 
 namespace Hexa.Core.Domain
 {

@@ -12,17 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-
+using Hexa.Core.Domain.Specification;
+using Hexa.Core.Logging;
+using Hexa.Core.Tests;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SL = Microsoft.Practices.ServiceLocation;
-
-using Hexa.Core;
-using Hexa.Core.Logging;
-using Hexa.Core.Domain.Specification;
-using Hexa.Core.Tests;
 
 namespace Hexa.Core.Domain.Tests
 {

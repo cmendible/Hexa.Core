@@ -18,17 +18,15 @@
 #endregion
 
 using System;
-using System.Reflection;
 using System.Linq;
-
+using System.Reflection;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Hexa.Core.Database;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
-
-using Hexa.Core.Database;
 
 namespace Hexa.Core.Domain
 {

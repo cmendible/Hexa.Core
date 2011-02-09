@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Net;
-
 using NHibernate;
-using NHibernate.UserTypes;
 using NHibernate.SqlTypes;
+using NHibernate.UserTypes;
 
 namespace Hexa.Core.Domain
 {

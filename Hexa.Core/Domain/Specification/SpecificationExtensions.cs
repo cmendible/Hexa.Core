@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Hexa.Core.Domain.Specification
 {
     public static class SpecificationExtensions

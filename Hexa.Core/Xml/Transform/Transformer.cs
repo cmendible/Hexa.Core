@@ -17,9 +17,9 @@
 
 #endregion
 
+using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
-using System.IO;
 
 namespace Hexa.Core.Xml
 {

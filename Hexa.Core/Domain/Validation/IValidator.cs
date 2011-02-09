@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace Hexa.Core.Validation
 {
 	/// <summary>

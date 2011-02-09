@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 
 
 namespace Hexa.Core.Domain.Specification

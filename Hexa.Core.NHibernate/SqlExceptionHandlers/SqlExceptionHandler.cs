@@ -18,20 +18,10 @@
 #endregion
 
 using System;
-using System.Text.RegularExpressions;
 using System.Data.SqlClient;
-using System.Reflection;
-using System.Linq;
-
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using NHibernate.Util;
+using System.Text.RegularExpressions;
 using NHibernate.Exceptions;
-using NHibernate.Cfg;
-using NHibernate.Event;
-using NHibernate.Tool.hbm2ddl;
 
-using Hexa.Core.Database;
 
 namespace Hexa.Core.Domain
 {

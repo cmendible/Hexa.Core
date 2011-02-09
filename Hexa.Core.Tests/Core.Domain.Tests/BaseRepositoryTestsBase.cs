@@ -11,18 +11,10 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-
-using MbUnit.Framework;
-using Rhino.Mocks;
-using SL = Microsoft.Practices.ServiceLocation;
-
-using Hexa.Core;
-using Hexa.Core.Logging;
 using Hexa.Core.Domain.Specification;
-using Hexa.Core.Tests;
+using Hexa.Core.Logging;
+using MbUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {

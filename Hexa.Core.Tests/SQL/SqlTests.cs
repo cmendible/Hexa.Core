@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Configuration;
-
-using MbUnit.Framework;
-
-using Hexa.Core;
-using Hexa.Core.Domain;
+using System.Linq;
 using Hexa.Core.Database;
-using Hexa.Core.Logging;
-using Hexa.Core.Validation;
-
-using Hexa.Core.Domain.Tests;
+using Hexa.Core.Domain;
 using Hexa.Core.Tests.Domain;
-using Hexa.Core.Tests.Data;
+using MbUnit.Framework;
 
 namespace Hexa.Core.Tests.Sql
 {

@@ -1,13 +1,9 @@
 using System;
-using System.Xml;    
 using System.Data;
 using System.Data.Common;
-using System.Globalization;
-
-using NHibernate;
-using NHibernate.Engine;
-using NHibernate.UserTypes;
+using System.Xml;
 using NHibernate.SqlTypes;
+using NHibernate.UserTypes;
 
 namespace Hexa.Core.Domain
 {

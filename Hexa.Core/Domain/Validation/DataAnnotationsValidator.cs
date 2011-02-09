@@ -17,9 +17,9 @@
 
 #endregion
 
-using System.Linq;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Hexa.Core.Validation
 {

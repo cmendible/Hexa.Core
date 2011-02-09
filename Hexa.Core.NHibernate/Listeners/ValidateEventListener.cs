@@ -17,9 +17,9 @@
 
 #endregion
 
+using Hexa.Core.Validation;
 using NHibernate.Cfg;
 using NHibernate.Event;
-using Hexa.Core.Validation;
 
 namespace Hexa.Core.Domain
 {
