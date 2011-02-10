@@ -53,7 +53,8 @@ namespace Hexa.Core.Domain
                     cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
                         .Raw("format_sql", "true")
                         .ConnectionString(_connectionString))
-                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
+                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName))
+                        .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.DefaultSchema, "dbo"));
 
                     break;
                 }
@@ -94,9 +95,7 @@ namespace Hexa.Core.Domain
                 .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
                 .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
 				.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.BatchSize, "100"))
-                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"))
-                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.DefaultSchema, "dbo"))
-                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.GenerateStatistics, "true"));
+                .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"));
 
             if (!string.IsNullOrEmpty(cacheProvider))
             {

@@ -9,6 +9,8 @@ namespace Hexa.Core.Tests.Data
         public HumanMap()
         {
             Map(h => h.Name);
+
+            Map(h => h.isMale);
         }
     }
 }

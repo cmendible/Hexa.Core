@@ -8,5 +8,8 @@ namespace Hexa.Core.Tests.Domain
     {
         [Required]
         public virtual string Name { get; set; }
+
+        [Required]
+        public virtual bool isMale { get; set; }
     }
 }

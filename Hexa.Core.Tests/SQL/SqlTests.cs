@@ -27,6 +27,7 @@ namespace Hexa.Core.Tests.Sql
         {
             Human human = new Human();
             human.Name = "Martin";
+            human.isMale = true;
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
@@ -53,6 +54,9 @@ namespace Hexa.Core.Tests.Sql
             using (var ctx = repo.UnitOfWork)
             {
                 var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+                Assert.IsTrue(results.Count() > 0);
+
+                results = repo.GetFilteredElements(u => u.isMale);
                 Assert.IsTrue(results.Count() > 0);
             }
         }
