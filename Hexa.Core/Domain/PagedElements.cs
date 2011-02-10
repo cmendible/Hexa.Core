@@ -17,6 +17,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace Hexa.Core.Domain
@@ -26,6 +27,11 @@ namespace Hexa.Core.Domain
         public IEnumerable<TEntity> Elements { get; private set; }
 
         public int TotalElements { get; private set; }
+		
+		public int TotalPages(int pageSize)
+		{ 
+			return (int)Math.Ceiling(Convert.ToDouble(TotalElements) / pageSize);
+		}
 
         public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
