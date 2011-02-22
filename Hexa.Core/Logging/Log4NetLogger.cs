@@ -26,7 +26,7 @@ namespace Hexa.Core.Logging
 {
     class Log4NetLogger : ILogger
     {
-        private static ILog _Log;
+        private ILog _Log;
 
         public Log4NetLogger(Type type)
         {
