@@ -270,6 +270,56 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
+    <Compile Include="Web\Services\Entities\EntitiesService.cs" />
+    <Compile Include="Web\Services\Entities\IEntitiesService.cs" />
+    <Compile Include="Web\Services\Navigation\INavigationService.cs" />
+    <Compile Include="Web\Services\Navigation\NavigationService.cs" />
+    <Compile Include="Web\UI\BaseEditionPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\BaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\Controls\ActiveButton.cs" />
+    <Compile Include="Web\UI\Controls\ActiveImageButton.cs" />
+    <Compile Include="Web\UI\Controls\DataGrid.cs" />
+    <Compile Include="Web\UI\Ajax\JQGridHelper.cs" />
+    <Compile Include="Web\UI\EditionException.cs" />
+    <Compile Include="Web\UI\ExpressionBuilder\ExpressionBuilder.cs" />
+    <Compile Include="Web\UI\Extensions\ControlExtensions.cs" />
+    <Compile Include="Web\UI\Extensions\LinqExtensions.cs" />
+    <Compile Include="Web\UI\Extensions\PageExtensions.cs" />
+    <Compile Include="Web\UI\IAction.cs" />
+    <Compile Include="Web\UI\IPageWithOkCancelButtons.cs" />
+    <Compile Include="Web\UI\OkCancelButtons.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\PageMode.cs" />
+    <Compile Include="Web\UI\RequestLengthException.cs" />
+    <Compile Include="Web\UI\Style.cs" />
+    <Compile Include="Web\UI\UrlResolver.cs" />
+    <Compile Include="Web\UI\Validations\Controls\Converters\BaseConverter.cs" />
+    <Compile Include="Web\UI\Validations\Controls\Converters\EmailConverter.cs" />
+    <Compile Include="Web\UI\Validations\Controls\Converters\RangeConverter.cs" />
+    <Compile Include="Web\UI\Validations\Controls\Converters\RegularExpressionConverter.cs" />
+    <Compile Include="Web\UI\Validations\Controls\Converters\RequiredConverter.cs" />
+    <Compile Include="Web\UI\Validations\Controls\ExtendedRangeValidator.cs" />
+    <Compile Include="Web\UI\Validations\Controls\ExtendedRegularExpressionValidator.cs" />
+    <Compile Include="Web\UI\Validations\Controls\ExtendeRequieredFieldValidator.cs" />
+    <Compile Include="Web\UI\Validations\Controls\InvalidValidator.cs" />
+    <Compile Include="Web\UI\Validations\Controls\WebValidationHelper.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\DataAnnotationHelper.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\DataAnnotationProvider.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IEmailValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IRangeValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IRegExValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IRequiredValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IValidateTypeValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IValidationInfo.cs" />
+    <Compile Include="Web\UI\Validations\ValidationInfo\IValidationProvider.cs" />
     <Compile Include="Xml\Transform\Transformer.cs" />
     <Compile Include="Xml\Validation\Resolver.cs" />
     <Compile Include="Xml\Validation\Validator.cs" />
