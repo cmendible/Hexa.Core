@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Hexa.Core.snk = Hexa.Core.snk
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj", "{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -55,13 +57,19 @@ Global
 		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.ActiveCfg = Release|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		IsWCSFSolution = True
-		IsWCSFSolutionWAP = True
 		RootNamespace = Cfm.Core.Web
+		IsWCSFSolutionWAP = True
+		IsWCSFSolution = True
 	EndGlobalSection
 EndGlobal
