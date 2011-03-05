@@ -274,30 +274,18 @@
     <Compile Include="Web\Services\Entities\IEntitiesService.cs" />
     <Compile Include="Web\Services\Navigation\INavigationService.cs" />
     <Compile Include="Web\Services\Navigation\NavigationService.cs" />
-    <Compile Include="Web\UI\BaseEditionPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Web\UI\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\UI\BaseUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\UI\Controls\ActiveButton.cs" />
-    <Compile Include="Web\UI\Controls\ActiveImageButton.cs" />
     <Compile Include="Web\UI\Controls\DataGrid.cs" />
     <Compile Include="Web\UI\Ajax\JQGridHelper.cs" />
-    <Compile Include="Web\UI\EditionException.cs" />
     <Compile Include="Web\UI\ExpressionBuilder\ExpressionBuilder.cs" />
     <Compile Include="Web\UI\Extensions\ControlExtensions.cs" />
     <Compile Include="Web\UI\Extensions\LinqExtensions.cs" />
     <Compile Include="Web\UI\Extensions\PageExtensions.cs" />
-    <Compile Include="Web\UI\IAction.cs" />
-    <Compile Include="Web\UI\IPageWithOkCancelButtons.cs" />
-    <Compile Include="Web\UI\OkCancelButtons.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\UI\PageMode.cs" />
     <Compile Include="Web\UI\RequestLengthException.cs" />
     <Compile Include="Web\UI\Style.cs" />
     <Compile Include="Web\UI\UrlResolver.cs" />
