@@ -152,7 +152,6 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel">
     </Reference>
-    <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions">
