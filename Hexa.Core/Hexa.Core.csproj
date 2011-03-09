@@ -270,10 +270,6 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
-    <Compile Include="Web\Services\Entities\EntitiesService.cs" />
-    <Compile Include="Web\Services\Entities\IEntitiesService.cs" />
-    <Compile Include="Web\Services\Navigation\INavigationService.cs" />
-    <Compile Include="Web\Services\Navigation\NavigationService.cs" />
     <Compile Include="Web\UI\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
