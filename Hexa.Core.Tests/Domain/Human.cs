@@ -4,7 +4,7 @@ using Hexa.Core.Domain;
 
 namespace Hexa.Core.Tests.Domain
 {
-    public class Human : RootEntity<Human>
+    public class Human : AuditableRootEntity<Human>
     {
         [Required]
         public virtual string Name { get; set; }

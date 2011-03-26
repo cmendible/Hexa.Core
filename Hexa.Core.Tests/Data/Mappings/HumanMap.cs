@@ -4,7 +4,7 @@ using Hexa.Core.Tests.Domain;
 
 namespace Hexa.Core.Tests.Data
 {
-    public class HumanMap : RootEntityMap<Human>
+    public class HumanMap : AuditableRootEntityMap<Human>
     {
         public HumanMap()
         {

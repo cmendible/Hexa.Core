@@ -77,13 +77,17 @@ namespace Hexa.Core.Tests.Sql
                 human2Update.Name = "Maria";
                 repo.Modify(human2Update);
 
+                System.Threading.Thread.Sleep(1000);
+
                 ctx.Commit();
             }
 
             repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
-                Assert.AreEqual("Maria", repo.GetFilteredElements(u => u.UniqueId == uniqueId).Single().Name);
+                var human = repo.GetFilteredElements(u => u.UniqueId == uniqueId).Single();
+                Assert.AreEqual("Maria", human.Name);
+                Assert.GreaterThan(human.UpdatedAt, human.CreatedAt);
             }
         }
 

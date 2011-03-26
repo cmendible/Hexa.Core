@@ -31,12 +31,9 @@ namespace Hexa.Core.Domain
 			: base()
 		{
             MapTimePart(x => x.CreatedAt)
-				.Not.Nullable()
 				.Generated.Insert();
 
-            MapTimePart(x => x.UpdatedAt)
-                .Not.Nullable()
-                .Generated.Always();
+            Map(x => x.UpdatedAt);
 
             Map(x => x.CreatedBy);
 

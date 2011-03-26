@@ -18,8 +18,11 @@
 #endregion
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using NHibernate.Event;
+using NHibernate.Event.Default;
 using NHibernate.Persister.Entity;
 
 
@@ -33,10 +36,11 @@ namespace Hexa.Core.Domain
             if (auditable == null)
                 return false;
 
-            var name = ApplicationContext.User != null ? ApplicationContext.User.Identity.Name : "Unknown";
+            var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
 
             Set(e.Persister, e.State, "CreatedBy", name);
             Set(e.Persister, e.State, "UpdatedBy", name);
+            Set(e.Persister, e.State, "UpdatedAt", DateTime.UtcNow);
 
             auditable.CreatedBy = name;
             auditable.UpdatedBy = name;
@@ -65,10 +69,13 @@ namespace Hexa.Core.Domain
                 }
             }
 
-            var name = ApplicationContext.User != null ? ApplicationContext.User.Identity.Name : "Unknown";
+            var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
+            var date = DateTime.UtcNow; 
 
             Set(e.Persister, e.State, "UpdatedBy", name);
+            Set(e.Persister, e.State, "UpdatedAt", date);
             auditable.UpdatedBy = name;
+            auditable.UpdatedAt = date;
 
             return false;
         }
@@ -79,6 +86,33 @@ namespace Hexa.Core.Domain
             if (index == -1)
                 return;
             state[index] = value;
+        }
+    }
+
+    //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
+    public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
+    {
+        protected override void DirtyCheck(FlushEntityEvent e)
+        {
+            base.DirtyCheck(e);
+            if (e.DirtyProperties != null &&
+                e.DirtyProperties.Any() &&
+                //IAuditableEntity is my inteface for audited entities
+                e.Entity is IAuditableEntity)
+                e.DirtyProperties = e.DirtyProperties
+                 .Concat(GetAdditionalDirtyProperties(e)).ToArray();
+        }
+
+        static IEnumerable<int> GetAdditionalDirtyProperties(FlushEntityEvent @event)
+        {
+            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
+                                       "UpdatedAt");
+            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
+                                       "UpdatedBy");
+            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
+                                       "CreatedBy");
+            //You can add any additional properties here.
+            //Some of my entities do not track the user, for example.
         }
     }
 }

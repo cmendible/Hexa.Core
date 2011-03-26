@@ -29,7 +29,7 @@ namespace Hexa.Core.Domain
         /// <value>The creation date.</value>
         public virtual DateTime CreatedAt { get; protected set; }
         public virtual string CreatedBy { get; set; }
-        public virtual DateTime UpdatedAt { get; protected set; }
+        public virtual DateTime UpdatedAt { get; set; }
         public virtual string UpdatedBy { get; set; }
     }
 }

@@ -108,7 +108,10 @@ namespace Hexa.Core.Domain
             _builtConfiguration.SetProperty(NHibernate.Cfg.Environment.ProxyFactoryFactoryClass, 
                 typeof(NHibernate.ByteCode.Castle.ProxyFactoryFactory).AssemblyQualifiedName);
 
-            #region Add Validation Listeners to NHibernate pipeline....
+            #region Add Listeners to NHibernate pipeline....
+
+            _builtConfiguration.SetListeners(ListenerType.FlushEntity,
+                new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
 
             _builtConfiguration.SetListeners(ListenerType.PreInsert,
                 _builtConfiguration.EventListeners.PreInsertEventListeners.Concat<IPreInsertEventListener>(
