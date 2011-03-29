@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="Database\DbProviders.cs" />
     <Compile Include="Database\IDatabaseManager.cs" />
+    <Compile Include="Database\SQLScriptHelper.cs" />
     <Compile Include="Domain\Entities\BaseEntity.cs" />
     <Compile Include="Domain\Entities\AuditableRootEntity.cs" />
     <Compile Include="Domain\Entities\Entity.cs" />
