@@ -20,7 +20,7 @@
 using System.Reflection;
 using System.Web.UI.WebControls;
 
-using Hexa.Core.Validations;
+using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {

@@ -30,7 +30,7 @@ using System.Web.UI.HtmlControls;
 using Microsoft.Practices.ServiceLocation;
 
 using Hexa.Core.Web.UI;
-using Hexa.Core.Validations;
+using Hexa.Core.Validation;
 using Hexa.Core.Web.UI.Controls;
 
 namespace Hexa.Core.Web.UI.Controls
@@ -196,9 +196,9 @@ namespace Hexa.Core.Web.UI.Controls
 				RetrieveValidatorInfos(this, new RetrieveValidatorInfosEventArgs(validationInfos));
 			else
 			{
-				Type providerType = typeof(IValidationProvider<>).MakeGenericType(new Type[] { entityType });
+				Type providerType = typeof(IValidationInfoProvider<>).MakeGenericType(new Type[] { entityType });
 
-				IValidationProvider provider = ServiceLocator.GetInstance(providerType)	as IValidationProvider;
+                var provider = ServiceLocator.GetInstance(providerType) as IValidationInfoProvider;
 
 				validationInfos = provider.GetValidationInfo();
 			}

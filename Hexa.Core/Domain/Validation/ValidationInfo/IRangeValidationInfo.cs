@@ -19,7 +19,7 @@
 
 using System;
 
-namespace Hexa.Core.Validations
+namespace Hexa.Core.Validation
 {
 	/// <summary>
 	/// 

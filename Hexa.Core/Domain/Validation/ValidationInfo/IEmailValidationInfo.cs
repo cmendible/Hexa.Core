@@ -20,7 +20,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Hexa.Core.Validations
+namespace Hexa.Core.Validation
 {
 	/// <summary>
 	/// 

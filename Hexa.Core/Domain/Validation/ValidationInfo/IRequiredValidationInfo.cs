@@ -20,50 +20,47 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Hexa.Core.Validations 
+namespace Hexa.Core.Validation
 {
 	/// <summary>
-	/// Interface for Validate TypeValidation Info.. 
+	/// 
 	/// </summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
-	public interface IValidateTypeValidationInfo : IValidationInfo
+	public interface IRequiredValidationInfo : IValidationInfo
 	{
 	}
 
 	/// <summary>
-	/// ValidateType ValidationInfo. Used to specify that the type of the property must be validated.
+	/// 
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public class ValidateTypeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IValidateTypeValidationInfo
+	public class RequiredValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRequiredValidationInfo
 	{
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
+		/// Initializes a new instance of the RequiredValidationInfo class.
 		/// </summary>
 		/// <param name="propertyName">Name of the property.</param>
-		public ValidateTypeValidationInfo(string propertyName)
+		public RequiredValidationInfo(string propertyName)
 			: this(propertyName, null)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
+		/// Initializes a new instance of the RequiredValidationInfo class.
 		/// </summary>
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="error">The error.</param>
-		public ValidateTypeValidationInfo(string propertyName, string error)
+		public RequiredValidationInfo(string propertyName, string error)
 			: base(propertyName, DefaultMessage(propertyName, error))
 		{
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
-		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
 		private static string DefaultMessage(string propertyName, string error)
 		{
 			if (string.IsNullOrEmpty(error))
-				return string.Format(Hexa.Core.Resources.Resource.ValueIsNotOfTheCorrectType, propertyName);
+				return string.Format(Hexa.Core.Resources.Resource.IsRequired, propertyName);
 			else
 				return error;
 		}

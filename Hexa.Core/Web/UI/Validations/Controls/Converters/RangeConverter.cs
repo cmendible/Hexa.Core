@@ -21,7 +21,7 @@ using System;
 using System.Reflection;
 using System.Web.UI.WebControls;
 
-using Hexa.Core.Validations;
+using Hexa.Core.Validation;
 using Hexa.Core.Web.UI.Controls;
 
 namespace Hexa.Core.Web.UI.Controls

@@ -19,12 +19,12 @@
 
 using System.Collections.Generic;
 
-namespace Hexa.Core.Validations
+namespace Hexa.Core.Validation
 {
 	/// <summary>
 	/// Validation Provider Interface.
 	/// </summary>
-	public interface IValidationProvider
+	public interface IValidationInfoProvider
 	{
 		/// <summary>
 		/// Gets the validation info.
@@ -45,7 +45,7 @@ namespace Hexa.Core.Validations
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
-	public interface IValidationProvider<TEntity> : IValidationProvider
+    public interface IValidationInfoProvider<TEntity> : IValidationInfoProvider
 	{
 	}
 }

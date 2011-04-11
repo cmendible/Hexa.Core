@@ -23,7 +23,7 @@ using System.Globalization;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hexa.Core.Validations
+namespace Hexa.Core.Validation
 {
 	/// <summary>
 	/// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.

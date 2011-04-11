@@ -17,38 +17,58 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using System.Reflection;
+using System.Linq.Expressions;
 
-namespace Hexa.Core.Validations
+namespace Hexa.Core.Validation
 {
 	/// <summary>
-	/// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
+	/// Validation Info interface.
+	/// </summary>
+	public interface IValidationInfo
+	{
+		string ErrorMessage { get; }
+		PropertyInfo PropertyInfo { get; }
+	}
+
+	/// <summary>
+	/// Abstarct class for Validation infos.
 	/// </summary>
 	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public class DataAnnotationProvider<TEntity> : IValidationProvider
+	public abstract class BaseValidationInfo<TEntity> : IValidationInfo
 	{
-		#region IValidationProvider Members
+		private string _ErrorMessage;
+		private PropertyInfo _PropertyInfo;
 
 		/// <summary>
-		/// Gets the validation info.
-		/// </summary>
-		/// <returns></returns>
-		public IList<IValidationInfo> GetValidationInfo()
-		{
-			return DataAnnotationHelper.GetValidationInfoList<TEntity>();
-		}
-
-		/// <summary>
-		/// Gets the validation info.
+		/// Initializes a new instance of the <see cref="BaseValidationInfo&lt;TEntity&gt;"/> class.
 		/// </summary>
 		/// <param name="propertyName">Name of the property.</param>
-		/// <returns></returns>
-		public IList<IValidationInfo> GetValidationInfo(string propertyName)
+		/// <param name="error">The error.</param>
+		protected BaseValidationInfo(string propertyName, string error)
 		{
-			return GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
+			_ErrorMessage = error;
+			_PropertyInfo = typeof(TEntity).GetProperty(propertyName);
 		}
 
-		#endregion
+		/// <summary>
+		/// Gets the error.
+		/// </summary>
+		/// <value>The error.</value>
+		public virtual string ErrorMessage
+		{
+			get { return _ErrorMessage; }
+		}
+
+		/// <summary>
+		/// Gets the property info.
+		/// </summary>
+		/// <value>The property info.</value>
+		public virtual PropertyInfo PropertyInfo
+		{
+			get { return _PropertyInfo; }
+		}
+
 	}
 }
