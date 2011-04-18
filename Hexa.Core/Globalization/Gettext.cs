@@ -95,7 +95,7 @@ namespace GNU.Gettext
 		// This is like Assembly.GetSatelliteAssembly, but uses resourceName
 		// instead of assembly.GetName().Name, and works around a bug in
 		// mono-0.28.
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
 		private static Assembly GetSatelliteAssembly(Assembly assembly, String resourceName, CultureInfo culture)
 		{
 			string culturePath = Path.DirectorySeparatorChar + culture.Name;
@@ -104,18 +104,10 @@ namespace GNU.Gettext
 			string satelliteExpectedLocation = Path.GetDirectoryName(assembly.Location) + culturePath + asssemblyName;
 			string satellitePossibleLocation = AppDomain.CurrentDomain.RelativeSearchPath + culturePath + asssemblyName;
 
-			// It is 'routine' for Assembly.LoadFrom() to not find the expected
-			// satellite assembly, and therefore a System.IO.FileNotFoundException
-			// would be raised, and would propogate from MySatelliteAssembly() to
-			// GetResourceSetsFor(), where it is handled.
-			// One problem with having the exception thrown here is that if in
-			// Visual Studio you have the highest level of debugging enabled,
-			// program execution keeps getting stopped here. To avoid that,
-			// only try and load the assembly if the assembly file exists.
 			if (File.Exists(satelliteExpectedLocation))
-				return Assembly.LoadFrom(satelliteExpectedLocation);
+				return Assembly.LoadFile(satelliteExpectedLocation);
 			else if (File.Exists(satellitePossibleLocation))
-				return Assembly.LoadFrom(satellitePossibleLocation);
+				return Assembly.LoadFile(satellitePossibleLocation);
 			else
 				return null;
 		}
