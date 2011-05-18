@@ -27,7 +27,7 @@ using Hexa.Core.Database;
 
 namespace Hexa.Core.Domain
 {
-    public abstract class RavenContextFactory<T> : IUnitOfWorkFactory, IDatabaseManager where T : IUnitOfWorkFactory
+    public class RavenContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
         private static DocumentStore _documenFactory;
 
@@ -46,9 +46,9 @@ namespace Hexa.Core.Domain
         }
 
         // Registers Raven IDocumentStore for testing purposes.
-        public void RegisterSessionFactory()
+        public void RegisterSessionFactory(IoCContainer container)
         {
-            ApplicationContext.Container.RegisterInstance<IDocumentStore>(_documenFactory);        
+            container.RegisterInstance<IDocumentStore>(_documenFactory);        
         }
 
         public bool DatabaseExists()

@@ -114,6 +114,20 @@
     <Reference Include="NHibernate">
       <HintPath>..\libs\NHibernate\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\RavenDB\Raven.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Database, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\RavenDB\Raven.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Storage.Esent">
+      <HintPath>..\libs\RavenDB\Raven.Storage.Esent.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Storage.Managed">
+      <HintPath>..\libs\RavenDB\Raven.Storage.Managed.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\libs\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -163,6 +177,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
+    <Compile Include="RavenDb\RavenTests.cs" />
     <Compile Include="SqlCe\SqlCeTests.cs" />
     <Compile Include="Sql\SqlTests.cs" />
   </ItemGroup>
@@ -185,6 +200,10 @@
     <ProjectReference Include="..\Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj">
       <Project>{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}</Project>
       <Name>Hexa.Core.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj">
+      <Project>{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}</Project>
+      <Name>Hexa.Core.RavenDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hexa.Core\Hexa.Core.csproj">
       <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>

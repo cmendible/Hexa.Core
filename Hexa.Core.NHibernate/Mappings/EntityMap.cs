@@ -36,7 +36,7 @@ namespace Hexa.Core.Domain
     {
         public BaseEntityWithUniqueIdMap()
         {
-            Id(x => x.UniqueId)
+            Id(x => x.Id)
                 .GeneratedBy.GuidComb();
         }
     }
