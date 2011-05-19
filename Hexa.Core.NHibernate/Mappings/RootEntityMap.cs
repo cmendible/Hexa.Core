@@ -29,7 +29,7 @@ namespace Hexa.Core.Domain
 			: base()
 		{
 			// Setup UniqueId property as CombGuid
-			Id(x => x.Id)
+			Id(x => x.UniqueId)
 				.GeneratedBy.GuidComb();
 
 			// Use versioned timestamp as optimistick lock mechanism.
