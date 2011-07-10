@@ -1,0 +1,22 @@
+Hexa.Core is HexaSystems implementation of the Domain Driven Design Architecture. Also providing a set of helper classes for ASP.Net and WCF development.
+
+We attempt to combine our experience and know-how with concepts, classes, patterns and best practices found in projects such as:
+Microsoft - Domain Oriented N-Layered .NET 4.0 App Sample (Microsoft Spain) (http://microsoftnlayerapp.codeplex.com/)
+NCommon (http://ncommon.codeplex.com/)
+S#arp Architecture (http://github.com/codai/Sharp-Architecture/downloads/)
+
+Follow us:
+(www.hexasystems.com)
+(www.twitter.com/hexasystems)
+(carlos.mendible.com)
+
+This software is licensed under the Apache License, Version 2.0
+(the "License"); you may not use the files in this distribution
+except in compliance with the License. You may obtain a copy of
+the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. See the License for the specific
+language governing permissions and limitations under the License.
