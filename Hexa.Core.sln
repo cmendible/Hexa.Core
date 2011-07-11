@@ -19,12 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		BuildAndTest.msbuild = BuildAndTest.msbuild
 		Doxyfile = Doxyfile
 		Hexa.Core.snk = Hexa.Core.snk
+		README = README
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj", "{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}"
 EndProject
 Global
-	
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -65,8 +65,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Cfm.Core.Web
-		IsWCSFSolutionWAP = True
 		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Cfm.Core.Web
 	EndGlobalSection
 EndGlobal
