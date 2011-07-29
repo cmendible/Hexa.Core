@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Web;
@@ -111,10 +112,18 @@ namespace Hexa.Core.Logging
         }
 
         public Log4NetLoggerFactory()
+            : this(null)
+        {
+        }
+
+        public Log4NetLoggerFactory(FileInfo configFile)
         {
             if (!_initialized)
             {
-                XmlConfigurator.Configure();
+                if (configFile != null)
+                    XmlConfigurator.ConfigureAndWatch(configFile);
+                else
+                    XmlConfigurator.Configure();
 
                 // Register log4net context loggers..
                 if (_isWebContext())
