@@ -21,6 +21,9 @@ namespace Hexa.Core.Database
         PostgreSQLProvider,
 
         [EnumMember(Value = "System.Data.SqlServerCe.3.5")]
-        SqlCe
+        SqlCe,
+
+        [EnumMember(Value = "FirebirdSql.Data.FirebirdClient")]
+        Firebird
     }
 }

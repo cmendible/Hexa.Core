@@ -46,10 +46,15 @@ namespace Hexa.Core.Tests.Sql
         [FixtureTearDown]
         public void FixtureTearDown()
         {
-            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-            dbManager.DeleteDatabase();
-
-            ApplicationContext.Stop();
+            try
+            {
+                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+                dbManager.DeleteDatabase();
+            }
+            finally
+            {
+                ApplicationContext.Stop();
+            }
         }
         
     }

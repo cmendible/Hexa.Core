@@ -79,6 +79,14 @@ namespace Hexa.Core.Domain
 
                     break;
                 }
+                case DbProvider.Firebird:
+                {
+                    cfg = Fluently.Configure().Database(new FirebirdConfiguration()
+                            .Raw("format_sql", "true")
+                            .ConnectionString(_connectionString));
+
+                    break;
+                }
             }
 
             Guard.IsNotNull(cfg, string.Format("Db provider {0} is currently not supported.", _DbProvider.GetEnumMemberValue()));

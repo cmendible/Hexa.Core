@@ -26,6 +26,7 @@ namespace Hexa.Core.Database
         public const string OracleDataProvider = "Oracle.DataAccess.Client";
         public const string PostgreSQLProvider = "Npgsql";
         public const string SqlCe = "System.Data.SqlServerCe.3.5";
+        public const string Firebird = "FirebirdSql.Data.FirebirdClient";
 
         /// <summary>
         /// Gets the db provider factory.
@@ -66,7 +67,7 @@ namespace Hexa.Core.Database
                 dbname = tmp.ToString();
                 builder.Remove("Initial Catalog");
             }
-            // SQLServer defailt option..
+            // SQLServer default option..
             if (builder.TryGetValue("Database", out tmp))
             {
                 dbname = tmp.ToString();
@@ -163,7 +164,7 @@ namespace Hexa.Core.Database
                         return File.Exists(dbName);
                 }
 
-                if (providerName == SqlCe)
+                if (providerName == SqlCe || providerName == Firebird)
                     return File.Exists(dbName);
 
                 switch (providerName)
@@ -230,6 +231,19 @@ namespace Hexa.Core.Database
 
                 return;
             }
+            if (providerName == Firebird)
+            {
+                if (File.Exists(dbName))
+                    File.Delete(dbName);
+
+                var type = Type.GetType("FirebirdSql.Data.FirebirdClient.FbConnection, FirebirdSql.Data.FirebirdClient");
+                var createDatabase = type.GetMethod("CreateDatabase", new Type[] { typeof(string), typeof(int), typeof(bool), typeof(bool) });
+
+                object engine = Activator.CreateInstance(type);
+                createDatabase.Invoke(engine, new object[] { connectionString, 8192, true, false });
+
+                return;
+            }
             else if (providerName == OracleDataProvider)
             {
                 throw new NotImplementedException();
@@ -280,7 +294,7 @@ namespace Hexa.Core.Database
                     File.Delete(dbName);
                 }
             }
-            else if (providerName == SqlCe)
+            else if (providerName == SqlCe || providerName == Firebird)
             {
                 File.Delete(dbName);
             }
