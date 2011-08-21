@@ -143,6 +143,13 @@ namespace Hexa.Core.Database
                 var method = type.GetMethod("ClearAllPools", BindingFlags.Static | BindingFlags.Public);
                 method.Invoke(null, null);
             }
+
+            if (providerName == Firebird)
+            {
+                var type = Type.GetType("FirebirdSql.Data.FirebirdClient.FbConnection, FirebirdSql.Data.FirebirdClient", true);
+                var method = type.GetMethod("ClearAllPools", BindingFlags.Static | BindingFlags.Public);
+                method.Invoke(null, null);
+            }
         }
 
         private static bool _DatabaseExists(DbProviderFactory provider, string connectionString, string providerName)
@@ -294,8 +301,13 @@ namespace Hexa.Core.Database
                     File.Delete(dbName);
                 }
             }
-            else if (providerName == SqlCe || providerName == Firebird)
+            else if (providerName == SqlCe)
             {
+                File.Delete(dbName);
+            }
+            else if (providerName == Firebird)
+            {
+                _ClearAllPools(providerName);
                 File.Delete(dbName);
             }
             else if (providerName == MsSqlProvider)
