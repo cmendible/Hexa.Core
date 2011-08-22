@@ -97,8 +97,6 @@ namespace Hexa.Core.Domain
                         {
                             if (System.Transactions.Transaction.Current == null)
                                 _session.Transaction.Rollback();
-                            else
-                                _session.Transaction.Commit();
                         }
 
                         _session.Transaction.Dispose();
