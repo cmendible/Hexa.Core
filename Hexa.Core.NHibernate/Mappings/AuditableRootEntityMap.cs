@@ -55,6 +55,9 @@ namespace Hexa.Core.Domain
 
             if (Dialect is SQLiteDialect)
                 tmp.Default("(datetime('now'))");
+				
+			if (Dialect is FirebirdDialect)
+                tmp.Default("current_date");
 
             return tmp;
         }
