@@ -37,7 +37,7 @@ namespace Hexa.Core.Domain
         private DbProvider _DbProvider;
         private string _connectionString;
         private bool _InMemoryDatabase;
-        private bool _SqlCeDatabase;
+        private bool _validationSupported = true;
 
         public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider, Assembly mappingsAssembly, IoCContainer container)
         {
@@ -75,7 +75,7 @@ namespace Hexa.Core.Domain
                             .ConnectionString(_connectionString))
                             .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
                         
-                    _SqlCeDatabase = true;
+                    _validationSupported = false;
 
                     break;
                 }
@@ -84,6 +84,16 @@ namespace Hexa.Core.Domain
                     cfg = Fluently.Configure().Database(new FirebirdConfiguration()
                             .Raw("format_sql", "true")
                             .ConnectionString(_connectionString));
+
+                    break;
+                }
+				case DbProvider.PostgreSQLProvider:
+                {
+                    cfg = Fluently.Configure().Database(PostgreSQLConfiguration.Standard
+                            .Raw("format_sql", "true")
+                            .ConnectionString(_connectionString));
+				
+					_validationSupported = false;
 
                     break;
                 }
@@ -177,7 +187,7 @@ namespace Hexa.Core.Domain
 
         public void ValidateDatabaseSchema()
         {
-            if (!_InMemoryDatabase && !_SqlCeDatabase)
+            if (!_InMemoryDatabase && _validationSupported)
                 new SchemaValidator(_builtConfiguration).Validate();
         }
 
