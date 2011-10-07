@@ -89,7 +89,7 @@ namespace Hexa.Core.Domain
                 }
 				case DbProvider.PostgreSQLProvider:
                 {
-                    cfg = Fluently.Configure().Database(PostgreSQLConfiguration.Standard
+                    cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
                             .Raw("format_sql", "true")
                             .ConnectionString(_connectionString));
 				
