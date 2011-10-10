@@ -58,6 +58,9 @@ namespace Hexa.Core.Domain
 				
 			if (Dialect is FirebirdDialect)
                 tmp.Default("current_date");
+			
+			if (Dialect is PostgreSQLDialect)
+                tmp.Default("current_timestamp");
 
             return tmp;
         }
