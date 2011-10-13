@@ -243,8 +243,7 @@
     <Compile Include="IoC\ApplicationContext.cs" />
     <Compile Include="Printer\PrinterHelper.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
-    <Compile Include="ObjectPool\ObjectPool.cs" />
-    <Compile Include="ObjectPool\ObjectPoolException.cs" />
+    <Compile Include="Pool\Pool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
