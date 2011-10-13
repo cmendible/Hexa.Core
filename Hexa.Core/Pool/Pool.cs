@@ -60,7 +60,7 @@ namespace Hexa.Core.Pooling
 
             if (_eagerLoad)
             {
-                PreloadItems(size);
+                _PreloadItems(size);
             }
 
             _usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
@@ -133,18 +133,18 @@ namespace Hexa.Core.Pooling
             _sync.Close();
         }
 
-        private void PreloadItems(int size)
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        private void _PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
             {
                 T item = _factory(this);
                 _queue.Enqueue(item);
             }
-        }
-
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
         }
     }
 
