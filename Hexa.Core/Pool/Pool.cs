@@ -39,6 +39,7 @@ namespace Hexa.Core.Pooling
         private Queue<T> _queue;
         private Semaphore _sync;
         private bool _usingExpirableObjects;
+        private bool _eagerLoad;
 
         public Pool(int size, Func<Pool<T>, T> factory) : this(size, factory, false)
         {
@@ -55,8 +56,9 @@ namespace Hexa.Core.Pooling
             _factory = factory;
             _sync = new Semaphore(size, size);
             _queue = new Queue<T>(size);
+            _eagerLoad = eagerLoad;
 
-            if (eagerLoad)
+            if (_eagerLoad)
             {
                 PreloadItems(size);
             }
@@ -69,7 +71,19 @@ namespace Hexa.Core.Pooling
             _sync.WaitOne();
             lock (_queue)
             {
-                var item = _queue.Dequeue();
+                var item = default(T);
+                if (!_eagerLoad)
+                {
+                    if (_queue.Count > 0)
+                        item = _queue.Dequeue();
+                    else
+                        item  = _factory(this);
+                }
+                else
+                {
+                    item = _queue.Dequeue();
+                }
+
                 if (_usingExpirableObjects)
                 {
                     var expirableObject = item as IObjectWithExpiration<T>;
