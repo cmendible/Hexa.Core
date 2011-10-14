@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project
-	ToolsVersion="4.0"
-	DefaultTargets="BuildAll"
+	InitialTargets="CopyFirebird"
 	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- 
 	===================================================================================
@@ -19,31 +18,23 @@
 	limitations under the License.
 	===================================================================================
  -->
-  
-  <!--Get current OS "bitness" http://stackoverflow.com/questions/3505285/find-out-the-bitness-of-the-current-os-in-msbuild-->
-  <PropertyGroup>
-    <MachineProcessorArchitecture>$(registry:HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment@PROCESSOR_ARCHITECTURE)</MachineProcessorArchitecture>
-    <Is32Bit>False</Is32Bit>
-    <Is32Bit Condition="'$(MachineProcessorArchitecture)' == 'x86'">True</Is32Bit>
-    <Is64Bit>False</Is64Bit>
-    <Is64Bit Condition="'$(MachineProcessorArchitecture)' == 'AMD64'">True</Is64Bit>
-    <DeployTo>$(SolutionDir)Hexa.Core.Tests\bin\Release\</DeployTo>
-  </PropertyGroup>
-
-  <!--Select Firebird files to deploy-->
-  <ItemGroup>
-    <FirebirdFiles Condition="'$(Is32Bit)' == 'True'" Include="libs\Firebird\x32\**\*.*" />
-    <FirebirdFiles Condition="'$(Is64Bit)' == 'True'" Include="$(SolutionDir)libs\Firebird\x64\**\*.*" />
-  </ItemGroup>
-
-  <!--Deploy Firebird files-->
-  <Target Name="CopyFirerbird">
-    <Copy SourceFiles="@(FirebirdFiles)" DestinationFiles="@(FirebirdFiles->'$(DeployTo)%(RecursiveDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
-  </Target>
-
-  <!--Make AfterBuild target depend on this one-->
-  <Target Name="AfterBuild" DependsOnTargets="CopyFirerbird">
-  </Target>
-  
+	<!--Get current OS "bitness" http://stackoverflow.com/questions/3505285/find-out-the-bitness-of-the-current-os-in-msbuild-->
+	<PropertyGroup>
+		<MachineProcessorArchitecture>$(registry:HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment@PROCESSOR_ARCHITECTURE)</MachineProcessorArchitecture>
+		<Is32Bit>False</Is32Bit>
+		<Is32Bit Condition="'$(MachineProcessorArchitecture)' == 'x86'">True</Is32Bit>
+		<Is64Bit>False</Is64Bit>
+		<Is64Bit Condition="'$(MachineProcessorArchitecture)' == 'AMD64'">True</Is64Bit>
+		<DeployTo>$(SolutionDir)Hexa.Core.Tests\bin\Release\</DeployTo>
+	</PropertyGroup>
+	<!--Deploy Firebird files-->
+	<Target Name="CopyFirebird">
+		<!--Select Firebird files to deploy-->
+		<ItemGroup>
+			<FirebirdFiles Condition="'$(Is32Bit)' == 'True'" Include="$(SolutionDir)libs\Firebird\x32\**\*.*" />
+			<FirebirdFiles Condition="'$(Is64Bit)' == 'True'" Include="$(SolutionDir)libs\Firebird\x64\**\*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FirebirdFiles)" DestinationFiles="@(FirebirdFiles->'$(DeployTo)%(RecursiveDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
+	</Target>
 </Project>
 
