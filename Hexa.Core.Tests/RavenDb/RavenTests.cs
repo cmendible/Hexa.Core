@@ -6,7 +6,7 @@
 //using Hexa.Core.Tests.Data;
 //using Hexa.Core.Tests.Domain;
 //using Hexa.Core.Validation;
-//using MbUnit.Framework;
+//using Nunit.Framework;
 
 //namespace Hexa.Core.Tests.Sql
 //{

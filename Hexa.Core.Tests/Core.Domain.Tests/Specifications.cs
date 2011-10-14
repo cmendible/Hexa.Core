@@ -14,7 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Hexa.Core.Domain.Specification;
 using Hexa.Core.Tests;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {

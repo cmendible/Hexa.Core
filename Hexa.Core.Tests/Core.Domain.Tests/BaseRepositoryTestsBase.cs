@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Hexa.Core.Domain.Specification;
 using Hexa.Core.Logging;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {

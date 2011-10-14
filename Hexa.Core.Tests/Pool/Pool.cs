@@ -19,7 +19,7 @@
 
 using System;
 using Hexa.Core.Pooling;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace Hexa.Core.Tests
 {

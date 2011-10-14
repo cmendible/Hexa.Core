@@ -107,16 +107,15 @@
     <Reference Include="FluentNHibernate">
       <HintPath>..\libs\NHibernate\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\Gallio\Gallio.dll</HintPath>
-    </Reference>
-    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\Gallio\MbUnit.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\libs\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\libs\Npgsql\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -165,7 +164,7 @@
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
-    <Compile Include="BaseDatabaseTest.cs" />
+    <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
@@ -173,7 +172,8 @@
     <Compile Include="Domain\Human.cs" />
     <Compile Include="Data\Mappings\HumanMap.cs" />
     <Compile Include="Domain\Repositories\IHumanRepository.cs" />
-    <Compile Include="Firebird\FirebirdTests.cs" />
+    <Compile Include="NHibernate\FirebirdTests.cs" />
+    <Compile Include="NHibernate\PostgreSQLTest.cs" />
     <Compile Include="Pool\Pool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -183,14 +183,16 @@
     </Compile>
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
     <Compile Include="RavenDb\RavenTests.cs" />
-    <Compile Include="SqlCe\SqlCeTests.cs" />
-    <Compile Include="Sql\SqlTests.cs" />
+    <Compile Include="NHibernate\SqlCeTests.cs" />
+    <Compile Include="NHibernate\SqlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">
       <Link>Hexa.Core.snk</Link>
     </None>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

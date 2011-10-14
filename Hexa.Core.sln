@@ -24,8 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj", "{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Mono.Tests", "Hexa.Core.Mono.Tests\Hexa.Core.Mono.Tests.csproj", "{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,22 +62,14 @@ Global
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|x86
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.Build.0 = Release|x86
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Debug|x86.Build.0 = Debug|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Release|x86.ActiveCfg = Release|x86
-		{53F4E02B-EAAA-40EB-8C10-94427DD8FB58}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Cfm.Core.Web
-		IsWCSFSolutionWAP = True
 		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Cfm.Core.Web
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj

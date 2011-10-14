@@ -24,8 +24,8 @@
     <ProjectDirectory>$(MSBuildProjectDirectory)</ProjectDirectory>
   </PropertyGroup>
 
-  <!-- This is needed by MSBuild to locate the Gallio task -->
-  <UsingTask AssemblyFile="$(ProjectDirectory)\libs\Gallio\Gallio.MsBuildTasks.dll" TaskName="Gallio" />
+  <!-- This is needed by MSBuild to locate the NUnit task -->
+  <UsingTask AssemblyFile="$(ProjectDirectory)\libs\MSBuild.Community.Tasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" />
 
   <!-- Specify the Solutions to build -->
   <ItemGroup>
@@ -38,7 +38,7 @@
 
     <!-- Builds Solutions -->
     <MSBuild Projects="@(ProjectFiles)"
-       Properties="Configuration=Release"
+       Properties="Configuration=Release; Platform=Any CPU"
        Targets="Build" />
 
     <Message Text="Starting Tests..." Importance="high" />
@@ -50,29 +50,18 @@
 
     <Message Text="TestFiles: @(TestFiles)" Importance="high"/>
 
-    <Message Text="Cleaning up old test results..." Importance="high" />
-
-    <PropertyGroup>
-      <TestResultsDirectory>$(ProjectDirectory)\TestResults</TestResultsDirectory>
-    </PropertyGroup>
-
     <ItemGroup>
-      <FilesToDelete Include="$(TestResultsDirectory)\**\*.*"/>
+      <FilesToDelete Include="TestResults.xml"/>
     </ItemGroup>
 
     <Delete Files="@(FilesToDelete)" />
 
-    <RemoveDir Directories="$(TestResultsDirectory)"
-           ContinueOnError="true" />
-
     <!-- Runs Tests -->
-    <Gallio IgnoreFailures="true" Files="@(TestFiles)"
-            PluginDirectories="$(ProjectDirectory)\libs\Gallio\"
-            ReportDirectory="$(TestResultsDirectory)"
-            ReportTypes="html;xml">
-      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
-    </Gallio>
-    <Error Text="Tests execution failed" Condition=" '$(ExitCode)' != 0 And '@(TestFiles)' != '' " />
+    <NUnit 
+		ToolPath="$(ProjectDirectory)\libs\NUnit"
+		Assemblies="@(TestFiles)" 
+		OutputXmlFile="TestResults.xml"
+		ContinueOnError="false" />
 
     <Message Text="Build Completed..." Importance="high" />
 

@@ -15,7 +15,7 @@ using System.Linq;
 using Hexa.Core.Domain.Specification;
 using Hexa.Core.Logging;
 using Hexa.Core.Tests;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Rhino.Mocks;
 using SL = Microsoft.Practices.ServiceLocation;
 
@@ -31,7 +31,7 @@ namespace Hexa.Core.Domain.Tests
             DictionaryServicesContainer _dictionaryContainer;
             private IoCContainer _container;
 
-            [FixtureSetUp]
+            [TestFixtureSetUp]
             public void FixtureSetUp()
             {
                 _dictionaryContainer = new DictionaryServicesContainer();
