@@ -17,8 +17,11 @@
 
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -45,4 +48,71 @@ namespace System
 			return sb.ToString();
 		}
 	}
+
+    public static class StringSlugExtension
+    {
+        private static Dictionary<string, string> rules1;
+        private static Dictionary<string, string> rules2;
+
+        static StringSlugExtension()
+        {
+            var invalidChars = "àáâãäåçèéêëìíîïñòóôõöøùúûüýÿ".ToCharArray().ToList();
+            var validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
+            rules1 = invalidChars.ToDictionary(i => i.ToString(), i => validChars[invalidChars.IndexOf(i)].ToString());
+
+            invalidChars = new char[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' }.ToList();
+            var validStrings = new string[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" }.ToList();
+            rules2 = invalidChars.ToDictionary(i => i.ToString(), i => validStrings[invalidChars.IndexOf(i)]);
+        }
+
+        private static string _StrTr(this string source, Dictionary<string, string> replacements)
+        {
+            string[] finds = new string[replacements.Keys.Count];
+
+            replacements.Keys.CopyTo(finds, 0);
+
+            string findpattern = string.Join("|", finds);
+
+            Regex regex = new Regex(findpattern);
+
+            MatchEvaluator evaluator =
+                delegate(Match m)
+                {
+                    string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
+
+                    if (replacements.ContainsKey(match))
+                        return replacements[match];
+                    else
+                        return match;
+                };
+
+            return regex.Replace(source, evaluator);
+        }
+
+        /// <summary>
+        /// Will transform "some $ugly ###url wit[]h spaces" into "some-ugly-url-with-spaces"
+        /// </summary>
+        public static string Slugify(this string phrase)
+        {
+            var str = phrase.ToLower();
+
+            // Transform Invalid Chars.
+            str = str._StrTr(rules1);
+
+            // Transform Special Chars.
+            str = str._StrTr(rules2);
+
+            // Final clean up.
+            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
+
+            // convert multiple spaces/hyphens into one space       
+            str = Regex.Replace(str, @"[\s-]+", " ").Trim();
+
+            // hyphens
+            str = Regex.Replace(str, @"\s", "-");
+
+            return str;
+        }
+
+    }
 }
