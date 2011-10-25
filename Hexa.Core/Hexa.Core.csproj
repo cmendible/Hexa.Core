@@ -256,13 +256,10 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ServiceModel\ErrorBehaviorAttribute.cs" />
     <Compile Include="ServiceModel\EvaluationContextExtensions.cs" />
-    <Compile Include="WebServices\InstanceProvider.cs" />
-    <Compile Include="WebServices\IWebServicesManager.cs" />
-    <Compile Include="WebServices\Security\AuthorizationManager.cs" />
-    <Compile Include="WebServices\Security\BaseAuthorizationPolicy.cs" />
-    <Compile Include="WebServices\Security\BaseX509AuthorizationPolicy.cs" />
-    <Compile Include="WebServices\ServiceFactory.cs" />
-    <Compile Include="WebServices\ServiceHost.cs" />
+    <Compile Include="ServiceModel\Security\AuthorizationManager.cs" />
+    <Compile Include="ServiceModel\Security\BaseAuthorizationPolicy.cs" />
+    <Compile Include="ServiceModel\Security\BaseX509AuthorizationPolicy.cs" />
+    <Compile Include="ServiceModel\ServiceFactory.cs" />
     <Compile Include="ServiceModel\ServiceSecurityContextExtensions.cs" />
     <Compile Include="ServiceModel\ServiceProxyHelper.cs" />
     <Compile Include="Domain\Validation\DataAnnotationsValidator.cs" />
@@ -273,13 +270,10 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
-    <Compile Include="WebServices\Settings\SecurityMode.cs" />
-    <Compile Include="WebServices\Settings\ServiceCredentialElement.cs" />
-    <Compile Include="WebServices\Settings\Settings.cs" />
-    <Compile Include="WebServices\Settings\X509FindType.cs" />
-    <Compile Include="WebServices\VirtualPathProvider.cs" />
-    <Compile Include="WebServices\WebServiceDescriptor.cs" />
-    <Compile Include="WebServices\WebServicesManager.cs" />
+    <Compile Include="ServiceModel\Settings\SecurityMode.cs" />
+    <Compile Include="ServiceModel\Settings\ServiceCredentialElement.cs" />
+    <Compile Include="ServiceModel\Settings\Settings.cs" />
+    <Compile Include="ServiceModel\Settings\X509FindType.cs" />
     <Compile Include="Web\UI\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

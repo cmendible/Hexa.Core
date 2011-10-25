@@ -1,5 +1,5 @@
 ﻿
-namespace Hexa.Core.WebServices
+namespace Hexa.Core.ServiceModel
 {
     // Summary:
     //     Specifies the type of value searched for by the System.Security.Cryptography.X509Certificates.X509Certificate2Collection.Find(System.Security.Cryptography.X509Certificates.X509FindType,System.Object,System.Boolean)

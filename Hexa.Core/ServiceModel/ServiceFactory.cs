@@ -4,27 +4,42 @@ using System.IdentityModel.Policy;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+#region License
+
+//===================================================================================
+//Copyright 2010 HexaSystems Corporation
+//===================================================================================
+//Licensed under the Apache License, Version 2.0 (the "License");
+//you may not use this file except in compliance with the License.
+//You may obtain a copy of the License at
+//http://www.apache.org/licenses/LICENSE-2.0
+//===================================================================================
+//Unless required by applicable law or agreed to in writing, software
+//distributed under the License is distributed on an "AS IS" BASIS,
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//See the License for the specific language governing permissions and
+//limitations under the License.
+//===================================================================================
+
+#endregion
+
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using Hexa.Core.Security;
 using log4net;
 
-namespace Hexa.Core.WebServices
+namespace Hexa.Core.ServiceModel
 {
-	internal class ServiceFactory : ServiceHostFactory
+	public class ServiceFactory : ServiceHostFactory
 	{
 		private const int MaxTransferSize = 10485760;
-
-		protected Settings _Configuration;
-		protected IWebServicesManager _SvcManager;
-
+		private Settings _Configuration;
         private static readonly ILog _Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public ServiceFactory()
 		{
             _Configuration = Settings.Get();
-			_SvcManager = ServiceLocator.GetInstance<IWebServicesManager>();
 		}
 
 		protected static bool SchemeEnabled(Uri[] addrs, string scheme)
@@ -50,7 +65,7 @@ namespace Hexa.Core.WebServices
 		protected WSHttpBinding SetupWSHttpBinding(ServiceHost host)
 		{
 			// Configure bindings..
-            WSHttpBinding binding = new WSHttpBinding();
+            var binding = new WSHttpBinding();
 			binding.Name = "default"; 
 			binding.MaxReceivedMessageSize = MaxTransferSize;
 			binding.CloseTimeout = new TimeSpan(0, 0, 30);
@@ -59,22 +74,22 @@ namespace Hexa.Core.WebServices
 
 			binding.Namespace = host.Description.Namespace;
             
-            if (IsValid(host))
+            if (_ExcludeHost(host))
             {
                 switch (_Configuration.SecurityMode)
                 {
-                    case Hexa.Core.WebServices.Security.SecurityMode.Transport:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.Transport:
                         binding.Security.Mode = System.ServiceModel.SecurityMode.Transport;
                         binding.Security.Transport.Realm = "Hexa Core WebServices";
                         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.Message:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.Message:
                         binding.Security.Mode = System.ServiceModel.SecurityMode.Message;
                         binding.Security.Message.ClientCredentialType = MessageCredentialType.Certificate;
                         binding.Security.Message.NegotiateServiceCredential = false;
                         binding.Security.Message.EstablishSecurityContext = false;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.TransportWithMessage:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.TransportWithMessage:
                         binding.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
                         binding.Security.Transport.Realm = "Hexa Core WebServices";
                         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
@@ -82,7 +97,7 @@ namespace Hexa.Core.WebServices
                         binding.Security.Message.NegotiateServiceCredential = false;
                         binding.Security.Message.EstablishSecurityContext = false;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.None:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.None:
                         binding.Security.Mode = System.ServiceModel.SecurityMode.None;
                         break;
                 }
@@ -95,14 +110,14 @@ namespace Hexa.Core.WebServices
 
 		protected BasicHttpBinding SetupBasicHttpBinding(ServiceHost host)
 		{
-			BasicHttpBinding binding = new BasicHttpBinding();
+			var binding = new BasicHttpBinding();
 			binding.Name = "Basic"; 
 			binding.MaxReceivedMessageSize = MaxTransferSize;
 			binding.CloseTimeout = new TimeSpan(0, 0, 30);
 			binding.MessageEncoding = WSMessageEncoding.Text; // TODO#28: Configurable..			
 			binding.Namespace = host.Description.Namespace;
             
-            if (IsValid(host))
+            if (_ExcludeHost(host))
             {
                 binding.Security.Transport.Realm = "Hexa Core WebServices";
                 binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
@@ -110,23 +125,23 @@ namespace Hexa.Core.WebServices
 
                 switch (_Configuration.SecurityMode)
                 {
-                    case Hexa.Core.WebServices.Security.SecurityMode.Transport:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.Transport:
                         binding.Security.Mode = BasicHttpSecurityMode.Transport;
                         binding.TransferMode = TransferMode.Streamed; // TODO#28: Configurable..
                         binding.Security.Transport.Realm = "Hexa Core WebServices";
                         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.Message:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.Message:
                         binding.Security.Mode = BasicHttpSecurityMode.Message;
                         binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.TransportWithMessage:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.TransportWithMessage:
                         binding.Security.Mode = BasicHttpSecurityMode.TransportWithMessageCredential;
                         binding.Security.Transport.Realm = "Hexa Core WebServices";
                         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
                         binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
                         break;
-                    case Hexa.Core.WebServices.Security.SecurityMode.None:
+                    case Hexa.Core.ServiceModel.Security.SecurityMode.None:
                         binding.Security.Mode = BasicHttpSecurityMode.None;
                         break;
                 }
@@ -138,19 +153,21 @@ namespace Hexa.Core.WebServices
 
         protected static void SetupClientCredentials(ServiceCredentials behavior)
 		{
-			((ServiceCredentials)behavior).ClientCertificate.Authentication.CertificateValidationMode =
+            var serviceCredentials = ((ServiceCredentials)behavior);
+
+            serviceCredentials.ClientCertificate.Authentication.CertificateValidationMode =
 				System.ServiceModel.Security.X509CertificateValidationMode.None;
 
-			((ServiceCredentials)behavior).ClientCertificate.Authentication.RevocationMode =
+            serviceCredentials.ClientCertificate.Authentication.RevocationMode =
 				System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck;
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
         protected void SetupServerCredentials(ServiceCredentials behavior)
 		{
-			ServiceCredentialsElement cfg = _Configuration.ServiceCredentials;
+			var cfg = _Configuration.ServiceCredentials;
 
-			if (_Configuration.SecurityMode != Hexa.Core.WebServices.Security.SecurityMode.Transport && cfg == null)
+			if (_Configuration.SecurityMode != Hexa.Core.ServiceModel.Security.SecurityMode.Transport && cfg == null)
 			{
 				var ex = new ApplicationException("SecurityMode != Transport, but no ServiceCredentials configuration defined");
 				_Log.Error("Configuration exception", ex);
@@ -208,12 +225,12 @@ namespace Hexa.Core.WebServices
 
         protected static void SetupServiceAuthorization(ServiceHost host)
 		{
-			IAuthorizationPolicy[] policies = ServiceLocator.GetAllInstances<IAuthorizationPolicy>().ToArray();
+			var policies = ServiceLocator.GetAllInstances<IAuthorizationPolicy>().ToArray();
 
             if (policies.Length == 0)
                 _Log.Warn("No authorization policies are in place.");
 			
-			ServiceAuthorizationBehavior authBehavior = host.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
+			var authBehavior = host.Description.Behaviors.Find<ServiceAuthorizationBehavior>();
 
 			if (authBehavior == null)
 			{
@@ -230,39 +247,21 @@ namespace Hexa.Core.WebServices
 		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower")]
-        public override System.ServiceModel.ServiceHostBase CreateServiceHost(string constructorString, System.Uri[] baseAddresses)
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
 		{
-			WebServiceDescriptor sdesc = null;
-			ServiceHost host = null;
-			WSHttpBinding binding1 = null;
-			BasicHttpBinding binding2 = null;
-			bool has_contract = false;
+			var host = default(ServiceHost);
+            var binding1 = default(WSHttpBinding);
+            var binding2 = default(BasicHttpBinding);
+            var hasContract = false;
 
-			// Get current Application virtual directory.
-			string virtualDirectory = System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
+            _Log.DebugFormat("Type: {0}", serviceType.ToString());
 
-            _Log.DebugFormat("ApplicationVirtualPath: {0}", virtualDirectory);
-
-			// Save current constructorString
-			string serviceKey = constructorString;
-
-            _Log.DebugFormat("Constructor string: {0}", constructorString);
-
-			// If virtualDirectory is not empty remove it from the serviceKey.
-            if (virtualDirectory != "/")
-                serviceKey = serviceKey.Replace(virtualDirectory, string.Empty);
-            else
-                serviceKey = serviceKey.ToLower();
-
-			if (!_SvcManager.TryGet(serviceKey, out sdesc))
-                throw new ArgumentException(String.Format("Invalid service name {0}", serviceKey));
-
-			host = new ServiceHost(sdesc.Container, sdesc.Type, baseAddresses);
+            host = new ServiceHost(serviceType, baseAddresses);
 			binding1 = SetupWSHttpBinding(host);
 			binding2 = SetupBasicHttpBinding(host);
 
 			// Add each service endpoint to service host!
-			foreach (Type iface in sdesc.Type.GetInterfaces())
+            foreach (Type iface in serviceType.GetInterfaces())
 			{
 				var attr = (ServiceContractAttribute)Attribute.GetCustomAttribute(iface, typeof(ServiceContractAttribute));
 
@@ -274,22 +273,22 @@ namespace Hexa.Core.WebServices
 					// This line causes that the proxy generates ProtectionLevel = None for operations.
 					e.Contract.ProtectionLevel = System.Net.Security.ProtectionLevel.None;
 
-					has_contract = true;
+					hasContract = true;
 				}
 			}
 
-			if (!has_contract)
+			if (!hasContract)
 				throw new InvalidOperationException("WebService class does not have a ServiceContract attribute declared!");
 
-            if (IsValid(host))
+            if (!_ExcludeHost(host))
             {
                 SetupServiceCredentials(host); // Setup ServiceHost.Credentials
                 SetupDebugBehavior(host); // Setup includeDebugInFaults, etc.
                 SetupServiceAuthorization(host); // Setup ServiceAuthorizationBehavior..
             }
 
-			ServiceMetadataBehavior metadataBehavior = new ServiceMetadataBehavior();
-			Binding mexbinding = new WSHttpBinding();
+			var metadataBehavior = new ServiceMetadataBehavior();
+            var mexbinding = new WSHttpBinding();
 
 			if (HttpEnabled(baseAddresses))
 				metadataBehavior.HttpGetEnabled = true;
@@ -305,7 +304,7 @@ namespace Hexa.Core.WebServices
 			return host;
 		}
 
-        private bool IsValid(ServiceHost host)
+        private bool _ExcludeHost(ServiceHost host)
         {
             foreach (var srv in host.BaseAddresses)
             {
@@ -313,11 +312,11 @@ namespace Hexa.Core.WebServices
                 {
                     if (srv.AbsolutePath.ToLower().Contains(excluded.Name.ToLower()))
                     {
-                        return false;
+                        return true;
                     }
                 }
             }
-            return true;
+            return false;
         }
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Configuration;
 
-using Hexa.Core.WebServices.Security;
+using Hexa.Core.ServiceModel.Security;
 using System.ComponentModel;
 
-namespace Hexa.Core.WebServices
+namespace Hexa.Core.ServiceModel
 {
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace Hexa.Core.WebServices
         {
             try
             {
-                return ConfigurationManager.GetSection("Hexa.Core.WebServices.Settings") as Settings;
+                return ConfigurationManager.GetSection("Hexa.Core.ServiceModel.Settings") as Settings;
             }
             catch
             {

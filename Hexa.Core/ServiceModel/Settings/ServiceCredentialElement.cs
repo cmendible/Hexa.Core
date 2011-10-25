@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Hexa.Core.WebServices
+namespace Hexa.Core.ServiceModel
 {
 
     public sealed class ServiceCredentialsElement : ConfigurationElement

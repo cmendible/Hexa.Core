@@ -7,7 +7,7 @@ using System.Security.Principal;
 using Hexa.Core.ServiceModel;
 using log4net;
 
-namespace Hexa.Core.WebServices.Security
+namespace Hexa.Core.ServiceModel.Security
 {
 	/// <summary>
 	/// 
