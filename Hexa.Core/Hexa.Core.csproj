@@ -274,6 +274,8 @@
     <Compile Include="ServiceModel\Settings\ServiceCredentialElement.cs" />
     <Compile Include="ServiceModel\Settings\Settings.cs" />
     <Compile Include="ServiceModel\Settings\X509FindType.cs" />
+    <Compile Include="Web\Seo\ISeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Seo\SeoSiteMapBuilderService.cs" />
     <Compile Include="Web\UI\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
