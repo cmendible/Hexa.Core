@@ -27,7 +27,12 @@ namespace Hexa.Core.Web.Seo
         private string _priority;
 
         public SeoUrlInfo(string key)
-            : this(key, key, "daily", 100)
+            : this(key, "daily", 100)
+        {
+        }
+
+        public SeoUrlInfo(string key, string changeFrequency, int priorityPercentage)
+            : this(key, key, changeFrequency, priorityPercentage)
         {
         }
 
