@@ -23,7 +23,7 @@ using System.Xml;
 namespace Hexa.Core.Web.Seo
 {
 	/// <summary>
-	/// Service implementing the site map information needed to later build the site map.
+	/// 
 	/// </summary>
     public class SeoSiteMapBuilderService : Hexa.Core.Web.Seo.ISeoSiteMapBuilderService 
 	{
@@ -31,8 +31,6 @@ namespace Hexa.Core.Web.Seo
 		private Dictionary<string, SeoUrlInfo> _keyIndex;
 		private Dictionary<string, int> _urlPreferredOrder;
 		private SeoUrlInfo _rooturl;
-
-		// We need to replace all calls to _childurls.Add() to the add sorted method
 
 		/// <summary>
 		/// Initialize a new instance of <see cref="SeoSiteMapBuilderService"/>.
@@ -121,7 +119,7 @@ namespace Hexa.Core.Web.Seo
 
 		private void SafeAddurl(SeoUrlInfo url)
 		{
-			//Guard.ArgumentNotNull(url, "url");
+			Guard.IsNotNull(url, "url");
 
 			if (_keyIndex.ContainsKey(url.Key))
 			{
@@ -174,7 +172,8 @@ namespace Hexa.Core.Web.Seo
 			locBytes = Encoding.UTF8.GetBytes(url.Url);
 			writer.WriteElementString("loc", Encoding.UTF8.GetString(locBytes));
 			writer.WriteElementString("lastmod", FormatISODate(DateTime.Today));
-			writer.WriteElementString("changefreq", "monthly");
+			writer.WriteElementString("changefreq", url.ChangeFrequency);
+            writer.WriteElementString("priority", url.Priority);
 			writer.WriteEndElement();
 		}
 
@@ -193,8 +192,8 @@ namespace Hexa.Core.Web.Seo
 		public string SeoXml()
 		{
 			//instantiate the XML Text Writer for writing the SiteMap document
-			StringWriter stringWriter = new StringWriter();
-			XmlTextWriter writer = new XmlTextWriter(stringWriter);
+			var stringWriter = new StringWriter();
+            var writer = new XmlTextWriter(stringWriter);
 			//write out the header
 			//start off the site map
 			writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");

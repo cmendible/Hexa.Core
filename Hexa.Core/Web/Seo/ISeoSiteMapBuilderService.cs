@@ -17,28 +17,33 @@ namespace Hexa.Core.Web.Seo
 {
 
     /// <summary>
-    /// Holds information for a <see cref="System.Web.SiteMapurl"/> published by a module.
+    /// 
     /// </summary>
     public class SeoUrlInfo
     {
         private string _key;
         private string _url;
+        private string _changeFrequency;
+        private string _priority;
 
         public SeoUrlInfo(string key)
-            : this(key, key)
+            : this(key, key, "daily", 100)
         {
         }
 
-        public SeoUrlInfo(string key, string url)
+        public SeoUrlInfo(string key, string url, string changeFrequency, int priorityPercentage)
         {
-            //Guard.ArgumentNotNull(key, "key");
+            Guard.IsNotNull(key, "key");
+            Guard.IsNotNull(url, "url");
 
             _key = key;
             _url = url;
+            _changeFrequency = changeFrequency;
+            _priority = (priorityPercentage / 100).ToString();
         }
 
         /// <summary>
-        /// Gets or sets the url of the page represented by the url.
+        /// 
         /// </summary>  
         public string Url
         {
@@ -47,12 +52,30 @@ namespace Hexa.Core.Web.Seo
         }
 
         /// <summary>
-        /// Gets or sets the lookup key for the url.
+        /// 
         /// </summary>
         public string Key
         {
             get { return _key; }
             set { _key = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ChangeFrequency
+        {
+            get { return _changeFrequency; }
+            set { _changeFrequency = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Priority
+        {
+            get { return _priority; }
+            set { _priority = value; }
         }
     }
 
@@ -67,3 +90,4 @@ namespace Hexa.Core.Web.Seo
         string SeoXml();
     }
 }
+
