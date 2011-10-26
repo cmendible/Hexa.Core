@@ -44,7 +44,7 @@ namespace Hexa.Core.Web.Seo
             _key = key;
             _url = url;
             _changeFrequency = changeFrequency;
-            _priority = (priorityPercentage / 100).ToString();
+            _priority = ((double)priorityPercentage / 100).ToString();
         }
 
         /// <summary>
