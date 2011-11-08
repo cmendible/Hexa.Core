@@ -78,6 +78,7 @@ namespace Hexa.Core.Domain
         public void SetChanges<TEntity>(TEntity item)
             where TEntity : class
         {
+            _session.Update(item);
         }
 
         #endregion
