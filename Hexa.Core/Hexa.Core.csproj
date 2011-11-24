@@ -282,8 +282,8 @@
     <Compile Include="Web\UI\BaseUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\UI\Controls\DataGrid.cs" />
     <Compile Include="Web\UI\Ajax\JQGridHelper.cs" />
+    <Compile Include="Web\UI\Controls\GridView.cs" />
     <Compile Include="Web\UI\ExpressionBuilder\ExpressionBuilder.cs" />
     <Compile Include="Web\UI\Extensions\ControlExtensions.cs" />
     <Compile Include="Web\UI\Extensions\LinqExtensions.cs" />
