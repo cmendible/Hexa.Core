@@ -18,8 +18,15 @@
 #endregion
 
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using Hexa.Core.Domain.Specification;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Hexa.Core.Web.UI.Ajax
 {
@@ -27,53 +34,91 @@ namespace Hexa.Core.Web.UI.Ajax
     /// <summary>
     /// JQGrid Helper
     /// </summary>
-    public static class JQGridHelper
+    public class jqGridHelper
     {
-        /// <summary>
-        /// Renders JQGrid script.
-        /// </summary>
-        /// <param name="gridName">Name of the grid.</param>
-        /// <param name="caption">The caption.</param>
-        /// <param name="dataType">Type of the data.</param>
-        /// <param name="pager">The pager.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <returns></returns>
-        public static string JQGrid(string gridName, string caption, string dataType, string pager, string cols, string width, string height)
+        private string _gridName;
+        private string _caption;
+        private string _dataType;
+        private string _pager;
+        private string _cols;
+        private string _width;
+        private string _height;
+        private string _onSelect = string.Empty;
+        private string _onComplete = string.Empty;
+        private string _multiSelect = "false";
+        private string _multiSearch = "false";
+
+        private jqGridHelper(string gridName)
         {
-            return JQGrid(gridName, caption, dataType, pager, cols, width, height, false, string.Empty, string.Empty);
+            _gridName = gridName;
         }
 
-		/// <summary>
-		/// Renders JQGrid script.
-		/// </summary>
-		/// <param name="gridName">Name of the grid.</param>
-		/// <param name="caption">The caption.</param>
-		/// <param name="dataType">Type of the data.</param>
-		/// <param name="pager">The pager.</param>
-		/// <param name="width">The width.</param>
-		/// <param name="height">The height.</param>
-		/// <returns></returns>
-		public static string JQGrid(string gridName, string caption, string dataType, string pager, string cols,
-			string width, string height, string onSelect)
-		{
-			return JQGrid(gridName, caption, dataType, pager, cols, width, height, false, onSelect, string.Empty);
-		}
+        public static jqGridHelper Create(string gridName)
+        {
+            return new jqGridHelper(gridName);
+        }
 
-        /// <summary>
-        /// Renders JQGrid script.
-        /// </summary>
-        /// <param name="gridName">Name of the grid.</param>
-        /// <param name="caption">The caption.</param>
-        /// <param name="dataType">Type of the data.</param>
-        /// <param name="pager">The pager.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="multiselect">if set to <c>true</c> [multiselect].</param>
-        /// <returns></returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Int32.ToString"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "rowList"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "multiselect")]
-		public static string JQGrid(string gridName, string caption, string dataType, string pager,
-			string cols, string width, string height, bool multiselect, string onSelect, string gridComplete)
+        public jqGridHelper Caption(string caption)
+        {
+            _caption = caption;
+            return this;
+        }
+
+        public jqGridHelper DataType(string dataType)
+        {
+            _dataType = dataType;
+            return this;
+        }
+
+        public jqGridHelper Pager(string pager)
+        {
+            _pager = pager;
+            return this;
+        }
+
+        public jqGridHelper Cols(string cols)
+        {
+            _cols = cols;
+            return this;
+        }
+
+        public jqGridHelper Width(string width)
+        {
+            _width = width;
+            return this;
+        }
+
+        public jqGridHelper Height(string height)
+        {
+            _height = height;
+            return this;
+        }
+
+        public jqGridHelper OnSelect(string onSelect)
+        {
+            _onSelect = onSelect;
+            return this;
+        }
+
+        public jqGridHelper OnComplete(string onComplete)
+        {
+            _onComplete = onComplete;
+            return this;
+        }
+
+        public jqGridHelper MultiSelect(bool multiSelect)
+        {
+            _multiSelect = multiSelect.ToString().ToLower();
+            return this;
+        }
+
+        public jqGridHelper MultiSearch(bool multiSearch)
+        {
+            _multiSearch = multiSearch.ToString().ToLower();
+            return this;
+        }
+
+		public string ToString()
         {
             #region datagrid texts
 
@@ -92,11 +137,11 @@ namespace Hexa.Core.Web.UI.Ajax
 
             #region script
 
-            string script = string.Format("$(\"{0}\").jqGrid(", gridName) + "\r\n";
+            string script = string.Format("$(\"{0}\").jqGrid(", _gridName) + "\r\n";
             script += "{" + "\r\n";
-            script += string.Format("datatype: {0},", dataType) + "\r\n";
-            script += string.Format("colModel: {0},", cols) + "\r\n";
-            script += string.Format("pager: \"{0}\", ", pager) + "\r\n";
+            script += string.Format("datatype: {0},", _dataType) + "\r\n";
+            script += string.Format("colModel: {0},", _cols) + "\r\n";
+            script += string.Format("pager: \"{0}\", ", _pager) + "\r\n";
 			//script += string.Format("loadtext: '{0}',", loadtext) + "\r\n";
 			//script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
 			//script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
@@ -104,28 +149,36 @@ namespace Hexa.Core.Web.UI.Ajax
             script += string.Format("rowNum: \"{0}\",", rowNum.ToString()) + "\r\n";
 			//script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
-            script += string.Format("multiselect: {0}, ", multiselect.ToString().ToLower()) + "\r\n";
+            script += string.Format("multiselect: {0}, ", _multiSelect) + "\r\n";
             script += string.Format("sortname: \"{0}\", ", sortname) + "\r\n";
             script += string.Format("sortorder: \"{0}\", ", sortorder) + "\r\n";
 
-			if (!string.IsNullOrEmpty(onSelect))
-				script += string.Format("onSelectRow: {0}, ", onSelect) + "\r\n";
+			if (!string.IsNullOrEmpty(_onSelect))
+				script += string.Format("onSelectRow: {0}, ", _onSelect) + "\r\n";
 
-			if (!string.IsNullOrEmpty(gridComplete))
-				script += string.Format("gridComplete: {0}, ", gridComplete) + "\r\n";
+			if (!string.IsNullOrEmpty(_onComplete))
+				script += string.Format("gridComplete: {0}, ", _onComplete) + "\r\n";
 
-            if (!string.IsNullOrEmpty(width))
-                script += string.Format("width: \"{0}\",", width) + "\r\n";
+            if (!string.IsNullOrEmpty(_width))
+                script += string.Format("width: \"{0}\",", _width) + "\r\n";
             else
                 script += "autowidth: true," + "\r\n";
 
 			script += "hidegrid: false," + "\r\n"; // Cant hide grids.
 
-            script += string.Format("height: \"{0}\",", height) + "\r\n";
-            script += string.Format("caption: \"{0}\"", caption) + "\r\n";
+            var closeOnEscape = true;
+            var closeAfterSearch = true;
+
+            var searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
+                closeOnEscape.ToString().ToLower(),
+                _multiSearch,
+                closeAfterSearch.ToString().ToLower());
+
+            script += string.Format("height: \"{0}\",", _height) + "\r\n";
+            script += string.Format("caption: \"{0}\"", _caption) + "\r\n";
             script += "})" + "\r\n";
-			script += string.Format(".navGrid(\"{0}\",", pager);
-			script += "{edit:false, add:false, search:true, del:false}, {}, {}, {}, {}, {});";
+			script += string.Format(".navGrid(\"{0}\",", _pager);
+            script += "{edit:false, add:false, search:true, del:false}, {}, {}, {}, {" + searhBoxOptions + "}, {});";
 
             #endregion
 
@@ -133,72 +186,100 @@ namespace Hexa.Core.Web.UI.Ajax
         }
     }
 
-    public class JQGridData
+    public class jqGridData
     {
-        List<JQGridItem> _rows;
+        List<jqGridItem> _rows;
         int _totalRecords;
         int _pageIndex;
         int _pageSize;
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-		public JQGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
+		public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
         {
-            _rows = new List<JQGridItem>();
+            _rows = new List<jqGridItem>();
             _totalRecords = totalRecords;
             _pageIndex = pageIndex;
             _pageSize = pageSize;
 
             foreach (var row in rows)
-                _rows.Add(new JQGridItem(row.Key, row.Value));
+                _rows.Add(new jqGridItem(row.Key, row.Value));
         }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "total")]
 		public int total { get { return (int)Math.Ceiling((decimal)_totalRecords / (decimal)_pageSize); } }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "page")]
 		public int page { get { return _pageIndex; } }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "records")]
 		public int records { get { return _totalRecords; } }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "rows")]
 		public IEnumerable rows { get { return _rows; } }
     }
 
-    public class JQGridItem
+    public class jqGridItem
     {
         #region Properties
 
         /// <summary>
         /// RowId de la fila.
         /// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "id")]
 		public string id { get; protected set; }
         /// <summary>
         /// Fila del JQGrid.
         /// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "cell"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 		public IList<string> cell { get; protected set; }
 
         #endregion
 
-        #region Active Attributes
-
         /// <summary>
         /// Contructor.
         /// </summary>
-        public JQGridItem(string id, IList<string> values)
+        public jqGridItem(string id, IList<string> values)
         {
             this.id = id;
 			cell = values;
         }
 
-        #endregion
     }
 
-    public static class JQGridSearchHelper
+    [DataContract]
+    public class jqFilter
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        [DataMember]
+        public string groupOp { get; set; }
+        [DataMember]
+        public jqRule[] rules { get; set; }
+
+        internal static jqFilter Create(string jsonData)
+        {
+            try
+            {
+                var serializer =
+                  new DataContractJsonSerializer(typeof(jqFilter));
+                System.IO.StringReader reader =
+                  new System.IO.StringReader(jsonData);
+                System.IO.MemoryStream ms =
+                  new System.IO.MemoryStream(
+                  Encoding.Default.GetBytes(jsonData));
+                return serializer.ReadObject(ms) as jqFilter;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+
+    [DataContract]
+    public class jqRule
+    {
+        [DataMember]
+        public string field { get; set; }
+        [DataMember]
+        public string op { get; set; }
+        [DataMember]
+        public string data { get; set; }
+    }
+
+    public static class jqGridSearchHelper
+    {
         static Dictionary<string, string> _linqOperations = new Dictionary<string, string> {
             {"eq","=="}, //equal
             {"ne","!="},//not equal
@@ -216,7 +297,6 @@ namespace Hexa.Core.Web.UI.Ajax
             {"nc","!{0}.Contains({1})"}  //doesn"t contain
         };
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)")]
         public static string ToLinq(string operation, string column, string value)
         {
             column += ".ToString()";
@@ -233,5 +313,105 @@ namespace Hexa.Core.Web.UI.Ajax
             }
         }
 
+        public static jqFilter DeserializeFilters(string filters)
+        {
+            return jqFilter.Create(filters);
+        }
+
+    }
+
+    public static class LinqExtensions
+    {
+        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
+        {
+            return query.AndAlso(_CreateSpecification<T>(column, value, operation));
+        }
+
+        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
+        {
+            return query.OrElse(_CreateSpecification<T>(column, value, operation));
+        }
+
+        private static ISpecification<T> _CreateSpecification<T>(string column, object value, string operation) where T : class
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
+
+            MemberExpression memberAccess = _GetMemberAccess(column, parameter);
+
+            if (memberAccess.Type == typeof(DateTime))
+            {
+                column += ".Date";
+                memberAccess = _GetMemberAccess(column, parameter);
+            }
+
+            //change param value type
+            //necessary to getting bool from string
+            ConstantExpression filter = Expression.Constant
+                (
+                    Convert.ChangeType(value, memberAccess.Type)
+                );
+
+            Expression condition = null;
+            LambdaExpression lambda = null;
+            switch (operation)
+            {
+                //equal ==
+                case "eq":
+                    condition = Expression.Equal(memberAccess, filter);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                //not equal !=
+                case "new":
+                    condition = Expression.NotEqual(memberAccess, filter);
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                //string.Contains()
+                case "cn":
+                case "bw":
+                    condition = Expression.Call(memberAccess,
+                        typeof(string).GetMethod("Contains"),
+                        Expression.Constant(value));
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "gt":
+                    condition = Expression.GreaterThan(memberAccess, filter);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "ge":
+                    condition = Expression.GreaterThanOrEqual(memberAccess, filter);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "lt":
+                    condition = Expression.LessThan(memberAccess, filter);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "le":
+                    condition = Expression.LessThanOrEqual(memberAccess, filter);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("operation");
+            }
+
+            var hLambda = Expression<Func<T, bool>>.Lambda<Func<T, bool>>(condition, parameter);
+
+            return new DirectSpecification<T>(hLambda);
+        }
+
+        private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
+        {
+            MemberExpression memberAccess = null;
+            foreach (var property in column.Split('.'))
+            {
+                memberAccess = MemberExpression.Property
+                   (memberAccess ?? (parameter as Expression), property);
+            }
+            return memberAccess;
+        }
     }
 }
