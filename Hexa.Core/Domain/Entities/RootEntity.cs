@@ -17,9 +17,11 @@
 
 #endregion
 
+using System;
 
 namespace Hexa.Core.Domain
 {
+	[Serializable]
     public abstract class RootEntity<TEntity> : BaseEntityWithUniqueId<TEntity>
     {
         /// <summary>

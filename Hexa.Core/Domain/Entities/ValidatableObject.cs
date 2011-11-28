@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Hexa.Core.Validation;
 
 namespace Hexa.Core.Domain
 {
+	[Serializable]
     public abstract class ValidatableObject : IValidatable
     {
 

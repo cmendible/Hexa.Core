@@ -21,6 +21,7 @@ using System;
 
 namespace Hexa.Core.Domain
 {
+	[Serializable]
     public abstract class AuditableRootEntity<TEntity> : RootEntity<TEntity>, IAuditableEntity
     {
         /// <summary>
