@@ -181,7 +181,7 @@ namespace Hexa.Core.Domain
             if (!dbManager.DatabaseExists())
             {
                 dbManager.CreateDatabase();
-                new SchemaExport(_builtConfiguration).Create(true, true);
+                new SchemaExport(_builtConfiguration).Create(false, true);
             }
         }
 
