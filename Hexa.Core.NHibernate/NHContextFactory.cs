@@ -27,6 +27,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
+using System.Data.SqlClient;
 
 namespace Hexa.Core.Domain
 {
@@ -182,6 +183,27 @@ namespace Hexa.Core.Domain
             {
                 dbManager.CreateDatabase();
                 new SchemaExport(_builtConfiguration).Create(false, true);
+
+                if (_DbProvider == DbProvider.MsSqlProvider)
+                {
+                    using (var conn = new SqlConnection(_connectionString))
+                    {
+                        try
+                        {
+                            conn.Open();
+                            using (var cmd = conn.CreateCommand())
+                            {
+                                cmd.CommandText = "RENAME_UNIQUE_KEYS";
+                                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        finally
+                        {
+                            conn.Close();
+                        }
+                    }
+                }
             }
         }
 
