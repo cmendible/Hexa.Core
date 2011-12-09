@@ -40,7 +40,10 @@
       FETCH NEXT FROM uq_cursor INTO @old, @TABLE, @COLUMN
       END
       --print @this_old + ' - ' + @current
+      IF (@current IS NOT NULL AND @current &lt;> '')
+      BEGIN
       EXEC sp_rename @this_old, @current, 'OBJECT'
+      END
       CLOSE uq_cursor
       DEALLOCATE uq_cursor
 
