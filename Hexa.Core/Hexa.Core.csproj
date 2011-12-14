@@ -217,6 +217,7 @@
     <Compile Include="Domain\Specification\TrueSpecification.cs" />
     <Compile Include="Domain\UnitOfWorkContext.cs" />
     <Compile Include="Encoding\HexEncodingHelper.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Globalization\Gettext.cs" />
     <Compile Include="Globalization\GettextHelper.cs" />
@@ -227,7 +228,6 @@
     <Compile Include="Linq\PagingExtensions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Log4NetLoggerFactory.cs" />
-    <Compile Include="ObjectHelpers\ObjectCloner.cs" />
     <Compile Include="Resources\Resource.es.Designer.cs">
       <DependentUpon>Resource.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
