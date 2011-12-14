@@ -17,15 +17,16 @@
 
 #endregion
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Hexa.Core.Validation
 {
+	[Serializable]
     public class DataAnnotationsValidator : IValidator
     {
-
         public bool IsValid(object instance)
         {
             return Validate(instance).IsValid;
