@@ -219,6 +219,7 @@
     <Compile Include="Encoding\HexEncodingHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Globalization\Gettext.cs" />
     <Compile Include="Globalization\GettextHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />

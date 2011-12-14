@@ -20,6 +20,8 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Hexa.Core.Domain;
+using System.Reflection;
 
 namespace System
 {
@@ -48,5 +50,23 @@ namespace System
                 return (T)formatter.Deserialize(stream);
             }
         }
+
+        public static T MakeTransient<T>(this T source)
+        {
+            var cloned = source.DeepClone();
+            var sourceType = typeof(T);
+
+            if (sourceType.IsSubclassOfGeneric(typeof(BaseEntity<>)))
+            {
+                var entityId = sourceType.GetProperty("EntityId", BindingFlags.Instance | BindingFlags.NonPublic);
+                object defaultValue = entityId.PropertyType.IsValueType ? Activator.CreateInstance(entityId.PropertyType, true) : null;
+                entityId.SetValue(cloned, defaultValue, null);
+
+                return cloned;
+            }
+
+            return cloned;
+        }
+       
 	}
 }
