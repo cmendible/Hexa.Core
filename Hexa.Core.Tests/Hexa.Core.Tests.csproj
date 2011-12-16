@@ -164,6 +164,7 @@
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
+    <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />

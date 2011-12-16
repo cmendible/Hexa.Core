@@ -9,7 +9,7 @@ namespace System.Reflection
     {
         public static bool IsSubclassOfGeneric(this Type source, Type generic)
         {
-            while (source != typeof(object))
+            while (source != null && source != typeof(object))
             {
                 var cur = source.IsGenericType ? source.GetGenericTypeDefinition() : source;
                 if (generic == cur)

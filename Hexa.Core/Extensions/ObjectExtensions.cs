@@ -18,6 +18,8 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Hexa.Core.Domain;
@@ -53,19 +55,84 @@ namespace System
 
         public static T MakeTransient<T>(this T source)
         {
-            var cloned = source.DeepClone();
             var sourceType = typeof(T);
+            var baseEntityType = typeof(BaseEntity<>);
 
-            if (sourceType.IsSubclassOfGeneric(typeof(BaseEntity<>)))
+            if (sourceType.IsSubclassOfGeneric(baseEntityType))
             {
-                var entityId = sourceType.GetProperty("EntityId", BindingFlags.Instance | BindingFlags.NonPublic);
-                object defaultValue = entityId.PropertyType.IsValueType ? Activator.CreateInstance(entityId.PropertyType, true) : null;
-                entityId.SetValue(cloned, defaultValue, null);
+                var referenceInfos = sourceType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.PropertyType.IsSubclassOfGeneric(baseEntityType));
+                foreach (var referenceInfo in referenceInfos)
+                {
+                    MakeTransient(referenceInfo.GetValue(source, null));   
+                }
 
-                return cloned;
+                var collectionInfos = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.PropertyType.GetInterface(typeof(IEnumerable).Name, true) != null && !_IsPrimitive(p.PropertyType));
+
+                foreach (var collectionInfo in collectionInfos)
+                {
+                    var collection = collectionInfo.GetValue(source, null) as IEnumerable;
+                    foreach (var item in collection)
+                    {
+                        MakeTransient(item);
+                    }
+                }
+
+                _InternalMakeTransient(source);
+
+                return source;
             }
 
-            return cloned;
+            return source;
+        }
+
+        private static void _InternalMakeTransient<T>(T source)
+        {
+            var sourceType = typeof(T);
+            var entityId = sourceType.GetProperty("EntityId", BindingFlags.Instance | BindingFlags.NonPublic);
+            object defaultValue = entityId.PropertyType.IsValueType ? Activator.CreateInstance(entityId.PropertyType, true) : null;
+            entityId.SetValue(source, defaultValue, null);
+
+            if (sourceType.IsSubclassOfGeneric(typeof(RootEntity<>)))
+            {
+                var version = sourceType.GetProperty("Version", BindingFlags.Instance | BindingFlags.Public);
+                version.SetValue(source, null, null);
+            }
+
+            var auditableInfo = sourceType.GetInterface(typeof(IAuditableEntity).Name, true);
+            if (auditableInfo != null)
+            {
+                var auditable = source as IAuditableEntity;
+                auditable.UpdatedAt = default(DateTime);
+                auditable.UpdatedBy = null;
+
+                var createdAt = sourceType.GetProperty("CreatedAt", BindingFlags.Instance | BindingFlags.Public);
+                createdAt.SetValue(source, default(DateTime), null);
+
+                var createdBy = sourceType.GetProperty("CreatedBy", BindingFlags.Instance | BindingFlags.Public);
+                createdAt.SetValue(source, null, null);
+            }
+        }
+
+        private static bool _IsPrimitive(Type t)
+        {
+            if (t.IsPrimitive)
+                return true;
+
+            // TODO: put any type here that you consider as primitive as I didn't
+            // quite understand what your definition of primitive type is
+            return new[] { 
+                typeof(string), 
+                typeof(ushort),
+                typeof(short),
+                typeof(uint),
+                typeof(int),
+                typeof(ulong),
+                typeof(long),
+                typeof(float),
+                typeof(decimal),
+                typeof(DateTime),
+            }.Contains(t);
         }
        
 	}

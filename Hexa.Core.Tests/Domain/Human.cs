@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Hexa.Core.Domain;
 
 namespace Hexa.Core.Tests.Domain
 {
+    [Serializable]
     public class Human : AuditableRootEntity<Human>
     {
         [Required]
