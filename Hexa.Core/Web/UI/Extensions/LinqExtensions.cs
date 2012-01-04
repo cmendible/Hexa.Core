@@ -18,15 +18,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Caching;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Linq;
-using System.Globalization;
-using System.Reflection;
-
 using log4net;
 
 namespace Hexa.Core.Web.UI

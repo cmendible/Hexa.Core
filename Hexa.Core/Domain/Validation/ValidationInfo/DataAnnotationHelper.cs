@@ -18,10 +18,10 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq;
 
 namespace Hexa.Core.Validation
 {

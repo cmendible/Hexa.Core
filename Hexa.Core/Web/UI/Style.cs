@@ -2,12 +2,12 @@
 // see: http://stackoverflow.com/questions/328763/how-to-take-control-of-style-sheets-in-asp-net-themes-with-the-styleplaceholder-a
 
 
-using System.ComponentModel;
-using System.Web.UI;
 using System;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 //<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
 //<cc2:Styles runat="server">

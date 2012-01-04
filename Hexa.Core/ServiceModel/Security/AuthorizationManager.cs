@@ -19,7 +19,6 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.ServiceModel;
-using Hexa.Core.ServiceModel;
 using log4net;
 
 namespace Hexa.Core.ServiceModel.Security

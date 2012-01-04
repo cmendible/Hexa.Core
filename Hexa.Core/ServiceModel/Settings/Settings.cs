@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Configuration;
-
-using Hexa.Core.ServiceModel.Security;
 using System.ComponentModel;
+using System.Configuration;
+using Hexa.Core.ServiceModel.Security;
 
 namespace Hexa.Core.ServiceModel
 {

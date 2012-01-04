@@ -17,13 +17,12 @@
 
 #endregion
 
-using System;
 using System.Collections;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Hexa.Core.Domain;
-using System.Reflection;
 
 namespace System
 {

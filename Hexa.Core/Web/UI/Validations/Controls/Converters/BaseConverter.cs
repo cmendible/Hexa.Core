@@ -17,7 +17,6 @@
 
 #endregion
 
-using System.Reflection;
 using System.Web.UI.WebControls;
 
 using Hexa.Core.Validation;

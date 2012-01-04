@@ -18,11 +18,9 @@
 #endregion
 
 using System;
-using System.Reflection;
 using System.Web.UI.WebControls;
 
 using Hexa.Core.Validation;
-using Hexa.Core.Web.UI.Controls;
 
 namespace Hexa.Core.Web.UI.Controls
 {

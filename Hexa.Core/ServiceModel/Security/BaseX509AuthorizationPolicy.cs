@@ -4,7 +4,6 @@ using System.IdentityModel.Policy;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
-using Hexa.Core.ServiceModel;
 using log4net;
 
 namespace Hexa.Core.ServiceModel.Security

@@ -24,7 +24,6 @@ using System.ServiceModel;
 #endregion
 
 using System.ServiceModel.Activation;
-using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using Hexa.Core.Security;
 using log4net;
