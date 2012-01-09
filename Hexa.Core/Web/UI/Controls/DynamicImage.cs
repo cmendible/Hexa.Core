@@ -105,6 +105,7 @@ namespace Hexa.Core.Web.UI.Controls
 				Page.Cache.Remove(StorageKey);
 				ViewState["StorageKey"] = null;
 				_imageBytes = value;
+				this.Visible = true;
 			}
 		}
 
