@@ -322,15 +322,15 @@ namespace Hexa.Core.Web.UI.Ajax
     {
         public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
         {
-            return query.AndAlso(_CreateSpecification<T>(column, value, operation));
+            return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
         public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
         {
-            return query.OrElse(_CreateSpecification<T>(column, value, operation));
+            return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
-        private static ISpecification<T> _CreateSpecification<T>(string column, object value, string operation) where T : class
+        public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation) where T : class
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
