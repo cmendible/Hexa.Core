@@ -366,10 +366,41 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 //string.Contains()
                 case "cn":
+                    condition = Expression.Call(memberAccess,
+                        typeof(String).GetMethod("Contains"),
+                        Expression.Constant(value));
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
                 case "bw":
                     condition = Expression.Call(memberAccess,
-                        typeof(string).GetMethod("Contains"),
+                        typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
                         Expression.Constant(value));
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "bn":
+                    condition = Expression.Call(memberAccess,
+                        typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
+                        Expression.Constant(value));
+
+                    condition = Expression.Not(condition);
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "ew":
+                    condition = Expression.Call(memberAccess,
+                        typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
+                        Expression.Constant(value));
+
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "en":
+                    condition = Expression.Call(memberAccess,
+                        typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
+                        Expression.Constant(value));
+
+                    condition = Expression.Not(condition);
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
@@ -395,12 +426,13 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 case "nc":
                     condition = Expression.Call(memberAccess,
-                        typeof(string).GetMethod("Contains"),
+                        typeof(String).GetMethod("Contains"),
                         Expression.Constant(value));
 
                     condition = Expression.Not(condition);
                     
                     lambda = Expression.Lambda(condition, parameter);
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("operation");
