@@ -1,0 +1,5 @@
+# git ignore file
+obj/
+bin/
+*.suo
+Hexa.Core.xml

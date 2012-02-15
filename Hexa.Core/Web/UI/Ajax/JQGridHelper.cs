@@ -360,7 +360,7 @@ namespace Hexa.Core.Web.UI.Ajax
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 //not equal !=
-                case "new":
+                case "ne":
                     condition = Expression.NotEqual(memberAccess, filter);
                     lambda = Expression.Lambda(condition, parameter);
                     break;
@@ -370,6 +370,7 @@ namespace Hexa.Core.Web.UI.Ajax
                     condition = Expression.Call(memberAccess,
                         typeof(string).GetMethod("Contains"),
                         Expression.Constant(value));
+
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "gt":
@@ -390,6 +391,15 @@ namespace Hexa.Core.Web.UI.Ajax
                 case "le":
                     condition = Expression.LessThanOrEqual(memberAccess, filter);
 
+                    lambda = Expression.Lambda(condition, parameter);
+                    break;
+                case "nc":
+                    condition = Expression.Call(memberAccess,
+                        typeof(string).GetMethod("Contains"),
+                        Expression.Constant(value));
+
+                    condition = Expression.Not(condition);
+                    
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 default:
