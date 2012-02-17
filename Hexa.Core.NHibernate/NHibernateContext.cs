@@ -38,7 +38,14 @@ namespace Hexa.Core.Domain
 
         public void Commit()
         {
-            _session.Transaction.Commit();
+            try
+            {
+                _session.Transaction.Commit();
+            }
+            catch (StaleObjectStateException ex)
+            {
+                throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
+            }
         }
 
         public void CommitAndRefreshChanges()

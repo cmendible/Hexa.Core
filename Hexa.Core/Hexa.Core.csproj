@@ -191,6 +191,7 @@
     <Compile Include="Domain\MemorySet.cs" />
     <Compile Include="Domain\Services\IAuditableEntityLogger.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
+    <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="Exceptions\InternalException.cs" />
     <Compile Include="Domain\BaseRepository.cs" />
