@@ -115,7 +115,7 @@ namespace Hexa.Core.Web.UI
 				sb.Append("\r\n").Append(exception.StackTrace);
 			}
 
-			if (exception.GetType() == typeof(Validation.ValidationException))
+			if (exception is Validation.ValidationException)
                 AddInvalidValidator(((Validation.ValidationException)exception).ValidationErrors.Select(e => e.Message));
 			else
 				AddInvalidValidator(new string[] { exception.Message });
