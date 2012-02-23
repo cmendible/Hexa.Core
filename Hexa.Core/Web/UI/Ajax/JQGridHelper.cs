@@ -46,6 +46,10 @@ namespace Hexa.Core.Web.UI.Ajax
         private string _multiSelect = "false";
         private string _multiSearch = "false";
 
+        private string _sortOrder = string.Empty;
+        private string _sortColumn = string.Empty;
+        private string _firstSortOrder = "asc";
+
         private jqGridHelper(string gridName)
         {
             _gridName = gridName;
@@ -59,6 +63,24 @@ namespace Hexa.Core.Web.UI.Ajax
         public jqGridHelper Caption(string caption)
         {
             _caption = caption;
+            return this;
+        }
+
+        public jqGridHelper SortOrder(string sortOrder)
+        {
+            _sortOrder = sortOrder;
+            return this;
+        }
+
+        public jqGridHelper SortColumn(string sortColumn)
+        {
+            _sortColumn = sortColumn;
+            return this;
+        }
+
+        public jqGridHelper FirstSortOrder(string firstSortOrder)
+        {
+            _firstSortOrder = firstSortOrder;
             return this;
         }
 
@@ -130,9 +152,6 @@ namespace Hexa.Core.Web.UI.Ajax
             int rowNum = 10; // PageSize.
             int[] rowList = new int[] { 10, 20, 30 }; //Variable PageSize DropDownList. 
 
-            string sortname = string.Empty; //Default SortColumn
-            string sortorder = "asc"; //Default SortOrder.
-
             #region script
 
             string script = string.Format("$(\"{0}\").jqGrid(", _gridName) + "\r\n";
@@ -148,8 +167,6 @@ namespace Hexa.Core.Web.UI.Ajax
 			//script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
             script += string.Format("multiselect: {0}, ", _multiSelect) + "\r\n";
-            script += string.Format("sortname: \"{0}\", ", sortname) + "\r\n";
-            script += string.Format("sortorder: \"{0}\", ", sortorder) + "\r\n";
 
 			if (!string.IsNullOrEmpty(_onSelect))
 				script += string.Format("onSelectRow: {0}, ", _onSelect) + "\r\n";
@@ -172,8 +189,20 @@ namespace Hexa.Core.Web.UI.Ajax
                 _multiSearch,
                 closeAfterSearch.ToString().ToLower());
 
+            if (!string.IsNullOrEmpty(_sortColumn))
+            {
+                script += string.Format("sortname: \"{0}\",", _sortColumn) + "\r\n";
+
+                if (!string.IsNullOrEmpty(_sortOrder))
+                    script += string.Format("sortorder: \"{0}\",", _sortOrder) + "\r\n";
+            }
+
+            if (!string.IsNullOrEmpty(_firstSortOrder))
+                script += string.Format("firstsortorder: \"{0}\",", _firstSortOrder) + "\r\n";
+
             script += string.Format("height: \"{0}\",", _height) + "\r\n";
             script += string.Format("caption: \"{0}\"", _caption) + "\r\n";
+
             script += "})" + "\r\n";
 			script += string.Format(".navGrid(\"{0}\",", _pager);
             script += "{edit:false, add:false, search:true, del:false}, {}, {}, {}, {" + searhBoxOptions + "}, {});";
