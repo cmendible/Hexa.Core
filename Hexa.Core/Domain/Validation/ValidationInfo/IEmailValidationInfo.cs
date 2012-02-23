@@ -51,16 +51,16 @@ namespace Hexa.Core.Validation
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="error">The error.</param>
 		public EmailValidationInfo(string propertyName, string error)
-			: base(propertyName, DefaultMessage(propertyName, error), EMAILREGEX)
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error), EMAILREGEX)
 		{
 		}
 
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-		private static string DefaultMessage(string propertyName, string error)
+        private static string DefaultMessage<TEntity>(string propertyName, string error)
 		{
 			if (string.IsNullOrEmpty(error))
-				return string.Format(Hexa.Core.Resources.Resource.ValueIsNotAnEmail, propertyName);
+                return string.Format(Hexa.Core.Resources.Resource.ValueIsNotAnEmail, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
 			else
 				return error;
 		}

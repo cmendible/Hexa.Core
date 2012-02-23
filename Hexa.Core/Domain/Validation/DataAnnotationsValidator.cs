@@ -46,12 +46,14 @@ namespace Hexa.Core.Validation
             var errors = from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
                 from attribute in prop.Attributes.OfType<ValidationAttribute>()
                 where !attribute.IsValid(prop.GetValue(instance))
-                select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), prop.Name);
+                select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
                 return new ValidationResult(errors.Cast<IValidationError>());
             else
                 return new ValidationResult();
         }
+
+        
     }
 }

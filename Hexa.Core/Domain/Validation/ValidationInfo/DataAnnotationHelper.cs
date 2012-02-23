@@ -17,11 +17,13 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using GNU.Gettext;
 
 namespace Hexa.Core.Validation
 {
@@ -68,27 +70,42 @@ namespace Hexa.Core.Validation
 			if (att.GetType() == typeof(RequiredAttribute))
 			{
 				RequiredAttribute reqAtt = att as RequiredAttribute;
-				return new RequiredValidationInfo<TEntity>(prop.Name, reqAtt.ErrorMessage);
+                return new RequiredValidationInfo<TEntity>(prop.Name, reqAtt.ErrorMessage);
 			}
 			else if (att.GetType() == typeof(RegularExpressionAttribute))
 			{
 				RegularExpressionAttribute regAtt = att as RegularExpressionAttribute;
-				return new RegexValidationInfo<TEntity>(prop.Name, regAtt.ErrorMessage, regAtt.Pattern);
+                return new RegexValidationInfo<TEntity>(prop.Name, regAtt.ErrorMessage, regAtt.Pattern);
 			}
 			if (att.GetType() == typeof(RangeAttribute))
 			{
 				RangeAttribute rangeAtt = att as RangeAttribute;
-				return new RangeValidationInfo<TEntity>(prop.Name, rangeAtt.ErrorMessage, rangeAtt.Minimum, rangeAtt.Maximum);
+                return new RangeValidationInfo<TEntity>(prop.Name, rangeAtt.ErrorMessage, rangeAtt.Minimum, rangeAtt.Maximum);
 			}
 			if (att.GetType() == typeof(StringLengthAttribute))
 			{
 				StringLengthAttribute lengthAtt = att as StringLengthAttribute;
-				return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage, 
+                return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage, 
 					string.Format(CultureInfo.InvariantCulture,"{0}{1}{2}", "^[\\s\\S]{0,", 
 					lengthAtt.MaximumLength.ToString(CultureInfo.InvariantCulture), "}$"));
 			}
 
 			return null;
 		}
+
+        public static string ParseDisplayName(Type entityType, string propertyName)
+        {
+            var displayName = propertyName;
+
+            var displayAttribute = TypeDescriptor.GetProperties(entityType)
+                 .Cast<PropertyDescriptor>()
+                 .Where(p => p.Name == propertyName)
+                 .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
+
+            if (displayAttribute != null)
+                displayName = displayAttribute.Name;
+
+            return GettextHelper.t(displayName, entityType.Assembly);
+        }
 	}
 }

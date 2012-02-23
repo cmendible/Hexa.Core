@@ -57,7 +57,7 @@ namespace Hexa.Core.Validation
 		/// <param name="error">The error.</param>
 		/// <param name="expression">The expression.</param>
 		public RegexValidationInfo(string propertyName, string error, string expression)
-			: base(propertyName, DefaultMessage(propertyName, error))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
 		{
 			this.expression = expression;
 		}
@@ -72,10 +72,10 @@ namespace Hexa.Core.Validation
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-		private static string DefaultMessage(string propertyName, string error)
+        private static string DefaultMessage<TEntity>(string propertyName, string error)
 		{
 			if (string.IsNullOrEmpty(error))
-				return string.Format(Hexa.Core.Resources.Resource.ValueIsNotCorrectlyFormatted, propertyName);
+                return string.Format(Hexa.Core.Resources.Resource.ValueIsNotCorrectlyFormatted, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
 			else
 				return error;
 		}

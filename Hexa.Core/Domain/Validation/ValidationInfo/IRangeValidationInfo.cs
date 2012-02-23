@@ -55,7 +55,7 @@ namespace Hexa.Core.Validation
 		/// <param name="minimum">The minimum.</param>
 		/// <param name="maximum">The maximum.</param>
 		public RangeValidationInfo(string propertyName, string error, object minimum, object maximum)
-			: base(propertyName, DefaultMessage(propertyName, error, minimum.ToString(), maximum.ToString()))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
 		{
 			this.minimum = minimum as IComparable;
 			this.maximum = maximum as IComparable;
@@ -70,7 +70,7 @@ namespace Hexa.Core.Validation
 		/// <param name="maximum">The maximum.</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Int32.ToString")]
 		public RangeValidationInfo(string propertyName, string error, int minimum, int maximum)
-			: base(propertyName, DefaultMessage(propertyName, error, minimum.ToString(), maximum.ToString()))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
 		{
 			this.minimum = minimum;
 			this.maximum = maximum;
@@ -85,7 +85,7 @@ namespace Hexa.Core.Validation
 		/// <param name="maximum">The maximum.</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Double.ToString")]
 		public RangeValidationInfo(string propertyName, string error, double minimum, double maximum)
-			: base(propertyName, DefaultMessage(propertyName, error, minimum.ToString(), maximum.ToString()))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
 		{
 			this.minimum = minimum;
 			this.maximum = maximum;
@@ -99,7 +99,7 @@ namespace Hexa.Core.Validation
 		/// <param name="minimum">The minimum.</param>
 		/// <param name="maximum">The maximum.</param>
 		public RangeValidationInfo(string propertyName, string error, DateTime minimum, DateTime maximum)
-			: base(propertyName, DefaultMessage(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
 		{
 			this.minimum = minimum;
 			this.maximum = maximum;
@@ -113,7 +113,7 @@ namespace Hexa.Core.Validation
 		/// <param name="minimum">The minimum.</param>
 		/// <param name="maximum">The maximum.</param>
 		public RangeValidationInfo(string propertyName, string error, string minimum, string maximum)
-			: base(propertyName, DefaultMessage(propertyName, error, minimum.ToString(), maximum.ToString()))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
 		{
 			this.minimum = minimum;
 			this.maximum = maximum;
@@ -138,10 +138,10 @@ namespace Hexa.Core.Validation
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)")]
-		private static string DefaultMessage(string propertyName, string error, string minimum, string maximum)
+        private static string DefaultMessage<TEntity>(string propertyName, string error, string minimum, string maximum)
 		{
 			if (string.IsNullOrEmpty(error))
-				return string.Format(Hexa.Core.Resources.Resource.ValueMustBeBetween1And2, propertyName, minimum, maximum);
+    			return string.Format(Hexa.Core.Resources.Resource.ValueMustBeBetween1And2, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName), minimum, maximum);
 			else
 				return error;
 		}
