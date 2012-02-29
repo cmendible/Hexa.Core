@@ -18,9 +18,8 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-
+using System.Linq;
 using NHibernate.Event;
 using NHibernate.Event.Default;
 using NHibernate.Persister.Entity;
@@ -38,12 +37,17 @@ namespace Hexa.Core.Domain
 
             var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
 
-            Set(e.Persister, e.State, "CreatedBy", name);
-            Set(e.Persister, e.State, "UpdatedBy", name);
-            Set(e.Persister, e.State, "UpdatedAt", DateTime.UtcNow);
+            var date = DateTime.UtcNow;
+
+            _Set(e.Persister, e.State, "CreatedBy", name);
+            _Set(e.Persister, e.State, "UpdatedBy", name);
+            _Set(e.Persister, e.State, "CreatedAt", date);
+            _Set(e.Persister, e.State, "UpdatedAt", date);
 
             auditable.CreatedBy = name;
             auditable.UpdatedBy = name;
+            auditable.CreatedAt = date;
+            auditable.UpdatedAt = date;
 
             return false;
         }
@@ -72,15 +76,15 @@ namespace Hexa.Core.Domain
             var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
             var date = DateTime.UtcNow; 
 
-            Set(e.Persister, e.State, "UpdatedBy", name);
-            Set(e.Persister, e.State, "UpdatedAt", date);
+            _Set(e.Persister, e.State, "UpdatedBy", name);
+            _Set(e.Persister, e.State, "UpdatedAt", date);
             auditable.UpdatedBy = name;
             auditable.UpdatedAt = date;
 
             return false;
         }
 
-        private void Set(IEntityPersister persister, object[] state, string propertyName, object value)
+        private void _Set(IEntityPersister persister, object[] state, string propertyName, object value)
         {
             var index = Array.IndexOf(persister.PropertyNames, propertyName);
             if (index == -1)
@@ -100,10 +104,10 @@ namespace Hexa.Core.Domain
                 //IAuditableEntity is my inteface for audited entities
                 e.Entity is IAuditableEntity)
                 e.DirtyProperties = e.DirtyProperties
-                 .Concat(GetAdditionalDirtyProperties(e)).ToArray();
+                 .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
         }
 
-        static IEnumerable<int> GetAdditionalDirtyProperties(FlushEntityEvent @event)
+        private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)
         {
             yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
                                        "UpdatedAt");
@@ -111,8 +115,8 @@ namespace Hexa.Core.Domain
                                        "UpdatedBy");
             yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
                                        "CreatedBy");
-            //You can add any additional properties here.
-            //Some of my entities do not track the user, for example.
+            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
+                                       "CreatedAt");
         }
     }
 }

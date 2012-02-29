@@ -121,6 +121,7 @@
     <Compile Include="Mappings\BaseClassMap.cs" />
     <Compile Include="Mappings\AuditableRootEntityMap.cs" />
     <Compile Include="Mappings\EntityMap.cs" />
+    <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="Mappings\RootEntityMap.cs" />
     <Compile Include="NHContextFactory.cs" />
     <Compile Include="NHibernateContext.cs" />

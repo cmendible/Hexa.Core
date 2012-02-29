@@ -3,3 +3,4 @@ obj/
 bin/
 *.suo
 Hexa.Core.xml
+TestResults.xml

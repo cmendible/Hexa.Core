@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Cfg;
@@ -27,7 +28,6 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
-using System.Data.SqlClient;
 
 namespace Hexa.Core.Domain
 {

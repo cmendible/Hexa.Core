@@ -17,10 +17,6 @@
 
 #endregion
 
-using System;
-using System.Linq.Expressions;
-using FluentNHibernate.Mapping;
-using NHibernate.Dialect;
 
 namespace Hexa.Core.Domain
 {
@@ -30,40 +26,18 @@ namespace Hexa.Core.Domain
         public AuditableRootEntityMap()
 			: base()
 		{
-            MapTimePart(x => x.CreatedAt)
-				.Generated.Insert();
+            Map(x => x.CreatedAt)
+                .Not.Nullable();
 
-            Map(x => x.UpdatedAt);
+            Map(x => x.UpdatedAt)
+                .Not.Nullable();
 
             Map(x => x.CreatedBy);
 
             Map(x => x.UpdatedBy);
 		}
 
-        private PropertyPart MapTimePart(Expression<Func<TEntity, object>> expression)
-        {
-            var tmp = Map(expression);
-
-            if (Dialect is MsSql2005Dialect)
-                tmp.Default("GETUTCDATE()");
-
-            if (Dialect is MsSql2008Dialect)
-                tmp.Default("GETUTCDATE()");
-
-            if (Dialect is Oracle10gDialect)
-                tmp.Default("SYSTIMESTAMP AT TIME ZONE 'UTC'");
-
-            if (Dialect is SQLiteDialect)
-                tmp.Default("(datetime('now'))");
-				
-			if (Dialect is FirebirdDialect)
-                tmp.Default("current_date");
-			
-			if (Dialect is PostgreSQLDialect)
-                tmp.Default("current_timestamp");
-
-            return tmp;
-        }
+        
         
 	}
 }
