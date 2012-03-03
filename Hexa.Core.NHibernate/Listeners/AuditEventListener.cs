@@ -37,7 +37,7 @@ namespace Hexa.Core.Domain
 
             var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
 
-            var date = DateTime.UtcNow;
+            var date = DateTime.Now;
 
             _Set(e.Persister, e.State, "CreatedBy", name);
             _Set(e.Persister, e.State, "UpdatedBy", name);
@@ -74,7 +74,7 @@ namespace Hexa.Core.Domain
             }
 
             var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
-            var date = DateTime.UtcNow; 
+            var date = DateTime.Now; 
 
             _Set(e.Persister, e.State, "UpdatedBy", name);
             _Set(e.Persister, e.State, "UpdatedAt", date);
