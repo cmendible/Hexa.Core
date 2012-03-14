@@ -14,9 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-
 using Hexa.Core.Domain.Specification;
-using Hexa.Core.Logging;
 
 namespace Hexa.Core.Domain
 {

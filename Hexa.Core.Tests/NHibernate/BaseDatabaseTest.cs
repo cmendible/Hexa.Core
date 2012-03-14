@@ -2,7 +2,7 @@
 using System.Linq;
 using Hexa.Core.Database;
 using Hexa.Core.Domain;
-using Hexa.Core.Logging;
+using Hexa.Core;
 using Hexa.Core.Tests.Data;
 using Hexa.Core.Tests.Domain;
 using Hexa.Core.Validation;

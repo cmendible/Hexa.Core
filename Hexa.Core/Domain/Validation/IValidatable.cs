@@ -26,6 +26,6 @@ namespace Hexa.Core.Validation
 		/// If instance is not valid, a collection of errors will be returned.
 		/// </summary>
 		/// <returns>A list containing error details, or null</returns>
-		IEnumerable<IValidationError> Validate();
+		IEnumerable<ValidationError> Validate();
 	}
 }

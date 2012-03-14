@@ -17,7 +17,6 @@
 
 #endregion
 
-using System.Data;
 
 using Raven.Client;
 

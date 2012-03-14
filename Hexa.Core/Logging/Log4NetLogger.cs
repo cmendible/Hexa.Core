@@ -22,7 +22,7 @@ using System.Globalization;
 
 using log4net;
 
-namespace Hexa.Core.Logging
+namespace Hexa.Core
 {
     class Log4NetLogger : ILogger
     {

@@ -17,13 +17,10 @@
 
 #endregion
 
-using System;
-using System.Linq;
-
-using Raven.Client;
-using Raven.Client.Document;
 
 using Hexa.Core.Database;
+using Raven.Client;
+using Raven.Client.Document;
 
 namespace Hexa.Core.Domain
 {

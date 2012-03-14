@@ -49,7 +49,7 @@ namespace Hexa.Core.Validation
                 select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
-                return new ValidationResult(errors.Cast<IValidationError>());
+                return new ValidationResult(errors.Cast<ValidationError>());
             else
                 return new ValidationResult();
         }

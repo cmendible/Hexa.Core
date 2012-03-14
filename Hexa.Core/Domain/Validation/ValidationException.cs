@@ -14,7 +14,7 @@ namespace Hexa.Core.Validation
 		/// Gets or sets the validation errors.
 		/// </summary>
 		/// <value>The validation errors.</value>
-		public IEnumerable<IValidationError> ValidationErrors { get; private set; }
+		public IEnumerable<ValidationError> ValidationErrors { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the type of the entity.
@@ -31,7 +31,7 @@ namespace Hexa.Core.Validation
 		public ValidationException(Type entityType, string message)
 			: base(message)
 		{
-			ValidationErrors = new IValidationError[] {};
+			ValidationErrors = new ValidationError[] {};
 			EntityType = entityType;
 		}
 
@@ -41,7 +41,7 @@ namespace Hexa.Core.Validation
 		/// <param name="message">The message.</param>
 		/// <param name="errors">The errors.</param>
 		/// <param name="entityType">Type of the entity.</param>
-		public ValidationException(Type entityType, string message, IEnumerable<IValidationError> errors) 
+		public ValidationException(Type entityType, string message, IEnumerable<ValidationError> errors) 
 			: base(message)
 		{
 			ValidationErrors = errors;
@@ -53,7 +53,7 @@ namespace Hexa.Core.Validation
 		/// </summary>
 		/// <param name="errors">The errors.</param>
 		/// <param name="entityType">Type of the entity.</param>
-		public ValidationException(Type entityType, IEnumerable<IValidationError> errors)
+		public ValidationException(Type entityType, IEnumerable<ValidationError> errors)
 			: base(string.Format(CultureInfo.InvariantCulture, "Entity {0} is not valid.", entityType.Name))
 		{
 			ValidationErrors = errors;

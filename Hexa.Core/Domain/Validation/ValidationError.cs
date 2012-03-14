@@ -5,40 +5,38 @@ namespace Hexa.Core.Validation
     /// <summary>
     /// Details of a validation error
     /// </summary>
-    public struct ValidationError : IValidationError
+    public class ValidationError
 	{
-		#region fields
-		private readonly Type _entityType;
-		private readonly string _propertyName;
-		private readonly string _message;
-		#endregion
+		#region Properties
 
-		#region properties
 		/// <summary>
 		/// Gets the type of the entity.
 		/// </summary>
 		/// <value>The type of the entity.</value>
-		public Type EntityType { get { return _entityType; } }
+        public Type EntityType { get; private set; }
+
 		/// <summary>
 		/// Gets the name of the property.
 		/// </summary>
 		/// <value>The name of the property.</value>
-		public string PropertyName { get { return _propertyName; } }
+        public string PropertyName { get; private set; }
+
 		/// <summary>
 		/// Gets the message.
 		/// </summary>
 		/// <value>The message.</value>
-		public string Message { get { return _message; } }
+        public string Message { get; private set; }
+
 		#endregion
 
 		#region ctor
+
 		/// <summary>
 		/// Default Constructor.
 		/// Creates a new instance of the <see cref="ValidationError"/> data structure.
 		/// </summary>
 		/// <param name="message">string. The validation error message.</param>
 		/// <param name="property">string. The property that was validated.</param>
-		// TODO: Swap parameter order.
 		public ValidationError(string message, string property)
 		{
 			Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(message),
@@ -46,9 +44,9 @@ namespace Hexa.Core.Validation
 			Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
 												 "Please provide a valid non null string as the validation property name");
 			
-			_entityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
-			_message = message;
-			_propertyName = property;
+            EntityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
+			Message = message;
+			PropertyName = property;
 		}
 
 		/// <summary>
@@ -57,7 +55,6 @@ namespace Hexa.Core.Validation
 		/// <param name="entityType">Type of the entity.</param>
 		/// <param name="message">string. The validation error message.</param>
 		/// <param name="property">string. The property that was validated.</param>
-		// TODO: Swap parameter order so property comes before message.
 		public ValidationError(Type entityType, string message, string property)
         {
 			Guard.Against<ArgumentNullException>(entityType == null,
@@ -66,9 +63,9 @@ namespace Hexa.Core.Validation
                                                  "Please provide a valid non null string as the validation error message");
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("property"),
                                                  "Please provide a valid non null string as the validation property name");
-			_entityType = entityType;
-			_message = message;
-            _propertyName = property;
+			EntityType = entityType;
+			Message = message;
+            PropertyName = property;
         }
 
 		/// <summary>
@@ -79,9 +76,11 @@ namespace Hexa.Core.Validation
 			: this(ex.Message, property)
 		{
 		}
+
         #endregion
 
-        #region methods
+        #region Methods
+
         /// <summary>
         /// Overriden. Gets a string that represents the validation error.
         /// </summary>
@@ -108,7 +107,7 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public bool Equals(IValidationError obj)
+        public bool Equals(ValidationError obj)
         {
             return Equals(obj.EntityType, EntityType)
 				&& Equals(obj.PropertyName, PropertyName)
@@ -151,6 +150,7 @@ namespace Hexa.Core.Validation
         {
             return !left.Equals(right);
         }
+
         #endregion
     }
 }

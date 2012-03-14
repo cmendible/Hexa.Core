@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Hexa.Core.Domain.Specification;
-using Hexa.Core.Logging;
+using Hexa.Core;
 using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests

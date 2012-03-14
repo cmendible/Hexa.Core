@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Hexa.Core.Database;
 using Hexa.Core.Domain;
-using Hexa.Core.Logging;
+using Hexa.Core;
 using Hexa.Core.Validation;
 
 namespace Hexa.Core.Mono.Tests

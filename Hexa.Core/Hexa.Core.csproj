@@ -267,7 +267,6 @@
     <Compile Include="Domain\Validation\DataAnnotationsValidator.cs" />
     <Compile Include="Domain\Validation\Guard.cs" />
     <Compile Include="Domain\Validation\IValidatable.cs" />
-    <Compile Include="Domain\Validation\IValidationError.cs" />
     <Compile Include="Domain\Validation\IValidator.cs" />
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
@@ -292,7 +291,7 @@
     <Compile Include="Web\UI\Extensions\ControlExtensions.cs" />
     <Compile Include="Web\UI\Extensions\LinqExtensions.cs" />
     <Compile Include="Web\UI\Extensions\PageExtensions.cs" />
-    <Compile Include="Web\UI\RequestLengthException.cs" />
+    <Compile Include="Web\Exceptions\RequestLengthException.cs" />
     <Compile Include="Web\UI\Style.cs" />
     <Compile Include="Web\UI\UrlResolver.cs" />
     <Compile Include="Web\UI\Validations\Controls\Converters\BaseConverter.cs" />

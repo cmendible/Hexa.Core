@@ -44,7 +44,7 @@ namespace Hexa.Core.Domain
         /// If instance is not valid, a collection of errors will be returned.
         /// </summary>
         /// <returns>A list containing error details, or null</returns>
-        public virtual IEnumerable<IValidationError> Validate()
+        public virtual IEnumerable<ValidationError> Validate()
         {
             return Validator.Validate(this);
         }
