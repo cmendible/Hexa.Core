@@ -1,150 +1,146 @@
-﻿//using System;
-//using System.Linq;
-//using Hexa.Core.Database;
-//using Hexa.Core.Domain;
-//using Hexa.Core.Logging;
-//using Hexa.Core.Tests.Data;
-//using Hexa.Core.Tests.Domain;
-//using Hexa.Core.Validation;
-//using Nunit.Framework;
+﻿using System;
+using System.Linq;
+using Hexa.Core.Database;
+using Hexa.Core.Domain;
+using Hexa.Core.Tests.Data;
+using Hexa.Core.Tests.Domain;
+using Hexa.Core.Validation;
+using NUnit.Framework;
 
-//namespace Hexa.Core.Tests.Sql
-//{
-//    [TestFixture]
-//    public class RavenTests 
-//    {
-//        [FixtureSetUp]
-//        public void FixtureSetup()
-//        {
-//            ApplicationContext.Start("Data");
+namespace Hexa.Core.Tests.Sql
+{
+    [TestFixture]
+    public class RavenTests
+    {
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            ApplicationContext.Start("Data");
 
-//            // Validator and TraceManager
-//            var container = ApplicationContext.Container;
-//            container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-//            container.RegisterType<IValidator, DataAnnotationsValidator>();
+            // Validator and TraceManager
+            var container = ApplicationContext.Container;
+            container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
+            container.RegisterType<IValidator, DataAnnotationsValidator>();
 
-//            // Context Factory
-//            var ctxFactory = new RavenContextFactory();
+            // Context Factory
+            var ctxFactory = new RavenContextFactory();
 
-//            container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
-//            container.RegisterInstance<IDatabaseManager>(ctxFactory);
+            container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
+            container.RegisterInstance<IDatabaseManager>(ctxFactory);
 
-//            // Repositories
-//            container.RegisterType<IHumanRepository, HumanRepository>();
+            // Repositories
+            container.RegisterType<IHumanRepository, HumanRepository>();
 
-//            // Services
+            // Services
 
-//            if (!ctxFactory.DatabaseExists())
-//                ctxFactory.CreateDatabase();
+            if (!ctxFactory.DatabaseExists())
+                ctxFactory.CreateDatabase();
 
-//            ctxFactory.ValidateDatabaseSchema();
+            ctxFactory.ValidateDatabaseSchema();
 
-//            ctxFactory.RegisterSessionFactory(container);
-//        }
+            ctxFactory.RegisterSessionFactory(container);
+        }
 
-//        [FixtureTearDown]
-//        public void FixtureTearDown()
-//        {
-//            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-//            dbManager.DeleteDatabase();
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+            dbManager.DeleteDatabase();
 
-//            ApplicationContext.Stop();
-//        }
+            ApplicationContext.Stop();
+        }
 
-//        [Test]
-//        [Rollback]
-//        public Guid Add_Human()
-//        {
-//            Human human = new Human();
-//            human.Name = "Martin";
-//            human.isMale = true;
+        //[Test]
+        //public void Add_Human()
+        //{
+        //    Human human = new Human();
+        //    human.Name = "Martin";
+        //    human.isMale = true;
 
-//            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                repo.Add(human);
-//                ctx.Commit();
-//            }
+        //    var repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        repo.Add(human);
+        //        ctx.Commit();
+        //    }
 
-//            Assert.IsNotNull(human);
-//            Assert.IsNotNull(human.Version);
-//            Assert.IsFalse(human.Id == Guid.Empty);
-//            Assert.AreEqual("Martin", human.Name);
+        //    Assert.IsNotNull(human);
+        //    Assert.IsNotNull(human.Version);
+        //    Assert.IsFalse(human.UniqueId == Guid.Empty);
+        //    Assert.AreEqual("Martin", human.Name);
 
-//            return human.Id;
-//        }
+        //    //return human.UniqueId;
+        //}
 
-//        [Test]
-//        [Rollback]
-//        public void Query_Human()
-//        {
-//            var uniqueId = Add_Human();
+        //[Test]
+        //public void Query_Human()
+        //{
+        //    var uniqueId = Add_Human();
 
-//            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                var results = repo.GetFilteredElements(u => u.Id == uniqueId);
-//                Assert.IsTrue(results.Count() > 0);
+        //    var repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+        //        Assert.IsTrue(results.Count() > 0);
 
-//                results = repo.GetFilteredElements(u => u.isMale);
-//                Assert.IsTrue(results.Count() > 0);
-//            }
-//        }
+        //        results = repo.GetFilteredElements(u => u.isMale);
+        //        Assert.IsTrue(results.Count() > 0);
+        //    }
+        //}
 
-//        [Test]
-//        [Rollback]
-//        public void Update_Human()
-//        {
-//            var uniqueId = Add_Human();
+        //[Test]
+        //public void Update_Human()
+        //{
+        //    var uniqueId = Add_Human();
 
-//            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                var results = repo.GetFilteredElements(u => u.Id == uniqueId);
-//                Assert.IsTrue(results.Count() > 0);
+        //    var repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+        //        Assert.IsTrue(results.Count() > 0);
 
-//                var human2Update = results.First();
-//                human2Update.Name = "Maria";
-//                repo.Modify(human2Update);
+        //        var human2Update = results.First();
+        //        human2Update.Name = "Maria";
+        //        repo.Modify(human2Update);
 
-//                System.Threading.Thread.Sleep(1000);
+        //        System.Threading.Thread.Sleep(1000);
 
-//                ctx.Commit();
-//            }
+        //        ctx.Commit();
+        //    }
 
-//            repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                var human = repo.GetFilteredElements(u => u.Id == uniqueId).Single();
-//                Assert.AreEqual("Maria", human.Name);
-//                Assert.GreaterThan(human.UpdatedAt, human.CreatedAt);
-//            }
-//        }
+        //    repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        var human = repo.GetFilteredElements(u => u.UniqueId == uniqueId).Single();
+        //        Assert.AreEqual("Maria", human.Name);
+        //        Assert.Greater(human.UpdatedAt, human.CreatedAt);
 
-//        [Test]
-//        [Rollback]
-//        public void Delete_Human()
-//        {
-//            var uniqueId = Add_Human();
+        //    }
+        //}
 
-//            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                var results = repo.GetFilteredElements(u => u.Id == uniqueId);
-//                Assert.IsTrue(results.Count() > 0);
+        //[Test]
+        //public void Delete_Human()
+        //{
+        //    var uniqueId = Add_Human();
 
-//                var human2Delete = results.First();
+        //    var repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        var results = repo.GetFilteredElements(u => u.UniqueId == uniqueId);
+        //        Assert.IsTrue(results.Count() > 0);
 
-//                repo.Remove(human2Delete);
+        //        var human2Delete = results.First();
 
-//                ctx.Commit();
-//            }
+        //        repo.Remove(human2Delete);
 
-//            repo = ServiceLocator.GetInstance<IHumanRepository>();
-//            using (var ctx = repo.UnitOfWork)
-//            {
-//                Assert.AreEqual(0, repo.GetFilteredElements(u => u.Id == uniqueId).Count());
-//            }
-//        }
-//    }
-//}
+        //        ctx.Commit();
+        //    }
+
+        //    repo = ServiceLocator.GetInstance<IHumanRepository>();
+        //    using (var ctx = repo.UnitOfWork)
+        //    {
+        //        Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == uniqueId).Count());
+        //    }
+        //}
+    }
+}

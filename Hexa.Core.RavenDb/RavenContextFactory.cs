@@ -20,19 +20,19 @@
 
 using Hexa.Core.Database;
 using Raven.Client;
-using Raven.Client.Document;
+using Raven.Client.Embedded;
 
 namespace Hexa.Core.Domain
 {
     public class RavenContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
-        private static DocumentStore _documenFactory;
+        private static EmbeddableDocumentStore _documenFactory;
 
         public RavenContextFactory()
         {
             if (_documenFactory == null)
             {
-                _documenFactory = new DocumentStore() { DataDirectory = "Data" };
+                _documenFactory = new EmbeddableDocumentStore() { DataDirectory = "Data" };
                 _documenFactory.Initialize();
             }
         }
@@ -45,7 +45,7 @@ namespace Hexa.Core.Domain
         // Registers Raven IDocumentStore for testing purposes.
         public void RegisterSessionFactory(IoCContainer container)
         {
-            container.RegisterInstance<IDocumentStore>(_documenFactory);        
+            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);        
         }
 
         public bool DatabaseExists()

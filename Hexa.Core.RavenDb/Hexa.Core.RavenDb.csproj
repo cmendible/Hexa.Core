@@ -72,17 +72,20 @@
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>..\libs\RavenDB\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\libs\RavenDB\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\libs\RavenDB\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\libs\RavenDB\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client">
-      <HintPath>..\libs\RavenDB\Raven.Client.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\libs\RavenDB\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Embedded">
+      <HintPath>..\libs\RavenDB\Raven.Client.Embedded.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight">
+      <HintPath>..\libs\RavenDB\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
       <HintPath>..\libs\RavenDB\Raven.Database.dll</HintPath>
@@ -90,8 +93,8 @@
     <Reference Include="Raven.Storage.Esent">
       <HintPath>..\libs\RavenDB\Raven.Storage.Esent.dll</HintPath>
     </Reference>
-    <Reference Include="Spatial.Net">
-      <HintPath>..\libs\RavenDB\Spatial.Net.dll</HintPath>
+    <Reference Include="Raven.Storage.Managed">
+      <HintPath>..\libs\RavenDB\Raven.Storage.Managed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
