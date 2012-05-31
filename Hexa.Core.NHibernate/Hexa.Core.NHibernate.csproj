@@ -124,7 +124,7 @@
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="Mappings\RootEntityMap.cs" />
     <Compile Include="NHContextFactory.cs" />
-    <Compile Include="NHibernateContext.cs" />
+    <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="NHibernateObjectSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlExceptionHandlers\SqlExceptionHandler.cs" />

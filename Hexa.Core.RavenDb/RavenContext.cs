@@ -17,16 +17,15 @@
 
 #endregion
 
-
 using Raven.Client;
 
 namespace Hexa.Core.Domain
 {
-    public class RavenContext : IQueryableUnitOfWork
+    public class RavenUnitOfWork : IUnitOfWork
     {
         IDocumentSession _session;
 
-        public RavenContext(IDocumentSession session)
+        public RavenUnitOfWork(IDocumentSession session)
         {
             _session = session;
         }
@@ -38,30 +37,10 @@ namespace Hexa.Core.Domain
             _session.SaveChanges();
         }
 
-        public void CommitAndRefreshChanges()
-        {
-            //try
-            //{
-            //    _session.Transaction.Commit();
-            //}
-            //catch (OptimisticConcurrencyException ex)
-            //{
-
-            //    //if client wins refresh data ( queries database and adapt original values
-            //    //and re-save changes in client
-            //    base.Refresh(RefreshMode.ClientWins, ex.StateEntries.Select(se => se.Entity));
-            //    base.SaveChanges();
-            //}
-        }
-
         public void RollbackChanges()
         {
            
         }
-
-        #endregion
-
-        #region IQueryableContext Members
 
         public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
         {
@@ -70,20 +49,11 @@ namespace Hexa.Core.Domain
 
         #endregion
 
-        #region IContext Members
-
-        public void SetChanges<TEntity>(TEntity item)
-            where TEntity : class
-        {
-        }
-
-        #endregion
-
         #region IDisposable Members
 
         public void Dispose()
         {
-            UnitOfWorkContext.RemoveCurrent();
+            UnitOfWorkScope.DisposeCurrent();
             if (_session != null)
             {
                 _session.Dispose();

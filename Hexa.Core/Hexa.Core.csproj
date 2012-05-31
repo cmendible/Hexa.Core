@@ -196,7 +196,6 @@
     <Compile Include="Exceptions\InternalException.cs" />
     <Compile Include="Domain\BaseRepository.cs" />
     <Compile Include="Domain\Inflector.cs" />
-    <Compile Include="Domain\IQueryableUnitOfWork.cs" />
     <Compile Include="Domain\IRepository.cs" />
     <Compile Include="Domain\IUnitOfWork.cs" />
     <Compile Include="Domain\IUnitOfWorkFactory.cs" />
@@ -216,7 +215,7 @@
     <Compile Include="Domain\Specification\Specification.cs" />
     <Compile Include="Domain\Specification\SpecificationExtensions.cs" />
     <Compile Include="Domain\Specification\TrueSpecification.cs" />
-    <Compile Include="Domain\UnitOfWorkContext.cs" />
+    <Compile Include="Domain\UnitOfWorkScope.cs" />
     <Compile Include="Encoding\HexEncodingHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />

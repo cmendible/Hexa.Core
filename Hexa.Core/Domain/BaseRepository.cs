@@ -38,7 +38,7 @@ namespace Hexa.Core.Domain
         private ILogger _logger = null;
         protected ILogger Logger { get { return _logger; } }
 
-        private IQueryableUnitOfWork _context;
+        private IUnitOfWork _context;
 
         #endregion
 
@@ -53,17 +53,14 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(loggerFactory, "loggerFactory");
 
-            if (UnitOfWorkContext.Current == null)
-                UnitOfWorkContext.Start();
-
-            var context = UnitOfWorkContext.Current;
+            var context = UnitOfWorkScope.Start();
 
             //check preconditions
-            if (context == (IQueryableUnitOfWork)null)
+            if (context == (IUnitOfWork)null)
                 throw new ArgumentNullException("context", "No context in scope.");
 
             //set internal values
-            _context = context as IQueryableUnitOfWork;
+            _context = context as IUnitOfWork;
             _logger = loggerFactory.Create(this.GetType());
 
             _logger.Debug(
@@ -90,7 +87,7 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Return a context in this repository
         /// </summary>
-        protected IQueryableUnitOfWork Context
+        protected IUnitOfWork Context
         {
             get
             {
@@ -171,7 +168,7 @@ namespace Hexa.Core.Domain
             //    item.MarkAsModified();
 
             //apply changes for item object
-            _context.SetChanges(item);
+            //_context.SetChanges(item);
 
             _logger.Info(
                            string.Format(CultureInfo.InvariantCulture,

@@ -152,13 +152,15 @@ namespace Hexa.Core.Domain
         public IUnitOfWork Create()
         {
             _CreateSessionFactory();
-            
-            var session = _sessionFactory.OpenSession();
 
             if (_InMemoryDatabase)
+            {
+                var session = _sessionFactory.OpenSession();
                 new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
+                return new NHibernateUnitOfWork(_sessionFactory);
+            }
 
-            return new NHibernateContext(session);
+            return new NHibernateUnitOfWork(_sessionFactory);
         }
 
         // Registers NH session factoy for testing purposes.

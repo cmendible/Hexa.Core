@@ -47,10 +47,10 @@ namespace Hexa.Core.Domain.Tests
             [TearDown]
             public void TearDown()
             {
-                UnitOfWorkContext.RemoveCurrent();
+                UnitOfWorkScope.DisposeCurrent();
             }
 
-            private IQueryableUnitOfWork _MockUnitOfWork()
+            private IUnitOfWork _MockUnitOfWork()
             {
                 var list = new List<Entity>() { 
                     new Entity() { Id = 1, SampleProperty = "Sample 1" },
@@ -59,7 +59,7 @@ namespace Hexa.Core.Domain.Tests
                 };
                 var set = new MemorySet<Entity>(list);
 
-                var actual = MockRepository.GenerateMock<IQueryableUnitOfWork>();
+                var actual = MockRepository.GenerateMock<IUnitOfWork>();
                 actual.Expect(w => w.CreateSet<Entity>())
                     .Return(set);
 
@@ -118,7 +118,7 @@ namespace Hexa.Core.Domain.Tests
             public void ApplyChanges_NullEntityThrowNewArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -132,7 +132,7 @@ namespace Hexa.Core.Domain.Tests
             public void ApplyChanges_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -151,7 +151,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetPagedElements_InvalidPageIndexThrowArgumentException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -170,7 +170,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetPagedElements_InvalidPageCountThrowArgumentException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -189,7 +189,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetPagedElements_InvalidOrderExpressionThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -207,7 +207,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetPagedElements_DescendingOrder_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -230,7 +230,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetPagedElements_AscendingOrder_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -254,7 +254,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElements_FilterNullThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -272,7 +272,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElements_SpecificKOrder_AscendingOrderAndFilterNullThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -290,7 +290,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElements_SpecificKOrder_DescendingOrderAndFilterNullThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -307,7 +307,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElements_SpecificKOrder_DescendingOrder_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -324,7 +324,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElements_SpecificKOrder_AscendingOrder_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -341,7 +341,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredElementsTest()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -365,7 +365,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredAndOrderedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -387,7 +387,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredAndOrderedAndPagedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -407,7 +407,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredAndOrderedAndPagedElements_InvalidPageIndexThrowArgumentException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -427,7 +427,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFilteredAndOrderedAndPagedElements_InvalidPageCountThrowArgumentException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -446,7 +446,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFiltered_WithDescendingOrderedAndPagedElements_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -469,7 +469,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetFiltered_WithAscendingOrderedAndPagedElements_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -492,7 +492,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetAllTest()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -513,7 +513,7 @@ namespace Hexa.Core.Domain.Tests
             public void AddTest()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -543,7 +543,7 @@ namespace Hexa.Core.Domain.Tests
             public void Add_NullItemThrowArgumentNullException_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -561,7 +561,7 @@ namespace Hexa.Core.Domain.Tests
             public void DeleteTest()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -588,7 +588,7 @@ namespace Hexa.Core.Domain.Tests
             public void Delete_NullItem_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -604,7 +604,7 @@ namespace Hexa.Core.Domain.Tests
             public void Attach_NullItem_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -618,7 +618,7 @@ namespace Hexa.Core.Domain.Tests
             public void Attach_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -638,7 +638,7 @@ namespace Hexa.Core.Domain.Tests
             {
                 //Arrange
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act
@@ -653,7 +653,7 @@ namespace Hexa.Core.Domain.Tests
             public void GetBySpec_Test()
             {
                 //Arrange
-                IQueryableUnitOfWork actual = _MockUnitOfWork();
+                IUnitOfWork actual = _MockUnitOfWork();
                 var loggerFactory = _MockLoggerFactory();
 
                 //Act

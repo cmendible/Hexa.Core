@@ -39,7 +39,7 @@ namespace Hexa.Core.Domain
 
         public IUnitOfWork Create()
         {
-            return new RavenContext(_documenFactory.OpenSession());
+            return new RavenUnitOfWork(_documenFactory.OpenSession());
         }
 
         // Registers Raven IDocumentStore for testing purposes.
