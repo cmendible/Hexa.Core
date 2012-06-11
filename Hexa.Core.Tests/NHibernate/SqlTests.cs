@@ -1,9 +1,6 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using Hexa.Core.Database;
+﻿using System.Configuration;
+using Hexa.Core.Data;
 using Hexa.Core.Domain;
-using Hexa.Core.Tests.Domain;
 using NUnit.Framework;
 
 namespace Hexa.Core.Tests.Sql

@@ -19,7 +19,7 @@
 
 using System;
 
-namespace Hexa.Core
+namespace Hexa.Core.Logging
 {
     /// <summary>
     /// logger manager contract for trace instrumentation

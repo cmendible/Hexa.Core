@@ -18,7 +18,6 @@
 #endregion
 
 using System;
-using System.Data;
 using NHibernate;
 
 namespace Hexa.Core.Domain
@@ -114,50 +113,5 @@ namespace Hexa.Core.Domain
 
         #endregion
     }
-
-    public interface ITransactionWrapper
-    {
-        void Commit();
-        void Rollback();
-    }
-
-    public class TransactionWrapper : ITransactionWrapper
-    {
-        public TransactionWrapper(global::NHibernate.ITransaction transaction)
-        {
-            Transaction = transaction;
-        }
-
-        protected global::NHibernate.ITransaction Transaction { get; set; }
-
-        #region ITransaction Members
-
-        public virtual void Commit()
-        {
-            Transaction.Commit();
-        }
-
-        public void Rollback()
-        {
-            if (Transaction.WasRolledBack)
-                return;
-
-            Transaction.Rollback();
-        }
-
-        #endregion
-    }
-
-    public class NestedTransactionWrapper : TransactionWrapper
-    {
-        public NestedTransactionWrapper(global::NHibernate.ITransaction transaction)
-            : base(transaction)
-        {
-        }
-
-        public override void Commit()
-        {
-            // Do nothing, let the outermost transaction commit.
-        }
-    }
+    
 }

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using log4net;
 
-namespace Hexa.Core.Database
+namespace Hexa.Core.Data
 {
     /// <summary>
     /// Handles Db creation, deletion, etc.

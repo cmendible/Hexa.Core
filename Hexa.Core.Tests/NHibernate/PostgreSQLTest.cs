@@ -1,9 +1,8 @@
-using System;
-using NUnit.Framework;
-using Hexa.Core.Database;
+using Hexa.Core.Data;
 using Hexa.Core.Domain;
-using Hexa.Core;
+using Hexa.Core.Logging;
 using Hexa.Core.Validation;
+using NUnit.Framework;
 
 namespace Hexa.Core.Mono.Tests
 {

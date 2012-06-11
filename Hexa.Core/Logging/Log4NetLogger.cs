@@ -19,10 +19,9 @@
 
 using System;
 using System.Globalization;
-
 using log4net;
 
-namespace Hexa.Core
+namespace Hexa.Core.Logging
 {
     class Log4NetLogger : ILogger
     {

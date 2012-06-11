@@ -10,7 +10,6 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 
-using System;
 
 namespace Hexa.Core.Domain
 {

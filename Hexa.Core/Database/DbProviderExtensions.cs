@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace Hexa.Core.Database
+namespace Hexa.Core.Data
 {
     public static class DbProviderExtensions
     {

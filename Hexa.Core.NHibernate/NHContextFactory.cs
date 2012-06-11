@@ -23,7 +23,7 @@ using System.Linq;
 using System.Reflection;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using Hexa.Core.Database;
+using Hexa.Core.Data;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Event;

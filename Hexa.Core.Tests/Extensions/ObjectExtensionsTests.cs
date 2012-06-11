@@ -1,7 +1,6 @@
 ﻿using System;
-using Hexa.Core.Pooling;
-using NUnit.Framework;
 using Hexa.Core.Tests.Domain;
+using NUnit.Framework;
 
 
 namespace Hexa.Core.Tests.Extensions

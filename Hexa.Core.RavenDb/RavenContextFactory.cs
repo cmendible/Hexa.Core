@@ -17,9 +17,7 @@
 
 #endregion
 
-
-using Hexa.Core.Database;
-using Raven.Client;
+using Hexa.Core.Data;
 using Raven.Client.Embedded;
 
 namespace Hexa.Core.Domain

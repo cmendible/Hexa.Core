@@ -17,7 +17,7 @@
 
 #endregion
 
-namespace Hexa.Core.Database
+namespace Hexa.Core.Data
 {
     public interface IDatabaseManager
     {

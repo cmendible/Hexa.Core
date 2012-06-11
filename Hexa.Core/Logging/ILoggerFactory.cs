@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Hexa.Core
+namespace Hexa.Core.Logging
 {
     public interface ILoggerFactory
     {

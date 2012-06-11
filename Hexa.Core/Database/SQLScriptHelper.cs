@@ -21,7 +21,7 @@ using System;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
-namespace Hexa.Core.Database
+namespace Hexa.Core.Data
 {
 
 	/// <summary>

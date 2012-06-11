@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Hexa.Core.Database;
+using Hexa.Core.Data;
 using Hexa.Core.Domain;
-using Hexa.Core;
+using Hexa.Core.Logging;
 using Hexa.Core.Tests.Data;
 using Hexa.Core.Tests.Domain;
 using Hexa.Core.Validation;
