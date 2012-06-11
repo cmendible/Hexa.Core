@@ -64,11 +64,15 @@ namespace Hexa.Core.Tests.Sql
             human.Name = "Martin";
             human.isMale = true;
 
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (var uow = UnitOfWorkScope.Start())
             {
-                repo.Add(human);
-                ctx.Commit();
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
+                using (var ctx = repo.UnitOfWork)
+                {
+                    repo.Add(human);
+                    ctx.Commit();
+                }
+                uow.Commit();
             }
 
             return human;
