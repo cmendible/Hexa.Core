@@ -164,6 +164,7 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -343,6 +344,9 @@
     <Compile Include="Domain\Validation\ValidationInfo\IValidateTypeValidationInfo.cs" />
     <Compile Include="Domain\Validation\ValidationInfo\IValidationInfo.cs" />
     <Compile Include="Domain\Validation\ValidationInfo\IValidationInfoProvider.cs" />
+    <Compile Include="Windows\Mvvm\ObservableObject.cs" />
+    <Compile Include="Windows\Mvvm\PropertySupport.cs" />
+    <Compile Include="Windows\Mvvm\RelayCommand.cs" />
     <Compile Include="Xml\Transform\Transformer.cs" />
     <Compile Include="Xml\Validation\Resolver.cs" />
     <Compile Include="Xml\Validation\Validator.cs" />
