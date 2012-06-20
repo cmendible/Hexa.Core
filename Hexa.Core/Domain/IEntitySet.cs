@@ -29,6 +29,7 @@ namespace Hexa.Core.Domain
 		void Attach(TEntity entity);
 		void AddObject(TEntity entity);
 		void DeleteObject(TEntity entity);
+        void ModifyObject(TEntity entity);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path);

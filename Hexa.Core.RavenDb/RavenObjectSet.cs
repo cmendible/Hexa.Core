@@ -47,12 +47,15 @@ namespace Hexa.Core.Domain
 
         public void Attach(TEntity entity)
         {
-    
         }
 
         public void DeleteObject(TEntity entity)
         {
             _session.Delete(entity);
+        }
+
+        public void ModifyObject(TEntity entity)
+        {
         }
 
         public void Detach(TEntity entity)

@@ -110,6 +110,8 @@ namespace Hexa.Core.Tests.Sql
         {
             var human = _Add_Human();
 
+            System.Threading.Thread.Sleep(1000);
+
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (var ctx = repo.UnitOfWork)
             {
@@ -120,8 +122,31 @@ namespace Hexa.Core.Tests.Sql
                 human2Update.Name = "Maria";
                 repo.Modify(human2Update);
 
-                System.Threading.Thread.Sleep(1000);
+                ctx.Commit();
+            }
 
+            repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (var ctx = repo.UnitOfWork)
+            {
+                human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
+                Assert.AreEqual("Maria", human.Name);
+                Assert.Greater(human.UpdatedAt, human.CreatedAt);
+            }
+        }
+
+        [Test]
+        public void Update_Human_From_Another_Session()
+        {
+            var human = _Add_Human();
+
+            System.Threading.Thread.Sleep(1000);
+
+            human.Name = "Maria";
+
+            var repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (var ctx = repo.UnitOfWork)
+            {
+                repo.Modify(human);
                 ctx.Commit();
             }
 

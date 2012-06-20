@@ -53,6 +53,12 @@ namespace Hexa.Core.Domain
             _session.Delete(entity);
         }
 
+        public void ModifyObject(TEntity entity)
+        {
+            if (!_session.Contains(entity))
+                _session.Update(entity);
+        }
+
         public void Detach(TEntity entity)
         {
             _session.Evict(entity);
