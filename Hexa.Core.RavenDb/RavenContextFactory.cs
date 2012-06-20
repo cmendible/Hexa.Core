@@ -31,6 +31,7 @@ namespace Hexa.Core.Domain
             if (_documenFactory == null)
             {
                 _documenFactory = new EmbeddableDocumentStore() { DataDirectory = "Data" };
+                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
                 _documenFactory.Initialize();
             }
         }

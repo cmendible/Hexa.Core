@@ -98,6 +98,10 @@ namespace Hexa.Core.Domain
                 _InnerList.Remove(entity);
         }
 
+        public void ModifyObject(TEntity entity)
+        {
+        }
+
         #endregion
 
         #region IEnumerable<T> Members

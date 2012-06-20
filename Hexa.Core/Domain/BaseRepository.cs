@@ -150,7 +150,7 @@ namespace Hexa.Core.Domain
             if (item == (TEntity)null)
                 throw new ArgumentNullException("item");
 
-            (_context.CreateSet<TEntity>()).Attach(item);
+            _context.CreateSet<TEntity>().Attach(item);
 
             _logger.Debug(
                string.Format(CultureInfo.InvariantCulture,
@@ -164,12 +164,8 @@ namespace Hexa.Core.Domain
             if (item == (TEntity)null)
                 throw new ArgumentNullException("item");
 
-            ////Set modifed state if change tracker is enabled
-            //if (item.ChangeTracker != null)
-            //    item.MarkAsModified();
-
             //apply changes for item object
-            //_context.SetChanges(item);
+            _context.CreateSet<TEntity>().ModifyObject(item);
 
             _logger.Info(
                            string.Format(CultureInfo.InvariantCulture,

@@ -23,6 +23,8 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Raven.Client;
+using Raven.Client.Indexes;
+using Raven.Client.Linq;
 
 namespace Hexa.Core.Domain
 {
@@ -34,7 +36,8 @@ namespace Hexa.Core.Domain
         public RavenObjectSet(IDocumentSession session)
         {
             _session = session;
-            _set = _session.Query<TEntity>();
+            _set = _session.Query<TEntity>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow());    
         }
 
         public void AddObject(TEntity entity)
@@ -44,12 +47,15 @@ namespace Hexa.Core.Domain
 
         public void Attach(TEntity entity)
         {
-    
         }
 
         public void DeleteObject(TEntity entity)
         {
             _session.Delete(entity);
+        }
+
+        public void ModifyObject(TEntity entity)
+        {
         }
 
         public void Detach(TEntity entity)
