@@ -186,9 +186,9 @@ namespace Hexa.Core.Domain
                     if (containerExtension == null)
                     {
                         containerExtension = new ContainerExtension();
-                        containerExtension.Value = value;
                         OperationContext.Current.Extensions.Add(containerExtension);
                     }
+                    containerExtension.Value = value;
                 }
                 else if (HttpContext.Current != null)
                 {
