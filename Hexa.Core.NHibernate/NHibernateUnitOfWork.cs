@@ -163,7 +163,7 @@ namespace Hexa.Core.Domain
                         OperationContext.Current.Extensions.Add(containerExtension);
                     }
 
-                    return OperationContext.Current.Extensions.Find<ContainerExtension>().Value as ISession;
+                    return containerExtension.Value as ISession;
                 }
                 else if (HttpContext.Current != null)
                 {
