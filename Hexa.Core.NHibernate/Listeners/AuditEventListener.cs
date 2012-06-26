@@ -23,7 +23,7 @@ using System.Linq;
 using NHibernate.Event;
 using NHibernate.Event.Default;
 using NHibernate.Persister.Entity;
-
+using Hexa.Core.Security;
 
 namespace Hexa.Core.Domain
 {
@@ -35,17 +35,19 @@ namespace Hexa.Core.Domain
             if (auditable == null)
                 return false;
 
-            var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
+            var identity = ApplicationContext.User.Identity as ICoreIdentity;
+            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
+            var id = identity.Id;
 
             var date = DateTime.Now;
 
-            _Set(e.Persister, e.State, "CreatedBy", name);
-            _Set(e.Persister, e.State, "UpdatedBy", name);
+            _Set(e.Persister, e.State, "CreatedBy", id);
+            _Set(e.Persister, e.State, "UpdatedBy", id);
             _Set(e.Persister, e.State, "CreatedAt", date);
             _Set(e.Persister, e.State, "UpdatedAt", date);
 
-            auditable.CreatedBy = name;
-            auditable.UpdatedBy = name;
+            auditable.CreatedBy = id;
+            auditable.UpdatedBy = id;
             auditable.CreatedAt = date;
             auditable.UpdatedAt = date;
 
@@ -73,12 +75,15 @@ namespace Hexa.Core.Domain
                 }
             }
 
-            var name = (ApplicationContext.User != null && !string.IsNullOrEmpty(ApplicationContext.User.Identity.Name)) ? ApplicationContext.User.Identity.Name : "Unknown";
-            var date = DateTime.Now; 
+            var identity = ApplicationContext.User.Identity as ICoreIdentity;
+            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
+            var id = identity.Id;
 
-            _Set(e.Persister, e.State, "UpdatedBy", name);
+            var date = DateTime.Now;
+
+            _Set(e.Persister, e.State, "UpdatedBy", id);
             _Set(e.Persister, e.State, "UpdatedAt", date);
-            auditable.UpdatedBy = name;
+            auditable.UpdatedBy = id;
             auditable.UpdatedAt = date;
 
             return false;

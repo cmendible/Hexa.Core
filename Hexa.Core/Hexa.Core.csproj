@@ -287,6 +287,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Security\ICoreIdentity.cs" />
     <Compile Include="ServiceModel\ErrorBehaviorAttribute.cs" />
     <Compile Include="ServiceModel\EvaluationContextExtensions.cs" />
     <Compile Include="ServiceModel\Security\AuthorizationManager.cs" />

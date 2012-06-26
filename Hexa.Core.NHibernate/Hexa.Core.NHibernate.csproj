@@ -154,7 +154,9 @@
     <Compile Include="Transactions\ITransactionWrapper.cs" />
     <Compile Include="Transactions\NestedTransactionWrapper.cs" />
     <Compile Include="Transactions\TransactionWrapper.cs" />
+    <Compile Include="UserTypes\StringToInt.cs" />
     <Compile Include="UserTypes\GenericWellKnownInstanceType.cs" />
+    <Compile Include="UserTypes\StringToGuid.cs" />
     <Compile Include="UserTypes\IPAddressType.cs" />
     <Compile Include="UserTypes\TicksAsString.cs" />
     <Compile Include="UserTypes\XmlType.cs" />

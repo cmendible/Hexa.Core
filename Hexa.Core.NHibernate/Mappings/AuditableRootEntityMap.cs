@@ -17,27 +17,52 @@
 
 #endregion
 
+using System;
 
 namespace Hexa.Core.Domain
 {
-    public class AuditableRootEntityMap<TEntity> : RootEntityMap<TEntity>
+    public class AuditableRootEntityMap<TEntity> : AuditableRootEntityMap<TEntity, string>
 		where TEntity : AuditableRootEntity<TEntity>
 	{
         public AuditableRootEntityMap()
 			: base()
 		{
+		}
+	}
+
+    public class AuditableRootEntityMap<TEntity, TKey> : RootEntityMap<TEntity>
+        where TEntity : AuditableRootEntity<TEntity>
+    {
+        public AuditableRootEntityMap()
+            : base()
+        {
             Map(x => x.CreatedAt)
                 .Not.Nullable();
 
             Map(x => x.UpdatedAt)
                 .Not.Nullable();
 
-            Map(x => x.CreatedBy);
+            var keyType = typeof(TKey);
+            if (keyType.Equals(typeof(string)))
+            {
+                Map(x => x.CreatedBy);
+                Map(x => x.UpdatedBy);
+            }
+            else if (keyType.Equals(typeof(Guid)))
+            {
+                Map(x => x.CreatedBy)
+                    .CustomType<StringToGuid>();
+                Map(x => x.UpdatedBy)
+                    .CustomType<StringToGuid>();
+            }
+            else if (keyType.Equals(typeof(int)))
+            {
+                Map(x => x.CreatedBy)
+                    .CustomType<StringToInt>();
+                Map(x => x.UpdatedBy)
+                    .CustomType<StringToInt>();
+            }
+        }
 
-            Map(x => x.UpdatedBy);
-		}
-
-        
-        
-	}
+    }
 }

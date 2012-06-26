@@ -6,7 +6,7 @@ using NHibernate.UserTypes;
 
 namespace Hexa.Core.Domain
 {
-	internal class IPAddressType : IUserType
+	public class IPAddressType : IUserType
 	{
 		#region Equals member
 
