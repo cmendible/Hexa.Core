@@ -37,19 +37,19 @@ namespace Hexa.Core.Domain
 
             var identity = ApplicationContext.User.Identity as ICoreIdentity;
             Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var id = identity.Id;
+            var userUniqueId = identity.Id;
 
-            var date = DateTime.Now;
+            var createdAt = DateTime.Now;
 
-            _Set(e.Persister, e.State, "CreatedBy", id);
-            _Set(e.Persister, e.State, "UpdatedBy", id);
-            _Set(e.Persister, e.State, "CreatedAt", date);
-            _Set(e.Persister, e.State, "UpdatedAt", date);
+            _Set(e.Persister, e.State, "CreatedBy", userUniqueId);
+            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
+            _Set(e.Persister, e.State, "CreatedAt", createdAt);
+            _Set(e.Persister, e.State, "UpdatedAt", createdAt);
 
-            auditable.CreatedBy = id;
-            auditable.UpdatedBy = id;
-            auditable.CreatedAt = date;
-            auditable.UpdatedAt = date;
+            auditable.CreatedBy = userUniqueId;
+            auditable.UpdatedBy = userUniqueId;
+            auditable.CreatedAt = createdAt;
+            auditable.UpdatedAt = createdAt;
 
             return false;
         }
@@ -60,31 +60,34 @@ namespace Hexa.Core.Domain
             if (auditable == null)
                 return false;
 
-            var logger = ServiceLocator.TryGetInstance<IAuditableEntityLogger>();
-            if (logger != null)
+            var identity = ApplicationContext.User.Identity as ICoreIdentity;
+            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
+            var userUniqueId = identity.Id;
+
+            var updatedAt = DateTime.Now;
+
+            var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
+            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(e.Persister.EntityName))
             {
+                var tableName = e.Persister.EntityName;
                 var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
                 foreach (var idx in changedPropertiesIdx)
                 {
-                    var tableName = e.Persister.EntityName;
                     var propertyName = e.Persister.PropertyNames[idx];
                     var oldValue = e.OldState[idx];
                     var newValue = e.State[idx];
 
-                    logger.Log(tableName, propertyName, oldValue, newValue);
+                    var auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(), 
+                        propertyName, oldValue, newValue, userUniqueId, updatedAt);
+
+                    e.Session.Save(auditTrail);
                 }
             }
 
-            var identity = ApplicationContext.User.Identity as ICoreIdentity;
-            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var id = identity.Id;
-
-            var date = DateTime.Now;
-
-            _Set(e.Persister, e.State, "UpdatedBy", id);
-            _Set(e.Persister, e.State, "UpdatedAt", date);
-            auditable.UpdatedBy = id;
-            auditable.UpdatedAt = date;
+            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
+            _Set(e.Persister, e.State, "UpdatedAt", updatedAt);
+            auditable.UpdatedBy = userUniqueId;
+            auditable.UpdatedAt = updatedAt;
 
             return false;
         }
