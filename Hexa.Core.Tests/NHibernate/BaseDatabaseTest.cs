@@ -3,6 +3,7 @@ using System.Linq;
 using Hexa.Core.Data;
 using Hexa.Core.Domain;
 using Hexa.Core.Logging;
+using Hexa.Core.Security;
 using Hexa.Core.Tests.Data;
 using Hexa.Core.Tests.Domain;
 using Hexa.Core.Validation;
@@ -42,6 +43,8 @@ namespace Hexa.Core.Tests.Sql
             ctxFactory.ValidateDatabaseSchema();
 
             ctxFactory.RegisterSessionFactory(container);
+
+            ApplicationContext.User = new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
         }
 
         [TestFixtureTearDown]

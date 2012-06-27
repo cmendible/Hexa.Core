@@ -163,7 +163,7 @@ namespace Hexa.Core.Domain
                         OperationContext.Current.Extensions.Add(containerExtension);
                     }
 
-                    return OperationContext.Current.Extensions.Find<ContainerExtension>().Value as ISession;
+                    return containerExtension.Value as ISession;
                 }
                 else if (HttpContext.Current != null)
                 {
@@ -186,9 +186,9 @@ namespace Hexa.Core.Domain
                     if (containerExtension == null)
                     {
                         containerExtension = new ContainerExtension();
-                        containerExtension.Value = value;
                         OperationContext.Current.Extensions.Add(containerExtension);
                     }
+                    containerExtension.Value = value;
                 }
                 else if (HttpContext.Current != null)
                 {

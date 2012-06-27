@@ -26,44 +26,32 @@ namespace Hexa.Core.Security
     /// Class used to hold user name info.
 	/// </summary>
 	[Serializable]
-	public class CoreIdentity : MarshalByRefObject, IIdentity 
+	public class CoreIdentity : MarshalByRefObject, ICoreIdentity 
 	{
 		// Fields
-		private string m_name;
-		private string m_type;
+		private string _name;
+		private string _type;
+        private string _id;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CoreIdentity"/> class.
 		/// </summary>
 		/// <param name="name">The name.</param>
-		public CoreIdentity(string name)
-		{
-			if (name == null)
-			{
-				throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
-			}
-			m_name = name;
-			m_type = "";
-		}
+        public CoreIdentity(string name)
+            : this(name, "Unknown", name)
+        { 
+        
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CoreIdentity"/> class.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="type">The type.</param>
-		public CoreIdentity(string name, string type)
-		{
-			if (name == null)
-			{
-				throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
-			}
-			if (type == null)
-			{
-				throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
-			}
-			m_name = name;
-			m_type = type;
-		}
+        public CoreIdentity(string name, string type)
+            : this(name, type, name)
+        { 
+        }
 
 		/// <summary>
 		/// Gets the type of authentication used.
@@ -74,7 +62,7 @@ namespace Hexa.Core.Security
 		{
 			get
 			{
-				return m_type;
+				return _type;
 			}
 		}
 
@@ -87,7 +75,7 @@ namespace Hexa.Core.Security
 		{
 			get
 			{
-				return !string.IsNullOrEmpty(m_name);
+				return !string.IsNullOrEmpty(_name);
 			}
 		}
 
@@ -100,7 +88,7 @@ namespace Hexa.Core.Security
 		{
 			get
 			{
-				return m_name;
+				return _name;
 			}
 		}
 
@@ -110,15 +98,35 @@ namespace Hexa.Core.Security
 		/// <param name="name">The name.</param>
 		/// <param name="type">The type.</param>
 		/// <param name="id">The id.</param>
-		public CoreIdentity(string name, string type, string id) : this(name, type) 
-		{
-			Id = id;
-		}
+        public CoreIdentity(string name, string type, string id)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
+            }
+            if (type == null)
+            {
+                throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
+            }
+            if (id == null)
+            {
+                throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
+            }
+            _name = name;
+            _type = type;
+            _id = id;
+        }
 
 		/// <summary>
 		/// Gets or sets the id.
 		/// </summary>
 		/// <value>The id.</value>
-		public string Id { get; private set; }
+		public string Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
 	}
 }
