@@ -5,3 +5,4 @@ bin/
 Hexa.Core.xml
 TestResults.xml
 *.csproj.user
+/CodeMetricsReports/CodeMetricsReport.xml
