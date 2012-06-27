@@ -18,6 +18,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Hexa.Core;
 
 namespace System.Linq
 {
@@ -25,16 +26,14 @@ namespace System.Linq
     {
         public static IQueryable<T> Page<T>(this IQueryable<T> query, int pageNumber, int pageSize)
         {
-            if (pageNumber <= 0)
-                throw new ArgumentException("pageNumber");
+            Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
             return query.Skip<T>(((pageNumber - 1) * pageSize)).Take<T>(pageSize);
         }
 
         public static IEnumerable<T> Page<T>(this IEnumerable<T> query, int pageNumber, int pageSize)
         {
-            if (pageNumber <= 0)
-                throw new ArgumentException("pageNumber");
+            Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
             return query.Skip<T>(((pageNumber - 1) * pageSize)).Take<T>(pageSize);
         }

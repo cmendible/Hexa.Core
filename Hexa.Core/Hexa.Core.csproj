@@ -217,11 +217,12 @@
     <Compile Include="Domain\DomainModel\AuditableRootEntity.cs" />
     <Compile Include="Domain\DomainModel\Entity.cs" />
     <Compile Include="Domain\DomainModel\IAuditableEntity.cs" />
+    <Compile Include="Domain\DomainModel\IEntityAuditTrail.cs" />
     <Compile Include="Domain\DomainModel\RootEntity.cs" />
     <Compile Include="Domain\DomainModel\ValidatableObject.cs" />
     <Compile Include="Domain\DomainModel\ValueObject.cs" />
     <Compile Include="Domain\MemorySet.cs" />
-    <Compile Include="Domain\Services\IAuditableEntityLogger.cs" />
+    <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
@@ -254,7 +255,6 @@
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Globalization\Gettext.cs" />
     <Compile Include="Globalization\GettextHelper.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\IoCContainer.cs" />
     <Compile Include="IoC\DictionaryServicesContainer.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
