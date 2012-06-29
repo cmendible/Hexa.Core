@@ -51,10 +51,13 @@
     <Message Text="TestFiles: @(TestFiles)" Importance="high"/>
 
     <ItemGroup>
-      <FilesToDelete Include="TestResults.xml"/>
+	  <FilesToDelete Include="$(MSBuildProjectDirectory)\Reports\**\*.*"/>
     </ItemGroup>
 
     <Delete Files="@(FilesToDelete)" />
+	
+	<MakeDir Directories="$(ProjectDirectory)\Reports"
+			ContinueOnError="true" />
 
     <!-- Runs Tests -->
     <NUnit 
