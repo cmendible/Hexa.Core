@@ -60,7 +60,7 @@
     <NUnit 
 		ToolPath="$(ProjectDirectory)\libs\NUnit"
 		Assemblies="@(TestFiles)" 
-		OutputXmlFile="TestResults.xml"
+		OutputXmlFile="$(ProjectDirectory)\Reports\TestResults.xml"
 		ContinueOnError="false" />
 
     <Message Text="Build Completed..." Importance="high" />
