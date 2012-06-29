@@ -25,12 +25,18 @@
   </PropertyGroup>
   
   <PropertyGroup>
-      <CodeMetricsTool>"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
+      <CodeMetricsTool>"$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
   </PropertyGroup>
 
   <!-- This is needed by MSBuild to locate the NUnit task -->
   <UsingTask AssemblyFile="$(ProjectDirectory)\libs\MSBuild.Community.Tasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" />
+  
+  <!-- This is needed by MSBuild to locate the FxCop task -->
+  <UsingTask AssemblyFile="$(ProjectDirectory)\libs\MSBuild.Community.Tasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FxCop" />
 
+  <!-- This is needed by MSBuild to locate the StyleCop task -->
+  <UsingTask AssemblyFile="$(MSBuildProgramFiles32)\StyleCop 4.7\StyleCop.dll" TaskName="StyleCopTask" />
+  
   <!-- Specify the Solutions to build -->
   <ItemGroup>
     <ProjectFiles Include="$(ProjectDirectory)/*.sln" />
@@ -45,7 +51,17 @@
        Properties="Configuration=Release; Platform=Any CPU"
        Targets="Build" />
 
-    <Message Text="Starting Tests..." Importance="high" />
+	<ItemGroup>
+	  <FilesToDelete Include="$(MSBuildProjectDirectory)\Reports\**\*.*"/>
+    </ItemGroup>
+
+    <Delete Files="@(FilesToDelete)" />
+	
+	<MakeDir Directories="$(ProjectDirectory)\Reports"
+			ContinueOnError="true" />
+
+    <!-- Runs Tests -->
+	<Message Text="Starting Tests..." Importance="high" />
 
     <!-- Finds test DLL's -->
     <CreateItem Include="$(ProjectDirectory)/**/bin/Release/*.Tests.dll">
@@ -53,28 +69,51 @@
     </CreateItem>
 
     <Message Text="TestFiles: @(TestFiles)" Importance="high"/>
-
-    <ItemGroup>
-      <FilesToDelete Include="TestResults.xml"/>
-	  <FilesToDelete Include="$(MSBuildProjectDirectory)\CodeMetricsReports\**\*.*"/>
-    </ItemGroup>
-
-    <Delete Files="@(FilesToDelete)" />
-
-    <!-- Runs Tests -->
+	
     <NUnit 
 		ToolPath="$(ProjectDirectory)\libs\NUnit"
 		Assemblies="@(TestFiles)" 
-		OutputXmlFile="TestResults.xml"
-		ContinueOnError="false" />
+		OutputXmlFile="$(ProjectDirectory)\Reports\TestResults.xml"
+		ContinueOnError="false" />  
 		
+	<!-- Run code metrics -->
 	<Message Text="Running code metrics..." Importance="high" />	
-		
-	<MakeDir Directories="$(MSBuildProjectDirectory)\CodeMetricsReports"
-			ContinueOnError="true" />
-	
-	<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(MSBuildProjectDirectory)\CodeMetricsReports\CodeMetricsReport.xml&quot; /f:&quot;$(MSBuildProjectDirectory)\Hexa.Core.Tests\bin\Release\Hexa*.dll&quot; /gac' />
 
+	<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(ProjectDirectory)\Reports\CodeMetricsReport.xml&quot; /f:&quot;$(ProjectDirectory)\Hexa.Core.Tests\bin\Release\Hexa*.dll&quot; /gac' />
+
+	<!-- Run FxCop -->
+	<Message Text="Starting FxCop Analysis..." Importance="high" />
+    <ItemGroup>
+		<FilesToAnalyze Include="$(ProjectDirectory)/**/bin/Release/Hexa*.dll" Exclude="$(ProjectDirectory)/**/bin/Release/Hexa*.Tests.dll"/>
+		<DependencyDirectories Include="$(ProjectDirectory)\libs\**\*.dll"/>
+    </ItemGroup>
+
+    <FxCop
+		ToolPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\"
+		SearchGac="True"
+		TargetAssemblies="@(FilesToAnalyze)"
+		DependencyDirectories="@(DependencyDirectories)"
+		RuleLibraries="@(FxCopRuleAssemblies)"
+		Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
+		AnalysisReportFileName="$(ProjectDirectory)\Reports\FxCop.xml"
+		Verbose="True"
+		FailOnError="False"
+	/>
+	
+	<!-- Run the StyleCop MSBuild task. -->
+	<Message Text="Starting StyleCop Analysis..." Importance="high" />
+	
+	<CreateItem Include="$(ProjectDirectory)\**\*.cs">
+		<Output TaskParameter="Include" ItemName="StyleCopFiles"/>
+	</CreateItem>
+
+	<StyleCopTask
+		ProjectFullPath="$(ProjectDirectory)"
+		SourceFiles="@(StyleCopFiles)"
+		ForceFullAnalysis="true"
+		TreatErrorsAsWarnings="true"
+		OutputFile="$(ProjectDirectory)\Reports\StyleCop.xml" />
+	
     <Message Text="Build Completed..." Importance="high" />
 
   </Target>
