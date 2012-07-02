@@ -17,12 +17,11 @@
 
 #endregion
 
-using System;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-
 namespace Hexa.Core.Data
 {
+    using System;
+    using System.Data.SqlClient;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Helper class to execute scripts against a Sql Server database.
@@ -41,22 +40,22 @@ namespace Hexa.Core.Data
         public static void Execute(string connection, string script)
         {
             try
+            {
+                using (var sqlConn = new SqlConnection(connection))
                 {
-                    using (SqlConnection sqlConn = new SqlConnection(connection))
+                    using (var command = new SqlCommand())
                     {
-                        using (SqlCommand command = new SqlCommand())
-                        {
-                            command.Connection = sqlConn;
-                            sqlConn.Open();
-                            ExecuteCommands(command, GetCommandsFromScript(script));
-                            sqlConn.Close();
-                        }
+                        command.Connection = sqlConn;
+                        sqlConn.Open();
+                        ExecuteCommands(command, GetCommandsFromScript(script));
+                        sqlConn.Close();
                     }
                 }
+            }
             catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -77,14 +76,13 @@ namespace Hexa.Core.Data
         private static void ExecuteCommands(SqlCommand command, string[] sqlCommands)
         {
             foreach (string cmd in sqlCommands)
+            {
+                if (cmd.Length > 0)
                 {
-                    if (cmd.Length > 0)
-                        {
-                            command.CommandText = cmd;
-                            command.ExecuteNonQuery();
-                        }
+                    command.CommandText = cmd;
+                    command.ExecuteNonQuery();
                 }
+            }
         }
-
     }
 }

@@ -17,13 +17,13 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.Schema;
-
 namespace Hexa.Core.Xml
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Schema;
+
     /// <summary>
     /// Static class used to validate an XML file.
     /// </summary>
@@ -57,7 +57,7 @@ namespace Hexa.Core.Xml
 
                 // Add validation event handler
                 _settings.ValidationType = ValidationType.Schema;
-                _settings.ValidationEventHandler += new ValidationEventHandler(validationHandler);
+                _settings.ValidationEventHandler += validationHandler;
 
                 // Create your reader with the validation
                 using (_reader = XmlReader.Create(_XMLReader, _settings))
@@ -69,9 +69,9 @@ namespace Hexa.Core.Xml
 
                 // Raise exception, if XML validation fails
                 if (_errorsCount > 0)
-                    {
-                        throw new XmlException(_errorMessage);
-                    }
+                {
+                    throw new XmlException(_errorMessage);
+                }
             }
         }
 
@@ -84,15 +84,14 @@ namespace Hexa.Core.Xml
         public static XmlSchemaSet CreateXmlSchemaSet(string schemaName, Dictionary<string, byte[]> schemas)
         {
             //Create and compile XmlSchemaSet
-            using (XmlTextReader _XSDReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
+            using (var _XSDReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
             {
-                XmlSchemaSet _schemaSet = new XmlSchemaSet();
+                var _schemaSet = new XmlSchemaSet();
                 _schemaSet.XmlResolver = new SchemaResolver(schemas);
                 _schemaSet.Add(null, _XSDReader);
                 _schemaSet.Compile();
                 return _schemaSet;
             }
         }
-
     }
 }

@@ -24,18 +24,12 @@ namespace Hexa.Core.Domain.Specification
         /// <summary>
         /// Left side specification for this composite element
         /// </summary>
-        public abstract ISpecification<TEntity> LeftSideSpecification
-        {
-            get;
-        }
+        public abstract ISpecification<TEntity> LeftSideSpecification { get; }
 
         /// <summary>
         /// Right side specification for this composite element
         /// </summary>
-        public abstract ISpecification<TEntity> RightSideSpecification
-        {
-            get;
-        }
+        public abstract ISpecification<TEntity> RightSideSpecification { get; }
 
         #endregion
     }

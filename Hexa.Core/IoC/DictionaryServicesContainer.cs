@@ -17,18 +17,22 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
-using Microsoft.Practices.ServiceLocation;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+    using log4net;
+    using Microsoft.Practices.ServiceLocation;
+
     internal class DictionaryServicesContainer : ServiceLocatorImplBase
     {
-        private static readonly log4net.ILog _Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly IDictionary<Type, Type> _Types = null;
-        private readonly IDictionary<Type, object> _Instances = null;
+        private static readonly ILog _Log =
+            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly IDictionary<Type, object> _Instances;
+        private readonly IDictionary<Type, Type> _Types;
 
         public DictionaryServicesContainer()
         {
@@ -36,164 +40,191 @@ namespace Hexa.Core
             _Instances = new Dictionary<Type, object>();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         private DictionaryServicesContainer(IDictionary<Type, Type> services, IDictionary<Type, object> instances)
         {
             _Types = services;
             _Instances = instances;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public DictionaryServicesContainer Clone()
         {
-            return new DictionaryServicesContainer(new Dictionary<Type, Type>(_Types), new Dictionary<Type, object>(_Instances));
+            return new DictionaryServicesContainer(new Dictionary<Type, Type>(_Types),
+                                                   new Dictionary<Type, object>(_Instances));
         }
 
         public void RegisterType(Type @interface, Type @type)
         {
             lock (_Types)
-                {
-                    _Types.Add(@interface, @type);
-                }
+            {
+                _Types.Add(@interface, @type);
+            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
+         SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+             , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void RegisterType<I, T>()
-        where T : I
+            where T : I
         {
-            this.RegisterType(typeof(I), typeof(T));
+            RegisterType(typeof (I), typeof (T));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter"),
+         SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+             , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I")]
         public void RegisterInstance<I>(object instance)
         {
             lock (_Instances)
-                {
-                    _Instances.Add(typeof(I), instance);
-                }
+            {
+                _Instances.Add(typeof (I), instance);
+            }
         }
 
         public void RegisterInstance(Type @interface, object instance)
         {
             lock (_Instances)
-                {
-                    _Instances.Add(@interface, instance);
-                }
+            {
+                _Instances.Add(@interface, instance);
+            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.String.Format(System.String,System.Object)")]
         public object Resolve(Type type)
         {
             try
+            {
+                if (_Instances.ContainsKey(type))
+                    return _Instances[type];
+
+                if (_Types.ContainsKey(type))
+                    return ConstructObject(_Types[type]);
+
+                if (type.IsGenericType)
                 {
-                    if (_Instances.ContainsKey(type))
-                        return _Instances[type];
+                    Type genericType = _Types[type.GetGenericTypeDefinition()];
+                    Type[] args = type.GetGenericArguments();
 
-                    if (_Types.ContainsKey(type))
-                        return ConstructObject(_Types[type]);
+                    lock (_Types)
+                    {
+                        _Types.Add(type, genericType.MakeGenericType(args));
+                    }
 
-                    if (type.IsGenericType)
-                        {
-                            Type genericType = _Types[type.GetGenericTypeDefinition()];
-                            Type[] args = type.GetGenericArguments();
-
-                            lock (_Types)
-                                {
-                                    _Types.Add(type, genericType.MakeGenericType(args));
-                                }
-
-                            return ConstructObject(_Types[type]);
-                        }
-                    else
-                        {
-                            throw new System.InvalidOperationException(string.Format("Unable to resolve key: {0}", type.AssemblyQualifiedName));
-                        }
-
+                    return ConstructObject(_Types[type]);
                 }
+                else
+                {
+                    throw new InvalidOperationException(string.Format("Unable to resolve key: {0}",
+                                                                      type.AssemblyQualifiedName));
+                }
+            }
             catch (Exception ex)
-                {
-                    _Log.Error(string.Format("Unable to resolve key: {0}", type.AssemblyQualifiedName), ex);
-                    throw;
-                }
+            {
+                _Log.Error(string.Format("Unable to resolve key: {0}", type.AssemblyQualifiedName), ex);
+                throw;
+            }
         }
 
         private object ConstructObject(Type type)
         {
-            var constructor = type.GetConstructors()[0];
-            var parameters = constructor.GetParameters();
+            ConstructorInfo constructor = type.GetConstructors()[0];
+            ParameterInfo[] parameters = constructor.GetParameters();
             if (parameters.Length == 0)
                 return Activator.CreateInstance(type);
             else
-                {
-                    var objects = new List<object>();
-                    foreach (var p in parameters)
-                        objects.Add(Resolve(p.ParameterType));
+            {
+                var objects = new List<object>();
+                foreach (ParameterInfo p in parameters)
+                    objects.Add(Resolve(p.ParameterType));
 
-                    return constructor.Invoke(objects.ToArray());
-                }
+                return constructor.Invoke(objects.ToArray());
+            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
+         SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+             , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public I Resolve<I>()
         {
-            return (I)Resolve(typeof(I));
+            return (I) Resolve(typeof (I));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void OverrideType(Type @interface, Type @type)
         {
             lock (_Types)
-                {
-                    if (_Types.ContainsKey(@interface))
-                        _Types.Remove(@interface);
-                }
+            {
+                if (_Types.ContainsKey(@interface))
+                    _Types.Remove(@interface);
+            }
 
             RegisterType(@interface, @type);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
+         SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+             , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void OverrideType<I, T>()
-        where T : I
+            where T : I
         {
-            OverrideType(typeof(I), typeof(T));
+            OverrideType(typeof (I), typeof (T));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
+         SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+             , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void OverrideInstance<I>(object instance)
         {
             lock (_Instances)
-                {
-                    if (_Instances.ContainsKey(typeof(I)))
-                        _Instances.Remove(typeof(I));
-                }
+            {
+                if (_Instances.ContainsKey(typeof (I)))
+                    _Instances.Remove(typeof (I));
+            }
 
             RegisterInstance<I>(instance);
         }
 
-        #region IServiceLocator Members
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
             try
-                {
-                    return new List<object>()
-                    {
-                        Resolve(serviceType)
-                    };
-                }
+            {
+                return new List<object>
+                           {
+                               Resolve(serviceType)
+                           };
+            }
             catch
-                {
-                    return new List<object>();
-                }
+            {
+                return new List<object>();
+            }
         }
 
         protected override object DoGetInstance(Type serviceType, string key)
         {
             return Resolve(serviceType);
         }
-
-        #endregion
-
     }
 }

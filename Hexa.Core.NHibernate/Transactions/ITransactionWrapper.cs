@@ -1,5 +1,4 @@
-﻿
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
     public interface ITransactionWrapper
     {

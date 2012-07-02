@@ -17,34 +17,26 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     public class PagedElements<TEntity> where TEntity : class
     {
-        public IEnumerable<TEntity> Elements
-        {
-            get;
-            private set;
-        }
-
-        public int TotalElements
-        {
-            get;
-            private set;
-        }
-
-        public int TotalPages(int pageSize)
-        {
-            return (int)Math.Ceiling(Convert.ToDouble(TotalElements) / pageSize);
-        }
-
         public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
             Elements = elements;
             TotalElements = totalElements;
+        }
+
+        public IEnumerable<TEntity> Elements { get; private set; }
+
+        public int TotalElements { get; private set; }
+
+        public int TotalPages(int pageSize)
+        {
+            return (int) Math.Ceiling(Convert.ToDouble(TotalElements)/pageSize);
         }
     }
 }

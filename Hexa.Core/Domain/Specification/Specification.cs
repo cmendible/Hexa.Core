@@ -9,11 +9,11 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Represent a Expression Specification
     /// <remarks>
@@ -47,7 +47,8 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="leftSideSpecification">left operand in this AND operation</param>
         /// <param name="rightSideSpecification">right operand in this AND operation</param>
         /// <returns>New specification</returns>
-        public static Specification<TEntity> operator &(Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
+        public static Specification<TEntity> operator &(
+            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
         {
             return new AndAlsoSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
@@ -58,7 +59,8 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="leftSideSpecification">left operand in this OR operation</param>
         /// <param name="rightSideSpecification">left operand in this OR operation</param>
         /// <returns>New specification </returns>
-        public static Specification<TEntity> operator |(Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
+        public static Specification<TEntity> operator |(
+            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
         {
             return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
@@ -92,8 +94,7 @@ namespace Hexa.Core.Domain.Specification
         {
             return true;
         }
+
         #endregion
     }
-
 }
-

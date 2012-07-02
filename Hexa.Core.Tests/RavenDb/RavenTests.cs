@@ -1,15 +1,17 @@
-﻿using System;
-using System.Linq;
-using Hexa.Core.Data;
-using Hexa.Core.Domain;
-using Hexa.Core.Logging;
-using Hexa.Core.Tests.Data;
-using Hexa.Core.Tests.Domain;
-using Hexa.Core.Validation;
-using NUnit.Framework;
-
-namespace Hexa.Core.Tests.Raven
+﻿namespace Hexa.Core.Tests.Raven
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using Core.Data;
+    using Core.Domain;
+    using Data;
+    using Domain;
+    using Logging;
+    using NUnit.Framework;
+    using Validation;
+
     [TestFixture]
     public class RavenTests
     {
@@ -19,7 +21,7 @@ namespace Hexa.Core.Tests.Raven
             ApplicationContext.Start("Data");
 
             // Validator and TraceManager
-            var container = ApplicationContext.Container;
+            IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
@@ -53,12 +55,12 @@ namespace Hexa.Core.Tests.Raven
 
         private Human _Add_Human()
         {
-            Human human = new Human();
+            var human = new Human();
             human.Name = "Martin";
             human.isMale = true;
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
                 repo.Add(human);
                 ctx.Commit();
@@ -81,14 +83,39 @@ namespace Hexa.Core.Tests.Raven
         }
 
         [Test]
+        public void Delete_Human()
+        {
+            Human human = _Add_Human();
+
+            var repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (IUnitOfWork ctx = repo.UnitOfWork)
+            {
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                Assert.IsTrue(results.Count() > 0);
+
+                Human human2Delete = results.First();
+
+                repo.Remove(human2Delete);
+
+                ctx.Commit();
+            }
+
+            repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (IUnitOfWork ctx = repo.UnitOfWork)
+            {
+                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
+            }
+        }
+
+        [Test]
         public void Query_Human()
         {
             Human human = _Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
                 results = repo.GetFilteredElements(u => u.isMale);
@@ -102,52 +129,26 @@ namespace Hexa.Core.Tests.Raven
             Human human = _Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
-                var human2Update = results.First();
+                Human human2Update = results.First();
                 human2Update.Name = "Maria";
                 repo.Modify(human2Update);
 
-                System.Threading.Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
                 ctx.Commit();
             }
 
             repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var human2 = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
+                Human human2 = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
                 Assert.AreEqual("Maria", human2.Name);
                 //Assert.Greater(human2.UpdatedAt, human2.CreatedAt);
-
-            }
-        }
-
-        [Test]
-        public void Delete_Human()
-        {
-            Human human = _Add_Human();
-
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
-            {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
-
-                var human2Delete = results.First();
-
-                repo.Remove(human2Delete);
-
-                ctx.Commit();
-            }
-
-            repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
-            {
-                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
             }
         }
     }

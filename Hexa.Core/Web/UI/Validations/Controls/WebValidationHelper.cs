@@ -17,52 +17,45 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Hexa.Core.Validation;
-
 namespace Hexa.Core.Web.UI.Controls
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using Validation;
+
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
+        MessageId = "Infos")]
     public class RetrieveValidatorInfosEventArgs : EventArgs
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
-        public IList<IValidationInfo> ValidationInfos
-        {
-            get;
-            private set;
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
         public RetrieveValidatorInfosEventArgs(IList<IValidationInfo> validationInfos)
         {
             ValidationInfos = validationInfos;
         }
+
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
+        public IList<IValidationInfo> ValidationInfos { get; private set; }
     }
 
     public class BeforeValidatorCreationEventArgs : EventArgs
     {
-        public IValidationInfo ValidationInfo
-        {
-            get;
-            private set;
-        }
-
-        public bool Ignore
-        {
-            get;
-            set;
-        }
-
         public BeforeValidatorCreationEventArgs(IValidationInfo validationInfo)
         {
             ValidationInfo = validationInfo;
             Ignore = false;
         }
+
+        public IValidationInfo ValidationInfo { get; private set; }
+
+        public bool Ignore { get; set; }
     }
 
     /// <summary>
@@ -70,35 +63,14 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     public class WebValidationHelper
     {
+        private readonly Control _Control;
+
+        private readonly List<string> _UsedControlIdValues = new List<string>();
+
+        private readonly Dictionary<Type, BaseConverter> _converters = new Dictionary<Type, BaseConverter>();
         private string _ValidationGroup = "";
         private ValidatorDisplay _ValidatorDisplay = ValidatorDisplay.Static;
         private string _ValidatorText = "";
-
-        private Control _Control;
-
-        List<string> _UsedControlIdValues = new List<string>();
-
-        private Control Control
-        {
-            get
-                {
-                    return _Control;
-                }
-        }
-
-        Dictionary<Type, BaseConverter> _converters = new Dictionary<Type, BaseConverter>();
-        private Dictionary<Type, BaseConverter> Converters
-        {
-            get
-                {
-                    return _converters;
-                }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
-        public event EventHandler<RetrieveValidatorInfosEventArgs> RetrieveValidatorInfos;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1713:EventsShouldNotHaveBeforeOrAfterPrefix")]
-        public event EventHandler<BeforeValidatorCreationEventArgs> BeforeValidatorCreation;
 
         /// <summary>
         /// Constructor for WebValidationHelper
@@ -109,23 +81,13 @@ namespace Hexa.Core.Web.UI.Controls
             EnsureConvertersAreCreated();
         }
 
-        private void EnsureConvertersAreCreated()
-        {
-            if (Converters.Count > 0) return;
-
-            Converters.Add(typeof(IRequiredValidationInfo), new RequiredConverter());
-            Converters.Add(typeof(IRegexValidationInfo), new RegularExpressionConverter());
-            Converters.Add(typeof(IEmailValidationInfo), new EmailConverter());
-            Converters.Add(typeof(IRangeValidationInfo), new RangeConverter());
-        }
-
         /// <summary>
         /// Constructor for WebValidationHelper
         /// </summary>
         /// <param name="control">Parent control (eg Page) that contains input fields</param>
         /// <param name="validationGroup">Validation group name</param>
         public WebValidationHelper(Control control, string validationGroup)
-        : this(control)
+            : this(control)
         {
             _ValidationGroup = validationGroup;
         }
@@ -137,9 +99,9 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="validationGroup">Validation group name for the validators</param>
         /// <param name="validatorDisplay">ValidatorDisplay mode for the validators</param>
         public WebValidationHelper(Control control, string validationGroup, ValidatorDisplay validatorDisplay)
-        : this(control, validationGroup)
+            : this(control, validationGroup)
         {
-            this.ValidatorDisplay = validatorDisplay;
+            ValidatorDisplay = validatorDisplay;
         }
 
         /// <summary>
@@ -149,10 +111,21 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="validationGroup">Validation group name for the validators</param>
         /// <param name="validatorDisplay">ValidatorDisplay mode for the validators</param>
         /// <param name="validatorText">Text property for the validators</param>
-        public WebValidationHelper(Control control, string validationGroup, ValidatorDisplay validatorDisplay, string validatorText)
-        : this(control, validationGroup, validatorDisplay)
+        public WebValidationHelper(Control control, string validationGroup, ValidatorDisplay validatorDisplay,
+                                   string validatorText)
+            : this(control, validationGroup, validatorDisplay)
         {
             _ValidatorText = validatorText;
+        }
+
+        private Control Control
+        {
+            get { return _Control; }
+        }
+
+        private Dictionary<Type, BaseConverter> Converters
+        {
+            get { return _converters; }
         }
 
         /// <summary>
@@ -160,14 +133,8 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         public string ValidationGroup
         {
-            get
-                {
-                    return this._ValidationGroup;
-                }
-            set
-                {
-                    this._ValidationGroup = value;
-                }
+            get { return _ValidationGroup; }
+            set { _ValidationGroup = value; }
         }
 
         /// <summary>
@@ -175,14 +142,8 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         public ValidatorDisplay ValidatorDisplay
         {
-            get
-                {
-                    return this._ValidatorDisplay;
-                }
-            set
-                {
-                    this._ValidatorDisplay = value;
-                }
+            get { return _ValidatorDisplay; }
+            set { _ValidatorDisplay = value; }
         }
 
         /// <summary>
@@ -190,14 +151,26 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         public string ValidatorText
         {
-            get
-                {
-                    return this._ValidatorText;
-                }
-            set
-                {
-                    this._ValidatorText = value;
-                }
+            get { return _ValidatorText; }
+            set { _ValidatorText = value; }
+        }
+
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
+        public event EventHandler<RetrieveValidatorInfosEventArgs> RetrieveValidatorInfos;
+
+        [SuppressMessage("Microsoft.Naming",
+            "CA1713:EventsShouldNotHaveBeforeOrAfterPrefix")]
+        public event EventHandler<BeforeValidatorCreationEventArgs> BeforeValidatorCreation;
+
+        private void EnsureConvertersAreCreated()
+        {
+            if (Converters.Count > 0) return;
+
+            Converters.Add(typeof (IRequiredValidationInfo), new RequiredConverter());
+            Converters.Add(typeof (IRegexValidationInfo), new RegularExpressionConverter());
+            Converters.Add(typeof (IEmailValidationInfo), new EmailConverter());
+            Converters.Add(typeof (IRangeValidationInfo), new RangeConverter());
         }
 
         /// <summary>
@@ -205,13 +178,19 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         /// <typeparam name="T">Entity type</typeparam>
         /// <returns>List of validators added to the control</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Validators"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Validators"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter"),
+         SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<BaseValidator> AddValidators<T>()
         {
             return CreateValidators<T>(true);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Validators"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Validators"),
+         SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<BaseValidator> CreateValidators(bool addToControl, Type entityType)
         {
             bool ignoreValidationInfo = false;
@@ -220,52 +199,53 @@ namespace Hexa.Core.Web.UI.Controls
             if (RetrieveValidatorInfos != null)
                 RetrieveValidatorInfos(this, new RetrieveValidatorInfosEventArgs(validationInfos));
             else
-                {
-                    Type providerType = typeof(IValidationInfoProvider<>).MakeGenericType(new Type[] { entityType });
+            {
+                Type providerType = typeof (IValidationInfoProvider<>).MakeGenericType(new[] {entityType});
 
-                    var provider = ServiceLocator.GetInstance(providerType) as IValidationInfoProvider;
+                var provider = ServiceLocator.GetInstance(providerType) as IValidationInfoProvider;
 
-                    validationInfos = provider.GetValidationInfo();
-                }
+                validationInfos = provider.GetValidationInfo();
+            }
 
-            List<BaseValidator> validators = new List<BaseValidator>();
+            var validators = new List<BaseValidator>();
 
             foreach (IValidationInfo validationInfo in validationInfos)
+            {
+                if (BeforeValidatorCreation != null)
                 {
-
-                    if (BeforeValidatorCreation != null)
-                        {
-                            BeforeValidatorCreationEventArgs args = new BeforeValidatorCreationEventArgs(validationInfo);
-                            BeforeValidatorCreation(this, args);
-                            ignoreValidationInfo = args.Ignore;
-                        }
-                    else
-                        {
-                            ignoreValidationInfo = false;
-                        }
-
-                    if (!ignoreValidationInfo)
-                        {
-                            // Extend here with another event.
-                            BaseValidator v = this.CreateValidator(validationInfo, addToControl);
-
-                            if (v != null)
-                                validators.Add(v);
-                        }
+                    var args = new BeforeValidatorCreationEventArgs(validationInfo);
+                    BeforeValidatorCreation(this, args);
+                    ignoreValidationInfo = args.Ignore;
                 }
+                else
+                {
+                    ignoreValidationInfo = false;
+                }
+
+                if (!ignoreValidationInfo)
+                {
+                    // Extend here with another event.
+                    BaseValidator v = CreateValidator(validationInfo, addToControl);
+
+                    if (v != null)
+                        validators.Add(v);
+                }
+            }
 
             return validators;
         }
 
         private List<BaseValidator> CreateValidators<T>(bool addToControl)
         {
-            return this.CreateValidators(addToControl, typeof(T));
+            return CreateValidators(addToControl, typeof (T));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "controlToValidate")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters",
+            MessageId = "controlToValidate")]
         private BaseValidator GetValidator(IValidationInfo validationInfo, Control controlToValidate)
         {
-            var converter = Converters.Where(c => validationInfo.GetType().GetInterface(c.Key.Name) != null).SingleOrDefault();
+            KeyValuePair<Type, BaseConverter> converter =
+                Converters.Where(c => validationInfo.GetType().GetInterface(c.Key.Name) != null).SingleOrDefault();
 
             if (converter.Value == null)
                 return null;
@@ -275,24 +255,24 @@ namespace Hexa.Core.Web.UI.Controls
 
         private static BaseValidator GetInputFormatValidator(PropertyInfo pi)
         {
-            ExtendedRegularExpressionValidator validator = new ExtendedRegularExpressionValidator();
+            var validator = new ExtendedRegularExpressionValidator();
 
-            if (pi.PropertyType == typeof(int))
-                {
-                    validator.ValidationExpression = @"[0-9]*";
-                }
-            else if (pi.PropertyType == typeof(decimal))
-                {
-                    validator.ValidationExpression = @"[0-9]+[\.\,]?[0-9]+";
-                }
-            else if (pi.PropertyType == typeof(float))
-                {
-                    validator.ValidationExpression = @"[0-9]*";
-                }
+            if (pi.PropertyType == typeof (int))
+            {
+                validator.ValidationExpression = @"[0-9]*";
+            }
+            else if (pi.PropertyType == typeof (decimal))
+            {
+                validator.ValidationExpression = @"[0-9]+[\.\,]?[0-9]+";
+            }
+            else if (pi.PropertyType == typeof (float))
+            {
+                validator.ValidationExpression = @"[0-9]*";
+            }
             else
-                {
-                    return null;
-                }
+            {
+                return null;
+            }
 
             return validator;
         }
@@ -309,7 +289,7 @@ namespace Hexa.Core.Web.UI.Controls
             if (validationInfo is IValidateTypeValidationInfo)
                 v = GetInputFormatValidator(validationInfo.PropertyInfo);
             else
-                v = this.GetValidator(validationInfo, controlToValidate);
+                v = GetValidator(validationInfo, controlToValidate);
 
             if (v == null)
                 return null;
@@ -318,14 +298,14 @@ namespace Hexa.Core.Web.UI.Controls
 
             int indexOf = parentControl.Controls.IndexOf(controlToValidate) + 1;
 
-            v.ID = CreateControlId(indexOf.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            v.ID = CreateControlId(indexOf.ToString(CultureInfo.InvariantCulture));
 
             v.EnableViewState = false;
             v.ControlToValidate = controlToValidate.ID;
             v.ErrorMessage = validationInfo.ErrorMessage;
-            v.Text = this._ValidatorText;
-            v.Display = this._ValidatorDisplay;
-            v.ValidationGroup = this._ValidationGroup;
+            v.Text = _ValidatorText;
+            v.Display = _ValidatorDisplay;
+            v.ValidationGroup = _ValidationGroup;
 
             if (!addToControl)
                 return v;
@@ -338,14 +318,14 @@ namespace Hexa.Core.Web.UI.Controls
         private string CreateControlId(string proposedID)
         {
             if (!_UsedControlIdValues.Contains(proposedID))
-                {
-                    _UsedControlIdValues.Add(proposedID);
-                    return "v" + proposedID;
-                }
+            {
+                _UsedControlIdValues.Add(proposedID);
+                return "v" + proposedID;
+            }
             else
-                {
-                    return CreateControlId(proposedID + "_1");
-                }
+            {
+                return CreateControlId(proposedID + "_1");
+            }
         }
     }
 }

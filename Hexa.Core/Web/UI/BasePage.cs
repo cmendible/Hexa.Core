@@ -17,27 +17,28 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI;
-using Hexa.Core.Web.UI.Controls;
-
 namespace Hexa.Core.Web.UI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+    using System.Web.UI;
+    using Controls;
+    using GNU.Gettext;
+    using Validation;
 
     /// <summary>
     /// Base Page
     /// </summary>
-    public class BasePage : System.Web.UI.Page
+    public class BasePage : Page
     {
-        protected Control FirstControl2SetFocus
-        {
-            get;
-            set;
-        }
+        protected Control FirstControl2SetFocus { get; set; }
 
         #region ViewState Helper
 
@@ -47,13 +48,14 @@ namespace Hexa.Core.Web.UI
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         protected T GetProperty<T>(string propertyName)
         {
             if (ViewState[propertyName] == null)
                 return default(T);
 
-            return (T)ViewState[propertyName];
+            return (T) ViewState[propertyName];
         }
 
         /// <summary>
@@ -78,20 +80,26 @@ namespace Hexa.Core.Web.UI
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+            MessageId = "t"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
         protected string t(string key)
         {
-            System.Reflection.Assembly assembly = null;
+            Assembly assembly = null;
 
-            if (!this.GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
-                assembly = System.Reflection.Assembly.GetCallingAssembly();
+            if (!GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
+                assembly = Assembly.GetCallingAssembly();
             else
-                assembly = this.GetType().BaseType.Assembly;
+                assembly = GetType().BaseType.Assembly;
 
-            return GNU.Gettext.GettextHelper.t(key, assembly);
+            return GettextHelper.t(key, assembly);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+             MessageId = "t")]
         protected String t(String key, params object[] args)
         {
             return String.Format(CultureInfo.InvariantCulture, t(key), args);
@@ -107,22 +115,22 @@ namespace Hexa.Core.Web.UI
         /// <param name="Exception">The exception.</param>
         public void DisplayException(Exception exception)
         {
-            if ((exception) is System.Threading.ThreadAbortException)
+            if ((exception) is ThreadAbortException)
                 return;
 
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(t(exception.Message));
 
             if (Debugger.IsAttached)
-                {
-                    sb.Append("\r\n").Append("\r\n").Append("StackTrace: ");
-                    sb.Append("\r\n").Append(exception.StackTrace);
-                }
+            {
+                sb.Append("\r\n").Append("\r\n").Append("StackTrace: ");
+                sb.Append("\r\n").Append(exception.StackTrace);
+            }
 
-            if (exception is Validation.ValidationException)
-                AddInvalidValidator(((Validation.ValidationException)exception).ValidationErrors.Select(e => e.Message));
+            if (exception is ValidationException)
+                AddInvalidValidator(((ValidationException) exception).ValidationErrors.Select(e => e.Message));
             else
-                AddInvalidValidator(new string[] { exception.Message });
+                AddInvalidValidator(new[] {exception.Message});
         }
 
         /// <summary>
@@ -131,20 +139,17 @@ namespace Hexa.Core.Web.UI
         /// <param name="error">The expection message.</param>
         public void DisplayException(string error)
         {
-            AddInvalidValidator(new string[] { error });
+            AddInvalidValidator(new[] {error});
         }
 
         protected virtual void AddInvalidValidator(IEnumerable<string> errors)
         {
             foreach (string error in errors)
-                this.Validators.Add(new InvalidValidator(error));
+                Validators.Add(new InvalidValidator(error));
         }
 
         #endregion
 
         #endregion
-
     }
-
 }
-

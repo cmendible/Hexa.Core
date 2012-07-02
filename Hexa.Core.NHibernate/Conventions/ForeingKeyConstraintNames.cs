@@ -17,20 +17,14 @@
 
 #endregion
 
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-
 namespace Hexa.Core.Domain
 {
+    using FluentNHibernate.Conventions;
+    using FluentNHibernate.Conventions.Instances;
+
     public class ForeingKeyConstraintNames : IReferenceConvention, IHasManyConvention
     {
-        public void Apply(IManyToOneInstance instance)
-        {
-            var entity = instance.EntityType.Name;
-            var member = instance.Property.Name;
-
-            instance.ForeignKey(string.Format("FK_{0}_{1}", entity, member));
-        }
+        #region IHasManyConvention Members
 
         public void Apply(IOneToManyCollectionInstance instance)
         {
@@ -40,5 +34,19 @@ namespace Hexa.Core.Domain
 
             instance.Key.ForeignKey(string.Format("FK_{0}{1}_{2}", entity, member, child));
         }
+
+        #endregion
+
+        #region IReferenceConvention Members
+
+        public void Apply(IManyToOneInstance instance)
+        {
+            string entity = instance.EntityType.Name;
+            string member = instance.Property.Name;
+
+            instance.ForeignKey(string.Format("FK_{0}_{1}", entity, member));
+        }
+
+        #endregion
     }
 }

@@ -1,12 +1,12 @@
 ﻿//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
     /// Provides a standard base class for facilitating comparison of value objects using all the object's fields.
     /// </summary>
@@ -49,16 +49,16 @@ namespace Hexa.Core.Domain
             // so we include the object's type in the hash calculation
             int hashCode = GetType().GetHashCode();
 
-            foreach (FieldInfo field in this.GetType().GetFields(RelfectingFlags))
-                {
-                    object value = field.GetValue(this);
+            foreach (FieldInfo field in GetType().GetFields(RelfectingFlags))
+            {
+                object value = field.GetValue(this);
 
-                    if (value != null)
-                        unchecked
-                        {
-                            hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
-                        }
-                }
+                if (value != null)
+                    unchecked
+                    {
+                        hashCode = hashCode*HASH_MULTIPLIER + value.GetHashCode();
+                    }
+            }
 
             return hashCode;
         }
@@ -79,31 +79,31 @@ namespace Hexa.Core.Domain
             if (GetType() != other.GetType())
                 return false;
 
-            foreach (FieldInfo field in this.GetType().GetFields(RelfectingFlags))
-                {
-                    object value1 = field.GetValue(other);
-                    object value2 = field.GetValue(this);
+            foreach (FieldInfo field in GetType().GetFields(RelfectingFlags))
+            {
+                object value1 = field.GetValue(other);
+                object value2 = field.GetValue(this);
 
-                    if (value1 == null)
-                        {
-                            if (value2 != null)
-                                return false;
-                        }
-                    else if (!value1.Equals(value2))
+                if (value1 == null)
+                {
+                    if (value2 != null)
                         return false;
                 }
+                else if (!value1.Equals(value2))
+                    return false;
+            }
 
             return true;
         }
 
         public static bool operator ==(ValueObject x, ValueObject y)
         {
-            return object.Equals(x, y);
+            return Equals(x, y);
         }
 
         public static bool operator !=(ValueObject x, ValueObject y)
         {
-            return !object.Equals(x, y);
+            return !Equals(x, y);
         }
     }
 
@@ -129,55 +129,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         protected BindingFlags RelfectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
-        /// <summary>
-        /// Serves as a hash function for a particular type.
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            //int startValue = 17;
-            //int hashCode = startValue;
-
-            // It's possible for two objects to return the same hash code based on
-            // identically valued properties, even if they're of two different types,
-            // so we include the object's type in the hash calculation
-            int hashCode = GetType().GetHashCode();
-
-            foreach (FieldInfo field in GetFields(this))
-                {
-                    object value = field.GetValue(this);
-
-                    if (value != null)
-                        unchecked
-                        {
-                            hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
-                        }
-                }
-
-            return hashCode;
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <exception cref="T:System.NullReferenceException">
-        /// The <paramref name="obj"/> parameter is null.
-        /// </exception>
-        public override bool Equals(object obj)
-        {
-            T other = obj as T;
-
-            if (other == null)
-                return false;
-
-            return Equals(other);
-        }
+        #region IEquatable<T> Members
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -198,45 +150,97 @@ namespace Hexa.Core.Domain
                 return false;
 
             foreach (FieldInfo field in GetFields(this))
-                {
-                    object value1 = field.GetValue(other);
-                    object value2 = field.GetValue(this);
+            {
+                object value1 = field.GetValue(other);
+                object value2 = field.GetValue(this);
 
-                    if (value1 == null)
-                        {
-                            if (value2 != null)
-                                return false;
-                        }
-                    else if (!value1.Equals(value2))
+                if (value1 == null)
+                {
+                    if (value2 != null)
                         return false;
                 }
+                else if (!value1.Equals(value2))
+                    return false;
+            }
 
             return true;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            //int startValue = 17;
+            //int hashCode = startValue;
+
+            // It's possible for two objects to return the same hash code based on
+            // identically valued properties, even if they're of two different types,
+            // so we include the object's type in the hash calculation
+            int hashCode = GetType().GetHashCode();
+
+            foreach (FieldInfo field in GetFields(this))
+            {
+                object value = field.GetValue(this);
+
+                if (value != null)
+                    unchecked
+                    {
+                        hashCode = hashCode*HASH_MULTIPLIER + value.GetHashCode();
+                    }
+            }
+
+            return hashCode;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <exception cref="T:System.NullReferenceException">
+        /// The <paramref name="obj"/> parameter is null.
+        /// </exception>
+        public override bool Equals(object obj)
+        {
+            var other = obj as T;
+
+            if (other == null)
+                return false;
+
+            return Equals(other);
         }
 
         private IEnumerable<FieldInfo> GetFields(object obj)
         {
             Type t = obj.GetType();
-            List<FieldInfo> fields = new List<FieldInfo>();
+            var fields = new List<FieldInfo>();
 
-            while (t != typeof(object))
-                {
-                    var tmp = t.GetFields(RelfectingFlags);
-                    fields.AddRange(tmp);
-                    t = t.BaseType;
-                }
+            while (t != typeof (object))
+            {
+                FieldInfo[] tmp = t.GetFields(RelfectingFlags);
+                fields.AddRange(tmp);
+                t = t.BaseType;
+            }
 
             return fields;
         }
 
         public static bool operator ==(ValueObject<T> x, ValueObject<T> y)
         {
-            return object.Equals(x, y);
+            return Equals(x, y);
         }
 
         public static bool operator !=(ValueObject<T> x, ValueObject<T> y)
         {
-            return !object.Equals(x, y);
+            return !Equals(x, y);
         }
     }
 }

@@ -17,24 +17,24 @@
 
 #endregion
 
-using System;
-using FluentNHibernate;
-using FluentNHibernate.Conventions;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using FluentNHibernate;
+    using FluentNHibernate.Conventions;
+
     public class ForeignKeyColumnNames : ForeignKeyConvention
     {
-        protected override string  GetKeyName(Member property, Type type)
+        protected override string GetKeyName(Member property, Type type)
         {
             // many-to-many, one-to-many, join
             if (property == null)
-                {
-                    if (type.GetProperty("UniqueId") != null)
-                        return type.Name + "UniqueId";
+            {
+                if (type.GetProperty("UniqueId") != null)
+                    return type.Name + "UniqueId";
 
-                    return type.Name + "Id";
-                }
+                return type.Name + "Id";
+            }
 
             // else -- many-to-one
             if (property.PropertyType.GetProperty("UniqueId") != null)

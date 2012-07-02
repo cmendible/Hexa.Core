@@ -17,218 +17,123 @@
 
 #endregion
 
-using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     public class GridView : System.Web.UI.WebControls.GridView, IPostBackDataHandler, IPostBackEventHandler
     {
-
         #region  Private Variables
 
-        private bool _useDefaultCssClass = true;
         private bool _designMode = (HttpContext.Current == null);
 
         private bool _isScrollable = true;
-        private System.Web.UI.WebControls.Unit _maxHeight = System.Web.UI.WebControls.Unit.Pixel(140);
+        private Unit _maxHeight = Unit.Pixel(140);
+        private bool _useDefaultCssClass = true;
 
         #endregion
 
         #region  Properties
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Convert.ToBoolean(System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.Convert.ToBoolean(System.Object)")]
         public bool SelectFirstRow
         {
             get
+            {
+                bool tempSelectFirstRow = false;
+                if (ViewState["SelectFirstRow"] != null)
                 {
-                    bool tempSelectFirstRow = false;
-                    if (this.ViewState["SelectFirstRow"] != null)
-                        {
-                            return System.Convert.ToBoolean(this.ViewState["SelectFirstRow"]);
-                        }
-                    else
-                        {
-                            tempSelectFirstRow = true;
-                        }
-                    return tempSelectFirstRow;
+                    return Convert.ToBoolean(ViewState["SelectFirstRow"]);
                 }
-            set
+                else
                 {
-                    this.ViewState["SelectFirstRow"] = value;
+                    tempSelectFirstRow = true;
                 }
+                return tempSelectFirstRow;
+            }
+            set { ViewState["SelectFirstRow"] = value; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Convert.ToBoolean(System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.Convert.ToBoolean(System.Object)")]
         public bool AllowRowSelection
         {
             get
+            {
+                bool tempAllowRowSelection = false;
+                if (ViewState["AllowRowSelection"] != null)
                 {
-                    bool tempAllowRowSelection = false;
-                    if (this.ViewState["AllowRowSelection"] != null)
-                        {
-                            return System.Convert.ToBoolean(this.ViewState["AllowRowSelection"]);
-                        }
-                    else
-                        {
-                            tempAllowRowSelection = false;
-                        }
-                    return tempAllowRowSelection;
+                    return Convert.ToBoolean(ViewState["AllowRowSelection"]);
                 }
-            set
+                else
                 {
-                    this.ViewState["AllowRowSelection"] = value;
+                    tempAllowRowSelection = false;
                 }
+                return tempAllowRowSelection;
+            }
+            set { ViewState["AllowRowSelection"] = value; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Convert.ToBoolean(System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.Convert.ToBoolean(System.Object)")]
         public bool AllowClickRow
         {
             get
+            {
+                bool tempAllowClickRow = false;
+                if (ViewState["AllowClickRow"] != null)
                 {
-                    bool tempAllowClickRow = false;
-                    if (this.ViewState["AllowClickRow"] != null)
-                        {
-                            return System.Convert.ToBoolean(this.ViewState["AllowClickRow"]);
-                        }
-                    else
-                        {
-                            tempAllowClickRow = false;
-                        }
-                    return tempAllowClickRow;
+                    return Convert.ToBoolean(ViewState["AllowClickRow"]);
                 }
-            set
+                else
                 {
-                    this.ViewState["AllowClickRow"] = value;
+                    tempAllowClickRow = false;
                 }
+                return tempAllowClickRow;
+            }
+            set { ViewState["AllowClickRow"] = value; }
         }
 
         public bool UseDefaultCssClass
         {
-            get
-                {
-                    return _useDefaultCssClass;
-                }
-            set
-                {
-                    _useDefaultCssClass = value;
-                }
+            get { return _useDefaultCssClass; }
+            set { _useDefaultCssClass = value; }
         }
 
-        public System.Web.UI.WebControls.Unit MaxHeight
+        public Unit MaxHeight
         {
-            get
-                {
-                    return _maxHeight;
-                }
-            set
-                {
-                    _maxHeight = value;
-                }
+            get { return _maxHeight; }
+            set { _maxHeight = value; }
         }
 
         public bool IsScrollable
         {
-            get
-                {
-                    return _isScrollable;
-                }
-            set
-                {
-                    _isScrollable = value;
-                }
+            get { return _isScrollable; }
+            set { _isScrollable = value; }
         }
 
         #endregion
 
         #region  Methods
 
-        public int GetSelectedItemIndex()
-        {
-            if (this.Rows.Count > 0)
-                {
-                    return this.SelectedIndex;
-                }
-            else
-                {
-                    return -1;
-                }
-        }
-
-        public string GetSelectedItemUniqueId()
-        {
-            if (this.SelectedIndex >= 0)
-                {
-                    return this.SelectedRow.Cells[0].Text;
-                }
-            else
-                {
-                    return string.Empty;
-                }
-        }
-
-        protected override void OnRowCreated(GridViewRowEventArgs e)
-        {
-            if (AllowRowSelection && e.Row.RowType == DataControlRowType.DataRow)
-                {
-                    e.Row.Attributes.Add("onclick", String.Format("MSDatagridSelectRow('{0}', {1});",  this.ClientID, e.Row.RowIndex));
-                }
-        }
-
-        protected override void OnPreRender(System.EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            Page.RegisterRequiresPostBack(this);
-
-            if (AllowRowSelection)
-                {
-
-                    if (SelectFirstRow && this.SelectedIndex < 0)
-                        {
-                            this.SelectedIndex = 0;
-                        }
-
-                    string hidxName = this.ClientID + "_idx";
-
-                    this.Attributes.Add("hidxName", hidxName);
-
-                    Page.ClientScript.RegisterHiddenField(hidxName, this.SelectedIndex.ToString());
-
-                    if (!(Page.ClientScript.IsClientScriptBlockRegistered("SelectMSGridRow")))
-                        {
-                            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                            sb.Append("<script language=\"javascript\">").Append("\r\n");
-                            sb.Append("function MSDatagridSelectRow(grdID, row)").Append("\r\n");
-                            sb.Append("{var grd = document.getElementById(grdID);").Append("\r\n");
-                            sb.Append("var hdn = document.getElementsByName(grd.getAttribute('hidxName'));").Append("\r\n");
-                            sb.Append("var actualidx = parseInt(row) + 1;").Append("\r\n");
-                            sb.Append("if (actualidx > 0) {").Append("\r\n");
-                            sb.Append("grd.rows.item(actualidx).setAttribute('ocolor', row.className);").Append("\r\n");
-                            sb.Append("grd.rows.item(parseInt(hdn.item(0).value) + 1).className = grd.rows.item(parseInt(hdn.item(0).value) + 1).getAttribute('ocolor');").Append("\r\n");
-                            sb.Append("hdn.item(0).value = row;").Append("\r\n");
-                            sb.Append("grd.rows.item(actualidx).className = '").Append(this.SelectedRowStyle.CssClass).Append("';").Append("\r\n");
-                            sb.Append("}}</script>");
-                            Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SelectMSGridRow", sb.ToString());
-                        }
-                }
-
-        }
-
-        public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+        public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             if (AllowRowSelection)
-                {
-                    string hidxName = this.ClientID + "_idx";
+            {
+                string hidxName = ClientID + "_idx";
 
-                    if (postCollection[hidxName] != null)
-                        {
-                            this.SelectedIndex = System.Convert.ToInt32(postCollection[hidxName]);
-                        }
+                if (postCollection[hidxName] != null)
+                {
+                    SelectedIndex = Convert.ToInt32(postCollection[hidxName]);
                 }
+            }
             return false;
         }
 
@@ -237,18 +142,91 @@ namespace Hexa.Core.Web.UI.Controls
             //NOT IMPLEMENTED
         }
 
+        public int GetSelectedItemIndex()
+        {
+            if (Rows.Count > 0)
+            {
+                return SelectedIndex;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public string GetSelectedItemUniqueId()
+        {
+            if (SelectedIndex >= 0)
+            {
+                return SelectedRow.Cells[0].Text;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        protected override void OnRowCreated(GridViewRowEventArgs e)
+        {
+            if (AllowRowSelection && e.Row.RowType == DataControlRowType.DataRow)
+            {
+                e.Row.Attributes.Add("onclick",
+                                     String.Format("MSDatagridSelectRow('{0}', {1});", ClientID, e.Row.RowIndex));
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            Page.RegisterRequiresPostBack(this);
+
+            if (AllowRowSelection)
+            {
+                if (SelectFirstRow && SelectedIndex < 0)
+                {
+                    SelectedIndex = 0;
+                }
+
+                string hidxName = ClientID + "_idx";
+
+                Attributes.Add("hidxName", hidxName);
+
+                Page.ClientScript.RegisterHiddenField(hidxName, SelectedIndex.ToString());
+
+                if (!(Page.ClientScript.IsClientScriptBlockRegistered("SelectMSGridRow")))
+                {
+                    var sb = new StringBuilder();
+                    sb.Append("<script language=\"javascript\">").Append("\r\n");
+                    sb.Append("function MSDatagridSelectRow(grdID, row)").Append("\r\n");
+                    sb.Append("{var grd = document.getElementById(grdID);").Append("\r\n");
+                    sb.Append("var hdn = document.getElementsByName(grd.getAttribute('hidxName'));").Append("\r\n");
+                    sb.Append("var actualidx = parseInt(row) + 1;").Append("\r\n");
+                    sb.Append("if (actualidx > 0) {").Append("\r\n");
+                    sb.Append("grd.rows.item(actualidx).setAttribute('ocolor', row.className);").Append("\r\n");
+                    sb.Append(
+                        "grd.rows.item(parseInt(hdn.item(0).value) + 1).className = grd.rows.item(parseInt(hdn.item(0).value) + 1).getAttribute('ocolor');")
+                        .Append("\r\n");
+                    sb.Append("hdn.item(0).value = row;").Append("\r\n");
+                    sb.Append("grd.rows.item(actualidx).className = '").Append(SelectedRowStyle.CssClass).Append(
+                        "';").Append("\r\n");
+                    sb.Append("}}</script>");
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SelectMSGridRow", sb.ToString());
+                }
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.SelectedIndexChanged += new EventHandler(GridView_SelectedIndexChanged);
+            base.SelectedIndexChanged += GridView_SelectedIndexChanged;
         }
 
-        private void GridView_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void GridView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.SelectedIndex = base.SelectedIndex;
+            SelectedIndex = base.SelectedIndex;
         }
 
         #endregion
-
     }
 }

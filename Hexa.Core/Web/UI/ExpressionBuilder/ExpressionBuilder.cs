@@ -17,12 +17,12 @@
 
 #endregion
 
-using System.CodeDom;
-using System.Web.Compilation;
-using System.Web.UI;
-
 namespace Hexa.Core.Web.UI
 {
+    using System.CodeDom;
+    using System.Web.Compilation;
+    using System.Web.UI;
+
     /// <summary>
     ///
     /// </summary>
@@ -44,11 +44,10 @@ namespace Hexa.Core.Web.UI
         /// <returns>
         /// A <see cref="T:System.CodeDom.CodeExpression"/> that is used for property assignment.
         /// </returns>
-        public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
+        public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData,
+                                                         ExpressionBuilderContext context)
         {
             return new CodeSnippetExpression(entry.Expression);
         }
-
     }
-
 }

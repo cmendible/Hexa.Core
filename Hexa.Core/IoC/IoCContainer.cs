@@ -17,14 +17,15 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+
     public class IoCContainer
     {
-        private Action<Type, Type> _registerTypeCallback = null;
-        private Action<Type, object> _registerInstanceCallback = null;
+        private readonly Action<Type, object> _registerInstanceCallback;
+        private readonly Action<Type, Type> _registerTypeCallback;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IoCContainer"/> class.
@@ -32,8 +33,8 @@ namespace Hexa.Core
         /// <param name="registerCallback">The register callback.</param>
         public IoCContainer(Action<Type, Type> registerTypeCallback, Action<Type, object> registerInstanceCallback)
         {
-            this._registerTypeCallback = registerTypeCallback;
-            this._registerInstanceCallback = registerInstanceCallback;
+            _registerTypeCallback = registerTypeCallback;
+            _registerInstanceCallback = registerInstanceCallback;
         }
 
         /// <summary>
@@ -41,12 +42,17 @@ namespace Hexa.Core
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <typeparam name="T"></typeparam>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+            , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void RegisterType<I, T>()
-        where T : I
+            where T : I
         {
             if (_registerTypeCallback != null)
-                _registerTypeCallback(typeof(I), typeof(T));
+                _registerTypeCallback(typeof (I), typeof (T));
         }
 
         /// <summary>
@@ -65,11 +71,16 @@ namespace Hexa.Core
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <param name="instance">The instance.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix", MessageId = "T"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+            , MessageId = "T"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+         SuppressMessage("Microsoft.Design",
+             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void RegisterInstance<I>(object instance)
         {
             if (_registerInstanceCallback != null)
-                _registerInstanceCallback(typeof(I), instance);
+                _registerInstanceCallback(typeof (I), instance);
         }
 
         /// <summary>

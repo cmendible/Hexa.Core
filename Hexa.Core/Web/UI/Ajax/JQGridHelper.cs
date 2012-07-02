@@ -17,38 +17,38 @@
 
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Hexa.Core.Domain.Specification;
-
 namespace Hexa.Core.Web.UI.Ajax
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq.Expressions;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Json;
+    using System.Text;
+    using Domain.Specification;
 
     /// <summary>
     /// JQGrid Helper
     /// </summary>
     public class jqGridHelper
     {
-        private string _gridName;
+        private readonly string _gridName;
         private string _caption;
-        private string _dataType;
-        private string _pager;
         private string _cols;
-        private string _width;
-        private string _height;
-        private string _onSelect = string.Empty;
-        private string _onComplete = string.Empty;
-        private string _multiSelect = "false";
-        private string _multiSearch = "false";
-
-        private string _sortOrder = string.Empty;
-        private string _sortColumn = string.Empty;
+        private string _dataType;
         private string _firstSortOrder = "asc";
+        private string _height;
+        private string _multiSearch = "false";
+        private string _multiSelect = "false";
+        private string _onComplete = string.Empty;
+        private string _onSelect = string.Empty;
+        private string _pager;
+
+        private string _sortColumn = string.Empty;
+        private string _sortOrder = string.Empty;
+        private string _width;
 
         private jqGridHelper(string gridName)
         {
@@ -150,7 +150,7 @@ namespace Hexa.Core.Web.UI.Ajax
             #endregion
 
             int rowNum = 10; // PageSize.
-            int[] rowList = new int[] { 10, 20, 30 }; //Variable PageSize DropDownList.
+            var rowList = new[] {10, 20, 30}; //Variable PageSize DropDownList.
 
             #region script
 
@@ -163,7 +163,7 @@ namespace Hexa.Core.Web.UI.Ajax
             //script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
             //script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
             //script += string.Format("pgtext : '{0}',", pgtext) + "\r\n";
-            script += string.Format("rowNum: \"{0}\",", rowNum.ToString()) + "\r\n";
+            script += string.Format("rowNum: \"{0}\",", rowNum) + "\r\n";
             //script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
             script += string.Format("multiselect: {0}, ", _multiSelect) + "\r\n";
@@ -181,21 +181,21 @@ namespace Hexa.Core.Web.UI.Ajax
 
             script += "hidegrid: false," + "\r\n"; // Cant hide grids.
 
-            var closeOnEscape = true;
-            var closeAfterSearch = true;
+            bool closeOnEscape = true;
+            bool closeAfterSearch = true;
 
-            var searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
-                                                closeOnEscape.ToString().ToLower(),
-                                                _multiSearch,
-                                                closeAfterSearch.ToString().ToLower());
+            string searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
+                                                   closeOnEscape.ToString().ToLower(),
+                                                   _multiSearch,
+                                                   closeAfterSearch.ToString().ToLower());
 
             if (!string.IsNullOrEmpty(_sortColumn))
-                {
-                    script += string.Format("sortname: \"{0}\",", _sortColumn) + "\r\n";
+            {
+                script += string.Format("sortname: \"{0}\",", _sortColumn) + "\r\n";
 
-                    if (!string.IsNullOrEmpty(_sortOrder))
-                        script += string.Format("sortorder: \"{0}\",", _sortOrder) + "\r\n";
-                }
+                if (!string.IsNullOrEmpty(_sortOrder))
+                    script += string.Format("sortorder: \"{0}\",", _sortOrder) + "\r\n";
+            }
 
             if (!string.IsNullOrEmpty(_firstSortOrder))
                 script += string.Format("firstsortorder: \"{0}\",", _firstSortOrder) + "\r\n";
@@ -215,10 +215,10 @@ namespace Hexa.Core.Web.UI.Ajax
 
     public class jqGridData
     {
-        List<jqGridItem> _rows;
-        int _totalRecords;
-        int _pageIndex;
-        int _pageSize;
+        private readonly int _pageIndex;
+        private readonly int _pageSize;
+        private readonly List<jqGridItem> _rows;
+        private readonly int _totalRecords;
 
         public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
         {
@@ -233,34 +233,22 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public int total
         {
-            get
-                {
-                    return (int)Math.Ceiling((decimal)_totalRecords / (decimal)_pageSize);
-                }
+            get { return (int) Math.Ceiling(_totalRecords/(decimal) _pageSize); }
         }
 
         public int page
         {
-            get
-                {
-                    return _pageIndex;
-                }
+            get { return _pageIndex; }
         }
 
         public int records
         {
-            get
-                {
-                    return _totalRecords;
-                }
+            get { return _totalRecords; }
         }
 
         public IEnumerable rows
         {
-            get
-                {
-                    return _rows;
-                }
+            get { return _rows; }
         }
     }
 
@@ -271,19 +259,12 @@ namespace Hexa.Core.Web.UI.Ajax
         /// <summary>
         /// RowId de la fila.
         /// </summary>
-        public string id
-        {
-            get;
-            protected set;
-        }
+        public string id { get; protected set; }
+
         /// <summary>
         /// Fila del JQGrid.
         /// </summary>
-        public IList<string> cell
-        {
-            get;
-            protected set;
-        }
+        public IList<string> cell { get; protected set; }
 
         #endregion
 
@@ -295,42 +276,34 @@ namespace Hexa.Core.Web.UI.Ajax
             this.id = id;
             cell = values;
         }
-
     }
 
     [DataContract]
     public class jqFilter
     {
         [DataMember]
-        public string groupOp
-        {
-            get;
-            set;
-        }
+        public string groupOp { get; set; }
+
         [DataMember]
-        public jqRule[] rules
-        {
-            get;
-            set;
-        }
+        public jqRule[] rules { get; set; }
 
         internal static jqFilter Create(string jsonData)
         {
             try
-                {
-                    var serializer =
-                        new DataContractJsonSerializer(typeof(jqFilter));
-                    System.IO.StringReader reader =
-                        new System.IO.StringReader(jsonData);
-                    System.IO.MemoryStream ms =
-                        new System.IO.MemoryStream(
+            {
+                var serializer =
+                    new DataContractJsonSerializer(typeof (jqFilter));
+                var reader =
+                    new StringReader(jsonData);
+                var ms =
+                    new MemoryStream(
                         Encoding.Default.GetBytes(jsonData));
-                    return serializer.ReadObject(ms) as jqFilter;
-                }
+                return serializer.ReadObject(ms) as jqFilter;
+            }
             catch
-                {
-                    return null;
-                }
+            {
+                return null;
+            }
         }
     }
 
@@ -338,44 +311,48 @@ namespace Hexa.Core.Web.UI.Ajax
     public class jqRule
     {
         [DataMember]
-        public string field
-        {
-            get;
-            set;
-        }
+        public string field { get; set; }
+
         [DataMember]
-        public string op
-        {
-            get;
-            set;
-        }
+        public string op { get; set; }
+
         [DataMember]
-        public string data
-        {
-            get;
-            set;
-        }
+        public string data { get; set; }
     }
 
     public static class jqGridSearchHelper
     {
-        static Dictionary<string, string> _linqOperations = new Dictionary<string, string>
-        {
-            {"eq", "=="}, //equal
-            {"ne", "!="},//not equal
-            {"lt", "<"}, //less than
-            {"le", "<="},//less than or equal
-            {"gt", ">"}, //greater than
-            {"ge", ">="},//greater than or equal
-            {"bw", "{0}.StartsWith({1})"}, //begins with
-            {"bn", "!{0}.StartsWith({1})"}, //doesn"t begin with
-            {"in", "{0}.Contains({1})"}, //is in
-            {"ni", "!{0}.Contains({1})"}, //is not in
-            {"ew", "{0}.EndsWith({1})"}, //ends with
-            {"en", "!{0}.EndsWith({1})"}, //doesn"t end with
-            {"cn", "{0}.Contains({1})"}, // contains
-            {"nc", "!{0}.Contains({1})"}  //doesn"t contain
-        };
+        private static readonly Dictionary<string, string> _linqOperations = new Dictionary<string, string>
+                                                                                 {
+                                                                                     {"eq", "=="},
+                                                                                     //equal
+                                                                                     {"ne", "!="},
+                                                                                     //not equal
+                                                                                     {"lt", "<"},
+                                                                                     //less than
+                                                                                     {"le", "<="},
+                                                                                     //less than or equal
+                                                                                     {"gt", ">"},
+                                                                                     //greater than
+                                                                                     {"ge", ">="},
+                                                                                     //greater than or equal
+                                                                                     {"bw", "{0}.StartsWith({1})"},
+                                                                                     //begins with
+                                                                                     {"bn", "!{0}.StartsWith({1})"},
+                                                                                     //doesn"t begin with
+                                                                                     {"in", "{0}.Contains({1})"},
+                                                                                     //is in
+                                                                                     {"ni", "!{0}.Contains({1})"},
+                                                                                     //is not in
+                                                                                     {"ew", "{0}.EndsWith({1})"},
+                                                                                     //ends with
+                                                                                     {"en", "!{0}.EndsWith({1})"},
+                                                                                     //doesn"t end with
+                                                                                     {"cn", "{0}.Contains({1})"},
+                                                                                     // contains
+                                                                                     {"nc", "!{0}.Contains({1})"}
+                                                                                     //doesn"t contain
+                                                                                 };
 
         public static string ToLinq(string operation, string column, string value)
         {
@@ -383,58 +360,60 @@ namespace Hexa.Core.Web.UI.Ajax
             value = string.Format("\"{0}\"", value);
 
             if (operation == "bw" || operation == "bn" || operation == "ew" || operation == "en" ||
-                    operation == "cn" || operation == "nc" || operation == "in" || operation == "ni")
-                {
-                    return string.Format(_linqOperations[operation], column, value);
-                }
+                operation == "cn" || operation == "nc" || operation == "in" || operation == "ni")
+            {
+                return string.Format(_linqOperations[operation], column, value);
+            }
             else
-                {
-                    return string.Format("{0} {1} {2}", column, _linqOperations[operation], value);
-                }
+            {
+                return string.Format("{0} {1} {2}", column, _linqOperations[operation], value);
+            }
         }
 
         public static jqFilter DeserializeFilters(string filters)
         {
             return jqFilter.Create(filters);
         }
-
     }
 
     public static class LinqExtensions
     {
-        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
+        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
+                                                   string operation) where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
-        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
+        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
+                                                  string operation) where T : class
         {
             return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
-        public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation) where T : class
+        public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
+            where T : class
         {
-            ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
+            ParameterExpression parameter = Expression.Parameter(typeof (T), "p");
 
             MemberExpression memberAccess = _GetMemberAccess(column, parameter);
 
-            if (memberAccess.Type == typeof(DateTime))
-                {
-                    column += ".Date";
-                    memberAccess = _GetMemberAccess(column, parameter);
-                }
+            if (memberAccess.Type == typeof (DateTime))
+            {
+                column += ".Date";
+                memberAccess = _GetMemberAccess(column, parameter);
+            }
 
             //change param value type
             //necessary to getting bool from string
             ConstantExpression filter = Expression.Constant
-                                        (
-                                            Convert.ChangeType(value, memberAccess.Type)
-                                        );
+                (
+                    Convert.ChangeType(value, memberAccess.Type)
+                );
 
             Expression condition = null;
             LambdaExpression lambda = null;
             switch (operation)
-                {
+            {
                     //equal ==
                 case "eq":
                     condition = Expression.Equal(memberAccess, filter);
@@ -449,21 +428,21 @@ namespace Hexa.Core.Web.UI.Ajax
                     //string.Contains()
                 case "cn":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("Contains"),
+                                                typeof (String).GetMethod("Contains"),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "bw":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
+                                                typeof (String).GetMethod("StartsWith", new[] {typeof (string)}),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "bn":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
+                                                typeof (String).GetMethod("StartsWith", new[] {typeof (string)}),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);
@@ -472,14 +451,14 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 case "ew":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
+                                                typeof (String).GetMethod("EndsWith", new[] {typeof (string)}),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "en":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
+                                                typeof (String).GetMethod("EndsWith", new[] {typeof (string)}),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);
@@ -508,7 +487,7 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 case "nc":
                     condition = Expression.Call(memberAccess,
-                                                typeof(String).GetMethod("Contains"),
+                                                typeof (String).GetMethod("Contains"),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);
@@ -518,9 +497,9 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("operation");
-                }
+            }
 
-            var hLambda = Expression<Func<T, bool>>.Lambda<Func<T, bool>>(condition, parameter);
+            Expression<Func<T, bool>> hLambda = Expression.Lambda<Func<T, bool>>(condition, parameter);
 
             return new DirectSpecification<T>(hLambda);
         }
@@ -528,11 +507,11 @@ namespace Hexa.Core.Web.UI.Ajax
         private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
         {
             MemberExpression memberAccess = null;
-            foreach (var property in column.Split('.'))
-                {
-                    memberAccess = MemberExpression.Property
-                                   (memberAccess ?? (parameter as Expression), property);
-                }
+            foreach (string property in column.Split('.'))
+            {
+                memberAccess = Expression.Property
+                    (memberAccess ?? (parameter as Expression), property);
+            }
             return memberAccess;
         }
     }

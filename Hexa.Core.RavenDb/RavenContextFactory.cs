@@ -17,11 +17,11 @@
 
 #endregion
 
-using Hexa.Core.Data;
-using Raven.Client.Embedded;
-
 namespace Hexa.Core.Domain
 {
+    using Data;
+    using Raven.Client.Embedded;
+
     public class RavenContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
         private static EmbeddableDocumentStore _documenFactory;
@@ -29,26 +29,17 @@ namespace Hexa.Core.Domain
         public RavenContextFactory()
         {
             if (_documenFactory == null)
-                {
-                    _documenFactory = new EmbeddableDocumentStore()
-                    {
-                        DataDirectory = "Data"
-                    };
-                    _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
-                    _documenFactory.Initialize();
-                }
+            {
+                _documenFactory = new EmbeddableDocumentStore
+                                      {
+                                          DataDirectory = "Data"
+                                      };
+                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
+                _documenFactory.Initialize();
+            }
         }
 
-        public IUnitOfWork Create()
-        {
-            return new RavenUnitOfWork(_documenFactory.OpenSession());
-        }
-
-        // Registers Raven IDocumentStore for testing purposes.
-        public void RegisterSessionFactory(IoCContainer container)
-        {
-            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);
-        }
+        #region IDatabaseManager Members
 
         public bool DatabaseExists()
         {
@@ -57,17 +48,31 @@ namespace Hexa.Core.Domain
 
         public void CreateDatabase()
         {
-
         }
 
         public void ValidateDatabaseSchema()
         {
-
         }
 
         public void DeleteDatabase()
         {
+        }
 
+        #endregion
+
+        #region IUnitOfWorkFactory Members
+
+        public IUnitOfWork Create()
+        {
+            return new RavenUnitOfWork(_documenFactory.OpenSession());
+        }
+
+        #endregion
+
+        // Registers Raven IDocumentStore for testing purposes.
+        public void RegisterSessionFactory(IoCContainer container)
+        {
+            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);
         }
     }
 }

@@ -1,21 +1,20 @@
 ﻿//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
 
-using System;
-using System.Diagnostics;
-using System.Windows.Input;
-
 namespace Hexa.Core.Windows.Mvvm
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Input;
+
     /// <summary>
     /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
     /// </summary>
     public class RelayCommand<T> : ICommand
     {
-
         #region Declarations
 
-        readonly Predicate<T> _canExecute;
-        readonly Action<T> _execute;
+        private readonly Predicate<T> _canExecute;
+        private readonly Action<T> _execute;
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         public RelayCommand(Action<T> execute)
-        : this(execute, null)
+            : this(execute, null)
         {
         }
 
@@ -37,7 +36,6 @@ namespace Hexa.Core.Windows.Mvvm
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-
             if (execute == null)
                 throw new ArgumentNullException("execute");
             _execute = execute;
@@ -51,28 +49,26 @@ namespace Hexa.Core.Windows.Mvvm
         public event EventHandler CanExecuteChanged
         {
             add
-                {
-
-                    if (_canExecute != null)
-                        CommandManager.RequerySuggested += value;
-                }
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested += value;
+            }
             remove
-                {
-
-                    if (_canExecute != null)
-                        CommandManager.RequerySuggested -= value;
-                }
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested -= value;
+            }
         }
 
         [DebuggerStepThrough]
         public Boolean CanExecute(Object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute == null ? true : _canExecute((T) parameter);
         }
 
         public void Execute(Object parameter)
         {
-            _execute((T)parameter);
+            _execute((T) parameter);
         }
 
         #endregion
@@ -83,11 +79,10 @@ namespace Hexa.Core.Windows.Mvvm
     /// </summary>
     public class RelayCommand : ICommand
     {
-
         #region Declarations
 
-        readonly Func<Boolean> _canExecute;
-        readonly Action _execute;
+        private readonly Func<Boolean> _canExecute;
+        private readonly Action _execute;
 
         #endregion
 
@@ -98,7 +93,7 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         public RelayCommand(Action execute)
-        : this(execute, null)
+            : this(execute, null)
         {
         }
 
@@ -109,7 +104,6 @@ namespace Hexa.Core.Windows.Mvvm
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action execute, Func<Boolean> canExecute)
         {
-
             if (execute == null)
                 throw new ArgumentNullException("execute");
             _execute = execute;
@@ -123,17 +117,15 @@ namespace Hexa.Core.Windows.Mvvm
         public event EventHandler CanExecuteChanged
         {
             add
-                {
-
-                    if (_canExecute != null)
-                        CommandManager.RequerySuggested += value;
-                }
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested += value;
+            }
             remove
-                {
-
-                    if (_canExecute != null)
-                        CommandManager.RequerySuggested -= value;
-                }
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested -= value;
+            }
         }
 
         [DebuggerStepThrough]

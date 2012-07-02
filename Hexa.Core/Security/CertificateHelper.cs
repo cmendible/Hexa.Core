@@ -1,35 +1,39 @@
-using System;
-using System.Security.Cryptography.X509Certificates;
-
 namespace Hexa.Core.Security
 {
+    using System;
+    using System.IO;
+    using System.Security.Cryptography.X509Certificates;
+    using Resources;
+
     public static class CertificateHelper
     {
-
         /// <summary>
         /// Gets a X509 certificate from windows store. Asks the user for the correct certificate.
         /// </summary>
         /// <returns></returns>
         public static X509Certificate2 GetCertificate()
         {
-            X509Store st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            var st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             st.Open(OpenFlags.ReadOnly);
             X509Certificate2 card = null;
             try
+            {
+                X509Certificate2Collection col = st.Certificates;
+                X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates",
+                                                                                         "Select one to sign",
+                                                                                         X509SelectionFlag.
+                                                                                             SingleSelection);
+                if (sel.Count > 0)
                 {
-                    X509Certificate2Collection col = st.Certificates;
-                    X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates", "Select one to sign", X509SelectionFlag.SingleSelection);
-                    if (sel.Count > 0)
-                        {
-                            X509Certificate2Enumerator en = sel.GetEnumerator();
-                            en.MoveNext();
-                            card = en.Current;
-                        }
+                    X509Certificate2Enumerator en = sel.GetEnumerator();
+                    en.MoveNext();
+                    card = en.Current;
                 }
+            }
             finally
-                {
-                    st.Close();
-                }
+            {
+                st.Close();
+            }
             return card;
         }
 
@@ -51,23 +55,24 @@ namespace Hexa.Core.Security
         public static X509Certificate2 GetCertificate(StoreLocation location, string subjectName)
         {
             X509Certificate2 cert = null;
-            X509Store store = new X509Store(StoreName.My, location);
+            var store = new X509Store(StoreName.My, location);
             store.Open(OpenFlags.ReadOnly);
             try
+            {
+                X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName,
+                                                                           false);
+                if (certs.Count == 1)
                 {
-                    X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, false);
-                    if (certs.Count == 1)
-                        {
-                            cert = certs[0];
-                        }
-                    else
-                        cert = null;
+                    cert = certs[0];
                 }
+                else
+                    cert = null;
+            }
             finally
-                {
-                    if (store != null)
-                        store.Close();
-                }
+            {
+                if (store != null)
+                    store.Close();
+            }
             return cert;
         }
 
@@ -89,7 +94,7 @@ namespace Hexa.Core.Security
 
             string[] parts = file.Split('|');
             if (parts.Length > 2)
-                throw new ArgumentException(Hexa.Core.Resources.Resource.CertificateFileNameFormatNotValidFilePassword);
+                throw new ArgumentException(Resource.CertificateFileNameFormatNotValidFilePassword);
 
             string fullPath = LocateServerPath(parts[0].Trim());
 
@@ -102,8 +107,8 @@ namespace Hexa.Core.Security
 
         private static string LocateServerPath(string path)
         {
-            if (System.IO.Path.IsPathRooted(path) == false)
-                path = System.IO.Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, path);
+            if (Path.IsPathRooted(path) == false)
+                path = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, path);
 
             return path;
         }

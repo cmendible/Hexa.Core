@@ -18,33 +18,26 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-
 namespace Hexa.Core.Pooling
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+
     public interface IObjectWithExpiration<T> : IDisposable
     {
-        DateTime TimeOut
-        {
-            get;
-            set;
-        }
-        bool IsExpired
-        {
-            get;
-        }
+        DateTime TimeOut { get; set; }
+        bool IsExpired { get; }
     }
 
     public class Pool<T> : IDisposable
     {
+        private readonly bool _eagerLoad;
+        private readonly Func<Pool<T>, T> _factory;
+        private readonly Queue<T> _queue;
+        private readonly Semaphore _sync;
+        private readonly bool _usingExpirableObjects;
         private bool _isDisposed;
-        private Func<Pool<T>, T> _factory;
-        private Queue<T> _queue;
-        private Semaphore _sync;
-        private bool _usingExpirableObjects;
-        private bool _eagerLoad;
 
         public Pool(int size, Func<Pool<T>, T> factory) : this(size, factory, false)
         {
@@ -64,96 +57,96 @@ namespace Hexa.Core.Pooling
             _eagerLoad = eagerLoad;
 
             if (_eagerLoad)
-                {
-                    _PreloadItems(size);
-                }
+            {
+                _PreloadItems(size);
+            }
 
-            _usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
+            _usingExpirableObjects = typeof (IObjectWithExpiration<T>).IsAssignableFrom(typeof (T));
         }
+
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+            _isDisposed = true;
+            if (typeof (IDisposable).IsAssignableFrom(typeof (T)))
+            {
+                lock (_queue)
+                {
+                    while (_queue.Count > 0)
+                    {
+                        var disposable = (IDisposable) _queue.Dequeue();
+                        disposable.Dispose();
+                    }
+                }
+            }
+            _sync.Close();
+        }
+
+        #endregion
 
         public T Acquire()
         {
             _sync.WaitOne();
             lock (_queue)
+            {
+                T item = default(T);
+                if (!_eagerLoad)
                 {
-                    var item = default(T);
-                    if (!_eagerLoad)
-                        {
-                            if (_queue.Count > 0)
-                                item = _queue.Dequeue();
-                            else
-                                item  = _factory(this);
-                        }
+                    if (_queue.Count > 0)
+                        item = _queue.Dequeue();
                     else
-                        {
-                            item = _queue.Dequeue();
-                        }
-
-                    if (_usingExpirableObjects)
-                        {
-                            var expirableObject = item as IObjectWithExpiration<T>;
-                            if (expirableObject.IsExpired)
-                                {
-                                    try
-                                        {
-                                            expirableObject.Dispose();
-                                        }
-                                    finally
-                                        {
-                                            item = _factory(this);
-                                        }
-                                }
-                        }
-                    return item;
+                        item = _factory(this);
                 }
+                else
+                {
+                    item = _queue.Dequeue();
+                }
+
+                if (_usingExpirableObjects)
+                {
+                    var expirableObject = item as IObjectWithExpiration<T>;
+                    if (expirableObject.IsExpired)
+                    {
+                        try
+                        {
+                            expirableObject.Dispose();
+                        }
+                        finally
+                        {
+                            item = _factory(this);
+                        }
+                    }
+                }
+                return item;
+            }
         }
 
         public void Release(T item)
         {
             lock (_queue)
-                {
-                    _queue.Enqueue(item);
-                }
+            {
+                _queue.Enqueue(item);
+            }
             _sync.Release();
-        }
-
-        public void Dispose()
-        {
-            if (_isDisposed)
-                {
-                    return;
-                }
-            _isDisposed = true;
-            if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
-                {
-                    lock (_queue)
-                        {
-                            while (_queue.Count > 0)
-                                {
-                                    IDisposable disposable = (IDisposable)_queue.Dequeue();
-                                    disposable.Dispose();
-                                }
-                        }
-                }
-            _sync.Close();
-        }
-
-        public bool IsDisposed
-        {
-            get
-                {
-                    return _isDisposed;
-                }
         }
 
         private void _PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
-                {
-                    T item = _factory(this);
-                    _queue.Enqueue(item);
-                }
+            {
+                T item = _factory(this);
+                _queue.Enqueue(item);
+            }
         }
     }
-
 }

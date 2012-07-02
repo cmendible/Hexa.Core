@@ -17,16 +17,19 @@
 
 #endregion
 
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace Hexa.Core.Validation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
     [Serializable]
     public class DataAnnotationsValidator : IValidator
     {
+        #region IValidator Members
+
         public bool IsValid(object instance)
         {
             return Validate(instance).IsValid;
@@ -34,19 +37,22 @@ namespace Hexa.Core.Validation
 
         public void AssertValidation(object instance)
         {
-            var result = Validate(instance);
+            ValidationResult result = Validate(instance);
             if (!result.IsValid)
                 throw new ValidationException(instance.GetType(), result.Errors);
         }
 
         public ValidationResult Validate(object instance)
         {
-            var entityType = instance.GetType();
+            Type entityType = instance.GetType();
 
-            var errors = from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
-                         from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                         where !attribute.IsValid(prop.GetValue(instance))
-                             select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
+            IEnumerable<ValidationError> errors =
+                from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
+                from attribute in prop.Attributes.OfType<ValidationAttribute>()
+                where !attribute.IsValid(prop.GetValue(instance))
+                select
+                    new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty),
+                                        DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
                 return new ValidationResult(errors.Cast<ValidationError>());
@@ -54,6 +60,6 @@ namespace Hexa.Core.Validation
                 return new ValidationResult();
         }
 
-
+        #endregion
     }
 }

@@ -9,11 +9,11 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Base contract for Specification pattern, for more information
     /// about this pattern see http://martinfowler.com/apsupp/spec.pdf

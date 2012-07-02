@@ -17,10 +17,10 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Logging
 {
+    using System;
+
     /// <summary>
     /// logger manager contract for trace instrumentation
     /// </summary>

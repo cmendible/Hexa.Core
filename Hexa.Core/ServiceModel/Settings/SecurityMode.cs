@@ -1,5 +1,4 @@
-﻿
-namespace Hexa.Core.ServiceModel.Security
+﻿namespace Hexa.Core.ServiceModel.Security
 {
     public enum SecurityMode
     {

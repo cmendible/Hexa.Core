@@ -17,11 +17,11 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Web.UI;
-
 namespace Hexa.Core.Web.UI
 {
+    using System.Collections.Generic;
+    using System.Web.UI;
+
     public static class ControlExtensions
     {
         /// <summary>
@@ -33,35 +33,35 @@ namespace Hexa.Core.Web.UI
         public static Control FindControlRecursive(this Control parent, string controlId)
         {
             Control current = parent;
-            LinkedList<Control> controlList = new LinkedList<Control>();
+            var controlList = new LinkedList<Control>();
 
             while (current != null)
+            {
+                if (current.ID == controlId)
                 {
-                    if (current.ID == controlId)
-                        {
-                            return current;
-                        }
-
-                    foreach (Control child in current.Controls)
-                        {
-                            if (child.ID == controlId)
-                                {
-                                    return child;
-                                }
-                            if (child.HasControls())
-                                {
-                                    controlList.AddLast(child);
-                                }
-                        }
-
-                    if (controlList.Count == 0)
-                        {
-                            return null;
-                        }
-
-                    current = controlList.First.Value;
-                    controlList.Remove(current);
+                    return current;
                 }
+
+                foreach (Control child in current.Controls)
+                {
+                    if (child.ID == controlId)
+                    {
+                        return child;
+                    }
+                    if (child.HasControls())
+                    {
+                        controlList.AddLast(child);
+                    }
+                }
+
+                if (controlList.Count == 0)
+                {
+                    return null;
+                }
+
+                current = controlList.First.Value;
+                controlList.Remove(current);
+            }
 
             return null;
         }
@@ -77,15 +77,15 @@ namespace Hexa.Core.Web.UI
         {
             // If control is Page or null return false.
             if (control == null || control is Page)
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
 
             // Return true if inside an INamingContainer
             if (control is INamingContainer)
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
 
             return IsInNamingContainer(control.NamingContainer);
         }

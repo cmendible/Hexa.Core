@@ -17,14 +17,15 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace System
 {
+    using Collections.Generic;
+    using Globalization;
+    using Linq;
+    using Security.Cryptography;
+    using Text;
+    using Text.RegularExpressions;
+
     public static class MD5Helper
     {
         public static string CalculateMD5Hash(this string input)
@@ -35,56 +36,57 @@ namespace System
             // step 1, calculate MD5 hash from input
             using (MD5 md5 = MD5.Create())
             {
-                inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                inputBytes = Encoding.ASCII.GetBytes(input);
                 hash = md5.ComputeHash(inputBytes);
             }
 
             // step 2, convert byte array to hex string
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
-                {
-                    sb.Append(hash[i].ToString("X2", System.Globalization.CultureInfo.InvariantCulture));
-                }
+            {
+                sb.Append(hash[i].ToString("X2", CultureInfo.InvariantCulture));
+            }
             return sb.ToString();
         }
     }
 
     public static class StringSlugExtension
     {
-        private static Dictionary<string, string> rules1;
-        private static Dictionary<string, string> rules2;
+        private static readonly Dictionary<string, string> rules1;
+        private static readonly Dictionary<string, string> rules2;
 
         static StringSlugExtension()
         {
-            var invalidChars = "àáâãäåçèéêëìíîïñòóôõöøùúûüýÿ".ToCharArray().ToList();
-            var validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
+            List<char> invalidChars = "àáâãäåçèéêëìíîïñòóôõöøùúûüýÿ".ToCharArray().ToList();
+            List<char> validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
             rules1 = invalidChars.ToDictionary(i => i.ToString(), i => validChars[invalidChars.IndexOf(i)].ToString());
 
-            invalidChars = new char[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' } .ToList();
-            var validStrings = new string[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" } .ToList();
+            invalidChars = new[] {'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')'}.ToList();
+            List<string> validStrings =
+                new[] {"TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", ""}.ToList();
             rules2 = invalidChars.ToDictionary(i => i.ToString(), i => validStrings[invalidChars.IndexOf(i)]);
         }
 
         private static string _StrTr(this string source, Dictionary<string, string> replacements)
         {
-            string[] finds = new string[replacements.Keys.Count];
+            var finds = new string[replacements.Keys.Count];
 
             replacements.Keys.CopyTo(finds, 0);
 
             string findpattern = string.Join("|", finds);
 
-            Regex regex = new Regex(findpattern);
+            var regex = new Regex(findpattern);
 
             MatchEvaluator evaluator =
                 delegate(Match m)
-            {
-                string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
+                    {
+                        string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
 
-                if (replacements.ContainsKey(match))
-                    return replacements[match];
-                else
-                    return match;
-            };
+                        if (replacements.ContainsKey(match))
+                            return replacements[match];
+                        else
+                            return match;
+                    };
 
             return regex.Replace(source, evaluator);
         }
@@ -94,7 +96,7 @@ namespace System
         /// </summary>
         public static string Slugify(this string phrase)
         {
-            var str = phrase.ToLower();
+            string str = phrase.ToLower();
 
             // Transform Invalid Chars.
             str = str._StrTr(rules1);
@@ -113,6 +115,5 @@ namespace System
 
             return str;
         }
-
     }
 }

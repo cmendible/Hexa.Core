@@ -1,31 +1,32 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Web.Caching;
-using System.Web.UI;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     /// <summary>
     /// DynamicImage
     /// </summary>
     [DefaultProperty("ImageFile")]
     [ToolboxData("<{0}:DynamicImage runat=server></{0}:DynamicImage>")]
-    public class DynamicImage : System.Web.UI.WebControls.Image
+    public class DynamicImage : Image
     {
         private const string BaseUrl = "~/CachedImageService.axd?data={0}";
+
+        private System.Drawing.Image _image;
+        private byte[] _imageBytes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicImage"/> class.
         /// </summary>
         public DynamicImage()
         {
-            this.PreRender += new EventHandler(DynamicImage_PreRender);
+            PreRender += DynamicImage_PreRender;
         }
-
-        private System.Drawing.Image _image;
-        private byte[] _imageBytes;
 
         /// <summary>
         /// Gets or sets the storage key.
@@ -33,14 +34,8 @@ namespace Hexa.Core.Web.UI.Controls
         /// <value>The storage key.</value>
         protected string StorageKey
         {
-            get
-                {
-                    return Convert.ToString(ViewState["StorageKey"], CultureInfo.InvariantCulture);
-                }
-            set
-                {
-                    ViewState["StorageKey"] = value;
-                }
+            get { return Convert.ToString(ViewState["StorageKey"], CultureInfo.InvariantCulture); }
+            set { ViewState["StorageKey"] = value; }
         }
 
         /// <summary>
@@ -50,14 +45,47 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>The location of an image to display in the <see cref="T:System.Web.UI.WebControls.Image"/> control.</returns>
         public override string ImageUrl
         {
-            get
-                {
-                    return GetImageUrl();
-                }
+            get { return GetImageUrl(); }
+            set { throw new NotSupportedException(); }
+        }
+
+        /// <summary>
+        /// Gets or sets the image file.
+        /// </summary>
+        /// <value>The image file.</value>
+        public string ImageFile
+        {
+            get { return Convert.ToString(ViewState["ImageFile"], CultureInfo.InvariantCulture); }
+            set { ViewState["ImageFile"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the image bytes.
+        /// </summary>
+        /// <value>The image bytes.</value>
+        [SuppressMessage("Microsoft.Performance",
+            "CA1819:PropertiesShouldNotReturnArrays"), Browsable(false)]
+        public byte[] ImageBytes
+        {
+            get { return _imageBytes; }
             set
-                {
-                    throw new NotSupportedException();
-                }
+            {
+                Page.Cache.Remove(StorageKey);
+                ViewState["StorageKey"] = null;
+                _imageBytes = value;
+                Visible = true;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the image.
+        /// </summary>
+        /// <value>The image.</value>
+        [Browsable(false)]
+        public System.Drawing.Image Image
+        {
+            get { return _image; }
+            set { _image = value; }
         }
 
         /// <summary>
@@ -69,79 +97,26 @@ namespace Hexa.Core.Web.UI.Controls
             string url = "";
 
             // Check ImageFile
-            if (ImageFile.Length >0)
-                {
-                    url = ImageFile;
-                }
+            if (ImageFile.Length > 0)
+            {
+                url = ImageFile;
+            }
             else if (ImageBytes != null || Image != null)
+            {
+                if (StorageKey.Length == 0)
                 {
-                    if (StorageKey.Length == 0)
-                        {
-                            Guid g = Guid.NewGuid();
-                            StorageKey = g.ToString();
-                        }
-                    return GetCachedImageUrl();
+                    Guid g = Guid.NewGuid();
+                    StorageKey = g.ToString();
                 }
+                return GetCachedImageUrl();
+            }
             else
-                {
-                    this.Visible = false;
-                    return string.Empty;
-                }
+            {
+                Visible = false;
+                return string.Empty;
+            }
 
             return url;
-        }
-
-        /// <summary>
-        /// Gets or sets the image file.
-        /// </summary>
-        /// <value>The image file.</value>
-        public string ImageFile
-        {
-            get
-                {
-                    return Convert.ToString(ViewState["ImageFile"], CultureInfo.InvariantCulture);
-                }
-            set
-                {
-                    ViewState["ImageFile"] = value;
-                }
-        }
-
-        /// <summary>
-        /// Gets or sets the image bytes.
-        /// </summary>
-        /// <value>The image bytes.</value>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays"), Browsable(false)]
-        public byte[] ImageBytes
-        {
-            get
-                {
-                    return _imageBytes;
-                }
-            set
-                {
-                    Page.Cache.Remove(StorageKey);
-                    ViewState["StorageKey"] = null;
-                    _imageBytes = value;
-                    this.Visible = true;
-                }
-        }
-
-        /// <summary>
-        /// Gets or sets the image.
-        /// </summary>
-        /// <value>The image.</value>
-        [Browsable(false)]
-        public System.Drawing.Image Image
-        {
-            get
-                {
-                    return _image;
-                }
-            set
-                {
-                    _image = value;
-                }
         }
 
         /// <summary>
@@ -195,15 +170,15 @@ namespace Hexa.Core.Web.UI.Controls
         private void StoreData(object data)
         {
             if (Page.Cache[StorageKey] == null)
-                {
-                    Page.Cache.Add(StorageKey,
-                                   data,
-                                   null,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(5),
-                                   CacheItemPriority.High,
-                                   null);
-                }
+            {
+                Page.Cache.Add(StorageKey,
+                               data,
+                               null,
+                               Cache.NoAbsoluteExpiration,
+                               TimeSpan.FromMinutes(5),
+                               CacheItemPriority.High,
+                               null);
+            }
         }
     }
 }

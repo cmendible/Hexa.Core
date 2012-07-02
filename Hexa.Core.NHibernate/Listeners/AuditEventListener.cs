@@ -17,18 +17,20 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hexa.Core.Security;
-using NHibernate.Event;
-using NHibernate.Event.Default;
-using NHibernate.Persister.Entity;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NHibernate.Event;
+    using NHibernate.Event.Default;
+    using NHibernate.Persister.Entity;
+    using Security;
+
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
     {
+        #region IPreInsertEventListener Members
+
         public bool OnPreInsert(PreInsertEvent e)
         {
             var auditable = e.Entity as IAuditableEntity;
@@ -37,9 +39,9 @@ namespace Hexa.Core.Domain
 
             var identity = ApplicationContext.User.Identity as ICoreIdentity;
             Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var userUniqueId = identity.Id;
+            string userUniqueId = identity.Id;
 
-            var createdAt = DateTime.Now;
+            DateTime createdAt = DateTime.Now;
 
             _Set(e.Persister, e.State, "CreatedBy", userUniqueId);
             _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
@@ -54,6 +56,10 @@ namespace Hexa.Core.Domain
             return false;
         }
 
+        #endregion
+
+        #region IPreUpdateEventListener Members
+
         public bool OnPreUpdate(PreUpdateEvent e)
         {
             var auditable = e.Entity as IAuditableEntity;
@@ -62,27 +68,30 @@ namespace Hexa.Core.Domain
 
             var identity = ApplicationContext.User.Identity as ICoreIdentity;
             Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var userUniqueId = identity.Id;
+            string userUniqueId = identity.Id;
 
-            var updatedAt = DateTime.Now;
+            DateTime updatedAt = DateTime.Now;
 
             var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
             if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(e.Persister.EntityName))
+            {
+                string tableName = e.Persister.EntityName;
+                int[] changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity,
+                                                                   e.Session.GetSessionImplementation());
+                foreach (int idx in changedPropertiesIdx)
                 {
-                    var tableName = e.Persister.EntityName;
-                    var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
-                    foreach (var idx in changedPropertiesIdx)
-                        {
-                            var propertyName = e.Persister.PropertyNames[idx];
-                            var oldValue = e.OldState[idx];
-                            var newValue = e.State[idx];
+                    string propertyName = e.Persister.PropertyNames[idx];
+                    object oldValue = e.OldState[idx];
+                    object newValue = e.State[idx];
 
-                            var auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(),
-                                             propertyName, oldValue, newValue, userUniqueId, updatedAt);
+                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(),
+                                                                                      propertyName, oldValue, newValue,
+                                                                                      userUniqueId,
+                                                                                      updatedAt);
 
-                            e.Session.Save(auditTrail);
-                        }
+                    e.Session.Save(auditTrail);
                 }
+            }
 
             _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
             _Set(e.Persister, e.State, "UpdatedAt", updatedAt);
@@ -92,9 +101,11 @@ namespace Hexa.Core.Domain
             return false;
         }
 
+        #endregion
+
         private void _Set(IEntityPersister persister, object[] state, string propertyName, object value)
         {
-            var index = Array.IndexOf(persister.PropertyNames, propertyName);
+            int index = Array.IndexOf(persister.PropertyNames, propertyName);
             if (index == -1)
                 return;
             state[index] = value;
@@ -108,11 +119,11 @@ namespace Hexa.Core.Domain
         {
             base.DirtyCheck(e);
             if (e.DirtyProperties != null &&
-                    e.DirtyProperties.Any() &&
-                    //IAuditableEntity is my inteface for audited entities
-                    e.Entity is IAuditableEntity)
+                e.DirtyProperties.Any() &&
+                //IAuditableEntity is my inteface for audited entities
+                e.Entity is IAuditableEntity)
                 e.DirtyProperties = e.DirtyProperties
-                                    .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
+                    .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
         }
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)

@@ -17,88 +17,59 @@
 
 #endregion
 
-using System;
-using System.IO;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Web;
-using log4net;
-using log4net.Config;
-
 namespace Hexa.Core.Logging
 {
+    using System;
+    using System.IO;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    using System.Web;
+    using log4net;
+    using log4net.Config;
+
     public class Log4NetLoggerFactory : ILoggerFactory
     {
-        private class UserLogContext
-        {
-            public override string ToString()
-            {
-                try
-                    {
-
-                        if (HttpContext.Current == null)
-                            return null;
-
-                        if (HttpContext.Current.User == null)
-                            return null;
-
-                        if (HttpContext.Current.User.Identity == null)
-                            return null;
-
-                        return HttpContext.Current.User.Identity.Name;
-                    }
-                catch
-                    {
-                        return null;
-                    }
-            }
-        }
-
-        private class UserHostAddressLogContext
-        {
-            public override string ToString()
-            {
-                try
-                    {
-
-                        if (HttpContext.Current != null && HttpContext.Current.Request != null)
-                            return HttpContext.Current.Request.UserHostAddress;
-
-                        var context = OperationContext.Current;
-                        if (context != null && context.IncomingMessageProperties != null && context.IncomingMessageProperties.ContainsKey(RemoteEndpointMessageProperty.Name))
-                            {
-                                var endpointProperty = context.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-                                return endpointProperty.Address;
-                            }
-
-                        return null;
-                    }
-                catch
-                    {
-                        return null;
-                    }
-            }
-        }
-
-        private class UserSessionIdLogContext
-        {
-            public override string ToString()
-            {
-                try
-                    {
-                        if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Session != null)
-                            return HttpContext.Current.Session.SessionID;
-
-                        return null;
-                    }
-                catch
-                    {
-                        return null;
-                    }
-            }
-        }
-
         private static bool _initialized;
+
+        public Log4NetLoggerFactory()
+            : this(null)
+        {
+        }
+
+        public Log4NetLoggerFactory(FileInfo configFile)
+        {
+            if (!_initialized)
+            {
+                if (configFile != null)
+                    XmlConfigurator.ConfigureAndWatch(configFile);
+                else
+                    XmlConfigurator.Configure();
+
+                // Register log4net context loggers..
+                if (_isWebContext())
+                {
+                    GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
+                    GlobalContext.Properties["User"] = new UserLogContext();
+                    GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
+                }
+
+                _initialized = true;
+            }
+        }
+
+        #region ILoggerFactory Members
+
+        public ILogger Create(Type type)
+        {
+            return new Log4NetLogger(type);
+        }
+
+        public ILogger Create(string typeName)
+        {
+            return new Log4NetLogger(typeName);
+        }
+
+        #endregion
 
         private static bool _isWebContext()
         {
@@ -111,40 +82,87 @@ namespace Hexa.Core.Logging
             return false;
         }
 
-        public Log4NetLoggerFactory()
-        : this(null)
-        {
-        }
+        #region Nested type: UserHostAddressLogContext
 
-        public Log4NetLoggerFactory(FileInfo configFile)
+        private class UserHostAddressLogContext
         {
-            if (!_initialized)
+            public override string ToString()
+            {
+                try
                 {
-                    if (configFile != null)
-                        XmlConfigurator.ConfigureAndWatch(configFile);
-                    else
-                        XmlConfigurator.Configure();
+                    if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                        return HttpContext.Current.Request.UserHostAddress;
 
-                    // Register log4net context loggers..
-                    if (_isWebContext())
-                        {
-                            GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
-                            GlobalContext.Properties["User"] = new UserLogContext();
-                            GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
-                        }
+                    OperationContext context = OperationContext.Current;
+                    if (context != null && context.IncomingMessageProperties != null &&
+                        context.IncomingMessageProperties.ContainsKey(RemoteEndpointMessageProperty.Name))
+                    {
+                        var endpointProperty =
+                            context.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as
+                            RemoteEndpointMessageProperty;
+                        return endpointProperty.Address;
+                    }
 
-                    _initialized = true;
+                    return null;
                 }
+                catch
+                {
+                    return null;
+                }
+            }
         }
 
-        public ILogger Create(Type type)
+        #endregion
+
+        #region Nested type: UserLogContext
+
+        private class UserLogContext
         {
-            return new Log4NetLogger(type);
+            public override string ToString()
+            {
+                try
+                {
+                    if (HttpContext.Current == null)
+                        return null;
+
+                    if (HttpContext.Current.User == null)
+                        return null;
+
+                    if (HttpContext.Current.User.Identity == null)
+                        return null;
+
+                    return HttpContext.Current.User.Identity.Name;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
 
-        public ILogger Create(string typeName)
+        #endregion
+
+        #region Nested type: UserSessionIdLogContext
+
+        private class UserSessionIdLogContext
         {
-            return new Log4NetLogger(typeName);
+            public override string ToString()
+            {
+                try
+                {
+                    if (HttpContext.Current != null && HttpContext.Current.Request != null &&
+                        HttpContext.Current.Session != null)
+                        return HttpContext.Current.Session.SessionID;
+
+                    return null;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
+
+        #endregion
     }
 }

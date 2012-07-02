@@ -9,11 +9,11 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Helper for rebinder parameters without use Invoke method in expressions
     /// ( this methods is not supported in all linq query providers,
@@ -31,16 +31,19 @@ namespace Hexa.Core.Domain.Specification
         {
             this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
         }
+
         /// <summary>
         /// Replate parameters in expression with a Map information
         /// </summary>
         /// <param name="map">Map information</param>
         /// <param name="exp">Expression to replace parameters</param>
         /// <returns>Expression with parameters replaced</returns>
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
+        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map,
+                                                   Expression exp)
         {
             return new ParameterRebinder(map).Visit(exp);
         }
+
         /// <summary>
         /// Visit pattern method
         /// </summary>
@@ -50,13 +53,11 @@ namespace Hexa.Core.Domain.Specification
         {
             ParameterExpression replacement;
             if (map.TryGetValue(p, out replacement))
-                {
-                    p = replacement;
-                }
+            {
+                p = replacement;
+            }
 
             return base.VisitParameter(p);
         }
-
     }
-
 }

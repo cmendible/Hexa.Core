@@ -17,10 +17,11 @@
 
 #endregion
 
-using System.Collections.Generic;
-
 namespace Hexa.Core.Validation
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Validation Provider Interface.
     /// </summary>
@@ -44,7 +45,7 @@ namespace Hexa.Core.Validation
     /// Validation Provider Interface for TEntity.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IValidationInfoProvider<TEntity> : IValidationInfoProvider
     {
     }

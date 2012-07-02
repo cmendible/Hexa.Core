@@ -17,71 +17,76 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Data.Linq;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Caching;
-using log4net;
-
 namespace Hexa.Core.Web.UI
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Linq;
+    using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Caching;
+    using log4net;
+
     public static class LinqExtensions
     {
-        private static ILog _Log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IList<T> LinqCache<T>(this Table<T> query) where T : class
         {
-            string tableName = query.Context.Mapping.GetTable(typeof(T)).TableName;
+            string tableName = query.Context.Mapping.GetTable(typeof (T)).TableName;
             IList<T> result = HttpContext.Current.Cache[tableName] as List<T>;
 
             if (result == null)
+            {
+                try
                 {
-                    try
-                        {
-                            using (SqlConnection cn = new SqlConnection(query.Context.Connection.ConnectionString))
-                            {
-                                cn.Open();
-                                SqlCommand cmd = new SqlCommand(query.Context.GetCommand(query).CommandText, cn);
-                                cmd.Notification = null;
-                                cmd.NotificationAutoEnlist = true;
+                    using (var cn = new SqlConnection(query.Context.Connection.ConnectionString))
+                    {
+                        cn.Open();
+                        var cmd = new SqlCommand(query.Context.GetCommand(query).CommandText, cn);
+                        cmd.Notification = null;
+                        cmd.NotificationAutoEnlist = true;
 
-                                _Log.DebugFormat("Attempting to enable sql cache dependency notifications for table {0}", tableName);
+                        _Log.DebugFormat("Attempting to enable sql cache dependency notifications for table {0}",
+                                         tableName);
 
-                                SqlCacheDependencyAdmin.EnableNotifications(query.Context.Connection.ConnectionString);
+                        SqlCacheDependencyAdmin.EnableNotifications(query.Context.Connection.ConnectionString);
 
-                                string[] tables = SqlCacheDependencyAdmin.GetTablesEnabledForNotifications(query.Context.Connection.ConnectionString);
+                        string[] tables =
+                            SqlCacheDependencyAdmin.GetTablesEnabledForNotifications(
+                                query.Context.Connection.ConnectionString);
 
-                                if (!tables.Contains(tableName))
-                                    SqlCacheDependencyAdmin.EnableTableForNotifications(query.Context.Connection.ConnectionString, tableName);
+                        if (!tables.Contains(tableName))
+                            SqlCacheDependencyAdmin.EnableTableForNotifications(
+                                query.Context.Connection.ConnectionString, tableName);
 
-                                _Log.DebugFormat("Sql cache dependency notifications for table {0} is enabled.", tableName);
+                        _Log.DebugFormat("Sql cache dependency notifications for table {0} is enabled.", tableName);
 
-                                SqlCacheDependency dependency = new SqlCacheDependency(cmd);
-                                cmd.ExecuteNonQuery();
+                        var dependency = new SqlCacheDependency(cmd);
+                        cmd.ExecuteNonQuery();
 
-                                result = query.ToList();
-                                HttpContext.Current.Cache.Insert(tableName, result, dependency);
+                        result = query.ToList();
+                        HttpContext.Current.Cache.Insert(tableName, result, dependency);
 
-                                _Log.DebugFormat("Table {0} is cached.", tableName);
-                            }
-                        }
-                    catch (Exception ex)
-                        {
-                            result = query.Context.GetTable<T>().ToList();
-                            HttpContext.Current.Cache.Insert(tableName, result);
-
-                            string msg = string.Format(CultureInfo.InvariantCulture,
-                                                       "Table {0} is cached without SqlCacheDependency!!!", tableName);
-
-                            _Log.Warn(msg, ex);
-                        }
+                        _Log.DebugFormat("Table {0} is cached.", tableName);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    result = query.Context.GetTable<T>().ToList();
+                    HttpContext.Current.Cache.Insert(tableName, result);
+
+                    string msg = string.Format(CultureInfo.InvariantCulture,
+                                               "Table {0} is cached without SqlCacheDependency!!!", tableName);
+
+                    _Log.Warn(msg, ex);
+                }
+            }
             return result;
         }
     }

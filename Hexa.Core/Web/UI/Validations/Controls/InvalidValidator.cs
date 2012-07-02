@@ -17,10 +17,10 @@
 
 #endregion
 
-using System.Web.UI;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System.Web.UI;
+
     /// <summary>
     /// Validator used to show a custom message in a ValidationSummary Control.
     /// </summary>
@@ -35,6 +35,8 @@ namespace Hexa.Core.Web.UI.Controls
             ErrorMessage = message;
         }
 
+        #region IValidator Members
+
         /// <summary>
         /// When implemented by a class, gets or sets the error message text generated when the condition being validated fails.
         /// </summary>
@@ -42,11 +44,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>
         /// The error message to generate.
         /// </returns>
-        public string ErrorMessage
-        {
-            get;
-            set;
-        }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// When implemented by a class, gets or sets a value indicating whether the user-entered content in the specified control passes validation.
@@ -56,14 +54,8 @@ namespace Hexa.Core.Web.UI.Controls
         /// </returns>
         public bool IsValid
         {
-            get
-                {
-                    return false;
-                }
-            set
-                {
-                    return;
-                }
+            get { return false; }
+            set { return; }
         }
 
         /// <summary>
@@ -73,5 +65,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             return;
         }
+
+        #endregion
     }
 }

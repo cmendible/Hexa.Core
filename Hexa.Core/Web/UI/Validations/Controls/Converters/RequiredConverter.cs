@@ -1,6 +1,4 @@
-using System.Web.UI.WebControls;
 
-using Hexa.Core.Validation;
 
 #region License
 
@@ -23,6 +21,9 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System.Web.UI.WebControls;
+    using Validation;
+
     /// <summary>
     /// Class used to convert from a Required attribute to a BaseValidator
     /// </summary>

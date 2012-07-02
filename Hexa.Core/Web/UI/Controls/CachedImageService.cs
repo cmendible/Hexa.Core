@@ -1,8 +1,9 @@
-using System.Drawing.Imaging;
-using System.Web;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Web;
+
     /// <summary>
     /// Cached Image Service
     /// Add the following configuration to web.config
@@ -13,6 +14,8 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     public class CachedImageService : IHttpHandler
     {
+        #region IHttpHandler Members
+
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
         /// </summary>
@@ -20,10 +23,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.</returns>
         public bool IsReusable
         {
-            get
-                {
-                    return true;
-                }
+            get { return true; }
         }
 
         /// <summary>
@@ -36,32 +36,34 @@ namespace Hexa.Core.Web.UI.Controls
 
             // Retrieve the DATA query string parameter
             if (context.Request["data"] == null)
-                {
-                    WriteError();
-                    return;
-                }
-            else storageKey = context.Request["data"].ToString();
+            {
+                WriteError();
+                return;
+            }
+            else storageKey = context.Request["data"];
 
             // Grab data from the cache
             object o = HttpContext.Current.Cache[storageKey];
             if (o == null)
-                {
-                    WriteError();
-                    return;
-                }
+            {
+                WriteError();
+                return;
+            }
 
             var bytes = o as byte[];
             if (bytes != null)
-                {
-                    WriteImageBytes(bytes);
-                }
+            {
+                WriteImageBytes(bytes);
+            }
             else
-                {
-                    var image = o as System.Drawing.Image;
-                    if (image != null)
-                        WriteImage(image);
-                }
+            {
+                var image = o as Image;
+                if (image != null)
+                    WriteImage(image);
+            }
         }
+
+        #endregion
 
         /// <summary>
         /// Writes the image bytes.
@@ -77,7 +79,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// Writes the image.
         /// </summary>
         /// <param name="img">The img.</param>
-        private static void WriteImage(System.Drawing.Image img)
+        private static void WriteImage(Image img)
         {
             HttpContext.Current.Response.ContentType = "image/jpeg";
             img.Save(HttpContext.Current.Response.OutputStream, ImageFormat.Jpeg);
@@ -91,5 +93,4 @@ namespace Hexa.Core.Web.UI.Controls
             HttpContext.Current.Response.Write("No image specified");
         }
     }
-
 }

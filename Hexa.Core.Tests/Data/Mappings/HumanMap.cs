@@ -1,9 +1,8 @@
-﻿
-using Hexa.Core.Domain;
-using Hexa.Core.Tests.Domain;
-
-namespace Hexa.Core.Tests.Data
+﻿namespace Hexa.Core.Tests.Data
 {
+    using Core.Domain;
+    using Domain;
+
     public class HumanMap : AuditableRootEntityMap<Human>
     {
         public HumanMap()

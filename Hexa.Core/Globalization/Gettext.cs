@@ -44,16 +44,25 @@
  * program can be used.
  */
 
-using System; /* String, InvalidOperationException, Console */
-using System.Collections; /* Hashtable, ICollection, IEnumerator, IDictionaryEnumerator */
-using System.Globalization; /* CultureInfo */
-using System.IO; /* Path, FileNotFoundException, Stream */
-using System.Reflection; /* Assembly, ConstructorInfo */
-using System.Resources; /* ResourceManager, ResourceSet, IResourceReader */
-using System.Text; /* StringBuilder */
+/* String, InvalidOperationException, Console */
+    /* Hashtable, ICollection, IEnumerator, IDictionaryEnumerator */
+    /* CultureInfo */
+    /* Path, FileNotFoundException, Stream */
+    /* Assembly, ConstructorInfo */
+    /* ResourceManager, ResourceSet, IResourceReader */
+
+/* StringBuilder */
 
 namespace GNU.Gettext
 {
+    using System;
+    using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.IO;
+    using System.Reflection;
+    using System.Resources;
+    using System.Text;
 
     /// <summary>
     /// Each instance of this class can be used to lookup translations for a
@@ -61,11 +70,16 @@ namespace GNU.Gettext
     /// in several assemblies, from most specific over territory-neutral to
     /// language-neutral.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
+        MessageId = "Gettext")]
     public class GettextResourceManager : ResourceManager
     {
-
         // ======================== Public Constructors ========================
+
+        private static readonly GettextResourceSet[] EmptyResourceSetArray = new GettextResourceSet[0];
+
+        // Cache for already loaded GettextResourceSet cascades.
+        private readonly Hashtable /* CultureInfo -> GettextResourceSet[] */ Loaded = new Hashtable();
 
         /// <summary>
         /// Constructor.
@@ -73,7 +87,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
         public GettextResourceManager(String baseName)
-        : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
+            : base(baseName, Assembly.GetCallingAssembly(), typeof (GettextResourceSet))
         {
         }
 
@@ -83,7 +97,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
         public GettextResourceManager(String baseName, Assembly assembly)
-        : base(baseName, assembly, typeof(GettextResourceSet))
+            : base(baseName, assembly, typeof (GettextResourceSet))
         {
         }
 
@@ -95,7 +109,8 @@ namespace GNU.Gettext
         // This is like Assembly.GetSatelliteAssembly, but uses resourceName
         // instead of assembly.GetName().Name, and works around a bug in
         // mono-0.28.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
+        [SuppressMessage("Microsoft.Reliability",
+            "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
         private static Assembly GetSatelliteAssembly(Assembly assembly, String resourceName, CultureInfo culture)
         {
             string culturePath = Path.DirectorySeparatorChar + culture.Name;
@@ -133,58 +148,58 @@ namespace GNU.Gettext
             // we want to support multi-domain PO files in the same format...
             bool valid = (resourceName.Length > 0);
             for (int i = 0; valid && i < resourceName.Length; i++)
-                {
-                    char c = resourceName[i];
-                    if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_')
-                            || (i > 0 && c >= '0' && c <= '9')))
-                        valid = false;
-                }
+            {
+                char c = resourceName[i];
+                if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_')
+                      || (i > 0 && c >= '0' && c <= '9')))
+                    valid = false;
+            }
             if (valid)
                 return resourceName;
             else
+            {
+                // Use hexadecimal escapes, using the underscore as escape character.
+                String hexdigit = "0123456789abcdef";
+                var b = new StringBuilder();
+                b.Append("__UESCAPED__");
+                for (int i = 0; i < resourceName.Length; i++)
                 {
-                    // Use hexadecimal escapes, using the underscore as escape character.
-                    String hexdigit = "0123456789abcdef";
-                    StringBuilder b = new StringBuilder();
-                    b.Append("__UESCAPED__");
-                    for (int i = 0; i < resourceName.Length; i++)
-                        {
-                            char c = resourceName[i];
-                            if (c >= 0xd800 && c < 0xdc00
-                                    && i + 1 < resourceName.Length
-                                    && resourceName[i + 1] >= 0xdc00 && resourceName[i + 1] < 0xe000)
-                                {
-                                    // Combine two UTF-16 words to a character.
-                                    char c2 = resourceName[i + 1];
-                                    int uc = 0x10000 + ((c - 0xd800) << 10) + (c2 - 0xdc00);
-                                    b.Append('_');
-                                    b.Append('U');
-                                    b.Append(hexdigit[(uc >> 28) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 24) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 20) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 16) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 12) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 8) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 4) & 0x0f]);
-                                    b.Append(hexdigit[uc & 0x0f]);
-                                    i++;
-                                }
-                            else if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-                                       || (c >= '0' && c <= '9')))
-                                {
-                                    int uc = c;
-                                    b.Append('_');
-                                    b.Append('u');
-                                    b.Append(hexdigit[(uc >> 12) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 8) & 0x0f]);
-                                    b.Append(hexdigit[(uc >> 4) & 0x0f]);
-                                    b.Append(hexdigit[uc & 0x0f]);
-                                }
-                            else
-                                b.Append(c);
-                        }
-                    return b.ToString();
+                    char c = resourceName[i];
+                    if (c >= 0xd800 && c < 0xdc00
+                        && i + 1 < resourceName.Length
+                        && resourceName[i + 1] >= 0xdc00 && resourceName[i + 1] < 0xe000)
+                    {
+                        // Combine two UTF-16 words to a character.
+                        char c2 = resourceName[i + 1];
+                        int uc = 0x10000 + ((c - 0xd800) << 10) + (c2 - 0xdc00);
+                        b.Append('_');
+                        b.Append('U');
+                        b.Append(hexdigit[(uc >> 28) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 24) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 20) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 16) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 12) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 8) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 4) & 0x0f]);
+                        b.Append(hexdigit[uc & 0x0f]);
+                        i++;
+                    }
+                    else if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+                               || (c >= '0' && c <= '9')))
+                    {
+                        int uc = c;
+                        b.Append('_');
+                        b.Append('u');
+                        b.Append(hexdigit[(uc >> 12) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 8) & 0x0f]);
+                        b.Append(hexdigit[(uc >> 4) & 0x0f]);
+                        b.Append(hexdigit[uc & 0x0f]);
+                    }
+                    else
+                        b.Append(c);
                 }
+                return b.ToString();
+            }
         }
 
         /// <summary>
@@ -199,89 +214,86 @@ namespace GNU.Gettext
         /// <exception cref="NullReferenceException">
         ///   The type has no no-arguments constructor.
         /// </exception>
-        private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, String resourceName, CultureInfo culture)
+        private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, String resourceName,
+                                                                 CultureInfo culture)
         {
             // We expect a class with a culture dependent class name.
-            Type clazz = satelliteAssembly.GetType(ConstructClassName(resourceName) + "_" + culture.Name.Replace('-', '_'));
+            Type clazz =
+                satelliteAssembly.GetType(ConstructClassName(resourceName) + "_" + culture.Name.Replace('-', '_'));
             // We expect it has a no-argument constructor, and invoke it.
             ConstructorInfo constructor = clazz.GetConstructor(Type.EmptyTypes);
-            return (GettextResourceSet)constructor.Invoke(null);
+            return (GettextResourceSet) constructor.Invoke(null);
         }
-
-        private static GettextResourceSet[] EmptyResourceSetArray = new GettextResourceSet[0];
-
-        // Cache for already loaded GettextResourceSet cascades.
-        private Hashtable /* CultureInfo -> GettextResourceSet[] */ Loaded = new Hashtable();
 
         /// <summary>
         /// Returns the array of <c>GettextResourceSet</c>s for a given culture,
         /// loading them if necessary, and maintaining the cache.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private GettextResourceSet[] GetResourceSetsFor(CultureInfo culture)
         {
             //Console.WriteLine(">> GetResourceSetsFor "+culture);
             // Look up in the cache.
-            GettextResourceSet[] result = (GettextResourceSet[])Loaded[culture];
+            var result = (GettextResourceSet[]) Loaded[culture];
             if (result == null)
+            {
+                lock (this)
                 {
-                    lock (this)
+                    // Look up again - maybe another thread has filled in the entry
+                    // while we slept waiting for the lock.
+                    result = (GettextResourceSet[]) Loaded[culture];
+                    if (result == null)
+                    {
+                        // Determine the GettextResourceSets for the given culture.
+                        if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture))
+                            // Invariant culture.
+                            result = EmptyResourceSetArray;
+                        else
                         {
-                            // Look up again - maybe another thread has filled in the entry
-                            // while we slept waiting for the lock.
-                            result = (GettextResourceSet[])Loaded[culture];
-                            if (result == null)
+                            // Use a satellite assembly as primary GettextResourceSet, and
+                            // the result for the parent culture as fallback.
+                            GettextResourceSet[] parentResult = GetResourceSetsFor(culture.Parent);
+                            Assembly satelliteAssembly;
+                            try
+                            {
+                                satelliteAssembly = MySatelliteAssembly(culture);
+                                // TODO report the warning(The variable 'e' is declared but never used)
+                                //      caused by this line: } catch (FileNotFoundException e) {
+                            }
+                            catch (FileNotFoundException)
+                            {
+                                satelliteAssembly = null;
+                            }
+                            if (satelliteAssembly != null)
+                            {
+                                GettextResourceSet satelliteResourceSet;
+                                try
                                 {
-                                    // Determine the GettextResourceSets for the given culture.
-                                    if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture))
-                                        // Invariant culture.
-                                        result = EmptyResourceSetArray;
-                                    else
-                                        {
-                                            // Use a satellite assembly as primary GettextResourceSet, and
-                                            // the result for the parent culture as fallback.
-                                            GettextResourceSet[] parentResult = GetResourceSetsFor(culture.Parent);
-                                            Assembly satelliteAssembly;
-                                            try
-                                                {
-                                                    satelliteAssembly = MySatelliteAssembly(culture);
-                                                    // TODO report the warning(The variable 'e' is declared but never used)
-                                                    //      caused by this line: } catch (FileNotFoundException e) {
-                                                }
-                                            catch (FileNotFoundException)
-                                                {
-                                                    satelliteAssembly = null;
-                                                }
-                                            if (satelliteAssembly != null)
-                                                {
-                                                    GettextResourceSet satelliteResourceSet;
-                                                    try
-                                                        {
-                                                            satelliteResourceSet = InstantiateResourceSet(satelliteAssembly, BaseName, culture);
-                                                        }
-                                                    catch (Exception e)
-                                                        {
-                                                            Console.Error.WriteLine(e);
-                                                            Console.Error.WriteLine(e.StackTrace);
-                                                            satelliteResourceSet = null;
-                                                        }
-                                                    if (satelliteResourceSet != null)
-                                                        {
-                                                            result = new GettextResourceSet[1 + parentResult.Length];
-                                                            result[0] = satelliteResourceSet;
-                                                            Array.Copy(parentResult, 0, result, 1, parentResult.Length);
-                                                        }
-                                                    else
-                                                        result = parentResult;
-                                                }
-                                            else
-                                                result = parentResult;
-                                        }
-                                    // Put the result into the cache.
-                                    Loaded.Add(culture, result);
+                                    satelliteResourceSet = InstantiateResourceSet(satelliteAssembly, BaseName, culture);
                                 }
+                                catch (Exception e)
+                                {
+                                    Console.Error.WriteLine(e);
+                                    Console.Error.WriteLine(e.StackTrace);
+                                    satelliteResourceSet = null;
+                                }
+                                if (satelliteResourceSet != null)
+                                {
+                                    result = new GettextResourceSet[1 + parentResult.Length];
+                                    result[0] = satelliteResourceSet;
+                                    Array.Copy(parentResult, 0, result, 1, parentResult.Length);
+                                }
+                                else
+                                    result = parentResult;
+                            }
+                            else
+                                result = parentResult;
                         }
+                        // Put the result into the cache.
+                        Loaded.Add(culture, result);
+                    }
                 }
+            }
             //Console.WriteLine("<< GetResourceSetsFor "+culture);
             return result;
         }
@@ -293,15 +305,16 @@ namespace GNU.Gettext
         ///                     string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or
         ///          <paramref name="msgid"/> if none is found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
         public override String GetString(String msgid, CultureInfo culture)
         {
             foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
-                {
-                    String translation = rs.GetString(msgid);
-                    if (translation != null)
-                        return translation;
-                }
+            {
+                String translation = rs.GetString(msgid);
+                if (translation != null)
+                    return translation;
+            }
             // Fallback.
             return msgid;
         }
@@ -318,15 +331,18 @@ namespace GNU.Gettext
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <paramref name="msgid"/> or
         ///          <paramref name="msgidPlural"/> if none is found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
         public virtual String GetPluralString(String msgid, String msgidPlural, long n, CultureInfo culture)
         {
             foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
-                {
-                    String translation = rs.GetPluralString(msgid, msgidPlural, n);
-                    if (translation != null)
-                        return translation;
-                }
+            {
+                String translation = rs.GetPluralString(msgid, msgidPlural, n);
+                if (translation != null)
+                    return translation;
+            }
             // Fallback: Germanic plural form.
             return (n == 1 ? msgid : msgidPlural);
         }
@@ -341,7 +357,8 @@ namespace GNU.Gettext
         ///                     string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or
         ///          <paramref name="msgid"/> if none is found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
         public override String GetString(String msgid)
         {
             return GetString(msgid, CultureInfo.CurrentUICulture);
@@ -359,12 +376,14 @@ namespace GNU.Gettext
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <paramref name="msgid"/> or
         ///          <paramref name="msgidPlural"/> if none is found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
         public virtual String GetPluralString(String msgid, String msgidPlural, long n)
         {
             return GetPluralString(msgid, msgidPlural, n, CultureInfo.CurrentUICulture);
         }
-
     }
 
     /// <summary>
@@ -378,9 +397,18 @@ namespace GNU.Gettext
     /// </summary>
     // We need this subclass of ResourceSet, because the plural formula must come
     // from the same ResourceSet as the object containing the plural forms.
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
+    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"),
+     SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
+         MessageId = "Gettext"),
+     SuppressMessage("Microsoft.Design",
+         "CA1010:CollectionsShouldImplementGenericInterface")]
     public class GettextResourceSet : ResourceSet
     {
+        /// <summary>
+        /// A trivial instance of <c>IResourceReader</c> that does nothing.
+        /// </summary>
+        // Needed by the no-arguments constructor.
+        private static readonly IResourceReader DummyResourceReader = new DummyIResourceReader();
 
         /// <summary>
         /// Creates a new message catalog. When using this constructor, you
@@ -390,7 +418,7 @@ namespace GNU.Gettext
         /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
         /// </summary>
         protected GettextResourceSet()
-        : base(DummyResourceReader)
+            : base(DummyResourceReader)
         {
         }
 
@@ -401,7 +429,7 @@ namespace GNU.Gettext
         /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
         /// </summary>
         public GettextResourceSet(IResourceReader reader)
-        : base(reader)
+            : base(reader)
         {
         }
 
@@ -411,9 +439,10 @@ namespace GNU.Gettext
         /// a <c>.resources</c> file. The message catalog will not support plural
         /// forms.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
+        [SuppressMessage("Microsoft.Security",
+            "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
         public GettextResourceSet(Stream stream)
-        : base(stream)
+            : base(stream)
         {
         }
 
@@ -424,8 +453,17 @@ namespace GNU.Gettext
         /// not support plural forms.
         /// </summary>
         public GettextResourceSet(String fileName)
-        : base(fileName)
+            : base(fileName)
         {
+        }
+
+        /// <summary>
+        /// Returns the keys of this resource set, i.e. the strings for which
+        /// <c>GetObject()</c> can return a non-null value.
+        /// </summary>
+        public virtual ICollection Keys
+        {
+            get { return Table.Keys; }
         }
 
         /// <summary>
@@ -437,18 +475,21 @@ namespace GNU.Gettext
         ///          none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
+         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override String GetString(String msgid)
         {
             Object value = GetObject(msgid);
             if (value == null || value is String)
-                return (String)value;
+                return (String) value;
             else if (value is String[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
-                return ((String[])value)[0];
+                return ((String[]) value)[0];
             else
-                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName + " is not a string");
+                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
+                                                    " is not a string");
         }
 
         /// <summary>
@@ -461,18 +502,21 @@ namespace GNU.Gettext
         ///          none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
+         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override String GetString(String msgid, bool ignoreCase)
         {
             Object value = GetObject(msgid, ignoreCase);
             if (value == null || value is String)
-                return (String)value;
+                return (String) value;
             else if (value is String[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
-                return ((String[])value)[0];
+                return ((String[]) value)[0];
             else
-                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName + " is not a string");
+                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
+                                                    " is not a string");
         }
 
         /// <summary>
@@ -486,20 +530,25 @@ namespace GNU.Gettext
         ///                           an ASCII string</param>
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <c>null</c> if none is found</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"),
+         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public virtual String GetPluralString(String msgid, String msgidPlural, long n)
         {
             Object value = GetObject(msgid);
             if (value == null || value is String)
-                return (String)value;
+                return (String) value;
             else if (value is String[])
-                {
-                    String[] choices = (String[])value;
-                    long index = PluralEval(n);
-                    return choices[index >= 0 && index < choices.Length ? index : 0];
-                }
+            {
+                var choices = (String[]) value;
+                long index = PluralEval(n);
+                return choices[index >= 0 && index < choices.Length ? index : 0];
+            }
             else
-                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName + " is not a string");
+                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
+                                                    " is not a string");
         }
 
         /// <summary>
@@ -507,58 +556,45 @@ namespace GNU.Gettext
         /// The default implementation is the Germanic plural formula:
         /// zero for <paramref name="n"/> == 1, one for <paramref name="n"/> != 1.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eval")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eval")]
         protected virtual long PluralEval(long n)
         {
             return (n == 1 ? 0 : 1);
         }
-
-        /// <summary>
-        /// Returns the keys of this resource set, i.e. the strings for which
-        /// <c>GetObject()</c> can return a non-null value.
-        /// </summary>
-        public virtual ICollection Keys
-        {
-            get
-                {
-                    return Table.Keys;
-                }
-        }
-
-        /// <summary>
-        /// A trivial instance of <c>IResourceReader</c> that does nothing.
-        /// </summary>
-        // Needed by the no-arguments constructor.
-        private static IResourceReader DummyResourceReader = new DummyIResourceReader();
-
     }
 
     /// <summary>
     /// A trivial <c>IResourceReader</c> implementation.
     /// </summary>
-    class DummyIResourceReader : IResourceReader
+    internal class DummyIResourceReader : IResourceReader
     {
-
         // Implementation of IDisposable.
-        void System.IDisposable.Dispose()
+
+        #region IResourceReader Members
+
+        void IDisposable.Dispose()
         {
         }
 
         // Implementation of IEnumerable.
-        IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return null;
         }
 
         // Implementation of IResourceReader.
-        void System.Resources.IResourceReader.Close()
+        void IResourceReader.Close()
         {
         }
-        IDictionaryEnumerator System.Resources.IResourceReader.GetEnumerator()
+
+        IDictionaryEnumerator IResourceReader.GetEnumerator()
         {
             return null;
         }
 
+        #endregion
     }
-
 }

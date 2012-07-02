@@ -17,11 +17,12 @@
 
 #endregion
 
-using System;
-using System.Globalization;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+
     /// <summary>
     /// Provides utility methods to guard parameter and local variables.
     /// </summary>
@@ -34,11 +35,12 @@ namespace Hexa.Core
         /// <typeparam name="TException">The type of exception to throw.</typeparam>
         /// <param name="assertion">The assertion to evaluate. If true then the <typeparamref name="TException"/> exception is thrown.</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Against<TException>(bool assertion, string message) where TException : Exception
         {
             if (assertion)
-                throw (TException)Activator.CreateInstance(typeof(TException), message);
+                throw (TException) Activator.CreateInstance(typeof (TException), message);
         }
 
         /// <summary>
@@ -48,14 +50,16 @@ namespace Hexa.Core
         /// <typeparam name="TException">The type of exception to throw.</typeparam>
         /// <param name="assertion">The assertion to evaluate. If true then the <typeparamref name="TException"/> exception is thrown.</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public static void Against<TException>(bool assertion, string message, params object[] args) where TException : Exception
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        public static void Against<TException>(bool assertion, string message, params object[] args)
+            where TException : Exception
         {
             if (assertion)
-                {
-                    var msg = string.Format(CultureInfo.InvariantCulture, message, args);
-                    throw (TException)Activator.CreateInstance(typeof(TException), msg);
-                }
+            {
+                string msg = string.Format(CultureInfo.InvariantCulture, message, args);
+                throw (TException) Activator.CreateInstance(typeof (TException), msg);
+            }
         }
 
         /// <summary>
@@ -65,12 +69,13 @@ namespace Hexa.Core
         /// <typeparam name="TException"></typeparam>
         /// <param name="assertion"></param>
         /// <param name="message"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Against<TException>(Func<bool> assertion, string message) where TException : Exception
         {
             //Execute the lambda and if it evaluates to true then throw the exception.
             if (assertion())
-                throw (TException)Activator.CreateInstance(typeof(TException), message);
+                throw (TException) Activator.CreateInstance(typeof (TException), message);
         }
 
         /// <summary>
@@ -80,7 +85,8 @@ namespace Hexa.Core
         /// <typeparam name="TBase">The base type to check for.</typeparam>
         /// <param name="instance">The object to check if it inherits from <typeparamref name="TBase"/> type.</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void InheritsFrom<TBase>(object instance, string message) where TBase : Type
         {
             InheritsFrom<TBase>(instance.GetType(), message);
@@ -93,10 +99,11 @@ namespace Hexa.Core
         /// <typeparam name="TBase">The base type to check for.</typeparam>
         /// <param name="type">The <see cref="Type"/> to check if it inherits from <typeparamref name="TBase"/> type.</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void InheritsFrom<TBase>(Type type, string message)
         {
-            if (type.BaseType != typeof(TBase))
+            if (type.BaseType != typeof (TBase))
                 throw new InvalidOperationException(message);
         }
 
@@ -107,7 +114,8 @@ namespace Hexa.Core
         /// <typeparam name="TInterface">The interface type the object instance should implement.</typeparam>
         /// <param name="instance">The object insance to check if it implements the <typeparamref name="TInterface"/> interface</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Implements<TInterface>(object instance, string message)
         {
             Implements<TInterface>(instance.GetType(), message);
@@ -120,10 +128,11 @@ namespace Hexa.Core
         /// <typeparam name="TInterface">The interface type that the <paramref name="type"/> should implement.</typeparam>
         /// <param name="type">The <see cref="Type"/> to check if it implements from <typeparamref name="TInterface"/> interface.</param>
         /// <param name="message">string. The exception message to throw.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Implements<TInterface>(Type type, string message)
         {
-            if (!typeof(TInterface).IsAssignableFrom(type))
+            if (!typeof (TInterface).IsAssignableFrom(type))
                 throw new InvalidOperationException(message);
         }
 
@@ -134,7 +143,8 @@ namespace Hexa.Core
         /// <typeparam name="TType">The Type that the <paramref name="instance"/> is expected to be.</typeparam>
         /// <param name="instance">The object instance whose type is checked.</param>
         /// <param name="message">The message of the <see cref="InvalidOperationException"/> exception.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void TypeOf<TType>(object instance, string message)
         {
             if (!(instance is TType))
@@ -148,11 +158,13 @@ namespace Hexa.Core
         /// <param name="compare">The comparison object.</param>
         /// <param name="instance">The object instance to compare with.</param>
         /// <param name="message">string. The message of the exception.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public static void IsEqual<TException>(object compare, object instance, string message) where TException : Exception
+        [SuppressMessage("Microsoft.Design",
+            "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        public static void IsEqual<TException>(object compare, object instance, string message)
+            where TException : Exception
         {
             if (compare != instance)
-                throw (TException)Activator.CreateInstance(typeof(TException), message);
+                throw (TException) Activator.CreateInstance(typeof (TException), message);
         }
 
         /// <summary>

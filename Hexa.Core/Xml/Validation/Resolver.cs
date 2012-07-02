@@ -17,50 +17,48 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Xml;
-
 namespace Hexa.Core.Xml
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Xml;
 
     /// <summary>
     /// Used to resolve xml name spaces.
     /// </summary>
     public class SchemaResolver : XmlResolver
     {
-        private Dictionary<string, byte[]> _schemas = null;
+        private readonly Dictionary<string, byte[]> _schemas;
 
         public SchemaResolver(Dictionary<string, byte[]> schemas)
         {
             _schemas = schemas;
         }
 
+        public override ICredentials Credentials
+        {
+            set { }
+        }
+
         public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
-            string name = absoluteUri.AbsoluteUri.Split(new char[] { '/' }).Last<string>();
+            string name = absoluteUri.AbsoluteUri.Split(new[] {'/'}).Last();
             byte[] stream = _schemas[name];
             if (stream != null)
-                {
-                    return new MemoryStream(stream);;
-                }
-            XmlUrlResolver resolver = new XmlUrlResolver();
+            {
+                return new MemoryStream(stream);
+                ;
+            }
+            var resolver = new XmlUrlResolver();
             return resolver.GetEntity(absoluteUri, role, ofObjectToReturn);
         }
 
         public override Uri ResolveUri(Uri baseUri, string relativeUri)
         {
             return base.ResolveUri(baseUri, relativeUri);
-        }
-
-        public override ICredentials Credentials
-        {
-            set
-                {
-                }
         }
     }
 }

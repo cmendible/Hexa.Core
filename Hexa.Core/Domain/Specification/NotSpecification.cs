@@ -9,24 +9,24 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// NotEspecification convert a original
     /// specification with NOT logic operator
     /// </summary>
     /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
     public class NotSpecification<TEntity>
-        :Specification<TEntity>
+        : Specification<TEntity>
         where TEntity : class
     {
         #region Members
 
-        Expression<Func<TEntity, bool>> _OriginalCriteria;
+        private readonly Expression<Func<TEntity, bool>> _OriginalCriteria;
 
         #endregion
 
@@ -38,8 +38,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="originalSpecification">Original specification</param>
         public NotSpecification(ISpecification<TEntity> originalSpecification)
         {
-
-            if (originalSpecification == (ISpecification<TEntity>)null)
+            if (originalSpecification == null)
                 throw new ArgumentNullException("originalSpecification");
 
             _OriginalCriteria = originalSpecification.SatisfiedBy();
@@ -49,9 +48,9 @@ namespace Hexa.Core.Domain.Specification
         /// Constructor for NotSpecification
         /// </summary>
         /// <param name="originalSpecification">Original specificaiton</param>
-        public NotSpecification(Expression<Func<TEntity,bool>> originalSpecification)
+        public NotSpecification(Expression<Func<TEntity, bool>> originalSpecification)
         {
-            if (originalSpecification == (Expression<Func<TEntity,bool>>)null)
+            if (originalSpecification == null)
                 throw new ArgumentNullException("originalSpecification");
 
             _OriginalCriteria = originalSpecification;
@@ -67,9 +66,8 @@ namespace Hexa.Core.Domain.Specification
         /// <returns><see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/></returns>
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
-
-            return Expression.Lambda<Func<TEntity,bool>>(Expression.Not(_OriginalCriteria.Body),
-                    _OriginalCriteria.Parameters.Single());
+            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(_OriginalCriteria.Body),
+                                                          _OriginalCriteria.Parameters.Single());
         }
 
         #endregion

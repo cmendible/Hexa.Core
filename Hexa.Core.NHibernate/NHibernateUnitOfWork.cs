@@ -17,17 +17,19 @@
 
 #endregion
 
-using System;
-using System.Runtime.Remoting.Messaging;
-using System.ServiceModel;
-using System.Web;
-using NHibernate;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Runtime.Remoting.Messaging;
+    using System.ServiceModel;
+    using System.Transactions;
+    using System.Web;
+    using NHibernate;
+
     public class NHibernateUnitOfWork : IUnitOfWork
     {
-        ITransactionWrapper _transactionWrapper;
+        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
+        private readonly ITransactionWrapper _transactionWrapper;
 
         public NHibernateUnitOfWork(ISessionFactory sessionFactory)
         {
@@ -43,12 +45,60 @@ namespace Hexa.Core.Domain
             _transactionWrapper = _BeginTransaction(RunningSession);
         }
 
-        private static ITransactionWrapper _BeginTransaction(ISession session)
+        public static ISession RunningSession
         {
-            if (session.Transaction.IsActive)
-                return new NestedTransactionWrapper(session.Transaction);
+            get
+            {
+                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
+                if (OperationContext.Current != null)
+                {
+                    //WCF without HttpContext environment
+                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
 
-            return new TransactionWrapper(session.BeginTransaction());
+                    if (containerExtension == null)
+                    {
+                        containerExtension = new ContainerExtension();
+
+                        OperationContext.Current.Extensions.Add(containerExtension);
+                    }
+
+                    return containerExtension.Value as ISession;
+                }
+                else if (HttpContext.Current != null)
+                {
+                    return HttpContext.Current.Items[_key] as ISession;
+                }
+                else
+                {
+                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
+                    return CallContext.GetData(_key) as ISession;
+                }
+            }
+            set
+            {
+                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
+                if (OperationContext.Current != null)
+                {
+                    //WCF without HttpContext environment
+                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
+
+                    if (containerExtension == null)
+                    {
+                        containerExtension = new ContainerExtension();
+                        OperationContext.Current.Extensions.Add(containerExtension);
+                    }
+                    containerExtension.Value = value;
+                }
+                else if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.Items[_key] = value;
+                }
+                else
+                {
+                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
+                    CallContext.SetData(_key, value);
+                }
+            }
         }
 
         #region IUnitOfWork Members
@@ -56,13 +106,13 @@ namespace Hexa.Core.Domain
         public void Commit()
         {
             try
-                {
-                    _transactionWrapper.Commit();
-                }
+            {
+                _transactionWrapper.Commit();
+            }
             catch (StaleObjectStateException ex)
-                {
-                    throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
-                }
+            {
+                throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
+            }
         }
 
         public void RollbackChanges()
@@ -73,37 +123,6 @@ namespace Hexa.Core.Domain
         public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
         {
             return new NHibernateObjectSet<TEntity>(RunningSession);
-        }
-
-        #endregion
-
-        #region IDisposable Members
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                {
-                    UnitOfWorkScope.DisposeCurrent();
-                    if (UnitOfWorkScope.RunningScopes.Count == 0)
-                        {
-                            if (RunningSession != null && RunningSession.IsOpen)
-                                {
-                                    if (RunningSession.Transaction != null)
-                                        {
-                                            if (RunningSession.Transaction.IsActive)
-                                                {
-                                                    if (System.Transactions.Transaction.Current == null)
-                                                        _transactionWrapper.Rollback();
-                                                }
-
-                                            RunningSession.Transaction.Dispose();
-                                        }
-
-                                    RunningSession.Dispose();
-                                    RunningSession = null;
-                                }
-                        }
-                }
         }
 
         public void Dispose()
@@ -119,15 +138,11 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Custom extension for OperationContext scope
         /// </summary>
-        class ContainerExtension : IExtension<OperationContext>
+        private class ContainerExtension : IExtension<OperationContext>
         {
             #region Members
 
-            public object Value
-            {
-                get;
-                set;
-            }
+            public object Value { get; set; }
 
             #endregion
 
@@ -135,12 +150,10 @@ namespace Hexa.Core.Domain
 
             public void Attach(OperationContext owner)
             {
-
             }
 
             public void Detach(OperationContext owner)
             {
-
             }
 
             #endregion
@@ -148,63 +161,39 @@ namespace Hexa.Core.Domain
 
         #endregion
 
-        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
-
-        public static ISession RunningSession
+        private static ITransactionWrapper _BeginTransaction(ISession session)
         {
-            get
+            if (session.Transaction.IsActive)
+                return new NestedTransactionWrapper(session.Transaction);
+
+            return new TransactionWrapper(session.BeginTransaction());
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                UnitOfWorkScope.DisposeCurrent();
+                if (UnitOfWorkScope.RunningScopes.Count == 0)
                 {
-                    //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                    if (OperationContext.Current != null)
+                    if (RunningSession != null && RunningSession.IsOpen)
+                    {
+                        if (RunningSession.Transaction != null)
                         {
-                            //WCF without HttpContext environment
-                            var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
+                            if (RunningSession.Transaction.IsActive)
+                            {
+                                if (Transaction.Current == null)
+                                    _transactionWrapper.Rollback();
+                            }
 
-                            if (containerExtension == null)
-                                {
-                                    containerExtension = new ContainerExtension();
+                            RunningSession.Transaction.Dispose();
+                        }
 
-                                    OperationContext.Current.Extensions.Add(containerExtension);
-                                }
-
-                            return containerExtension.Value as ISession;
-                        }
-                    else if (HttpContext.Current != null)
-                        {
-                            return HttpContext.Current.Items[_key.ToString()] as ISession;
-                        }
-                    else
-                        {
-                            //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                            return CallContext.GetData(_key.ToString()) as ISession;
-                        }
+                        RunningSession.Dispose();
+                        RunningSession = null;
+                    }
                 }
-            set
-                {
-                    //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                    if (OperationContext.Current != null)
-                        {
-                            //WCF without HttpContext environment
-                            var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
-
-                            if (containerExtension == null)
-                                {
-                                    containerExtension = new ContainerExtension();
-                                    OperationContext.Current.Extensions.Add(containerExtension);
-                                }
-                            containerExtension.Value = value;
-                        }
-                    else if (HttpContext.Current != null)
-                        {
-                            HttpContext.Current.Items[_key.ToString()] = value;
-                        }
-                    else
-                        {
-                            //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                            CallContext.SetData(_key.ToString(), value);
-                        }
-                }
+            }
         }
     }
-
 }

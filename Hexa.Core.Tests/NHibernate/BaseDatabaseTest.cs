@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using Hexa.Core.Domain;
-using Hexa.Core.Logging;
-using Hexa.Core.Security;
-using Hexa.Core.Tests.Data;
-using Hexa.Core.Tests.Domain;
-using Hexa.Core.Validation;
-using NUnit.Framework;
-using Hexa.Core.Data;
-
-namespace Hexa.Core.Tests.Sql
+﻿namespace Hexa.Core.Tests.Sql
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using Core.Data;
+    using Core.Domain;
+    using Data;
+    using Domain;
+    using Logging;
+    using NUnit.Framework;
+    using Security;
+    using Validation;
+
     public abstract class BaseDatabaseTest
     {
         protected abstract NHContextFactory CreateNHContextFactory();
@@ -22,12 +24,12 @@ namespace Hexa.Core.Tests.Sql
             ApplicationContext.Start(ConnectionString());
 
             // Validator and TraceManager
-            var container = ApplicationContext.Container;
+            IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            var ctxFactory = CreateNHContextFactory();
+            NHContextFactory ctxFactory = CreateNHContextFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -44,33 +46,34 @@ namespace Hexa.Core.Tests.Sql
 
             ctxFactory.RegisterSessionFactory(container);
 
-            ApplicationContext.User = new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
+            ApplicationContext.User =
+                new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] {});
         }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
             try
-                {
-                    var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-                    dbManager.DeleteDatabase();
-                }
+            {
+                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+                dbManager.DeleteDatabase();
+            }
             finally
-                {
-                    ApplicationContext.Stop();
-                }
+            {
+                ApplicationContext.Stop();
+            }
         }
 
         private Human _Add_Human()
         {
-            Human human = new Human();
+            var human = new Human();
             human.Name = "Martin";
             human.isMale = true;
 
-            using (var uow = UnitOfWorkScope.Start())
+            using (IUnitOfWork uow = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                using (var ctx = repo.UnitOfWork)
+                using (IUnitOfWork ctx = repo.UnitOfWork)
                 {
                     repo.Add(human);
                     ctx.Commit();
@@ -95,12 +98,12 @@ namespace Hexa.Core.Tests.Sql
         [Test]
         public void Query_Human()
         {
-            var human = _Add_Human();
+            Human human = _Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
                 results = repo.GetFilteredElements(u => u.isMale);
@@ -111,17 +114,17 @@ namespace Hexa.Core.Tests.Sql
         [Test]
         public void Update_Human()
         {
-            var human = _Add_Human();
+            Human human = _Add_Human();
 
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
-                var human2Update = results.First();
+                Human human2Update = results.First();
                 human2Update.Name = "Maria";
                 repo.Modify(human2Update);
 
@@ -129,7 +132,7 @@ namespace Hexa.Core.Tests.Sql
             }
 
             repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
                 human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
                 Assert.AreEqual("Maria", human.Name);
@@ -140,21 +143,21 @@ namespace Hexa.Core.Tests.Sql
         [Test]
         public void Update_Human_From_Another_Session()
         {
-            var human = _Add_Human();
+            Human human = _Add_Human();
 
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             human.Name = "Maria";
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
                 repo.Modify(human);
                 ctx.Commit();
             }
 
             repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
                 human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
                 Assert.AreEqual("Maria", human.Name);
@@ -165,15 +168,15 @@ namespace Hexa.Core.Tests.Sql
         [Test]
         public void Delete_Human()
         {
-            var human = _Add_Human();
+            Human human = _Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
-                var results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
-                var human2Delete = results.First();
+                Human human2Delete = results.First();
 
                 repo.Remove(human2Delete);
 
@@ -181,11 +184,10 @@ namespace Hexa.Core.Tests.Sql
             }
 
             repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (var ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = repo.UnitOfWork)
             {
                 Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
             }
         }
-
     }
 }

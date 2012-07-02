@@ -17,30 +17,35 @@
 
 #endregion
 
-using System;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using Hexa.Core.Data;
-using NHibernate;
-using NHibernate.Cfg;
-using NHibernate.Event;
-using NHibernate.Tool.hbm2ddl;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Linq;
+    using System.Reflection;
+    using Data;
+    using FluentNHibernate.Cfg;
+    using FluentNHibernate.Cfg.Db;
+    using NHibernate;
+    using NHibernate.ByteCode.Castle;
+    using NHibernate.Cfg;
+    using NHibernate.Event;
+    using NHibernate.Tool.hbm2ddl;
+    using EnumExtensions = System.EnumExtensions;
+    using Environment = NHibernate.Cfg.Environment;
+
     public sealed class NHContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
+        private readonly DbProvider _DbProvider;
+        private readonly bool _InMemoryDatabase;
+        private readonly Configuration _builtConfiguration;
+        private readonly string _connectionString;
+        private readonly bool _validationSupported = true;
         private ISessionFactory _sessionFactory;
-        private Configuration _builtConfiguration;
-        private DbProvider _DbProvider;
-        private string _connectionString;
-        private bool _InMemoryDatabase;
-        private bool _validationSupported = true;
 
-        public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider, Assembly mappingsAssembly, IoCContainer container)
+        public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider,
+                                Assembly mappingsAssembly, IoCContainer container)
         {
             _DbProvider = provider;
             _connectionString = connectionString;
@@ -48,127 +53,117 @@ namespace Hexa.Core.Domain
             FluentConfiguration cfg = null;
 
             switch (_DbProvider)
-                {
+            {
                 case DbProvider.MsSqlProvider:
-                {
-                    cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
-                                                        .Raw("format_sql", "true")
-                                                        .ConnectionString(_connectionString))
-                          .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName))
-                          .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.DefaultSchema, "dbo"));
+                    {
+                        cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
+                                                                .Raw("format_sql", "true")
+                                                                .ConnectionString(_connectionString))
+                            .ExposeConfiguration(
+                                c =>
+                                c.Properties.Add(Environment.SqlExceptionConverter,
+                                                 typeof (SqlExceptionHandler).AssemblyQualifiedName))
+                            .ExposeConfiguration(c => c.Properties.Add(Environment.DefaultSchema, "dbo"));
 
-                    break;
-                }
+                        break;
+                    }
                 case DbProvider.SQLiteProvider:
-                {
-                    cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
-                                                        .Raw("format_sql", "true")
-                                                        .ConnectionString(_connectionString));
+                    {
+                        cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
+                                                                .Raw("format_sql", "true")
+                                                                .ConnectionString(_connectionString));
 
-                    _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
+                        _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
 
-                    break;
-                }
+                        break;
+                    }
                 case DbProvider.SqlCe:
-                {
-                    cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
-                                                        .Raw("format_sql", "true")
-                                                        .ConnectionString(_connectionString))
-                          .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.SqlExceptionConverter, typeof(SqlExceptionHandler).AssemblyQualifiedName));
+                    {
+                        cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
+                                                                .Raw("format_sql", "true")
+                                                                .ConnectionString(_connectionString))
+                            .ExposeConfiguration(
+                                c =>
+                                c.Properties.Add(Environment.SqlExceptionConverter,
+                                                 typeof (SqlExceptionHandler).AssemblyQualifiedName));
 
-                    _validationSupported = false;
+                        _validationSupported = false;
 
-                    break;
-                }
+                        break;
+                    }
                 case DbProvider.Firebird:
-                {
-                    cfg = Fluently.Configure().Database(new FirebirdConfiguration()
-                                                        .Raw("format_sql", "true")
-                                                        .ConnectionString(_connectionString));
+                    {
+                        cfg = Fluently.Configure().Database(new FirebirdConfiguration()
+                                                                .Raw("format_sql", "true")
+                                                                .ConnectionString(_connectionString));
 
-                    break;
-                }
+                        break;
+                    }
                 case DbProvider.PostgreSQLProvider:
-                {
-                    cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
-                                                        .Raw("format_sql", "true")
-                                                        .ConnectionString(_connectionString));
+                    {
+                        cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
+                                                                .Raw("format_sql", "true")
+                                                                .ConnectionString(_connectionString));
 
-                    _validationSupported = false;
+                        _validationSupported = false;
 
-                    break;
-                }
-                }
+                        break;
+                    }
+            }
 
-            Guard.IsNotNull(cfg, string.Format("Db provider {0} is currently not supported.", _DbProvider.GetEnumMemberValue()));
+            Guard.IsNotNull(cfg,
+                            string.Format("Db provider {0} is currently not supported.",
+                                          EnumExtensions.GetEnumMemberValue(_DbProvider)));
 
-            var pinfo = typeof(FluentConfiguration)
-                        .GetProperty("Configuration", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            PropertyInfo pinfo = typeof (FluentConfiguration)
+                .GetProperty("Configuration",
+                             BindingFlags.Instance | BindingFlags.NonPublic);
 
-            var nhConfiguration = pinfo.GetValue(cfg, null);
+            object nhConfiguration = pinfo.GetValue(cfg, null);
             container.RegisterInstance<Configuration>(nhConfiguration);
 
-            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
-            .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
-            .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
-            .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
-            .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
-            .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.BatchSize, "100"))
-            .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseProxyValidator, "true"));
+            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof (NHContextFactory).Assembly))
+                .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
+                .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
+                .Mappings(m => m.HbmMappings.AddFromAssembly(typeof (NHContextFactory).Assembly))
+                .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
+                .ExposeConfiguration(c => c.Properties.Add(Environment.BatchSize, "100"))
+                .ExposeConfiguration(c => c.Properties.Add(Environment.UseProxyValidator, "true"));
 
             if (!string.IsNullOrEmpty(cacheProvider))
-                {
-                    cfg.ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.CacheProvider, cacheProvider)) //"NHibernate.Cache.HashtableCacheProvider"
-                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseSecondLevelCache, "true"))
-                    .ExposeConfiguration(c => c.Properties.Add(NHibernate.Cfg.Environment.UseQueryCache, "true"));
-                }
+            {
+                cfg.ExposeConfiguration(c => c.Properties.Add(Environment.CacheProvider, cacheProvider))
+                    //"NHibernate.Cache.HashtableCacheProvider"
+                    .ExposeConfiguration(c => c.Properties.Add(Environment.UseSecondLevelCache, "true"))
+                    .ExposeConfiguration(c => c.Properties.Add(Environment.UseQueryCache, "true"));
+            }
 
             _builtConfiguration = cfg.BuildConfiguration();
-            _builtConfiguration.SetProperty(NHibernate.Cfg.Environment.ProxyFactoryFactoryClass,
-                                            typeof(NHibernate.ByteCode.Castle.ProxyFactoryFactory).AssemblyQualifiedName);
+            _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
+                                            typeof (ProxyFactoryFactory).
+                                                AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....
 
             _builtConfiguration.SetListeners(ListenerType.FlushEntity,
-            new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
+                                             new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
 
             _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat<IPreInsertEventListener>(
-            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
+                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
+                                                 new IPreInsertEventListener[]
+                                                     {new ValidateEventListener(), new AuditEventListener()}).
+                                                 ToArray());
 
             _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat<IPreUpdateEventListener>(
-            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
+                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
+                                                 new IPreUpdateEventListener[]
+                                                     {new ValidateEventListener(), new AuditEventListener()}).
+                                                 ToArray());
 
             #endregion
         }
 
-        private void _CreateSessionFactory()
-        {
-            if (_sessionFactory == null)
-                _sessionFactory = _builtConfiguration.BuildSessionFactory();
-        }
-
-        public IUnitOfWork Create()
-        {
-            _CreateSessionFactory();
-
-            if (_InMemoryDatabase)
-                {
-                    var session = _sessionFactory.OpenSession();
-                    new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
-                    return new NHibernateUnitOfWork(_sessionFactory);
-                }
-
-            return new NHibernateUnitOfWork(_sessionFactory);
-        }
-
-        // Registers NH session factoy for testing purposes.
-        public void RegisterSessionFactory(IoCContainer container)
-        {
-            _CreateSessionFactory();
-            container.RegisterInstance<ISessionFactory>(_sessionFactory);
-        }
+        #region IDatabaseManager Members
 
         public bool DatabaseExists()
         {
@@ -182,31 +177,31 @@ namespace Hexa.Core.Domain
 
             // Check if database exists.. (and create it if needed)
             if (!dbManager.DatabaseExists())
-                {
-                    dbManager.CreateDatabase();
-                    new SchemaExport(_builtConfiguration).Create(false, true);
+            {
+                dbManager.CreateDatabase();
+                new SchemaExport(_builtConfiguration).Create(false, true);
 
-                    if (_DbProvider == DbProvider.MsSqlProvider)
+                if (_DbProvider == DbProvider.MsSqlProvider)
+                {
+                    using (var conn = new SqlConnection(_connectionString))
+                    {
+                        try
                         {
-                            using (var conn = new SqlConnection(_connectionString))
+                            conn.Open();
+                            using (SqlCommand cmd = conn.CreateCommand())
                             {
-                                try
-                                    {
-                                        conn.Open();
-                                        using (var cmd = conn.CreateCommand())
-                                        {
-                                            cmd.CommandText = "RENAME_UNIQUE_KEYS";
-                                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                                            cmd.ExecuteNonQuery();
-                                        }
-                                    }
-                                finally
-                                    {
-                                        conn.Close();
-                                    }
+                                cmd.CommandText = "RENAME_UNIQUE_KEYS";
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.ExecuteNonQuery();
                             }
                         }
+                        finally
+                        {
+                            conn.Close();
+                        }
+                    }
                 }
+            }
         }
 
         public void ValidateDatabaseSchema()
@@ -221,6 +216,38 @@ namespace Hexa.Core.Domain
 
             if (dbManager.DatabaseExists())
                 dbManager.DropDatabase();
+        }
+
+        #endregion
+
+        #region IUnitOfWorkFactory Members
+
+        public IUnitOfWork Create()
+        {
+            _CreateSessionFactory();
+
+            if (_InMemoryDatabase)
+            {
+                ISession session = _sessionFactory.OpenSession();
+                new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
+                return new NHibernateUnitOfWork(_sessionFactory);
+            }
+
+            return new NHibernateUnitOfWork(_sessionFactory);
+        }
+
+        #endregion
+
+        private void _CreateSessionFactory()
+        {
+            if (_sessionFactory == null)
+                _sessionFactory = _builtConfiguration.BuildSessionFactory();
+        }
+
+        public void RegisterSessionFactory(IoCContainer container)
+        {
+            _CreateSessionFactory();
+            container.RegisterInstance<ISessionFactory>(_sessionFactory);
         }
     }
 }

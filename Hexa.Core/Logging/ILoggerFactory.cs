@@ -17,15 +17,13 @@
 
 #endregion
 
-
-using System;
-
 namespace Hexa.Core.Logging
 {
+    using System;
+
     public interface ILoggerFactory
     {
         ILogger Create(Type type);
         ILogger Create(string typeName);
     }
-
 }

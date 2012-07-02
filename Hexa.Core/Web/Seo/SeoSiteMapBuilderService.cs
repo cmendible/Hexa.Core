@@ -13,24 +13,24 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
-using System.Xml;
-
 namespace Hexa.Core.Web.Seo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
     /// <summary>
     ///
     /// </summary>
-    public class SeoSiteMapBuilderService : Hexa.Core.Web.Seo.ISeoSiteMapBuilderService
+    public class SeoSiteMapBuilderService : ISeoSiteMapBuilderService
     {
-        private Dictionary<string, List<SeoUrlInfo>> _childurls;
-        private Dictionary<string, SeoUrlInfo> _keyIndex;
-        private Dictionary<string, int> _urlPreferredOrder;
-        private SeoUrlInfo _rooturl;
+        private readonly Dictionary<string, List<SeoUrlInfo>> _childurls;
+        private readonly Dictionary<string, SeoUrlInfo> _keyIndex;
+        private readonly SeoUrlInfo _rooturl;
+        private readonly Dictionary<string, int> _urlPreferredOrder;
 
         /// <summary>
         /// Initialize a new instance of <see cref="SeoSiteMapBuilderService"/>.
@@ -45,15 +45,14 @@ namespace Hexa.Core.Web.Seo
             _childurls.Add(_rooturl.Key, new List<SeoUrlInfo>());
         }
 
+        #region ISeoSiteMapBuilderService Members
+
         /// <summary>
         /// Gets the current root url.
         /// </summary>
         public SeoUrlInfo RootUrl
         {
-            get
-                {
-                    return _rooturl;
-                }
+            get { return _rooturl; }
         }
 
         /// <summary>
@@ -98,9 +97,9 @@ namespace Hexa.Core.Web.Seo
             SafeAddurl(url);
 
             if (!_childurls.ContainsKey(parent.Key))
-                {
-                    _childurls.Add(parent.Key, new List<SeoUrlInfo>());
-                }
+            {
+                _childurls.Add(parent.Key, new List<SeoUrlInfo>());
+            }
 
             AddurlWithOrder(parent.Key, url, preferredDisplayOrder);
         }
@@ -113,21 +112,45 @@ namespace Hexa.Core.Web.Seo
         public ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey)
         {
             if (_childurls.ContainsKey(urlKey))
-                {
-                    return _childurls[urlKey].AsReadOnly();
-                }
+            {
+                return _childurls[urlKey].AsReadOnly();
+            }
 
             return new List<SeoUrlInfo>().AsReadOnly();
         }
+
+        public string SeoXml()
+        {
+            //instantiate the XML Text Writer for writing the SiteMap document
+            var stringWriter = new StringWriter();
+            var writer = new XmlTextWriter(stringWriter);
+            //write out the header
+            //start off the site map
+            writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+            writer.WriteStartElement("urlset");
+            writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+            writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            writer.WriteAttributeString("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
+
+            SeoUrlInfo rooturl = RootUrl;
+            AddChildurls(writer, rooturl, GetChildren(rooturl.Key));
+
+            //write the footer and close.
+            writer.WriteEndElement();
+            writer.Close();
+            return stringWriter.ToString();
+        }
+
+        #endregion
 
         private void SafeAddurl(SeoUrlInfo url)
         {
             Guard.IsNotNull(url, "url");
 
             if (_keyIndex.ContainsKey(url.Key))
-                {
-                    throw new Exception("");
-                }
+            {
+                throw new Exception("");
+            }
 
             _keyIndex.Add(url.Key, url);
         }
@@ -136,33 +159,33 @@ namespace Hexa.Core.Web.Seo
         {
             _urlPreferredOrder.Add(url.Key, preferredDisplayOrder);
             for (int i = 0; i < _childurls[parentKey].Count; i++)
+            {
+                string key = _childurls[parentKey][i].Key;
+                if (_urlPreferredOrder[key] > preferredDisplayOrder)
                 {
-                    string key = _childurls[parentKey][i].Key;
-                    if (_urlPreferredOrder[key] > preferredDisplayOrder)
-                        {
-                            _childurls[parentKey].Insert(i, url);
-                            return;
-                        }
+                    _childurls[parentKey].Insert(i, url);
+                    return;
                 }
+            }
 
             _childurls[parentKey].Add(url);
         }
 
         internal static string FormatISODate(DateTime date)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(date.Year);
             sb.Append("-");
             if (date.Month < 10)
-                {
-                    sb.Append("0");
-                }
+            {
+                sb.Append("0");
+            }
             sb.Append(date.Month);
             sb.Append("-");
             if (date.Day < 10)
-                {
-                    sb.Append("0");
-                }
+            {
+                sb.Append("0");
+            }
             sb.Append(date.Day);
 
             return sb.ToString();
@@ -183,36 +206,13 @@ namespace Hexa.Core.Web.Seo
         private void AddChildurls(XmlWriter writer, SeoUrlInfo parent, ReadOnlyCollection<SeoUrlInfo> children)
         {
             if (children.Count > 0)
+            {
+                foreach (SeoUrlInfo info in children)
                 {
-                    foreach (var info in children)
-                        {
-                            WriteSiteMapurlEntry(writer, info);
-                            AddChildurls(writer, info, GetChildren(info.Key));
-                        }
+                    WriteSiteMapurlEntry(writer, info);
+                    AddChildurls(writer, info, GetChildren(info.Key));
                 }
-        }
-
-        public string SeoXml()
-        {
-            //instantiate the XML Text Writer for writing the SiteMap document
-            var stringWriter = new StringWriter();
-            var writer = new XmlTextWriter(stringWriter);
-            //write out the header
-            //start off the site map
-            writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
-            writer.WriteStartElement("urlset");
-            writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-            writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            writer.WriteAttributeString("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
-
-            var rooturl = RootUrl;
-            AddChildurls(writer, rooturl, GetChildren(rooturl.Key));
-
-            //write the footer and close.
-            writer.WriteEndElement();
-            writer.Close();
-            return stringWriter.ToString();
-
+            }
         }
     }
 }

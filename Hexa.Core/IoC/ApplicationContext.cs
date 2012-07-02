@@ -17,14 +17,17 @@
 
 #endregion
 
-using System.Security.Principal;
-using System.Threading;
-using System.Web;
-using log4net;
 using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+    using System.Security.Principal;
+    using System.Threading;
+    using System.Web;
+    using log4net;
+
     /// <summary>
     /// Core Context singleton class. Contains a reference to a root CoreContainer object.
     /// </summary>
@@ -33,16 +36,13 @@ namespace Hexa.Core
         /// <summary>
         /// log4net logger.
         /// </summary>
-        private static readonly ILog _Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _Log =
+            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// private ICoreContainer instance.
         /// </summary>
-        public static IoCContainer Container
-        {
-            get;
-            private set;
-        }
+        public static IoCContainer Container { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is initialized.
@@ -50,34 +50,26 @@ namespace Hexa.Core
         /// <value>
         /// 	<c>true</c> if this instance is initialized; otherwise, <c>false</c>.
         /// </value>
-        public static bool IsInitialized
-        {
-            get;
-            private set;
-        }
+        public static bool IsInitialized { get; private set; }
 
-        public static string ConnectionString
-        {
-            get;
-            private set;
-        }
+        public static string ConnectionString { get; private set; }
 
         public static IPrincipal User
         {
             get
-                {
-                    if (HttpContext.Current != null)
-                        return HttpContext.Current.User;
-                    else
-                        return Thread.CurrentPrincipal;
-                }
+            {
+                if (HttpContext.Current != null)
+                    return HttpContext.Current.User;
+                else
+                    return Thread.CurrentPrincipal;
+            }
             set
-                {
-                    if (HttpContext.Current != null)
-                        HttpContext.Current.User = value;
+            {
+                if (HttpContext.Current != null)
+                    HttpContext.Current.User = value;
 
-                    Thread.CurrentPrincipal = value;
-                }
+                Thread.CurrentPrincipal = value;
+            }
         }
 
         /// <summary>
@@ -85,14 +77,14 @@ namespace Hexa.Core
         /// </summary>
         public static void Start(string connectionString)
         {
-            DictionaryServicesContainer dictionaryContainer = new DictionaryServicesContainer();
+            var dictionaryContainer = new DictionaryServicesContainer();
 
-            SL.ServiceLocator.SetLocatorProvider(() => dictionaryContainer);
+            Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => dictionaryContainer);
 
-            var container  = new IoCContainer(
+            var container = new IoCContainer(
                 (x, y) => dictionaryContainer.RegisterType(x, y),
                 (x, y) => dictionaryContainer.RegisterInstance(x, y)
-            );
+                );
 
             Start(container, connectionString);
         }
@@ -102,23 +94,26 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="container">The container.</param>
         /// <param name="defaultDataLayer">The default data layer.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CoreContext")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1062:Validate arguments of public methods", MessageId = "0"),
+         SuppressMessage("Microsoft.Naming",
+             "CA2204:Literals should be spelled correctly", MessageId = "CoreContext")]
         public static void Start(IoCContainer container, string connectionString)
         {
             if (!IsInitialized)
-                {
-                    _Log.InfoFormat("Starting CoreContext with container {0}", container.GetType().Name);
-                    Container = container;
+            {
+                _Log.InfoFormat("Starting CoreContext with container {0}", container.GetType().Name);
+                Container = container;
 
-                    ConnectionString = connectionString;
+                ConnectionString = connectionString;
 
-                    IsInitialized = true;
-                    _Log.Info("Core Context Activation Successful");
-                }
+                IsInitialized = true;
+                _Log.Info("Core Context Activation Successful");
+            }
             else
-                {
-                    throw new InternalException("CoreContext is already running.");
-                }
+            {
+                throw new InternalException("CoreContext is already running.");
+            }
         }
 
         /// <summary>
@@ -131,6 +126,5 @@ namespace Hexa.Core
             IsInitialized = false;
             _Log.Info("Core Context Deactivation Successful");
         }
-
     }
 }

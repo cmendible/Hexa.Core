@@ -15,24 +15,20 @@
 
 namespace Hexa.Core.Web.Seo
 {
+    using System.Collections.ObjectModel;
 
     /// <summary>
     ///
     /// </summary>
     public class SeoUrlInfo
     {
-        private string _key;
-        private string _url;
-        private string _changeFrequency;
-        private string _priority;
-
         public SeoUrlInfo(string key)
-        : this(key, "daily", 100)
+            : this(key, "daily", 100)
         {
         }
 
         public SeoUrlInfo(string key, string changeFrequency, int priorityPercentage)
-        : this(key, key, changeFrequency, priorityPercentage)
+            : this(key, key, changeFrequency, priorityPercentage)
         {
         }
 
@@ -41,85 +37,41 @@ namespace Hexa.Core.Web.Seo
             Guard.IsNotNull(key, "key");
             Guard.IsNotNull(url, "url");
 
-            _key = key;
-            _url = url;
-            _changeFrequency = changeFrequency;
-            _priority = ((double)priorityPercentage / 100).ToString();
+            Key = key;
+            Url = url;
+            ChangeFrequency = changeFrequency;
+            Priority = ((double) priorityPercentage/100).ToString();
         }
 
         /// <summary>
         ///
         /// </summary>
-        public string Url
-        {
-            get
-                {
-                    return _url;
-                }
-            set
-                {
-                    _url = value;
-                }
-        }
+        public string Url { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Key
-        {
-            get
-                {
-                    return _key;
-                }
-            set
-                {
-                    _key = value;
-                }
-        }
+        public string Key { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ChangeFrequency
-        {
-            get
-                {
-                    return _changeFrequency;
-                }
-            set
-                {
-                    _changeFrequency = value;
-                }
-        }
+        public string ChangeFrequency { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Priority
-        {
-            get
-                {
-                    return _priority;
-                }
-            set
-                {
-                    _priority = value;
-                }
-        }
+        public string Priority { get; set; }
     }
 
     public interface ISeoSiteMapBuilderService
     {
+        SeoUrlInfo RootUrl { get; }
         void AddUrl(SeoUrlInfo url);
         void AddUrl(SeoUrlInfo url, SeoUrlInfo parent);
         void AddUrl(SeoUrlInfo url, SeoUrlInfo parent, int preferredDisplayOrder);
         void AddUrl(SeoUrlInfo url, int preferredDisplayOrder);
-        System.Collections.ObjectModel.ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
-        SeoUrlInfo RootUrl
-        {
-            get;
-        }
+        ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
         string SeoXml();
     }
 }
-

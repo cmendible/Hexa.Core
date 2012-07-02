@@ -17,13 +17,13 @@
 
 #endregion
 
-using Raven.Client;
-
 namespace Hexa.Core.Domain
 {
+    using Raven.Client;
+
     public class RavenUnitOfWork : IUnitOfWork
     {
-        IDocumentSession _session;
+        private IDocumentSession _session;
 
         public RavenUnitOfWork(IDocumentSession session)
         {
@@ -39,7 +39,6 @@ namespace Hexa.Core.Domain
 
         public void RollbackChanges()
         {
-
         }
 
         public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
@@ -47,22 +46,17 @@ namespace Hexa.Core.Domain
             return new RavenObjectSet<TEntity>(_session);
         }
 
-        #endregion
-
-        #region IDisposable Members
-
         public void Dispose()
         {
             UnitOfWorkScope.DisposeCurrent();
             if (_session != null)
-                {
-                    _session.Dispose();
+            {
+                _session.Dispose();
 
-                    _session = null;
-                }
+                _session = null;
+            }
         }
 
         #endregion
-
     }
 }

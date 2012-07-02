@@ -17,33 +17,22 @@
 
 #endregion
 
-using System;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
-using System.Security.Principal;
-using log4net;
-
 namespace Hexa.Core.ServiceModel.Security
 {
+    using System;
+    using System.IdentityModel.Claims;
+    using System.IdentityModel.Policy;
+    using System.Reflection;
+    using System.Security.Principal;
+    using log4net;
+
     /// <summary>
     ///
     /// </summary>
     public abstract class BaseAuthorizationPolicy : IAuthorizationPolicy
     {
-        private static readonly ILog _Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        public string Id
-        {
-            get;
-            protected set;
-        }
-        public ClaimSet Issuer
-        {
-            get
-                {
-                    return ClaimSet.System;
-                }
-        }
+        private static readonly ILog _Log =
+            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthorizationPolicy"/> class.
@@ -52,6 +41,15 @@ namespace Hexa.Core.ServiceModel.Security
         {
             Id = Guid.NewGuid().ToString();
             _Log.DebugFormat("New instance {0} created.", Id);
+        }
+
+        #region IAuthorizationPolicy Members
+
+        public string Id { get; protected set; }
+
+        public ClaimSet Issuer
+        {
+            get { return ClaimSet.System; }
         }
 
         /// <summary>
@@ -63,6 +61,8 @@ namespace Hexa.Core.ServiceModel.Security
         /// false if the <see cref="M:System.IdentityModel.Policy.IAuthorizationPolicy.Evaluate(System.IdentityModel.Policy.EvaluationContext,System.Object@)"/> method for this authorization policy must be called if additional claims are added by other authorization policies to <paramref name="evaluationContext"/>; otherwise, true to state no additional evaluation is required by this authorization policy.
         /// </returns>
         public abstract bool Evaluate(EvaluationContext evaluationContext, ref object state);
+
+        #endregion
 
         /// <summary>
         /// Setup ups the evaluation context.

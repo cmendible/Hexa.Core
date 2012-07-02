@@ -17,11 +17,11 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Hexa.Core.Validation
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
     /// </summary>

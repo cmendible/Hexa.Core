@@ -17,11 +17,11 @@
 
 #endregion
 
-using System;
-using System.Web;
-
 namespace Hexa.Core.Web.UI
 {
+    using System;
+    using System.Web;
+
     public static class UrlResolver
     {
         public static string ResolveUrl(string originalUrl)
@@ -35,17 +35,17 @@ namespace Hexa.Core.Web.UI
 
             // *** Fix up image path for ~ root app dir directory
             if (originalUrl.StartsWith("~"))
-                {
-                    string newUrl = "";
-                    if (HttpContext.Current != null)
-                        newUrl = HttpContext.Current.Request.ApplicationPath + originalUrl.Substring(1).Replace("//", "/");
-                    else
-                        // *** Not context: assume current directory is the base directory
-                        throw new ArgumentException("Invalid URL: Relative URL not allowed.");
+            {
+                string newUrl = "";
+                if (HttpContext.Current != null)
+                    newUrl = HttpContext.Current.Request.ApplicationPath + originalUrl.Substring(1).Replace("//", "/");
+                else
+                    // *** Not context: assume current directory is the base directory
+                    throw new ArgumentException("Invalid URL: Relative URL not allowed.");
 
-                    // *** Just to be sure fix up any double slashes
-                    return newUrl.Replace("//", "/");
-                }
+                // *** Just to be sure fix up any double slashes
+                return newUrl.Replace("//", "/");
+            }
 
             return originalUrl;
         }

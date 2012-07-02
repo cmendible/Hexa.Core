@@ -2,27 +2,26 @@
 // see: http://stackoverflow.com/questions/328763/how-to-take-control-of-style-sheets-in-asp-net-themes-with-the-styleplaceholder-a
 
 
-using System;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-//<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
+ //<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
 //<cc2:Styles runat="server">
 //    <link rel="Stylesheet" type="text/css" href="%Theme/StyleSheet.css" media="all"/>
 //    <link rel="Stylesheet" type="text/css" href="%Theme/Print.css" media="print"/>
 //</cc2:Styles>
+
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
     [DefaultProperty("ThemeVariableName")]
     [ToolboxData("<{0}:Styles runat=\"server\"></{0}:Styles>")]
     [Themeable(true)]
     public class Styles : PlaceHolder
     {
-
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("%Theme")]
@@ -31,15 +30,25 @@ namespace Hexa.Core.Web.UI.Controls
         public string ThemeVariableName
         {
             get
-                {
-                    String s = (String)ViewState["ThemeVariableName"];
-                    return ((s == null) ? "%Theme" : s);
-                }
+            {
+                var s = (String) ViewState["ThemeVariableName"];
+                return ((s == null) ? "%Theme" : s);
+            }
 
-            set
-                {
-                    ViewState["ThemeVariableName"] = value;
-                }
+            set { ViewState["ThemeVariableName"] = value; }
+        }
+
+        /// <summary>
+        /// Get the theme path
+        /// </summary>
+        public string ThemePath
+        {
+            get
+            {
+                return String.Format("{0}/App_Themes/{1}",
+                                     Page.Request.ApplicationPath,
+                                     Page.Theme).Replace("//", "/");
+            }
         }
 
         /// <summary>
@@ -49,44 +58,31 @@ namespace Hexa.Core.Web.UI.Controls
         {
             base.OnPreRender(e);
 
-            if (this.Visible)
+            if (Visible)
+            {
+                // Hide any server side css
+                foreach (Control c in Page.Header.Controls)
                 {
-                    // Hide any server side css
-                    foreach (Control c in this.Page.Header.Controls)
-                        {
-                            if (c is HtmlControl && ((HtmlControl)c).TagName.Equals("link",
-                                    StringComparison.OrdinalIgnoreCase))
-                                {
-                                    c.Visible = false;
-                                }
-                        }
-
-                    // Replace ThemeVariableName with actual theme path
-                    Regex reg = new Regex(ThemeVariableName,
-                                          System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-                    foreach (Control c in this.Controls)
-                        {
-                            if (c is LiteralControl)
-                                {
-                                    LiteralControl l = (LiteralControl)c;
-                                    l.Text = reg.Replace(l.Text, this.ThemePath);
-                                }
-                        }
+                    if (c is HtmlControl && ((HtmlControl) c).TagName.Equals("link",
+                                                                             StringComparison.OrdinalIgnoreCase))
+                    {
+                        c.Visible = false;
+                    }
                 }
-        }
 
-        /// <summary>
-        /// Get the theme path
-        /// </summary>
-        public string ThemePath
-        {
-            get
+                // Replace ThemeVariableName with actual theme path
+                var reg = new Regex(ThemeVariableName,
+                                    RegexOptions.IgnoreCase);
+
+                foreach (Control c in Controls)
                 {
-                    return String.Format("{0}/App_Themes/{1}",
-                                         this.Page.Request.ApplicationPath,
-                                         this.Page.Theme).Replace("//", "/");
+                    if (c is LiteralControl)
+                    {
+                        var l = (LiteralControl) c;
+                        l.Text = reg.Replace(l.Text, ThemePath);
+                    }
                 }
+            }
         }
     }
 }

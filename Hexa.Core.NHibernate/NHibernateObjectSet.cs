@@ -17,26 +17,29 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using NHibernate;
-using NHibernate.Linq;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using NHibernate;
+    using NHibernate.Linq;
+
     public class NHibernateObjectSet<TEntity> : IEntitySet<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> _set;
-        ISession _session;
+        private readonly ISession _session;
+        private IQueryable<TEntity> _set;
 
         public NHibernateObjectSet(ISession session)
         {
             _session = session;
             _set = _session.Query<TEntity>();
         }
+
+        #region IEntitySet<TEntity> Members
 
         public void AddObject(TEntity entity)
         {
@@ -59,61 +62,53 @@ namespace Hexa.Core.Domain
                 _session.Update(entity);
         }
 
-        public void Detach(TEntity entity)
-        {
-            _session.Evict(entity);
-        }
-
         public IEnumerator<TEntity> GetEnumerator()
         {
             return _set.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _set.GetEnumerator();
         }
 
         public Type ElementType
         {
-            get
-                {
-                    return typeof(TEntity);
-                }
+            get { return typeof (TEntity); }
         }
 
-        public System.Linq.Expressions.Expression Expression
+        public Expression Expression
         {
-            get
-                {
-                    return _set.Expression;
-                }
+            get { return _set.Expression; }
         }
 
         public IQueryProvider Provider
         {
-            get
-                {
-                    return _set.Provider;
-                }
+            get { return _set.Provider; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
         {
             _set = _set.Fetch(path);
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+                                           Expression<Func<TEntity, bool>> filter)
         {
             _set = _set.Where(filter).Fetch(path);
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+                                              Expression<Func<TEntity, bool>> filter,
+                                              Expression<Func<TEntity, S>> orderByExpression)
         {
             _set = _set.Where(filter).OrderByDescending(orderByExpression).Fetch(path);
             return this;
@@ -131,7 +126,8 @@ namespace Hexa.Core.Domain
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
             IQuery query = _session.GetNamedQuery(queryName);
@@ -141,7 +137,8 @@ namespace Hexa.Core.Domain
             return query.List<TEntity>();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             IQuery query = _session.GetNamedQuery(queryName);
@@ -151,5 +148,11 @@ namespace Hexa.Core.Domain
             return query.List<T>();
         }
 
+        #endregion
+
+        public void Detach(TEntity entity)
+        {
+            _session.Evict(entity);
+        }
     }
 }

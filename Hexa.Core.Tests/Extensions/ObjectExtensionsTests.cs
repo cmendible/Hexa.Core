@@ -1,10 +1,9 @@
-﻿using System;
-using Hexa.Core.Tests.Domain;
-using NUnit.Framework;
-
-
-namespace Hexa.Core.Tests.Extensions
+﻿namespace Hexa.Core.Tests.Extensions
 {
+    using System;
+    using Domain;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ObjectExtensionsTests
     {
@@ -12,7 +11,7 @@ namespace Hexa.Core.Tests.Extensions
         public void MakeTransient()
         {
             var human = new Human();
-            var transientHuman = human.MakeTransient();
+            Human transientHuman = human.MakeTransient();
         }
     }
 }

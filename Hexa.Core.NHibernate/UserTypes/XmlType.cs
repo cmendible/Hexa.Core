@@ -1,18 +1,20 @@
-using System;
-using System.Data;
-using System.Data.Common;
-using System.Xml;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Data;
+    using System.Data.Common;
+    using System.Xml;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
+
     public class XmlType : IUserType
     {
+        #region IUserType Members
+
         public new bool Equals(object x, object y)
         {
-            XmlDocument xdoc_x = (XmlDocument) x;
-            XmlDocument xdoc_y = (XmlDocument) y;
+            var xdoc_x = (XmlDocument) x;
+            var xdoc_y = (XmlDocument) y;
             return xdoc_y.OuterXml == xdoc_x.OuterXml;
         }
 
@@ -20,25 +22,25 @@ namespace Hexa.Core.Domain
         {
             if (names.Length != 1)
                 throw new InvalidOperationException("names array has more than one element. can't handle this!");
-            XmlDocument document = new XmlDocument();
-            string val = rs[names[0]] as string;
+            var document = new XmlDocument();
+            var val = rs[names[0]] as string;
             if (val != null)
-                {
-                    document.LoadXml(val);
-                    return document;
-                }
+            {
+                document.LoadXml(val);
+                return document;
+            }
             return null;
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            DbParameter parameter = (DbParameter)cmd.Parameters[index];
-            if(value == null)
-                {
-                    parameter.Value = DBNull.Value;
-                    return;
-                }
-            parameter.Value = ((XmlDocument)value).OuterXml;
+            var parameter = (DbParameter) cmd.Parameters[index];
+            if (value == null)
+            {
+                parameter.Value = DBNull.Value;
+                return;
+            }
+            parameter.Value = ((XmlDocument) value).OuterXml;
         }
 
         public object Assemble(object cached, object owner)
@@ -63,40 +65,33 @@ namespace Hexa.Core.Domain
 
         public object DeepCopy(object value)
         {
-            XmlDocument other = (XmlDocument) value;
-            XmlDocument xdoc = new XmlDocument();
+            var other = (XmlDocument) value;
+            var xdoc = new XmlDocument();
             xdoc.LoadXml(other.OuterXml);
             return xdoc;
         }
 
         public SqlType[] SqlTypes
         {
-            get
-                {
-                    return new SqlType[] { new SqlXmlType() };
-                }
+            get { return new SqlType[] {new SqlXmlType()}; }
         }
 
-        public System.Type ReturnedType
+        public Type ReturnedType
         {
-            get
-                {
-                    return typeof(XmlDocument);
-                }
+            get { return typeof (XmlDocument); }
         }
 
         public bool IsMutable
         {
-            get
-                {
-                    return true;
-                }
+            get { return true; }
         }
+
+        #endregion
     }
 
     public class SqlXmlType : SqlType
     {
-        public SqlXmlType() : base(System.Data.DbType.Xml)
+        public SqlXmlType() : base(DbType.Xml)
         {
         }
     }

@@ -17,33 +17,41 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 namespace GNU.Gettext
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+
     /// <summary>
     /// Class used to call Gettext.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
+        MessageId = "Gettext")]
     public sealed class GettextHelper
     {
-        private GettextHelper()
-        {
-        }
-
         /// <summary>
         /// Gettext resource manager.
         /// </summary>
-        private static Dictionary<string, GettextResourceManager> _ResourceManager = new Dictionary<string, GettextResourceManager>();
+        private static readonly Dictionary<string, GettextResourceManager> _ResourceManager =
+            new Dictionary<string, GettextResourceManager>();
+
+        private GettextHelper()
+        {
+        }
 
         /// <summary>
         /// Translates a string using Gettext resource manager.
         /// </summary>
         /// <param name="key">The string.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+             MessageId = "t")]
         public static string t(string key)
         {
             return t(key, Assembly.GetCallingAssembly());
@@ -55,7 +63,12 @@ namespace GNU.Gettext
         /// <param name="key">The string</param>
         /// <param name="callingAssembly">The calling assembly.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1062:Validate arguments of public methods", MessageId = "1"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+             MessageId = "t")]
         public static string t(string key, Assembly callingAssembly)
         {
             // Get Assembly Name
@@ -69,8 +82,7 @@ namespace GNU.Gettext
 
         public static void ForceInvariantCulture()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
         }
     }
-
 }

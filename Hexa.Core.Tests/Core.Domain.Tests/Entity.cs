@@ -17,20 +17,11 @@
 
 #endregion
 
-
 namespace Hexa.Core.Tests
 {
     public class Entity
     {
-        public int Id
-        {
-            get;
-            set;
-        }
-        public string SampleProperty
-        {
-            get;
-            set;
-        }
+        public int Id { get; set; }
+        public string SampleProperty { get; set; }
     }
 }

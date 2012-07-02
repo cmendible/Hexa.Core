@@ -17,36 +17,25 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+
     [Serializable]
     public abstract class AuditableRootEntity<TEntity> : RootEntity<TEntity>, IAuditableEntity
     {
+        #region IAuditableEntity Members
+
         /// <summary>
         /// Gets or sets the date on which object was created.
         /// </summary>
         /// <value>The creation date.</value>
-        public virtual DateTime CreatedAt
-        {
-            get;
-            set;
-        }
-        public virtual string CreatedBy
-        {
-            get;
-            set;
-        }
-        public virtual DateTime UpdatedAt
-        {
-            get;
-            set;
-        }
-        public virtual string UpdatedBy
-        {
-            get;
-            set;
-        }
+        public virtual DateTime CreatedAt { get; set; }
+
+        public virtual string CreatedBy { get; set; }
+        public virtual DateTime UpdatedAt { get; set; }
+        public virtual string UpdatedBy { get; set; }
+
+        #endregion
     }
 }

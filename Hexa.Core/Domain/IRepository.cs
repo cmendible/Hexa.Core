@@ -9,13 +9,13 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Hexa.Core.Domain.Specification;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using Specification;
+
     /// <summary>
     /// Base interface for implement a "Repository Pattern", for
     /// more information about this pattern see http://martinfowler.com/eaaCatalog/repository.html
@@ -33,10 +33,7 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Get the context in this repository
         /// </summary>
-        IUnitOfWork UnitOfWork
-        {
-            get;
-        }
+        IUnitOfWork UnitOfWork { get; }
 
         /// <summary>
         /// Add item into repository
@@ -91,7 +88,8 @@ namespace Hexa.Core.Domain
         /// <returns>List of selected elements</returns>
         IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter);
 
-        IEnumerable<TEntity> GetFilteredElements<S>(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression, bool ascending);
+        IEnumerable<TEntity> GetFilteredElements<S>(Expression<Func<TEntity, bool>> filter,
+                                                    Expression<Func<TEntity, S>> orderByExpression, bool ascending);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -101,7 +99,8 @@ namespace Hexa.Core.Domain
         /// <param name="orderByExpression">Order by expression for this query</param>
         /// <param name="ascending">Specify if order is ascending</param>
         /// <returns>List of selected elements</returns>
-        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount, Expression<Func<TEntity, S>> orderByExpression, bool ascending);
+        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
+                                                   Expression<Func<TEntity, S>> orderByExpression, bool ascending);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -112,11 +111,17 @@ namespace Hexa.Core.Domain
         /// <param name="ascending">Specify if order is ascending</param>
         /// <param name="specification">Specification that result meet</param>
         /// <returns>List of selected elements</returns>
-        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount, Expression<Func<TEntity, S>> orderByExpression, ISpecification<TEntity> specification, bool ascending);
+        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
+                                                   Expression<Func<TEntity, S>> orderByExpression,
+                                                   ISpecification<TEntity> specification, bool ascending);
 
-        PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount, IOrderBySpecification<TEntity> orderBySpecification, ISpecification<TEntity> specification);
+        PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
+                                                IOrderBySpecification<TEntity> orderBySpecification,
+                                                ISpecification<TEntity> specification);
 
-        PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount, IOrderBySpecification<TEntity> orderBySpecification, Expression<Func<TEntity, bool>> filter);
+        PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
+                                                IOrderBySpecification<TEntity> orderBySpecification,
+                                                Expression<Func<TEntity, bool>> filter);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -127,6 +132,8 @@ namespace Hexa.Core.Domain
         /// <param name="ascending">Specify if order is ascending</param>
         /// <param name="filter">filter</param>
         /// <returns>List of selected elements</returns>
-        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount, Expression<Func<TEntity, S>> orderByExpression, Expression<Func<TEntity, bool>> filter, bool ascending);
+        PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
+                                                   Expression<Func<TEntity, S>> orderByExpression,
+                                                   Expression<Func<TEntity, bool>> filter, bool ascending);
     }
 }

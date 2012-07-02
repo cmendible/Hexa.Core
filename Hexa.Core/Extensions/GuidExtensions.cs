@@ -1,5 +1,4 @@
-﻿
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
@@ -55,18 +54,18 @@ namespace System
         /// <returns></returns>
         public static Guid NewCombGuid()
         {
-            DateTime baseDate = new DateTime(1900, 1, 1);
+            var baseDate = new DateTime(1900, 1, 1);
             DateTime now = DateTime.Now;
-            byte[] guidArray = System.Guid.NewGuid().ToByteArray();
+            byte[] guidArray = Guid.NewGuid().ToByteArray();
 
             // Get the days and milliseconds which will be used to build the byte string
-            TimeSpan days = new TimeSpan(now.Ticks - baseDate.Ticks);
-            TimeSpan msecs = new TimeSpan(now.Ticks - (new DateTime(now.Year, now.Month, now.Day).Ticks));
+            var days = new TimeSpan(now.Ticks - baseDate.Ticks);
+            var msecs = new TimeSpan(now.Ticks - (new DateTime(now.Year, now.Month, now.Day).Ticks));
 
             // Convert to a byte array
             // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333
             byte[] daysArray = BitConverter.GetBytes(days.Days);
-            byte[] msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds / 3.333333));
+            byte[] msecsArray = BitConverter.GetBytes((long) (msecs.TotalMilliseconds/3.333333));
 
             // Reverse the bytes to match SQL Servers ordering
             Array.Reverse(daysArray);
@@ -75,7 +74,7 @@ namespace System
             // Copy the bytes into the guid
             Array.Copy(daysArray, daysArray.Length - 2, guidArray, guidArray.Length - 6, 2);
             Array.Copy(msecsArray, msecsArray.Length - 4, guidArray, guidArray.Length - 4, 4);
-            return new System.Guid(guidArray);
+            return new Guid(guidArray);
         }
 
         /// <summary>
@@ -95,8 +94,8 @@ namespace System
         /// <returns></returns>
         public static DateTime ShowDate(this Guid value)
         {
-            byte[] dayBits = new byte[4];
-            byte[] msecBits = new byte[4];
+            var dayBits = new byte[4];
+            var msecBits = new byte[4];
             byte[] guidBits = value.ToByteArray();
 
             // First we should obtain msecs and days from guid hex string
@@ -110,27 +109,26 @@ namespace System
 
             // Now that we have days in a byte array, we can convert them into something
             // more useable.. let's say a TimeSpam objet..
-            TimeSpan days = new TimeSpan(BitConverter.ToInt32(dayBits, 0), 0, 0, 0);
-            DateTime date = new DateTime(new DateTime(1900, 1, 1).Ticks + days.Ticks);
+            var days = new TimeSpan(BitConverter.ToInt32(dayBits, 0), 0, 0, 0);
+            var date = new DateTime(new DateTime(1900, 1, 1).Ticks + days.Ticks);
             // This should print the year/month/day, but at 00:00:00 hours.
 
             // Now we need to get the hour.. it is encoded in milliseconds with
             // 1/300th aproximation.. so first, let's pass it to a double
             // and multiply it by 3.33333
-            double tmp = ((double)BitConverter.ToInt32(msecBits, 0)) * 3.333333;
+            double tmp = (BitConverter.ToInt32(msecBits, 0))*3.333333;
 
             // Now we can convert this into a TimeSpan, passing milliseconds
             // as Ticks. Remeber, ticks is a "normally" a constant value
             // witch 10000/1 times a second. But you should not assume this value
             // but instead you should use TimeSpan.TicksPerMillisecond constant
             // to operate with ticks vs msecs.
-            TimeSpan msecs = new TimeSpan(((long)tmp) * TimeSpan.TicksPerMillisecond);
+            var msecs = new TimeSpan(((long) tmp)*TimeSpan.TicksPerMillisecond);
 
             // Now we can obtain the final date
             date = new DateTime(date.Ticks + msecs.Ticks);
 
             return date;
-
         }
 
         /// <summary>
@@ -149,18 +147,18 @@ namespace System
             const int VariantBits = (0x2 << VariantShift);
 
             if ((bits[8] & VariantMask) != VariantBits)
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
 
             const int VersionShift = 4;
             const int VersionMask = (0xf << VersionShift);
             const int VersionBits = (0x4 << VersionShift);
 
             if ((bits[7] & VersionMask) != VersionBits)
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             return true;
         }
     }

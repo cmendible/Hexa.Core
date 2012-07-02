@@ -17,13 +17,15 @@
 
 #endregion
 
-
 namespace Hexa.Core.Validation
 {
+    using System.Diagnostics.CodeAnalysis;
+    using Resources;
+
     /// <summary>
     /// Interface for Validate TypeValidation Info..
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IValidateTypeValidationInfo : IValidationInfo
     {
     }
@@ -34,13 +36,12 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class ValidateTypeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IValidateTypeValidationInfo
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         public ValidateTypeValidationInfo(string propertyName)
-        : this(propertyName, null)
+            : this(propertyName, null)
         {
         }
 
@@ -50,21 +51,22 @@ namespace Hexa.Core.Validation
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="error">The error.</param>
         public ValidateTypeValidationInfo(string propertyName, string error)
-        : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
         {
             if (string.IsNullOrEmpty(error))
-                return string.Format(Hexa.Core.Resources.Resource.ValueIsNotOfTheCorrectType, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
+                return string.Format(Resource.ValueIsNotOfTheCorrectType,
+                                     DataAnnotationHelper.ParseDisplayName(typeof (TEntity), propertyName));
             else
                 return error;
         }
     }
-
 }

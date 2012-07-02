@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Hexa.Core.Validation;
-
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using Validation;
+
     [Serializable]
     public abstract class ValidatableObject : IValidatable
     {
-
         #region IValidatable Implementation
 
-        private IValidator _validator = null;
+        private IValidator _validator;
 
         /// <summary>
         /// Gets the validator.
@@ -20,12 +19,12 @@ namespace Hexa.Core.Domain
         private IValidator Validator
         {
             get
-                {
-                    if (_validator == null)
-                        _validator = ServiceLocator.GetInstance<IValidator>();
+            {
+                if (_validator == null)
+                    _validator = ServiceLocator.GetInstance<IValidator>();
 
-                    return _validator;
-                }
+                return _validator;
+            }
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace Hexa.Core.Domain
         public virtual void AssertValidation()
         {
             if (!Validator.IsValid(this))
-                throw new ValidationException(this.GetType(), Validator.Validate(this));
+                throw new ValidationException(GetType(), Validator.Validate(this));
         }
 
         #endregion

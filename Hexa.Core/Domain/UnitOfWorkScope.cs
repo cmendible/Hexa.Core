@@ -17,37 +17,80 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using System.ServiceModel;
-using System.Web;
-
 namespace Hexa.Core.Domain
 {
+    using System.Collections.Generic;
+    using System.Runtime.Remoting.Messaging;
+    using System.ServiceModel;
+    using System.Web;
+
     public class UnitOfWorkScope
     {
+        private static string _key = "Hexa.Core.Domain.RunningContexts.Key";
+
         public static IUnitOfWork Current
         {
             get
+            {
+                if (RunningScopes.Count > 0)
+                {
+                    IUnitOfWork unitOfWork = RunningScopes.Peek();
+                    return unitOfWork;
+                }
+                else
+                    return null;
+            }
+            private set
+            {
+                if (value == null)
                 {
                     if (RunningScopes.Count > 0)
-                        {
-                            var unitOfWork = RunningScopes.Peek();
-                            return unitOfWork;
-                        }
-                    else
-                        return null;
+                        RunningScopes.Pop();
                 }
-            private set
+                else
+                    RunningScopes.Push(value);
+            }
+        }
+
+        public static Stack<IUnitOfWork> RunningScopes
+        {
+            get
+            {
+                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
+                if (OperationContext.Current != null)
                 {
-                    if (value == null)
-                        {
-                            if (RunningScopes.Count > 0)
-                                RunningScopes.Pop();
-                        }
-                    else
-                        RunningScopes.Push(value);
+                    //WCF without HttpContext environment
+                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
+
+                    if (containerExtension == null)
+                    {
+                        containerExtension = new ContainerExtension
+                                                 {
+                                                     Value = new Stack<IUnitOfWork>()
+                                                 };
+
+                        OperationContext.Current.Extensions.Add(containerExtension);
+                    }
+
+                    return containerExtension.Value as Stack<IUnitOfWork>;
                 }
+                else if (HttpContext.Current != null)
+                {
+                    //HttpContext avaiable ( ASP.NET ..)
+                    if (HttpContext.Current.Items[_key] == null)
+                        HttpContext.Current.Items[_key] = new Stack<IUnitOfWork>();
+
+                    return HttpContext.Current.Items[_key] as Stack<IUnitOfWork>;
+                }
+                else
+                {
+                    if (CallContext.GetData(_key) == null)
+                        CallContext.SetData(_key, new Stack<IUnitOfWork>());
+
+                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
+                    return CallContext.GetData(_key) as Stack<IUnitOfWork>;
+                }
+            }
         }
 
         public static IUnitOfWork Start()
@@ -66,15 +109,11 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Custom extension for OperationContext scope
         /// </summary>
-        class ContainerExtension : IExtension<OperationContext>
+        private class ContainerExtension : IExtension<OperationContext>
         {
             #region Members
 
-            public object Value
-            {
-                get;
-                set;
-            }
+            public object Value { get; set; }
 
             #endregion
 
@@ -82,61 +121,15 @@ namespace Hexa.Core.Domain
 
             public void Attach(OperationContext owner)
             {
-
             }
 
             public void Detach(OperationContext owner)
             {
-
             }
 
             #endregion
         }
 
         #endregion
-
-        private static string _key = "Hexa.Core.Domain.RunningContexts.Key";
-
-        public static Stack<IUnitOfWork> RunningScopes
-        {
-            get
-                {
-                    //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                    if (OperationContext.Current != null)
-                        {
-                            //WCF without HttpContext environment
-                            var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
-
-                            if (containerExtension == null)
-                                {
-                                    containerExtension = new ContainerExtension()
-                                    {
-                                        Value = new Stack<IUnitOfWork>()
-                                    };
-
-                                    OperationContext.Current.Extensions.Add(containerExtension);
-                                }
-
-                            return containerExtension.Value as Stack<IUnitOfWork>;
-                        }
-                    else if (HttpContext.Current != null)
-                        {
-                            //HttpContext avaiable ( ASP.NET ..)
-                            if (HttpContext.Current.Items[_key.ToString()] == null)
-                                HttpContext.Current.Items[_key.ToString()] = new Stack<IUnitOfWork>();
-
-                            return HttpContext.Current.Items[_key.ToString()] as Stack<IUnitOfWork>;
-                        }
-                    else
-                        {
-                            if (CallContext.GetData(_key.ToString()) == null)
-                                CallContext.SetData(_key.ToString(), new Stack<IUnitOfWork>());
-
-                            //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                            return CallContext.GetData(_key.ToString()) as Stack<IUnitOfWork>;
-                        }
-                }
-        }
     }
-
 }

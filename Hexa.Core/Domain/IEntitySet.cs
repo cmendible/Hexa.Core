@@ -17,13 +17,14 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     public interface IEntitySet<TEntity> : IQueryable<TEntity> where TEntity : class
     {
         void Attach(TEntity entity);
@@ -31,12 +32,18 @@ namespace Hexa.Core.Domain
         void DeleteObject(TEntity entity);
         void ModifyObject(TEntity entity);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path);
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter);
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression);
+
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter,
+                                       Expression<Func<TEntity, S>> orderByExpression);
 
         IEntitySet<TEntity> Cacheable();
         IEntitySet<TEntity> Cacheable(string cacheRegion);

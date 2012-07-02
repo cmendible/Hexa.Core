@@ -17,10 +17,11 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Security
 {
+    using System;
+    using Resources;
+
     /// <summary>
     /// Class used to hold user name info.
     /// </summary>
@@ -28,18 +29,17 @@ namespace Hexa.Core.Security
     public class CoreIdentity : MarshalByRefObject, ICoreIdentity
     {
         // Fields
-        private string _name;
-        private string _type;
-        private string _id;
+        private readonly string _id;
+        private readonly string _name;
+        private readonly string _type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public CoreIdentity(string name)
-        : this(name, "Unknown", name)
+            : this(name, "Unknown", name)
         {
-
         }
 
         /// <summary>
@@ -48,47 +48,8 @@ namespace Hexa.Core.Security
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
         public CoreIdentity(string name, string type)
-        : this(name, type, name)
+            : this(name, type, name)
         {
-        }
-
-        /// <summary>
-        /// Gets the type of authentication used.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The type of authentication used to identify the user.</returns>
-        public virtual string AuthenticationType
-        {
-            get
-                {
-                    return _type;
-                }
-        }
-
-        /// <summary>
-        /// Gets a value that indicates whether the user has been authenticated.
-        /// </summary>
-        /// <value></value>
-        /// <returns>true if the user was authenticated; otherwise, false.</returns>
-        public virtual bool IsAuthenticated
-        {
-            get
-                {
-                    return !string.IsNullOrEmpty(_name);
-                }
-        }
-
-        /// <summary>
-        /// Gets the name of the current user.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The name of the user on whose behalf the code is running.</returns>
-        public virtual string Name
-        {
-            get
-                {
-                    return _name;
-                }
         }
 
         /// <summary>
@@ -100,20 +61,52 @@ namespace Hexa.Core.Security
         public CoreIdentity(string name, string type, string id)
         {
             if (name == null)
-                {
-                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
-                }
+            {
+                throw new ArgumentNullException(Resource.NameCannotBeNull);
+            }
             if (type == null)
-                {
-                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
-                }
+            {
+                throw new ArgumentNullException(Resource.TypeCannotBeNull);
+            }
             if (id == null)
-                {
-                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
-                }
+            {
+                throw new ArgumentNullException(Resource.TypeCannotBeNull);
+            }
             _name = name;
             _type = type;
             _id = id;
+        }
+
+        #region ICoreIdentity Members
+
+        /// <summary>
+        /// Gets the type of authentication used.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The type of authentication used to identify the user.</returns>
+        public virtual string AuthenticationType
+        {
+            get { return _type; }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the user has been authenticated.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the user was authenticated; otherwise, false.</returns>
+        public virtual bool IsAuthenticated
+        {
+            get { return !string.IsNullOrEmpty(_name); }
+        }
+
+        /// <summary>
+        /// Gets the name of the current user.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The name of the user on whose behalf the code is running.</returns>
+        public virtual string Name
+        {
+            get { return _name; }
         }
 
         /// <summary>
@@ -122,10 +115,9 @@ namespace Hexa.Core.Security
         /// <value>The id.</value>
         public string Id
         {
-            get
-                {
-                    return _id;
-                }
+            get { return _id; }
         }
+
+        #endregion
     }
 }

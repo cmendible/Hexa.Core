@@ -17,10 +17,10 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+
     public interface IAuditTrailFactory
     {
         bool IsEntityRegistered(string entityName);

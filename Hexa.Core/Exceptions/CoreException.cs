@@ -17,12 +17,12 @@
 
 #endregion
 
-using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
+
     /// <summary>
     /// Core Exception
     /// </summary>
@@ -32,19 +32,7 @@ namespace Hexa.Core
         /// <summary>
         /// Exception unique id used for logging purposes.
         /// </summary>
-        private Guid _UniqueId = GuidExtensions.NewCombGuid();
-
-        /// <summary>
-        /// Gets the unique id.
-        /// </summary>
-        /// <value>The unique id.</value>
-        public Guid UniqueId
-        {
-            get
-                {
-                    return _UniqueId;
-                }
-        }
+        private readonly Guid _UniqueId = GuidExtensions.NewCombGuid();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreException"/> class.
@@ -67,7 +55,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="p_Message">The p_ message.</param>
         protected CoreException(string message)
-        : base(message)
+            : base(message)
         {
         }
 
@@ -77,8 +65,17 @@ namespace Hexa.Core
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
         protected CoreException(string message, Exception ex)
-        : base(message, ex)
+            : base(message, ex)
         {
+        }
+
+        /// <summary>
+        /// Gets the unique id.
+        /// </summary>
+        /// <value>The unique id.</value>
+        public Guid UniqueId
+        {
+            get { return _UniqueId; }
         }
 
         /// <summary>
@@ -93,15 +90,10 @@ namespace Hexa.Core
         /// 	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
         /// 	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }
-
     }
-
-
-
 }
-

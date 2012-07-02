@@ -9,11 +9,11 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// A Logic OR Specification
     /// </summary>
@@ -24,8 +24,8 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Members
 
-        private ISpecification<T> _RightSideSpecification = null;
-        private ISpecification<T> _LeftSideSpecification = null;
+        private readonly ISpecification<T> _LeftSideSpecification;
+        private readonly ISpecification<T> _RightSideSpecification;
 
         #endregion
 
@@ -38,14 +38,14 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="rightSide">Right side specification</param>
         public OrElseSpecification(ISpecification<T> leftSide, ISpecification<T> rightSide)
         {
-            if (leftSide == (ISpecification<T>)null)
+            if (leftSide == null)
                 throw new ArgumentNullException("leftSide");
 
-            if (rightSide == (ISpecification<T>)null)
+            if (rightSide == null)
                 throw new ArgumentNullException("rightSide");
 
-            this._LeftSideSpecification = leftSide;
-            this._RightSideSpecification = rightSide;
+            _LeftSideSpecification = leftSide;
+            _RightSideSpecification = rightSide;
         }
 
         #endregion
@@ -57,10 +57,7 @@ namespace Hexa.Core.Domain.Specification
         /// </summary>
         public override ISpecification<T> LeftSideSpecification
         {
-            get
-                {
-                    return _LeftSideSpecification;
-                }
+            get { return _LeftSideSpecification; }
         }
 
         /// <summary>
@@ -68,11 +65,9 @@ namespace Hexa.Core.Domain.Specification
         /// </summary>
         public override ISpecification<T> RightSideSpecification
         {
-            get
-                {
-                    return _RightSideSpecification;
-                }
+            get { return _RightSideSpecification; }
         }
+
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{T}"/>
         /// </summary>
@@ -83,7 +78,6 @@ namespace Hexa.Core.Domain.Specification
             Expression<Func<T, bool>> right = _RightSideSpecification.SatisfiedBy();
 
             return (left.OrElse(right));
-
         }
 
         #endregion

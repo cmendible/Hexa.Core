@@ -17,22 +17,27 @@
 
 #endregion
 
-using System;
-using System.ComponentModel.DataAnnotations;
-
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using FluentNHibernate.Conventions;
+    using FluentNHibernate.Conventions.Instances;
+
     public class NotNullable : IPropertyConvention
     {
+        #region IPropertyConvention Members
+
         public void Apply(IPropertyInstance target)
         {
-            var attribute = Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(RequiredAttribute)) as RequiredAttribute;
+            var attribute =
+                Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof (RequiredAttribute)) as
+                RequiredAttribute;
 
             if (attribute != null)
                 target.Not.Nullable();
         }
+
+        #endregion
     }
 }

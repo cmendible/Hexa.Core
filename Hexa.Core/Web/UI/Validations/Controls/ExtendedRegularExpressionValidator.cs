@@ -17,30 +17,29 @@
 
 #endregion
 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public class ExtendedRegularExpressionValidator : RegularExpressionValidator
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings"), UrlProperty]
+        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings"),
+         UrlProperty]
         public virtual string ImageUrl
         {
             get
-                {
-                    string imageUrl = string.Empty;
-                    object o = ViewState["ImageUrl"];
-                    if (o != null)
-                        imageUrl = ViewState["ImageUrl"].ToString();
+            {
+                string imageUrl = string.Empty;
+                object o = ViewState["ImageUrl"];
+                if (o != null)
+                    imageUrl = ViewState["ImageUrl"].ToString();
 
-                    return imageUrl;
-                }
-            set
-                {
-                    ViewState["ImageUrl"] = value;
-                }
+                return imageUrl;
+            }
+            set { ViewState["ImageUrl"] = value; }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -48,14 +47,13 @@ namespace Hexa.Core.Web.UI.Controls
             base.OnPreRender(e);
 
             if (!string.IsNullOrEmpty(ImageUrl))
-                {
-                    Image img = new Image();
-                    img.ID = "i" + ID;
-                    img.ToolTip = ErrorMessage;
-                    img.ImageUrl = ImageUrl;
-                    Controls.Add(img);
-                }
+            {
+                var img = new Image();
+                img.ID = "i" + ID;
+                img.ToolTip = ErrorMessage;
+                img.ImageUrl = ImageUrl;
+                Controls.Add(img);
+            }
         }
-
     }
 }

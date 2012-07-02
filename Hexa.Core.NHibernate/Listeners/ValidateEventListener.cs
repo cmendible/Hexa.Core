@@ -17,56 +17,55 @@
 
 #endregion
 
-using Hexa.Core.Validation;
-using NHibernate.Cfg;
-using NHibernate.Event;
-
 namespace Hexa.Core.Domain
 {
+    using NHibernate.Cfg;
+    using NHibernate.Event;
+    using Validation;
+
     public sealed class ValidateEventListener : IPreInsertEventListener, IPreUpdateEventListener, IInitializable
     {
         // Fields
-        private bool isInitialized;
         private static readonly object padlock = new object();
         private static IValidator validator;
+        private bool isInitialized;
 
         // Properties
         private static IValidator Validator
         {
             get
+            {
+                lock (padlock)
                 {
-                    lock (padlock)
-                        {
-                            if (validator == null)
-                                {
-                                    validator = ServiceLocator.GetInstance<IValidator>();
-                                }
-                        }
-                    return validator;
+                    if (validator == null)
+                    {
+                        validator = ServiceLocator.GetInstance<IValidator>();
+                    }
                 }
+                return validator;
+            }
             set
+            {
+                lock (padlock)
                 {
-                    lock (padlock)
-                        {
-                            validator = value;
-                        }
+                    validator = value;
                 }
+            }
         }
 
         // Methods
-        private static void Validate(object entity)
-        {
-            if (entity != null)
-                {
-                    Validator.AssertValidation(entity);
-                }
-        }
+
+        #region IInitializable Members
 
         public void Initialize(Configuration cfg)
         {
-            if (!this.isInitialized && (cfg != null))
-                this.isInitialized = true;
+            if (!isInitialized && (cfg != null))
+                isInitialized = true;
         }
+
+        #endregion
+
+        #region IPreInsertEventListener Members
 
         public bool OnPreInsert(PreInsertEvent @event)
         {
@@ -74,11 +73,24 @@ namespace Hexa.Core.Domain
             return false;
         }
 
+        #endregion
+
+        #region IPreUpdateEventListener Members
+
         public bool OnPreUpdate(PreUpdateEvent @event)
         {
             Validate(@event.Entity);
             return false;
         }
-    }
 
+        #endregion
+
+        private static void Validate(object entity)
+        {
+            if (entity != null)
+            {
+                Validator.AssertValidation(entity);
+            }
+        }
+    }
 }

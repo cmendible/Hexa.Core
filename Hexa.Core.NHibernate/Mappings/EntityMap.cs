@@ -17,7 +17,6 @@
 
 #endregion
 
-
 namespace Hexa.Core.Domain
 {
     public class EntityMap<TEntity> : BaseClassMap<TEntity>
@@ -26,8 +25,8 @@ namespace Hexa.Core.Domain
         public EntityMap()
         {
             Id(x => x.Id)
-            .UnsavedValue(0)
-            .GeneratedBy.Native();
+                .UnsavedValue(0)
+                .GeneratedBy.Native();
         }
     }
 
@@ -37,7 +36,7 @@ namespace Hexa.Core.Domain
         public BaseEntityWithUniqueIdMap()
         {
             Id(x => x.UniqueId)
-            .GeneratedBy.GuidComb();
+                .GeneratedBy.GuidComb();
         }
     }
 }

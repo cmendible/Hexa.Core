@@ -1,31 +1,35 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq.Expressions;
-
-//Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
+﻿ //Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
 
 namespace Hexa.Core.Windows.Mvvm
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Linq.Expressions;
+
     [Serializable]
     public abstract class ObservableObject : INotifyPropertyChanged
     {
+        #region INotifyPropertyChanged Members
+
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion
+
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            var handler = this.PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
-                {
-                    handler(this, e);
-                }
+            {
+                handler(this, e);
+            }
         }
 
         protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpresssion)
         {
-            var propertyName = PropertySupport.ExtractPropertyName(propertyExpresssion);
-            this.RaisePropertyChanged(propertyName);
+            string propertyName = PropertySupport.ExtractPropertyName(propertyExpresssion);
+            RaisePropertyChanged(propertyName);
         }
 
         protected void RaisePropertyChanged(String propertyName)
@@ -45,9 +49,9 @@ namespace Hexa.Core.Windows.Mvvm
             // verify that the property name matches a real,
             // public, instance property on this Object.
             if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-                {
-                    Debug.Fail("Invalid property name: " + propertyName);
-                }
+            {
+                Debug.Fail("Invalid property name: " + propertyName);
+            }
         }
     }
 }

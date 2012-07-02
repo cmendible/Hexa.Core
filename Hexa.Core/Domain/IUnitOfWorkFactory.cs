@@ -19,10 +19,8 @@
 
 namespace Hexa.Core.Domain
 {
-
     public interface IUnitOfWorkFactory
     {
         IUnitOfWork Create();
     }
-
 }

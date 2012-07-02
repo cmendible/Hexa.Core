@@ -13,6 +13,8 @@
 
 namespace Hexa.Core.Domain
 {
+    using System;
+
     /// <summary>
     /// Contract for UnitOfWork pattern. For more
     /// references see http://martinfowler.com/eaaCatalog/unitOfWork.html or
@@ -22,7 +24,7 @@ namespace Hexa.Core.Domain
     /// purposed and for mantein PI ( Persistence Ignorant ) in Domain
     /// this pattern is implemented.
     /// </summary>
-    public interface IUnitOfWork : System.IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         /// <summary>
         /// Commit all changes made in  a container.
@@ -46,5 +48,4 @@ namespace Hexa.Core.Domain
         /// <returns>Object set of type {TEntity}</returns>
         IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class;
     }
-
 }

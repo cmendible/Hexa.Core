@@ -1,29 +1,33 @@
-using Hexa.Core.Data;
-using Hexa.Core.Domain;
-using Hexa.Core.Logging;
-using Hexa.Core.Validation;
-using NUnit.Framework;
-
 namespace Hexa.Core.Mono.Tests
 {
-    [TestFixture()]
+    using Data;
+    using Domain;
+    using Logging;
+    using NUnit.Framework;
+    using Validation;
+
+    [TestFixture]
     public class PostgreSQLTest
     {
+        #region Setup/Teardown
+
         [SetUp]
         public void FixtureSetup()
         {
-            var cnnString = "Server=127.0.0.1;Port=5432;Database=HexaCorePostgreSqlTest;User Id=postgres;Password=password;";
+            string cnnString =
+                "Server=127.0.0.1;Port=5432;Database=HexaCorePostgreSqlTest;User Id=postgres;Password=password;";
 
             ApplicationContext.Start(cnnString);
 
             // Validator and TraceManager
-            var container = ApplicationContext.Container;
+            IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
             var ctxFactory = new NHContextFactory(DbProvider.PostgreSQLProvider,
-                                                  cnnString, string.Empty, typeof(PostgreSQLTest).Assembly, ApplicationContext.Container);
+                                                  cnnString, string.Empty, typeof (PostgreSQLTest).Assembly,
+                                                  ApplicationContext.Container);
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -56,6 +60,8 @@ namespace Hexa.Core.Mono.Tests
             ApplicationContext.Stop();
         }
 
+        #endregion
+
         [Test]
         [Ignore]
         public void SimpleTest()
@@ -64,4 +70,3 @@ namespace Hexa.Core.Mono.Tests
         }
     }
 }
-

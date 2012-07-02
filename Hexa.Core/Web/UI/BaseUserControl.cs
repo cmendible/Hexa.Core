@@ -17,15 +17,19 @@
 
 #endregion
 
-using System;
-using System.Globalization;
-
 namespace Hexa.Core.Web.UI
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Web.UI;
+    using GNU.Gettext;
+
     /// <summary>
     ///
     /// </summary>
-    public class BaseUserControl : System.Web.UI.UserControl
+    public class BaseUserControl : UserControl
     {
         #region  Globalization
 
@@ -34,20 +38,26 @@ namespace Hexa.Core.Web.UI
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+            MessageId = "t"),
+         SuppressMessage("Microsoft.Naming",
+             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
         protected string t(string key)
         {
-            System.Reflection.Assembly assembly = null;
+            Assembly assembly = null;
 
-            if (!this.GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
-                assembly = System.Reflection.Assembly.GetCallingAssembly();
+            if (!GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
+                assembly = Assembly.GetCallingAssembly();
             else
-                assembly = this.GetType().BaseType.Assembly;
+                assembly = GetType().BaseType.Assembly;
 
-            return GNU.Gettext.GettextHelper.t(key, assembly);
+            return GettextHelper.t(key, assembly);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        [SuppressMessage("Microsoft.Naming",
+            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+             MessageId = "t")]
         protected String t(String key, params object[] args)
         {
             return String.Format(CultureInfo.InvariantCulture, t(key), args);

@@ -17,28 +17,28 @@
 
 #endregion
 
-using System.IO;
-using System.Xml;
-using System.Xml.Xsl;
-
 namespace Hexa.Core.Xml
 {
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Xsl;
+
     public static class Transformer
     {
         public static byte[] Transform(byte[] inputDocument, byte[] xsl)
         {
-            XslCompiledTransform xslt = new XslCompiledTransform();
-            XmlReaderSettings settings = new XmlReaderSettings();
+            var xslt = new XslCompiledTransform();
+            var settings = new XmlReaderSettings();
             settings.ProhibitDtd = false;
 
-            using (MemoryStream memXsl = new MemoryStream(xsl))
+            using (var memXsl = new MemoryStream(xsl))
             {
                 xslt.Load(XmlReader.Create(new MemoryStream(xsl)));
             }
 
-            using (MemoryStream memOut = new MemoryStream())
+            using (var memOut = new MemoryStream())
             {
-                using (MemoryStream memXml = new MemoryStream(inputDocument))
+                using (var memXml = new MemoryStream(inputDocument))
                 {
                     xslt.Transform(XmlReader.Create(memXml, settings), XmlWriter.Create(memOut, xslt.OutputSettings));
                 }

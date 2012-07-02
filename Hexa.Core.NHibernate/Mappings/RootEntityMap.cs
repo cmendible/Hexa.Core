@@ -17,20 +17,18 @@
 
 #endregion
 
-
-using NHibernate.Dialect;
-
 namespace Hexa.Core.Domain
 {
+    using NHibernate.Dialect;
+
     public class RootEntityMap<TEntity> : BaseClassMap<TEntity>
         where TEntity : RootEntity<TEntity>
     {
         public RootEntityMap()
-        : base()
         {
             // Setup UniqueId property as CombGuid
             Id(x => x.UniqueId)
-            .GeneratedBy.GuidComb();
+                .GeneratedBy.GuidComb();
 
             // Use versioned timestamp as optimistick lock mechanism.
             OptimisticLock.Version();
@@ -43,12 +41,12 @@ namespace Hexa.Core.Domain
             // Setup timestamp..
             if (Dialect is SQLiteDialect)
                 Version(x => x.Version)
-                .Column("Timestamp")
-                .CustomType<TicksAsString>();
+                    .Column("Timestamp")
+                    .CustomType<TicksAsString>();
             else
                 Version(x => x.Version)
-                .Column("`Timestamp`")
-                .CustomType<TicksAsString>();
+                    .Column("`Timestamp`")
+                    .CustomType<TicksAsString>();
         }
     }
 }

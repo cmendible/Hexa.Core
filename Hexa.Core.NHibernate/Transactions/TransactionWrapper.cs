@@ -1,20 +1,17 @@
-﻿
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
+    using NHibernate;
+
     public class TransactionWrapper : ITransactionWrapper
     {
-        public TransactionWrapper(global::NHibernate.ITransaction transaction)
+        public TransactionWrapper(ITransaction transaction)
         {
             Transaction = transaction;
         }
 
-        protected global::NHibernate.ITransaction Transaction
-        {
-            get;
-            set;
-        }
+        protected ITransaction Transaction { get; set; }
 
-        #region ITransaction Members
+        #region ITransactionWrapper Members
 
         public virtual void Commit()
         {

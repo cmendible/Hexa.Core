@@ -1,10 +1,11 @@
-﻿
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
+    using NHibernate;
+
     public class NestedTransactionWrapper : TransactionWrapper
     {
-        public NestedTransactionWrapper(global::NHibernate.ITransaction transaction)
-        : base(transaction)
+        public NestedTransactionWrapper(ITransaction transaction)
+            : base(transaction)
         {
         }
 

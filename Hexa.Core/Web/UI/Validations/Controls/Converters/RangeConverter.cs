@@ -17,13 +17,12 @@
 
 #endregion
 
-using System;
-using System.Web.UI.WebControls;
-
-using Hexa.Core.Validation;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.Web.UI.WebControls;
+    using Validation;
+
     /// <summary>
     /// Class used to convert from a Range attribute to a BaseValidator
     /// </summary>
@@ -37,15 +36,15 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>A BaseValidator</returns>
         public override BaseValidator Convert(IValidationInfo validationInfo)
         {
-            ExtendedRangeValidator rangeValidator = new ExtendedRangeValidator();
+            var rangeValidator = new ExtendedRangeValidator();
 
-            IRangeValidationInfo rangevalidationInfo = validationInfo as IRangeValidationInfo;
+            var rangevalidationInfo = validationInfo as IRangeValidationInfo;
 
             rangeValidator.MinimumValue = rangevalidationInfo.Minimum.ToString();
             rangeValidator.MaximumValue = rangevalidationInfo.Maximum.ToString();
 
             switch (Type.GetTypeCode(rangevalidationInfo.Minimum.GetType()))
-                {
+            {
                 case TypeCode.Int16:
                 case TypeCode.Int32:
                 case TypeCode.Int64:
@@ -60,7 +59,7 @@ namespace Hexa.Core.Web.UI.Controls
                 case TypeCode.String:
                     rangeValidator.Type = ValidationDataType.String;
                     break;
-                }
+            }
 
             return rangeValidator;
         }

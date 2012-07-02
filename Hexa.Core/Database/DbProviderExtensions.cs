@@ -1,53 +1,53 @@
-using System.Data.Common;
-
 namespace Hexa.Core.Data
 {
+    using System.Data.Common;
+
     public static class DbProviderExtensions
     {
         public static void ExecuteNonQuery(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
-            using (var conn = provider.CreateConnection())
+            using (DbConnection conn = provider.CreateConnection())
             {
                 conn.ConnectionString = connectionString;
 
                 try
+                {
+                    conn.Open();
+                    using (DbCommand cmd = conn.CreateCommand())
                     {
-                        conn.Open();
-                        using (var cmd = conn.CreateCommand())
-                        {
-                            cmd.CommandText = command;
-                            cmd.ExecuteNonQuery();
-                        }
+                        cmd.CommandText = command;
+                        cmd.ExecuteNonQuery();
                     }
+                }
                 finally
-                    {
-                        conn.Close();
-                    }
+                {
+                    conn.Close();
+                }
             }
         }
 
         public static object ExecuteScalar(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
-            using (var conn = provider.CreateConnection())
+            using (DbConnection conn = provider.CreateConnection())
             {
                 conn.ConnectionString = connectionString;
 
                 try
+                {
+                    conn.Open();
+                    using (DbCommand cmd = conn.CreateCommand())
                     {
-                        conn.Open();
-                        using (var cmd = conn.CreateCommand())
-                        {
-                            cmd.CommandText = command;
-                            var ret = cmd.ExecuteScalar();
-                            return ret;
-                        }
+                        cmd.CommandText = command;
+                        object ret = cmd.ExecuteScalar();
+                        return ret;
                     }
+                }
                 finally
-                    {
-                        conn.Close();
-                    }
+                {
+                    conn.Close();
+                }
             }
         }
     }

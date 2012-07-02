@@ -1,15 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Hexa.Core.Validation
+﻿namespace Hexa.Core.Validation
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Contains the result of a <see cref="IValidator{TEntity}.Validate"/> method call.
     /// </summary>
     public sealed class ValidationResult : IEnumerable<ValidationError>
     {
         #region fields
+
         private readonly List<ValidationError> _errors = new List<ValidationError>();
+
         #endregion
 
         /// <summary>
@@ -24,21 +26,19 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="errors">The errors.</param>
         public ValidationResult(IEnumerable<ValidationError> errors)
-        : this()
+            : this()
         {
             _errors.AddRange(errors);
         }
 
         #region properties
+
         /// <summary>
         /// Gets wheater the validation operation on an entity was valid or not.
         /// </summary>
         public bool IsValid
         {
-            get
-                {
-                    return _errors.Count == 0;
-                }
+            get { return _errors.Count == 0; }
         }
 
         /// <summary>
@@ -49,14 +49,16 @@ namespace Hexa.Core.Validation
         public IEnumerable<ValidationError> Errors
         {
             get
-                {
-                    foreach (var error in _errors)
-                        yield return error;
-                }
+            {
+                foreach (ValidationError error in _errors)
+                    yield return error;
+            }
         }
+
         #endregion
 
         #region methods
+
         /// <summary>
         /// Adds a validation error into the result.
         /// </summary>
@@ -75,9 +77,11 @@ namespace Hexa.Core.Validation
             if (_errors.Contains(error))
                 _errors.Remove(error);
         }
+
         #endregion
 
         #region IEnumerable..
+
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
@@ -99,6 +103,7 @@ namespace Hexa.Core.Validation
         {
             return Errors.GetEnumerator();
         }
+
         #endregion
     }
 }

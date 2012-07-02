@@ -1,10 +1,10 @@
 ﻿//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
 
-using System;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+
     /// <summary>
     /// Base entity with an abstract key.
     /// </summary>
@@ -17,7 +17,6 @@ namespace Hexa.Core.Domain
     public abstract class BaseEntity<TKey> : ValidatableObject
         where TKey : IEquatable<TKey>
     {
-        private int? cachedHashcode;
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
@@ -27,7 +26,8 @@ namespace Hexa.Core.Domain
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
 
-        #region BaseEntity Members
+        private int? cachedHashcode;
+
         /// <summary>
         /// Id may be of type string, int, custom type, etc.
         /// Setter is protected to allow unit tests to set this property via reflection and to allow
@@ -37,11 +37,8 @@ namespace Hexa.Core.Domain
         /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
         /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
         /// </summary>
-        protected virtual TKey EntityId
-        {
-            get;
-            set;
-        }
+        protected virtual TKey EntityId { get; set; }
+
         /// <summary>
         /// Transient objects are not associated with an item already in storage.  For instance,
         /// a Customer is transient if its Id is 0.  It's virtual to allow NHibernate-backed
@@ -51,9 +48,9 @@ namespace Hexa.Core.Domain
         {
             return EntityId == null || EntityId.Equals(default(TKey));
         }
-        #endregion
 
         #region Entity comparison support && IEquatable<>
+
         /// <summary>
         /// Returns true if self and the provided entity have the same Id values
         /// and the Ids are not of the default Id value
@@ -64,6 +61,7 @@ namespace Hexa.Core.Domain
                    !compareTo.IsTransient() &&
                    EntityId.Equals(compareTo.EntityId);
         }
+
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
@@ -109,29 +107,29 @@ namespace Hexa.Core.Domain
         /// <returns></returns>
         public override int GetHashCode()
         {
-
             // Once we have a hash code we'll never change it
             if (cachedHashcode.HasValue)
                 return cachedHashcode.Value;
 
             if (IsTransient())
-                {
-                    cachedHashcode = base.GetHashCode();
-                }
+            {
+                cachedHashcode = base.GetHashCode();
+            }
             else
+            {
+                unchecked
                 {
-                    unchecked
-                    {
-                        // It's possible for two objects to return the same hash code based on
-                        // identically valued properties, even if they're of two different types,
-                        // so we include the object's type in the hash calculation
-                        int hashCode = GetType().GetHashCode();
-                        cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ EntityId.GetHashCode();
-                    }
+                    // It's possible for two objects to return the same hash code based on
+                    // identically valued properties, even if they're of two different types,
+                    // so we include the object's type in the hash calculation
+                    int hashCode = GetType().GetHashCode();
+                    cachedHashcode = (hashCode*HASH_MULTIPLIER) ^ EntityId.GetHashCode();
                 }
+            }
 
             return cachedHashcode.Value;
         }
+
         #endregion
     }
 
@@ -147,6 +145,8 @@ namespace Hexa.Core.Domain
     public abstract class BaseEntity<TEntity, TKey> : BaseEntity<TKey>, IEquatable<TEntity>
         where TKey : IEquatable<TKey>
     {
+        #region IEquatable<TEntity> Members
+
         /// <summary>
         /// Equalses the specified compare to.
         /// </summary>
@@ -156,6 +156,8 @@ namespace Hexa.Core.Domain
         {
             return base.Equals(compareTo);
         }
+
+        #endregion
     }
 
     /// <summary>
@@ -175,14 +177,8 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual long Id
         {
-            get
-                {
-                    return (long)base.EntityId;
-                }
-            protected set
-                {
-                    base.EntityId = (long)value;
-                }
+            get { return base.EntityId; }
+            protected set { base.EntityId = value; }
         }
     }
 
@@ -203,14 +199,8 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual Guid UniqueId
         {
-            get
-                {
-                    return (Guid)base.EntityId;
-                }
-            protected set
-                {
-                    base.EntityId = (Guid)value;
-                }
+            get { return base.EntityId; }
+            protected set { base.EntityId = value; }
         }
     }
 }

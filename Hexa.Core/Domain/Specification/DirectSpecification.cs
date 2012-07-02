@@ -9,11 +9,11 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// A Direct Specification is a simple implementation
     /// of specification that acquire this from a lambda expression
@@ -26,7 +26,7 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Members
 
-        Expression<Func<TEntity, bool>> _MatchingCriteria;
+        private readonly Expression<Func<TEntity, bool>> _MatchingCriteria;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="matchingCriteria">A Matching Criteria</param>
         public DirectSpecification(Expression<Func<TEntity, bool>> matchingCriteria)
         {
-            if (matchingCriteria == (Expression<Func<TEntity, bool>>)null)
+            if (matchingCriteria == null)
                 throw new ArgumentNullException("matchingCriteria");
 
             _MatchingCriteria = matchingCriteria;

@@ -17,54 +17,48 @@
 
 #endregion
 
-using System;
-using Hexa.Core.Pooling;
-using NUnit.Framework;
-
 namespace Hexa.Core.Tests
 {
+    using System;
+    using NUnit.Framework;
+    using Pooling;
+
     public class ExpirableEntity : IObjectWithExpiration<ExpirableEntity>
     {
+        #region IObjectWithExpiration<ExpirableEntity> Members
+
         public DateTime TimeOut
         {
-            get
-                {
-                    throw new NotImplementedException();
-                }
-            set
-                {
-                    throw new NotImplementedException();
-                }
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public bool IsExpired
         {
-            get
-                {
-                    return true;
-                }
+            get { return true; }
         }
 
         public void Dispose()
         {
-
         }
+
+        #endregion
     }
 
     [TestFixture]
     public class ObjectPoolTests
     {
-        Pool<ExpirableEntity> _Pool;
-        ExpirableEntity _objectFromPool;
+        private Pool<ExpirableEntity> _Pool;
+        private ExpirableEntity _objectFromPool;
 
         [Test]
         public void CreatePool()
         {
             _Pool = new Pool<ExpirableEntity>(10, (p) => { return new ExpirableEntity(); }, true);
-            var obj = _Pool.Acquire();
+            ExpirableEntity obj = _Pool.Acquire();
 
             Assert.IsNotNull(obj);
-            Assert.AreEqual(typeof(ExpirableEntity), obj.GetType());
+            Assert.AreEqual(typeof (ExpirableEntity), obj.GetType());
 
             _objectFromPool = obj;
         }

@@ -17,10 +17,10 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+
     [Serializable]
     public abstract class RootEntity<TEntity> : BaseEntityWithUniqueId<TEntity>
     {
@@ -28,10 +28,6 @@ namespace Hexa.Core.Domain
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>The timestamp.</value>
-        public virtual string Version
-        {
-            get;
-            protected set;
-        }
+        public virtual string Version { get; protected set; }
     }
 }

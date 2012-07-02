@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Policy;
-using System.Security.Principal;
-
-namespace Hexa.Core.ServiceModel
+﻿namespace Hexa.Core.ServiceModel
 {
+    using System.Collections.Generic;
+    using System.IdentityModel.Policy;
+    using System.Security.Principal;
+
     public static class EvaluationContextExtensions
     {
         public static IIdentity GetPrimaryIdentity(this EvaluationContext context)
         {
             IList<IIdentity> identities = GetIdentities(context);
             if (identities != null && identities.Count > 0)
-                {
-                    return identities[0];
-                }
+            {
+                return identities[0];
+            }
             return null;
         }
 
@@ -20,9 +20,9 @@ namespace Hexa.Core.ServiceModel
         {
             object list;
             if ((context != null) && context.Properties.TryGetValue("Identities", out list))
-                {
-                    return (list as IList<IIdentity>);
-                }
+            {
+                return (list as IList<IIdentity>);
+            }
 
             return null;
         }

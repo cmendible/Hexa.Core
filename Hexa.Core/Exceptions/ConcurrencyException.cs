@@ -17,46 +17,32 @@
 
 #endregion
 
-using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Concurrency Exception.
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class ConcurrencyException : CoreException
     {
+        /// <summary>
+        /// Exception unique id used for logging purposes.
+        /// </summary>
+        private readonly Guid _UniqueId = GuidExtensions.NewCombGuid();
 
         public ConcurrencyException()
         {
         }
 
         /// <summary>
-        /// Exception unique id used for logging purposes.
-        /// </summary>
-        private Guid _UniqueId = GuidExtensions.NewCombGuid();
-
-        /// <summary>
-        /// Gets the unique id.
-        /// </summary>
-        /// <value>The unique id.</value>
-        public Guid UniqueId
-        {
-            get
-                {
-                    return _UniqueId;
-                }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public ConcurrencyException(string message): base(message)
+        public ConcurrencyException(string message) : base(message)
         {
         }
 
@@ -65,20 +51,28 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
-        public ConcurrencyException(string message, System.Exception ex) : base(message, ex)
+        public ConcurrencyException(string message, Exception ex) : base(message, ex)
         {
         }
 
         protected ConcurrencyException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
+            : base(info, context)
         {
         }
 
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        /// <summary>
+        /// Gets the unique id.
+        /// </summary>
+        /// <value>The unique id.</value>
+        public Guid UniqueId
+        {
+            get { return _UniqueId; }
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }
-
     }
 }

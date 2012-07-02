@@ -17,26 +17,25 @@
 
 #endregion
 
-using System.Collections.Generic;
-using Hexa.Core;
-
 namespace System.Linq
 {
+    using Collections.Generic;
+    using Hexa.Core;
+
     public static class PagingExtensions
     {
         public static IQueryable<T> Page<T>(this IQueryable<T> query, int pageNumber, int pageSize)
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip<T>(((pageNumber - 1) * pageSize)).Take<T>(pageSize);
+            return query.Skip(((pageNumber - 1)*pageSize)).Take(pageSize);
         }
 
         public static IEnumerable<T> Page<T>(this IEnumerable<T> query, int pageNumber, int pageSize)
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip<T>(((pageNumber - 1) * pageSize)).Take<T>(pageSize);
+            return query.Skip(((pageNumber - 1)*pageSize)).Take(pageSize);
         }
-
     }
 }

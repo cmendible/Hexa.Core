@@ -17,26 +17,29 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using Raven.Client;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Raven.Client;
+
     public class RavenObjectSet<TEntity> : IEntitySet<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> _set;
-        IDocumentSession _session;
+        private readonly IDocumentSession _session;
+        private readonly IQueryable<TEntity> _set;
 
         public RavenObjectSet(IDocumentSession session)
         {
             _session = session;
             _set = _session.Query<TEntity>()
-                   .Customize(x => x.WaitForNonStaleResultsAsOfNow());
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }
+
+        #region IEntitySet<TEntity> Members
 
         public void AddObject(TEntity entity)
         {
@@ -56,59 +59,51 @@ namespace Hexa.Core.Domain
         {
         }
 
-        public void Detach(TEntity entity)
-        {
-
-        }
-
         public IEnumerator<TEntity> GetEnumerator()
         {
             return _set.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _set.GetEnumerator();
         }
 
         public Type ElementType
         {
-            get
-                {
-                    return typeof(TEntity);
-                }
+            get { return typeof (TEntity); }
         }
 
-        public System.Linq.Expressions.Expression Expression
+        public Expression Expression
         {
-            get
-                {
-                    return _set.Expression;
-                }
+            get { return _set.Expression; }
         }
 
         public IQueryProvider Provider
         {
-            get
-                {
-                    return _set.Provider;
-                }
+            get { return _set.Provider; }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+                                           Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+                                              Expression<Func<TEntity, bool>> filter,
+                                              Expression<Func<TEntity, S>> orderByExpression)
         {
             throw new NotImplementedException();
         }
@@ -123,16 +118,24 @@ namespace Hexa.Core.Domain
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public void Detach(TEntity entity)
+        {
         }
     }
 }

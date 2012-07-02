@@ -17,10 +17,12 @@
 
 #endregion
 
-using System.Web.UI;
-
 namespace Hexa.Core.Web.UI
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public static class PageExtensions
     {
         #region Post Back
@@ -30,40 +32,41 @@ namespace Hexa.Core.Web.UI
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
-        public static System.Web.UI.Control GetPostBackControl(this System.Web.UI.Page page)
+        public static Control GetPostBackControl(this Page page)
         {
             Control control = null;
             string ctrlname = page.Request.Params["__EVENTTARGET"];
             if (!string.IsNullOrEmpty(ctrlname))
-                {
-                    control = page.FindControl(ctrlname);
-                }
+            {
+                control = page.FindControl(ctrlname);
+            }
             else
-                {
-                    // if __EVENTTARGET is null, control is a button type and need to
-                    // iterate over the form collection to find it
-                    string ctrlStr = string.Empty;
-                    Control c = null;
+            {
+                // if __EVENTTARGET is null, control is a button type and need to
+                // iterate over the form collection to find it
+                string ctrlStr = string.Empty;
+                Control c = null;
 
-                    foreach (string ctl in page.Request.Form)
-                        {
-                            // handle ImageButton controls
-                            if (ctl.EndsWith(".x", System.StringComparison.Ordinal) | ctl.EndsWith(".y", System.StringComparison.Ordinal))
-                                {
-                                    ctrlStr = ctl.Substring(0, ctl.Length - 2);
-                                    c = page.FindControl(ctrlStr);
-                                }
-                            else
-                                {
-                                    c = page.FindControl(ctl);
-                                }
-                            if (c is System.Web.UI.WebControls.Button | c is System.Web.UI.WebControls.ImageButton)
-                                {
-                                    control = c;
-                                    break;
-                                }
-                        }
+                foreach (string ctl in page.Request.Form)
+                {
+                    // handle ImageButton controls
+                    if (ctl.EndsWith(".x", StringComparison.Ordinal) |
+                        ctl.EndsWith(".y", StringComparison.Ordinal))
+                    {
+                        ctrlStr = ctl.Substring(0, ctl.Length - 2);
+                        c = page.FindControl(ctrlStr);
+                    }
+                    else
+                    {
+                        c = page.FindControl(ctl);
+                    }
+                    if (c is Button | c is ImageButton)
+                    {
+                        control = c;
+                        break;
+                    }
                 }
+            }
 
 
             return control;
@@ -74,7 +77,7 @@ namespace Hexa.Core.Web.UI
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
-        public static string GetPostBackControlId(this System.Web.UI.Page page)
+        public static string GetPostBackControlId(this Page page)
         {
             Control control = GetPostBackControl(page);
             if (control != null)
@@ -94,7 +97,7 @@ namespace Hexa.Core.Web.UI
         /// <param name="bytes">The bytes.</param>
         /// <param name="id">The id.</param>
         /// <param name="mimeType">Type of the MIME.</param>
-        public static void Download(this System.Web.UI.Page page, byte[] data, string id, string mimeType)
+        public static void Download(this Page page, byte[] data, string id, string mimeType)
         {
             page.Response.Clear();
             page.Response.Buffer = true;

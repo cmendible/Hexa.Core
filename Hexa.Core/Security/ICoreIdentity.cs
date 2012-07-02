@@ -17,15 +17,12 @@
 
 #endregion
 
-using System.Security.Principal;
-
 namespace Hexa.Core.Security
 {
+    using System.Security.Principal;
+
     public interface ICoreIdentity : IIdentity
     {
-        string Id
-        {
-            get;
-        }
+        string Id { get; }
     }
 }

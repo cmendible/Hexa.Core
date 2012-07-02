@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
-namespace uNhAddIns.UserTypes
+﻿namespace uNhAddIns.UserTypes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
+
     /// <summary>
     /// http://code.google.com/p/unhaddins/
     /// </summary>
@@ -16,9 +15,9 @@ namespace uNhAddIns.UserTypes
     [Serializable]
     public abstract class GenericWellKnownInstanceType<T, TId> : IUserType where T : class
     {
-        private Func<T, TId, bool> findPredicate;
-        private Func<T, TId> idGetter;
-        private IEnumerable<T> repository;
+        private readonly Func<T, TId, bool> findPredicate;
+        private readonly Func<T, TId> idGetter;
+        private readonly IEnumerable<T> repository;
 
         /// <summary>
         /// Base constructor
@@ -26,39 +25,36 @@ namespace uNhAddIns.UserTypes
         /// <param name="repository">The collection that represent a in-memory repository.</param>
         /// <param name="findPredicate">The predicate an instance by the persisted value.</param>
         /// <param name="idGetter">The getter of the persisted value.</param>
-        protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate, Func<T, TId> idGetter)
+        protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate,
+                                               Func<T, TId> idGetter)
         {
             this.repository = repository;
             this.findPredicate = findPredicate;
             this.idGetter = idGetter;
         }
 
+        #region IUserType Members
+
         public Type ReturnedType
         {
-            get
-                {
-                    return typeof(T);
-                }
+            get { return typeof (T); }
         }
 
         public bool IsMutable
         {
-            get
-                {
-                    return false;
-                }
+            get { return false; }
         }
 
         public new bool Equals(object x, object y)
         {
             if (ReferenceEquals(x, y))
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             if (ReferenceEquals(null, x) || ReferenceEquals(null, y))
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
 
             return x.Equals(y);
         }
@@ -72,24 +68,24 @@ namespace uNhAddIns.UserTypes
         {
             int index0 = rs.GetOrdinal(names[0]);
             if (rs.IsDBNull(index0))
-                {
-                    return null;
-                }
+            {
+                return null;
+            }
 
-            var value = (TId)rs.GetValue(index0);
+            var value = (TId) rs.GetValue(index0);
             return repository.FirstOrDefault(x => findPredicate(x, value));
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
             if (value == null)
-                {
-                    ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
-                }
+            {
+                ((IDbDataParameter) cmd.Parameters[index]).Value = DBNull.Value;
+            }
             else
-                {
-                    ((IDbDataParameter)cmd.Parameters[index]).Value = idGetter((T)value);
-                }
+            {
+                ((IDbDataParameter) cmd.Parameters[index]).Value = idGetter((T) value);
+            }
         }
 
         public object DeepCopy(object value)
@@ -115,9 +111,8 @@ namespace uNhAddIns.UserTypes
         /// <summary>
         /// The SQL types for the columns mapped by this type.
         /// </summary>
-        public abstract SqlType[] SqlTypes
-        {
-            get;
-        }
+        public abstract SqlType[] SqlTypes { get; }
+
+        #endregion
     }
 }

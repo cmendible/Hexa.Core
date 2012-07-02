@@ -17,16 +17,17 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using GNU.Gettext;
-
 namespace Hexa.Core.Validation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using GNU.Gettext;
+
     /// <summary>
     /// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.
     /// </summary>
@@ -39,9 +40,9 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
         {
-            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
+            return (from prop in TypeDescriptor.GetProperties(typeof (TEntity)).Cast<PropertyDescriptor>()
                     from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                    select ConvertDataAnnotation<TEntity>(attribute as ValidationAttribute, prop)).ToList();
+                    select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
         }
 
         /// <summary>
@@ -49,11 +50,10 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static IList<KeyValuePair<string, ValidationAttribute>> GetDataAnnotationsList<TEntity>()
         {
-
-            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
+            return (from prop in TypeDescriptor.GetProperties(typeof (TEntity)).Cast<PropertyDescriptor>()
                     from attribute in prop.Attributes.OfType<ValidationAttribute>()
                     select new KeyValuePair<string, ValidationAttribute>(prop.Name, attribute)).ToList();
         }
@@ -67,40 +67,43 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         private static IValidationInfo ConvertDataAnnotation<TEntity>(ValidationAttribute att, PropertyDescriptor prop)
         {
-            if (att.GetType() == typeof(RequiredAttribute))
-                {
-                    RequiredAttribute reqAtt = att as RequiredAttribute;
-                    return new RequiredValidationInfo<TEntity>(prop.Name, reqAtt.ErrorMessage);
-                }
-            else if (att.GetType() == typeof(RegularExpressionAttribute))
-                {
-                    RegularExpressionAttribute regAtt = att as RegularExpressionAttribute;
-                    return new RegexValidationInfo<TEntity>(prop.Name, regAtt.ErrorMessage, regAtt.Pattern);
-                }
-            if (att.GetType() == typeof(RangeAttribute))
-                {
-                    RangeAttribute rangeAtt = att as RangeAttribute;
-                    return new RangeValidationInfo<TEntity>(prop.Name, rangeAtt.ErrorMessage, rangeAtt.Minimum, rangeAtt.Maximum);
-                }
-            if (att.GetType() == typeof(StringLengthAttribute))
-                {
-                    StringLengthAttribute lengthAtt = att as StringLengthAttribute;
-                    return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage,
-                                                            string.Format(CultureInfo.InvariantCulture,"{0}{1}{2}", "^[\\s\\S]{0,",
-                                                                    lengthAtt.MaximumLength.ToString(CultureInfo.InvariantCulture), "}$"));
-                }
+            if (att.GetType() == typeof (RequiredAttribute))
+            {
+                var reqAtt = att as RequiredAttribute;
+                return new RequiredValidationInfo<TEntity>(prop.Name, reqAtt.ErrorMessage);
+            }
+            else if (att.GetType() == typeof (RegularExpressionAttribute))
+            {
+                var regAtt = att as RegularExpressionAttribute;
+                return new RegexValidationInfo<TEntity>(prop.Name, regAtt.ErrorMessage, regAtt.Pattern);
+            }
+            if (att.GetType() == typeof (RangeAttribute))
+            {
+                var rangeAtt = att as RangeAttribute;
+                return new RangeValidationInfo<TEntity>(prop.Name, rangeAtt.ErrorMessage, rangeAtt.Minimum,
+                                                        rangeAtt.Maximum);
+            }
+            if (att.GetType() == typeof (StringLengthAttribute))
+            {
+                var lengthAtt = att as StringLengthAttribute;
+                return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage,
+                                                        string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
+                                                                      "^[\\s\\S]{0,",
+                                                                      lengthAtt.MaximumLength.ToString(
+                                                                          CultureInfo.InvariantCulture), "}$"));
+            }
 
             return null;
         }
 
         public static string ParseDisplayName(Type entityType, string propertyName)
         {
-            var displayName = propertyName;
+            string displayName = propertyName;
 
-            var displayAttribute = TypeDescriptor.GetProperties(entityType)
-                                   .Cast<PropertyDescriptor>()
-                                   .Where(p => p.Name == propertyName)
-                                   .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
+            DisplayAttribute displayAttribute = TypeDescriptor.GetProperties(entityType)
+                .Cast<PropertyDescriptor>()
+                .Where(p => p.Name == propertyName)
+                .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
 
             if (displayAttribute != null)
                 displayName = displayAttribute.Name;

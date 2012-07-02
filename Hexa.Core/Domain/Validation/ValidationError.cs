@@ -1,7 +1,7 @@
-using System;
-
 namespace Hexa.Core.Validation
 {
+    using System;
+
     /// <summary>
     /// Details of a validation error
     /// </summary>
@@ -13,31 +13,19 @@ namespace Hexa.Core.Validation
         /// Gets the type of the entity.
         /// </summary>
         /// <value>The type of the entity.</value>
-        public Type EntityType
-        {
-            get;
-            private set;
-        }
+        public Type EntityType { get; private set; }
 
         /// <summary>
         /// Gets the name of the property.
         /// </summary>
         /// <value>The name of the property.</value>
-        public string PropertyName
-        {
-            get;
-            private set;
-        }
+        public string PropertyName { get; private set; }
 
         /// <summary>
         /// Gets the message.
         /// </summary>
         /// <value>The message.</value>
-        public string Message
-        {
-            get;
-            private set;
-        }
+        public string Message { get; private set; }
 
         #endregion
 
@@ -56,7 +44,7 @@ namespace Hexa.Core.Validation
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
                                                  "Please provide a valid non null string as the validation property name");
 
-            EntityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
+            EntityType = typeof (void); // Avoid make this.EntityType == null as to not breaking existing code.
             Message = message;
             PropertyName = property;
         }
@@ -85,7 +73,7 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="ex">The exception which caused the validation error.</param>
         public ValidationError(string property, Exception ex)
-        : this(ex.Message, property)
+            : this(ex.Message, property)
         {
         }
 
@@ -99,7 +87,7 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("({0}::{1}) - {2}", EntityType.ToString(), PropertyName, Message);
+            return string.Format("({0}::{1}) - {2}", EntityType, PropertyName, Message);
         }
 
         /// <summary>
@@ -137,7 +125,7 @@ namespace Hexa.Core.Validation
         {
             unchecked
             {
-                return (Message.GetHashCode() * 397) ^ PropertyName.GetHashCode();
+                return (Message.GetHashCode()*397) ^ PropertyName.GetHashCode();
             }
         }
 

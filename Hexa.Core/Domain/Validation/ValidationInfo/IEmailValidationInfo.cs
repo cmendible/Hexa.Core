@@ -17,13 +17,15 @@
 
 #endregion
 
-
 namespace Hexa.Core.Validation
 {
+    using System.Diagnostics.CodeAnalysis;
+    using Resources;
+
     /// <summary>
     ///
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IEmailValidationInfo : IValidationInfo
     {
     }
@@ -34,14 +36,15 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class EmailValidationInfo<TEntity> : RegexValidationInfo<TEntity>
     {
-        private const string EMAILREGEX = @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";
+        private const string EMAILREGEX =
+            @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailValidationInfo&lt;TEntity&gt;"/> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         public EmailValidationInfo(string propertyName)
-        : this(propertyName, null)
+            : this(propertyName, null)
         {
         }
 
@@ -51,19 +54,20 @@ namespace Hexa.Core.Validation
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="error">The error.</param>
         public EmailValidationInfo(string propertyName, string error)
-        : base(propertyName, DefaultMessage<TEntity>(propertyName, error), EMAILREGEX)
+            : base(propertyName, DefaultMessage<TEntity>(propertyName, error), EMAILREGEX)
         {
         }
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
         {
             if (string.IsNullOrEmpty(error))
-                return string.Format(Hexa.Core.Resources.Resource.ValueIsNotAnEmail, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
+                return string.Format(Resource.ValueIsNotAnEmail,
+                                     DataAnnotationHelper.ParseDisplayName(typeof (TEntity), propertyName));
             else
                 return error;
         }
     }
 }
-

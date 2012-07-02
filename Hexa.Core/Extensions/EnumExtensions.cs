@@ -17,17 +17,18 @@
 
 #endregion
 
-
 namespace System
 {
+    using Runtime.Serialization;
+
     public static class EnumExtensions
     {
         public static string GetEnumMemberValue(this Enum value)
         {
-            System.Runtime.Serialization.EnumMemberAttribute[] attributes
+            var attributes
                 = value.GetType().GetField(value.ToString())
-                  .GetCustomAttributes(typeof(System.Runtime.Serialization.EnumMemberAttribute), false)
-                  as System.Runtime.Serialization.EnumMemberAttribute[];
+                      .GetCustomAttributes(typeof (EnumMemberAttribute), false)
+                  as EnumMemberAttribute[];
 
             return attributes.Length > 0 ? attributes[0].Value : string.Empty;
         }

@@ -17,12 +17,11 @@
 
 #endregion
 
-using System.Web.UI.WebControls;
-
-using Hexa.Core.Validation;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System.Web.UI.WebControls;
+    using Validation;
+
     /// <summary>
     /// Class used to convert from a Email attribute to a BaseValidator
     /// </summary>
@@ -36,9 +35,9 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>A BaseValidator</returns>
         public override BaseValidator Convert(IValidationInfo validationInfo)
         {
-            ExtendedRegularExpressionValidator regularExpressionValidator = new ExtendedRegularExpressionValidator();
+            var regularExpressionValidator = new ExtendedRegularExpressionValidator();
 
-            IRegexValidationInfo regexValidationInfo = validationInfo as IRegexValidationInfo;
+            var regexValidationInfo = validationInfo as IRegexValidationInfo;
 
             regularExpressionValidator.ValidationExpression = regexValidationInfo.Expression;
 

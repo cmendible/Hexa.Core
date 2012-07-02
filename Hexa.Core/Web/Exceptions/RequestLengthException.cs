@@ -17,11 +17,12 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core.Web.UI
 {
-    [global::System.Serializable]
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class RequestLengthException : Exception
     {
         //
@@ -31,12 +32,23 @@ namespace Hexa.Core.Web.UI
         //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
         //
 
-        public RequestLengthException() { }
-        public RequestLengthException(string message) : base(message) { }
-        public RequestLengthException(string message, Exception inner) : base(message, inner) { }
+        public RequestLengthException()
+        {
+        }
+
+        public RequestLengthException(string message) : base(message)
+        {
+        }
+
+        public RequestLengthException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
         protected RequestLengthException(
-            System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context)
-        : base(info, context) { }
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Hexa.Core.Validation
+﻿namespace Hexa.Core.Validation
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface for validatable objects.
     /// </summary>

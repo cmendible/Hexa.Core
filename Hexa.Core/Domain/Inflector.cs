@@ -1,4 +1,5 @@
 ﻿#region license
+
 //Copyright 2010 Ritesh Rao
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +13,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
+
 #endregion
+
 /*
 * CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
 */
 
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 namespace Hexa.Core.Domain
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Text.RegularExpressions;
+
     ///<summary>
     /// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
     /// class names to table names, modularized class names to ones without, and class names to foreign keys
@@ -35,7 +39,8 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Class Constructor.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
+        [SuppressMessage("Microsoft.Performance",
+            "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static Inflector()
         {
             AddPlural("$", "s");
@@ -97,28 +102,6 @@ namespace Hexa.Core.Domain
             AddUncountable("sheep");
         }
 
-        private class Rule
-        {
-            private readonly Regex _regex;
-            private readonly string _replacement;
-
-            public Rule(string pattern, string replacement)
-            {
-                _regex = new Regex(pattern, RegexOptions.IgnoreCase);
-                _replacement = replacement;
-            }
-
-            public string Apply(string word)
-            {
-                if (!_regex.IsMatch(word))
-                    {
-                        return null;
-                    }
-
-                return _regex.Replace(word, _replacement);
-            }
-        }
-
         private static void AddIrregular(string singular, string plural)
         {
             AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
@@ -145,15 +128,15 @@ namespace Hexa.Core.Domain
             string result = word;
 
             if (!Uncountables.Contains(word.ToLower()))
+            {
+                for (int i = rules.Count - 1; i >= 0; i--)
                 {
-                    for (int i = rules.Count - 1; i >= 0; i--)
-                        {
-                            if ((result = rules[i].Apply(word)) != null)
-                                {
-                                    break;
-                                }
-                        }
+                    if ((result = rules[i].Apply(word)) != null)
+                    {
+                        break;
+                    }
                 }
+            }
 
             return result;
         }
@@ -186,10 +169,7 @@ namespace Hexa.Core.Domain
         public static string Titleize(string word)
         {
             return Regex.Replace(Humanize(Underscore(word)), @"\b([a-z])",
-                                 delegate(Match match)
-            {
-                return match.Captures[0].Value.ToUpper();
-            });
+                                 delegate(Match match) { return match.Captures[0].Value.ToUpper(); });
         }
 
         /// <summary>
@@ -211,10 +191,7 @@ namespace Hexa.Core.Domain
         public static string Pascalize(string lowercaseAndUnderscoredWord)
         {
             return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
-                                 delegate(Match match)
-            {
-                return match.Groups[1].Value.ToUpper();
-            });
+                                 delegate(Match match) { return match.Groups[1].Value.ToUpper(); });
         }
 
         /// <summary>
@@ -235,9 +212,9 @@ namespace Hexa.Core.Domain
         public static string Underscore(string pascalCasedWord)
         {
             return Regex.Replace(
-                       Regex.Replace(
-                           Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
-                           "$1_$2"), @"[-\s]", "_").ToLower();
+                Regex.Replace(
+                    Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
+                    "$1_$2"), @"[-\s]", "_").ToLower();
         }
 
         /// <summary>
@@ -269,15 +246,15 @@ namespace Hexa.Core.Domain
         public static string Ordinalize(string number)
         {
             int n = int.Parse(number);
-            int nMod100 = n % 100;
+            int nMod100 = n%100;
 
             if (nMod100 >= 11 && nMod100 <= 13)
-                {
-                    return number + "th";
-                }
+            {
+                return number + "th";
+            }
 
-            switch (n % 10)
-                {
+            switch (n%10)
+            {
                 case 1:
                     return number + "st";
                 case 2:
@@ -286,7 +263,7 @@ namespace Hexa.Core.Domain
                     return number + "rd";
                 default:
                     return number + "th";
-                }
+            }
         }
 
         /// <summary>
@@ -298,6 +275,31 @@ namespace Hexa.Core.Domain
         {
             return underscoredWord.Replace('_', '-');
         }
+
+        #region Nested type: Rule
+
+        private class Rule
+        {
+            private readonly Regex _regex;
+            private readonly string _replacement;
+
+            public Rule(string pattern, string replacement)
+            {
+                _regex = new Regex(pattern, RegexOptions.IgnoreCase);
+                _replacement = replacement;
+            }
+
+            public string Apply(string word)
+            {
+                if (!_regex.IsMatch(word))
+                {
+                    return null;
+                }
+
+                return _regex.Replace(word, _replacement);
+            }
+        }
+
+        #endregion
     }
 }
-

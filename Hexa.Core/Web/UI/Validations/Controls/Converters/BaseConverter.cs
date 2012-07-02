@@ -17,12 +17,11 @@
 
 #endregion
 
-using System.Web.UI.WebControls;
-
-using Hexa.Core.Validation;
-
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System.Web.UI.WebControls;
+    using Validation;
+
     /// <summary>
     /// Base type converter
     /// </summary>

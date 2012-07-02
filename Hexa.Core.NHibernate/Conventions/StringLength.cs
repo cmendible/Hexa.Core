@@ -17,21 +17,27 @@
 
 #endregion
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.Instances;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using FluentNHibernate.Conventions;
+    using FluentNHibernate.Conventions.Instances;
+
     public class StringLengthConvention : IPropertyConvention
     {
+        #region IPropertyConvention Members
+
         public void Apply(IPropertyInstance target)
         {
-            var attribute = Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
+            var attribute =
+                Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof (StringLengthAttribute)) as
+                StringLengthAttribute;
 
             if (attribute != null)
                 target.Length(attribute.MaximumLength);
         }
+
+        #endregion
     }
 }

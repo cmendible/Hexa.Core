@@ -17,11 +17,11 @@
 
 #endregion
 
-using FluentNHibernate.Mapping;
-using NHibernate.Dialect;
-
 namespace Hexa.Core.Domain
 {
+    using FluentNHibernate.Mapping;
+    using NHibernate.Dialect;
+
     public static class MappingExtensions
     {
         private static PropertyPart TimePartWithDatabaseDefault<TEntity>(PropertyPart datePart, Dialect dialect)

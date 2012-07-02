@@ -9,13 +9,15 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// In memory IObjectSet. This class is intended only
     /// for testing purposes.
@@ -26,8 +28,8 @@ namespace Hexa.Core.Domain
     {
         #region Members
 
-        List<TEntity> _InnerList;
-        List<string> _IncludePaths;
+        private readonly List<string> _IncludePaths;
+        private readonly List<TEntity> _InnerList;
 
         #endregion
 
@@ -39,13 +41,11 @@ namespace Hexa.Core.Domain
         /// <param name="innerList">A List{T} with inner values of this IObjectSet</param>
         public MemorySet(List<TEntity> innerList)
         {
-            if (innerList == (List<TEntity>)null)
+            if (innerList == null)
                 throw new ArgumentNullException("innerList");
 
             _InnerList = innerList;
             _IncludePaths = new List<string>();
-
-
         }
 
         #endregion
@@ -66,9 +66,10 @@ namespace Hexa.Core.Domain
 
             return this;
         }
+
         #endregion
 
-        #region IEntitySet<T> Members
+        #region IEntitySet<TEntity> Members
 
         public void AddObject(TEntity entity)
         {
@@ -79,17 +80,11 @@ namespace Hexa.Core.Domain
         public void Attach(TEntity entity)
         {
             if (entity != null
-                    &&
-                    !_InnerList.Contains(entity))
-                {
-                    _InnerList.Add(entity);
-                }
-        }
-
-        public void Detach(TEntity entity)
-        {
-            if (entity != null)
-                _InnerList.Remove(entity);
+                &&
+                !_InnerList.Contains(entity))
+            {
+                _InnerList.Add(entity);
+            }
         }
 
         public void DeleteObject(TEntity entity)
@@ -102,10 +97,6 @@ namespace Hexa.Core.Domain
         {
         }
 
-        #endregion
-
-        #region IEnumerable<T> Members
-
         /// <summary>
         /// <see cref="System.Collections.IEnumerable.GetEnumerator"/>
         /// </summary>
@@ -116,70 +107,59 @@ namespace Hexa.Core.Domain
                 yield return item;
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
         /// <summary>
         /// <see cref="System.Collections.IEnumerable.GetEnumerator"/>
         /// </summary>
         /// <returns><see cref="System.Collections.IEnumerable.GetEnumerator"/></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
-
-        #endregion
-
-        #region IQueryable Members
 
         /// <summary>
         /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
         public Type ElementType
         {
-            get
-                {
-                    return typeof(TEntity);
-                }
+            get { return typeof (TEntity); }
         }
+
         /// <summary>
         /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
-        public System.Linq.Expressions.Expression Expression
+        public Expression Expression
         {
-            get
-                {
-                    return _InnerList.AsQueryable().Expression;
-                }
+            get { return _InnerList.AsQueryable().Expression; }
         }
+
         /// <summary>
         /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
         public IQueryProvider Provider
         {
-            get
-                {
-                    return _InnerList.AsQueryable().Provider;
-                }
+            get { return _InnerList.AsQueryable().Provider; }
         }
 
-        #endregion
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+                                           Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+                                              Expression<Func<TEntity, bool>> filter,
+                                              Expression<Func<TEntity, S>> orderByExpression)
         {
             throw new NotImplementedException();
         }
@@ -194,16 +174,26 @@ namespace Hexa.Core.Domain
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public void Detach(TEntity entity)
+        {
+            if (entity != null)
+                _InnerList.Remove(entity);
         }
     }
 }

@@ -9,7 +9,5 @@
     /// </remarks>
     public class Entity<TEntity> : BaseEntityWithId<TEntity>
     {
-
     }
 }
-

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Data;
-using NHibernate;
-using NHibernate.Engine;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Data;
+    using NHibernate;
+    using NHibernate.Engine;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
+
     /// <summary />
     /// Implements a IUserVersionType based on TicksType, but returned as String instead of DateTime.
     /// </summary />
@@ -16,17 +16,13 @@ namespace Hexa.Core.Domain
 
         public object Next(object current, ISessionImplementor session)
         {
-            return this.Seed(session);
+            return Seed(session);
         }
 
         public object Seed(ISessionImplementor session)
         {
             return DateTime.UtcNow.Ticks.ToString();
         }
-
-        #endregion
-
-        #region IUserType Members
 
         public object Assemble(object cached, object owner)
         {
@@ -50,15 +46,12 @@ namespace Hexa.Core.Domain
 
         public bool IsMutable
         {
-            get
-                {
-                    return false;
-                }
+            get { return false; }
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            var ret = rs.GetValue(rs.GetOrdinal(names[0]));
+            object ret = rs.GetValue(rs.GetOrdinal(names[0]));
 
             if (ret == null)
                 return null;
@@ -78,27 +71,17 @@ namespace Hexa.Core.Domain
 
         public Type ReturnedType
         {
-            get
-                {
-                    return typeof(string);
-                }
+            get { return typeof (string); }
         }
 
         public SqlType[] SqlTypes
         {
-            get
-                {
-                    return new[] { new SqlType(DbType.Int64) };
-                }
+            get { return new[] {new SqlType(DbType.Int64)}; }
         }
-
-        #endregion
-
-        #region IComparer Members
 
         public int Compare(object x, object y)
         {
-            return ((IComparable)x).CompareTo(y);
+            return ((IComparable) x).CompareTo(y);
         }
 
         bool IUserType.Equals(object x, object y)

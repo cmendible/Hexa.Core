@@ -17,16 +17,17 @@
 
 #endregion
 
-using System;
-
 namespace Hexa.Core
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+
     /// <summary>
     /// HexEncodingHelper
     /// </summary>
     public static class HexEncodingHelper
     {
-
         /// <summary>
         /// Creates a byte array from the hexadecimal string. Each two characters are combined
         /// to create one byte. First two hexadecimal characters become first byte in returned array.
@@ -45,25 +46,25 @@ namespace Hexa.Core
 
             // remove all none A-F, 0-9, characters
             for (int i = 0; i < value.Length; i++)
-                {
-                    c = value[i];
-                    if (IsHexDigit(c))
-                        newString += c;
-                }
+            {
+                c = value[i];
+                if (IsHexDigit(c))
+                    newString += c;
+            }
             // if odd number of characters, discard last character
-            if (newString.Length % 2 != 0)
+            if (newString.Length%2 != 0)
                 newString = newString.Substring(0, newString.Length - 1);
 
-            int byteLength = newString.Length / 2;
-            byte[] bytes = new byte[byteLength];
+            int byteLength = newString.Length/2;
+            var bytes = new byte[byteLength];
             string hex;
             int j = 0;
             for (int i = 0; i < bytes.Length; i++)
-                {
-                    hex = new String(new Char[] { newString[j], newString[j + 1] });
-                    bytes[i] = HexToByte(hex);
-                    j = j + 2;
-                }
+            {
+                hex = new String(new[] {newString[j], newString[j + 1]});
+                bytes[i] = HexToByte(hex);
+                j = j + 2;
+            }
             return bytes;
         }
 
@@ -72,14 +73,15 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Byte.ToString(System.String)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.Byte.ToString(System.String)")]
         public static string ToString(byte[] value)
         {
             string hexString = "";
             for (int i = 0; i < value.Length; i++)
-                {
-                    hexString += value[i].ToString("X2");
-                }
+            {
+                hexString += value[i].ToString("X2");
+            }
             return hexString;
         }
 
@@ -88,23 +90,24 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="hexString"></param>
         /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "div")]
+        [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals",
+            MessageId = "div")]
         public static bool InHexFormat(string value)
         {
             int result = 0;
 
-            int div = System.Math.DivRem(value.Length, 2, out result);
+            int div = Math.DivRem(value.Length, 2, out result);
             if (result > 0)
                 return false;
 
             foreach (char digit in value)
+            {
+                if (!IsHexDigit(digit))
                 {
-                    if (!IsHexDigit(digit))
-                        {
-                            return false;
-                            break;
-                        }
+                    return false;
+                    break;
                 }
+            }
 
             return true;
         }
@@ -114,7 +117,8 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="c">Character to test</param>
         /// <returns>true if hex digit, false if not</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.Char.ToUpper(System.Char)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo",
+            MessageId = "System.Char.ToUpper(System.Char)")]
         private static bool IsHexDigit(Char c)
         {
             int numChar;
@@ -134,14 +138,14 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="hex">1 or 2 character string</param>
         /// <returns>byte</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Byte.Parse(System.String,System.Globalization.NumberStyles)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+            MessageId = "System.Byte.Parse(System.String,System.Globalization.NumberStyles)")]
         private static byte HexToByte(string value)
         {
             if (value.Length > 2 || value.Length <= 0)
                 throw new ArgumentException("hex must be 1 or 2 characters in length");
-            byte newByte = byte.Parse(value, System.Globalization.NumberStyles.HexNumber);
+            byte newByte = byte.Parse(value, NumberStyles.HexNumber);
             return newByte;
         }
-
     }
 }
