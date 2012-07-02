@@ -15,11 +15,11 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// NotEspecification convert a original
-/// specification with NOT logic operator
-/// </summary>
-/// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
+    /// <summary>
+    /// NotEspecification convert a original
+    /// specification with NOT logic operator
+    /// </summary>
+    /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
     public class NotSpecification<TEntity>
         :Specification<TEntity>
         where TEntity : class

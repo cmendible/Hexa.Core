@@ -24,9 +24,9 @@ using System.Text.RegularExpressions;
 namespace Hexa.Core.Data
 {
 
-/// <summary>
-/// Helper class to execute scripts against a Sql Server database.
-/// </summary>
+    /// <summary>
+    /// Helper class to execute scripts against a Sql Server database.
+    /// </summary>
     public sealed class SqlScriptHelper
     {
         private SqlScriptHelper()

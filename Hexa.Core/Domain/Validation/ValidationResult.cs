@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Contains the result of a <see cref="IValidator{TEntity}.Validate"/> method call.
-/// </summary>
+    /// <summary>
+    /// Contains the result of a <see cref="IValidator{TEntity}.Validate"/> method call.
+    /// </summary>
     public sealed class ValidationResult : IEnumerable<ValidationError>
     {
         #region fields

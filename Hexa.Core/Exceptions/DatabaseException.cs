@@ -24,9 +24,9 @@ using System.Security.Permissions;
 namespace Hexa.Core
 {
 
-/// <summary>
-/// Database Exception.
-/// </summary>
+    /// <summary>
+    /// Database Exception.
+    /// </summary>
     [Serializable()]
     public class DatabaseException : CoreException
     {

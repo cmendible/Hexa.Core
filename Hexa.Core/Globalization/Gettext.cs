@@ -55,12 +55,12 @@ using System.Text; /* StringBuilder */
 namespace GNU.Gettext
 {
 
-/// <summary>
-/// Each instance of this class can be used to lookup translations for a
-/// given resource name. For each <c>CultureInfo</c>, it performs the lookup
-/// in several assemblies, from most specific over territory-neutral to
-/// language-neutral.
-/// </summary>
+    /// <summary>
+    /// Each instance of this class can be used to lookup translations for a
+    /// given resource name. For each <c>CultureInfo</c>, it performs the lookup
+    /// in several assemblies, from most specific over territory-neutral to
+    /// language-neutral.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
     public class GettextResourceManager : ResourceManager
     {
@@ -367,17 +367,17 @@ namespace GNU.Gettext
 
     }
 
-/// <summary>
-/// <para>
-/// Each instance of this class encapsulates a single PO file.
-/// </para>
-/// <para>
-/// This API of this class is not meant to be used directly; use
-/// <c>GettextResourceManager</c> instead.
-/// </para>
-/// </summary>
-// We need this subclass of ResourceSet, because the plural formula must come
-// from the same ResourceSet as the object containing the plural forms.
+    /// <summary>
+    /// <para>
+    /// Each instance of this class encapsulates a single PO file.
+    /// </para>
+    /// <para>
+    /// This API of this class is not meant to be used directly; use
+    /// <c>GettextResourceManager</c> instead.
+    /// </para>
+    /// </summary>
+    // We need this subclass of ResourceSet, because the plural formula must come
+    // from the same ResourceSet as the object containing the plural forms.
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface")]
     public class GettextResourceSet : ResourceSet
     {
@@ -533,9 +533,9 @@ namespace GNU.Gettext
 
     }
 
-/// <summary>
-/// A trivial <c>IResourceReader</c> implementation.
-/// </summary>
+    /// <summary>
+    /// A trivial <c>IResourceReader</c> implementation.
+    /// </summary>
     class DummyIResourceReader : IResourceReader
     {
 

@@ -11,10 +11,10 @@
 // ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// Base class for composite specifications
-/// </summary>
-/// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+    /// <summary>
+    /// Base class for composite specifications
+    /// </summary>
+    /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
     public abstract class CompositeSpecification<TEntity>
         : Specification<TEntity>
         where TEntity : class

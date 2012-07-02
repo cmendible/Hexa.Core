@@ -1,9 +1,9 @@
 ﻿
 namespace System
 {
-/// <summary>
-/// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
-/// </summary>
+    /// <summary>
+    /// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
+    /// </summary>
     public static class GuidExtensions
     {
         /// <summary>

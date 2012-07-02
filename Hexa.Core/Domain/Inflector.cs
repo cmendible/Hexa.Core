@@ -22,10 +22,10 @@ using System.Text.RegularExpressions;
 
 namespace Hexa.Core.Domain
 {
-///<summary>
-/// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
-/// class names to table names, modularized class names to ones without, and class names to foreign keys
-///</summary>
+    ///<summary>
+    /// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
+    /// class names to table names, modularized class names to ones without, and class names to foreign keys
+    ///</summary>
     public static class Inflector
     {
         private static readonly List<Rule> Plurals = new List<Rule>();

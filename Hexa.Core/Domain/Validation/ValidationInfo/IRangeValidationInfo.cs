@@ -21,9 +21,9 @@ using System;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public interface IRangeValidationInfo : IValidationInfo
     {
         /// <summary>
@@ -44,10 +44,10 @@ namespace Hexa.Core.Validation
         }
     }
 
-/// <summary>
-///
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class RangeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRangeValidationInfo
     {
         private IComparable minimum;

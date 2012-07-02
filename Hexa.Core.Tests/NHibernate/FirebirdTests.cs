@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
-using Hexa.Core.Data;
 using Hexa.Core.Domain;
 using NUnit.Framework;
+using Hexa.Core.Data;
 
 namespace Hexa.Core.Tests.Sql
 {

@@ -13,15 +13,15 @@
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// Contract for UnitOfWork pattern. For more
-/// references see http://martinfowler.com/eaaCatalog/unitOfWork.html or
-/// http://msdn.microsoft.com/en-us/magazine/dd882510.aspx
-/// In this solution sample Unit Of Work is implemented out-of-box in
-/// ADO.NET Entity Framework persistence engine. But for academic
-/// purposed and for mantein PI ( Persistence Ignorant ) in Domain
-/// this pattern is implemented.
-/// </summary>
+    /// <summary>
+    /// Contract for UnitOfWork pattern. For more
+    /// references see http://martinfowler.com/eaaCatalog/unitOfWork.html or
+    /// http://msdn.microsoft.com/en-us/magazine/dd882510.aspx
+    /// In this solution sample Unit Of Work is implemented out-of-box in
+    /// ADO.NET Entity Framework persistence engine. But for academic
+    /// purposed and for mantein PI ( Persistence Ignorant ) in Domain
+    /// this pattern is implemented.
+    /// </summary>
     public interface IUnitOfWork : System.IDisposable
     {
         /// <summary>

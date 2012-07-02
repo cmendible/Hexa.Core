@@ -20,10 +20,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hexa.Core.Security;
 using NHibernate.Event;
 using NHibernate.Event.Default;
 using NHibernate.Persister.Entity;
-using Hexa.Core.Security;
 
 namespace Hexa.Core.Domain
 {
@@ -101,7 +101,7 @@ namespace Hexa.Core.Domain
         }
     }
 
-//http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
+    //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
         protected override void DirtyCheck(FlushEntityEvent e)

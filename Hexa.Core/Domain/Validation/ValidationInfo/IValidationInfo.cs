@@ -21,9 +21,9 @@ using System.Reflection;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Validation Info interface.
-/// </summary>
+    /// <summary>
+    /// Validation Info interface.
+    /// </summary>
     public interface IValidationInfo
     {
         string ErrorMessage
@@ -36,10 +36,10 @@ namespace Hexa.Core.Validation
         }
     }
 
-/// <summary>
-/// Abstarct class for Validation infos.
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    /// Abstarct class for Validation infos.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public abstract class BaseValidationInfo<TEntity> : IValidationInfo
     {
         private string _ErrorMessage;

@@ -23,9 +23,9 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-/// <summary>
-/// Base type converter
-/// </summary>
+    /// <summary>
+    /// Base type converter
+    /// </summary>
     internal abstract class BaseConverter
     {
         /// <summary>

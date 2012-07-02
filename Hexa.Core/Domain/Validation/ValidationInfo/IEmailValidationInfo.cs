@@ -20,18 +20,18 @@
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IEmailValidationInfo : IValidationInfo
     {
     }
 
-/// <summary>
-///
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class EmailValidationInfo<TEntity> : RegexValidationInfo<TEntity>
     {
         private const string EMAILREGEX = @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";

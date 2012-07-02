@@ -20,18 +20,18 @@
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Interface for Validate TypeValidation Info..
-/// </summary>
+    /// <summary>
+    /// Interface for Validate TypeValidation Info..
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IValidateTypeValidationInfo : IValidationInfo
     {
     }
 
-/// <summary>
-/// ValidateType ValidationInfo. Used to specify that the type of the property must be validated.
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    /// ValidateType ValidationInfo. Used to specify that the type of the property must be validated.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class ValidateTypeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IValidateTypeValidationInfo
     {
 

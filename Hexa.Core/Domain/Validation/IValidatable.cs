@@ -2,9 +2,9 @@
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Interface for validatable objects.
-/// </summary>
+    /// <summary>
+    /// Interface for validatable objects.
+    /// </summary>
     public interface IValidatable
     {
         /// <summary>

@@ -22,9 +22,9 @@ using System.Management;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// Printer helper class based on WMI.
-/// </summary>
+    /// <summary>
+    /// Printer helper class based on WMI.
+    /// </summary>
     public static class PrinterHelper
     {
         #region Printer State and Status

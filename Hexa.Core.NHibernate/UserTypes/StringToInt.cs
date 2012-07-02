@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using NHibernate;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;

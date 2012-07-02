@@ -27,9 +27,9 @@ using GNU.Gettext;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.
-/// </summary>
+    /// <summary>
+    /// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.
+    /// </summary>
     internal static class DataAnnotationHelper
     {
         /// <summary>

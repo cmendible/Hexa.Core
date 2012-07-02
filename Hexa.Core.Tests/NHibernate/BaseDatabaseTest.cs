@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Hexa.Core.Data;
 using Hexa.Core.Domain;
 using Hexa.Core.Logging;
 using Hexa.Core.Security;
@@ -8,6 +7,7 @@ using Hexa.Core.Tests.Data;
 using Hexa.Core.Tests.Domain;
 using Hexa.Core.Validation;
 using NUnit.Framework;
+using Hexa.Core.Data;
 
 namespace Hexa.Core.Tests.Sql
 {

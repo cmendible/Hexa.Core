@@ -22,9 +22,9 @@ using System.Xml;
 
 namespace Hexa.Core.Web.Seo
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public class SeoSiteMapBuilderService : Hexa.Core.Web.Seo.ISeoSiteMapBuilderService
     {
         private Dictionary<string, List<SeoUrlInfo>> _childurls;

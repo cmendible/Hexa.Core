@@ -14,10 +14,10 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// True specification
-/// </summary>
-/// <typeparam name="TEntity">Type of entity in this specification</typeparam>
+    /// <summary>
+    /// True specification
+    /// </summary>
+    /// <typeparam name="TEntity">Type of entity in this specification</typeparam>
     public class TrueSpecification<TEntity>
         :Specification<TEntity>
         where TEntity:class

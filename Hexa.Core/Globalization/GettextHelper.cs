@@ -23,9 +23,9 @@ using System.Reflection;
 
 namespace GNU.Gettext
 {
-/// <summary>
-/// Class used to call Gettext.
-/// </summary>
+    /// <summary>
+    /// Class used to call Gettext.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
     public sealed class GettextHelper
     {

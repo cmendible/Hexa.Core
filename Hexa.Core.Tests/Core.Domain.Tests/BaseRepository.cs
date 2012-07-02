@@ -13,18 +13,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hexa.Core.Domain.Specification;
-using Hexa.Core.Tests;
 using Hexa.Core.Logging;
+using Hexa.Core.Tests;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core.Domain.Tests
 {
-/// <summary>
-///This is a test class for RepositoryTest and is intended
-///to contain all common RepositoryTest Unit Tests
-///</summary>
+    /// <summary>
+    ///This is a test class for RepositoryTest and is intended
+    ///to contain all common RepositoryTest Unit Tests
+    ///</summary>
     [TestFixture()]
     public class BaseRepositoryTests
     {

@@ -7,9 +7,9 @@ using System.Web.UI;
 namespace Hexa.Core.Web.UI.Controls
 {
 
-/// <summary>
-/// DynamicImage
-/// </summary>
+    /// <summary>
+    /// DynamicImage
+    /// </summary>
     [DefaultProperty("ImageFile")]
     [ToolboxData("<{0}:DynamicImage runat=server></{0}:DynamicImage>")]
     public class DynamicImage : System.Web.UI.WebControls.Image

@@ -8,11 +8,11 @@ using NHibernate.UserTypes;
 
 namespace uNhAddIns.UserTypes
 {
-/// <summary>
-/// http://code.google.com/p/unhaddins/
-/// </summary>
-/// <typeparam name="T"></typeparam>
-/// <typeparam name="TId">The type of the id.</typeparam>
+    /// <summary>
+    /// http://code.google.com/p/unhaddins/
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TId">The type of the id.</typeparam>
     [Serializable]
     public abstract class GenericWellKnownInstanceType<T, TId> : IUserType where T : class
     {

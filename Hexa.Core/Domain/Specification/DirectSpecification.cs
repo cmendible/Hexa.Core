@@ -14,12 +14,12 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// A Direct Specification is a simple implementation
-/// of specification that acquire this from a lambda expression
-/// in  constructor
-/// </summary>
-/// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+    /// <summary>
+    /// A Direct Specification is a simple implementation
+    /// of specification that acquire this from a lambda expression
+    /// in  constructor
+    /// </summary>
+    /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
     public class DirectSpecification<TEntity>
         : Specification<TEntity>
         where TEntity : class

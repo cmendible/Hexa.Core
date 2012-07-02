@@ -24,9 +24,9 @@ using System.Security.Permissions;
 namespace Hexa.Core
 {
 
-/// <summary>
-/// Concurrency Exception.
-/// </summary>
+    /// <summary>
+    /// Concurrency Exception.
+    /// </summary>
     [Serializable()]
     public class ConcurrencyException : CoreException
     {

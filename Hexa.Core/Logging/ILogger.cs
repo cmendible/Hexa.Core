@@ -21,9 +21,9 @@ using System;
 
 namespace Hexa.Core.Logging
 {
-/// <summary>
-/// logger manager contract for trace instrumentation
-/// </summary>
+    /// <summary>
+    /// logger manager contract for trace instrumentation
+    /// </summary>
     public interface ILogger
     {
         void Debug(object message);

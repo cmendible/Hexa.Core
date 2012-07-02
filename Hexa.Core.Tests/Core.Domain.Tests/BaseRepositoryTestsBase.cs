@@ -18,13 +18,13 @@ using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {
-/// <summary>
-/// This is a base class for testing repositories. This base class
-/// implement all method defined in IRepository for any type. Inherit
-/// of this class to add test implementation in a concrete repository.
-/// For view all tests correctly in a TestView windows please add column Full Class Name
-/// </summary>
-/// <typeparam name="TEntity">Inner type of respository</typeparam>
+    /// <summary>
+    /// This is a base class for testing repositories. This base class
+    /// implement all method defined in IRepository for any type. Inherit
+    /// of this class to add test implementation in a concrete repository.
+    /// For view all tests correctly in a TestView windows please add column Full Class Name
+    /// </summary>
+    /// <typeparam name="TEntity">Inner type of respository</typeparam>
     public abstract class RepositoryTestsBase<TEntity>
         where TEntity : class
     {

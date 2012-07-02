@@ -5,14 +5,14 @@ using System;
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// Base entity with an abstract key.
-/// </summary>
-/// <remarks>
-/// Derived from SharpArch.Core.EntityWithTypedId.
-/// For a discussion of this object, see
-/// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-/// </remarks>
+    /// <summary>
+    /// Base entity with an abstract key.
+    /// </summary>
+    /// <remarks>
+    /// Derived from SharpArch.Core.EntityWithTypedId.
+    /// For a discussion of this object, see
+    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
+    /// </remarks>
     [Serializable]
     public abstract class BaseEntity<TKey> : ValidatableObject
         where TKey : IEquatable<TKey>
@@ -135,14 +135,14 @@ namespace Hexa.Core.Domain
         #endregion
     }
 
-/// <summary>
-/// Base entity with an abstract key which implements IEquatable.
-/// </summary>
-/// <remarks>
-/// Derived from SharpArch.Core.EntityWithTypedId.
-/// For a discussion of this object, see
-/// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-/// </remarks>
+    /// <summary>
+    /// Base entity with an abstract key which implements IEquatable.
+    /// </summary>
+    /// <remarks>
+    /// Derived from SharpArch.Core.EntityWithTypedId.
+    /// For a discussion of this object, see
+    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
+    /// </remarks>
     [Serializable]
     public abstract class BaseEntity<TEntity, TKey> : BaseEntity<TKey>, IEquatable<TEntity>
         where TKey : IEquatable<TKey>
@@ -158,9 +158,9 @@ namespace Hexa.Core.Domain
         }
     }
 
-/// <summary>
-/// BaseEntity with a long Primary Id.
-/// </summary>
+    /// <summary>
+    /// BaseEntity with a long Primary Id.
+    /// </summary>
     [Serializable]
     public abstract class BaseEntityWithId<TEntity> : BaseEntity<TEntity, long>
     {
@@ -186,9 +186,9 @@ namespace Hexa.Core.Domain
         }
     }
 
-/// <summary>
-/// BaseEntity with an Guid/UniqueId Primary Id.
-/// </summary>
+    /// <summary>
+    /// BaseEntity with an Guid/UniqueId Primary Id.
+    /// </summary>
     [Serializable]
     public abstract class BaseEntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
     {

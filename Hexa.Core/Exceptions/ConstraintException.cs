@@ -24,9 +24,9 @@ using System.Security.Permissions;
 namespace Hexa.Core
 {
 
-/// <summary>
-/// Constraint Exception.
-/// </summary>
+    /// <summary>
+    /// Constraint Exception.
+    /// </summary>
     [Serializable()]
     public class ConstraintException : CoreException
     {

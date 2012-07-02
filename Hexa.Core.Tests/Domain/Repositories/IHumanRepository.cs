@@ -1,5 +1,4 @@
-﻿
-using Hexa.Core.Domain;
+﻿using Hexa.Core.Domain;
 
 namespace Hexa.Core.Tests.Domain
 {

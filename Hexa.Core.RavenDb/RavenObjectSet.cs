@@ -23,8 +23,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Raven.Client;
-using Raven.Client.Indexes;
-using Raven.Client.Linq;
 
 namespace Hexa.Core.Domain
 {

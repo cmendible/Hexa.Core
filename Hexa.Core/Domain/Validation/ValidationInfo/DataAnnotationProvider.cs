@@ -22,10 +22,10 @@ using System.Linq;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    /// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class DataAnnotationValidationInfoProvider<TEntity> : IValidationInfoProvider
     {
         #region IValidationInfoProvider Members

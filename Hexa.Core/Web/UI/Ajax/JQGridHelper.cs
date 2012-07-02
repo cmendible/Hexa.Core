@@ -29,9 +29,9 @@ using Hexa.Core.Domain.Specification;
 namespace Hexa.Core.Web.UI.Ajax
 {
 
-/// <summary>
-/// JQGrid Helper
-/// </summary>
+    /// <summary>
+    /// JQGrid Helper
+    /// </summary>
     public class jqGridHelper
     {
         private string _gridName;

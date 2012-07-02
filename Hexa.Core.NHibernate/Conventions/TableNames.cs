@@ -6,15 +6,15 @@ using FluentNHibernate.Conventions.Instances;
 namespace Hexa.Core.Domain
 {
 
-//public class PluralizeTableNames : IClassConvention
-//{
-//    private static EnglishInflector _inflector = new EnglishInflector();
+    //public class PluralizeTableNames : IClassConvention
+    //{
+    //    private static EnglishInflector _inflector = new EnglishInflector();
 
-//    public void Apply(IClassInstance instance)
-//    {
-//        instance.Table(_inflector.Pluralize(instance.EntityType.Name));
-//    }
-//}
+    //    public void Apply(IClassInstance instance)
+    //    {
+    //        instance.Table(_inflector.Pluralize(instance.EntityType.Name));
+    //    }
+    //}
 
     public class TableNameConvention : IClassConvention, IClassConventionAcceptance
     {

@@ -65,9 +65,9 @@ namespace Hexa.Core.Web.UI.Controls
         }
     }
 
-/// <summary>
-/// Helper class used to validate entities in a web context
-/// </summary>
+    /// <summary>
+    /// Helper class used to validate entities in a web context
+    /// </summary>
     public class WebValidationHelper
     {
         private string _ValidationGroup = "";

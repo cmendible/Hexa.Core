@@ -2,9 +2,9 @@ using System;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Details of a validation error
-/// </summary>
+    /// <summary>
+    /// Details of a validation error
+    /// </summary>
     public class ValidationError
     {
         #region Properties

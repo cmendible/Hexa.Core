@@ -22,9 +22,9 @@ using System.Globalization;
 
 namespace Hexa.Core.Web.UI
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public class BaseUserControl : System.Web.UI.UserControl
     {
         #region  Globalization

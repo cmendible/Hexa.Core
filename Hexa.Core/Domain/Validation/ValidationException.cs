@@ -4,9 +4,9 @@ using System.Globalization;
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Validation Exception
-/// </summary>
+    /// <summary>
+    /// Validation Exception
+    /// </summary>
     [Serializable]
     public class ValidationException: CoreException
     {

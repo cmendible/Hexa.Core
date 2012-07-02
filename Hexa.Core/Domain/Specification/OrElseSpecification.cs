@@ -14,10 +14,10 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// A Logic OR Specification
-/// </summary>
-/// <typeparam name="T">Type of entity that check this specification</typeparam>
+    /// <summary>
+    /// A Logic OR Specification
+    /// </summary>
+    /// <typeparam name="T">Type of entity that check this specification</typeparam>
     public class OrElseSpecification<T>
         : CompositeSpecification<T>
         where T : class

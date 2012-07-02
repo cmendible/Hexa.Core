@@ -1,5 +1,4 @@
-﻿
-using Hexa.Core.Domain;
+﻿using Hexa.Core.Domain;
 using Hexa.Core.Logging;
 using Hexa.Core.Tests.Domain;
 

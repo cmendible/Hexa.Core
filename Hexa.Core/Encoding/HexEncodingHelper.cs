@@ -21,9 +21,9 @@ using System;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// HexEncodingHelper
-/// </summary>
+    /// <summary>
+    /// HexEncodingHelper
+    /// </summary>
     public static class HexEncodingHelper
     {
 

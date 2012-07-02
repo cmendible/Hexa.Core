@@ -8,9 +8,9 @@ using log4net;
 
 namespace Hexa.Core.ServiceModel.Security
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors")]
     public abstract class BaseX509AuthorizationPolicy : BaseAuthorizationPolicy
     {

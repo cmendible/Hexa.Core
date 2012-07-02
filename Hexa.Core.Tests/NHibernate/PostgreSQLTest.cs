@@ -44,15 +44,15 @@ namespace Hexa.Core.Mono.Tests
         [TearDown]
         public void FixtureTearDown()
         {
-//            try
-//            {
-//                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-//                dbManager.DeleteDatabase();
-//            }
-//            finally
-//            {
-//
-//            }
+            //            try
+            //            {
+            //                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+            //                dbManager.DeleteDatabase();
+            //            }
+            //            finally
+            //            {
+            //
+            //            }
             ApplicationContext.Stop();
         }
 

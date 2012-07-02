@@ -24,9 +24,9 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-/// <summary>
-/// Class used to convert from a Range attribute to a BaseValidator
-/// </summary>
+    /// <summary>
+    /// Class used to convert from a Range attribute to a BaseValidator
+    /// </summary>
     internal class RangeConverter : BaseConverter
     {
         /// <summary>

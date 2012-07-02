@@ -16,17 +16,17 @@ using Hexa.Core.Domain.Specification;
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// Base interface for implement a "Repository Pattern", for
-/// more information about this pattern see http://martinfowler.com/eaaCatalog/repository.html
-/// or http://blogs.msdn.com/adonet/archive/2009/06/16/using-repository-and-unit-of-work-patterns-with-entity-framework-4-0.aspx
-/// </summary>
-/// <remarks>
-/// Indeed, one might think that IObjectSet is already a generic repository and therefore
-/// would not need this item. Using this interface allows us to ensure the persistence
-/// of ignorance within our domain model
-/// </remarks>
-/// <typeparam name="TEntity">Type of entity for this repository </typeparam>
+    /// <summary>
+    /// Base interface for implement a "Repository Pattern", for
+    /// more information about this pattern see http://martinfowler.com/eaaCatalog/repository.html
+    /// or http://blogs.msdn.com/adonet/archive/2009/06/16/using-repository-and-unit-of-work-patterns-with-entity-framework-4-0.aspx
+    /// </summary>
+    /// <remarks>
+    /// Indeed, one might think that IObjectSet is already a generic repository and therefore
+    /// would not need this item. Using this interface allows us to ensure the persistence
+    /// of ignorance within our domain model
+    /// </remarks>
+    /// <typeparam name="TEntity">Type of entity for this repository </typeparam>
     public interface IRepository<TEntity>
         where TEntity : class
     {

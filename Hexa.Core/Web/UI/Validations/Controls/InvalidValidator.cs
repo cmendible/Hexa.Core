@@ -21,9 +21,9 @@ using System.Web.UI;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-/// <summary>
-/// Validator used to show a custom message in a ValidationSummary Control.
-/// </summary>
+    /// <summary>
+    /// Validator used to show a custom message in a ValidationSummary Control.
+    /// </summary>
     internal class InvalidValidator : IValidator
     {
         /// <summary>

@@ -18,10 +18,10 @@
 #endregion
 
 using System;
-using NHibernate;
 using System.Runtime.Remoting.Messaging;
 using System.ServiceModel;
 using System.Web;
+using NHibernate;
 
 namespace Hexa.Core.Domain
 {

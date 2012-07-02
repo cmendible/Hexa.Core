@@ -22,9 +22,9 @@ using System.Security.Principal;
 
 namespace Hexa.Core.Security
 {
-/// <summary>
-/// Main class used to hold user identity and roles
-/// </summary>
+    /// <summary>
+    /// Main class used to hold user identity and roles
+    /// </summary>
     [Serializable]
     public class CorePrincipal : MarshalByRefObject, IPrincipal
     {

@@ -18,13 +18,12 @@
 #endregion
 
 using System;
-using System.Security.Principal;
 
 namespace Hexa.Core.Security
 {
-/// <summary>
-/// Class used to hold user name info.
-/// </summary>
+    /// <summary>
+    /// Class used to hold user name info.
+    /// </summary>
     [Serializable]
     public class CoreIdentity : MarshalByRefObject, ICoreIdentity
     {

@@ -25,9 +25,9 @@ using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// Core Context singleton class. Contains a reference to a root CoreContainer object.
-/// </summary>
+    /// <summary>
+    /// Core Context singleton class. Contains a reference to a root CoreContainer object.
+    /// </summary>
     public static class ApplicationContext
     {
         /// <summary>

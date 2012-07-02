@@ -22,9 +22,9 @@ using System.Globalization;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// Provides utility methods to guard parameter and local variables.
-/// </summary>
+    /// <summary>
+    /// Provides utility methods to guard parameter and local variables.
+    /// </summary>
     public static class Guard
     {
         /// <summary>

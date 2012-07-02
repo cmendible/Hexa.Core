@@ -20,18 +20,18 @@
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IRequiredValidationInfo : IValidationInfo
     {
     }
 
-/// <summary>
-///
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class RequiredValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRequiredValidationInfo
     {
 

@@ -23,11 +23,11 @@ using System.ServiceModel;
 namespace Hexa.Core.ServiceModel
 {
 
-/// <summary>
-/// Generic helper class for a WCF service proxy.
-/// </summary>
-/// <typeparam name="TProxy">The type of WCF service proxy to wrap.</typeparam>
-/// <typeparam name="TChannel">The type of WCF service interface to wrap.</typeparam>
+    /// <summary>
+    /// Generic helper class for a WCF service proxy.
+    /// </summary>
+    /// <typeparam name="TProxy">The type of WCF service proxy to wrap.</typeparam>
+    /// <typeparam name="TChannel">The type of WCF service interface to wrap.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public class ServiceProxyHelper<TProxy, TChannel>: IDisposable
         where TProxy : ClientBase<TChannel>, new()

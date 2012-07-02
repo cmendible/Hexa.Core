@@ -1,10 +1,10 @@
 ﻿
 namespace Hexa.Core.Validation
 {
-/// <summary>
-/// Interface implemented by different flavors of validators that provide validation
-/// logic on domain entities.
-/// </summary>
+    /// <summary>
+    /// Interface implemented by different flavors of validators that provide validation
+    /// logic on domain entities.
+    /// </summary>
     public interface IValidator<TEntity>
     {
         /// <summary>
@@ -29,10 +29,10 @@ namespace Hexa.Core.Validation
         ValidationResult Validate(TEntity instance);
     }
 
-/// <summary>
-/// Interface implemented by different flavors of validators that provide validation
-/// logic on domain entities.
-/// </summary>
+    /// <summary>
+    /// Interface implemented by different flavors of validators that provide validation
+    /// logic on domain entities.
+    /// </summary>
     public interface IValidator : IValidator<object>
     {
     }

@@ -16,11 +16,11 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// In memory IObjectSet. This class is intended only
-/// for testing purposes.
-/// </summary>
-/// <typeparam name="TEntity">Type of elements in objectSet</typeparam>
+    /// <summary>
+    /// In memory IObjectSet. This class is intended only
+    /// for testing purposes.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of elements in objectSet</typeparam>
     public sealed class MemorySet<TEntity> : IEntitySet<TEntity>
         where TEntity : class
     {

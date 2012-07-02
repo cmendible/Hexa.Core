@@ -3,14 +3,14 @@ using System.Web;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-/// <summary>
-/// Cached Image Service
-/// Add the following configuration to web.config
-/// <httpHandlers>
-///   <remove verb="*" path="*.asmx"/>
-///   <add verb="GET" path="cachedimageservice.axd" type="Hexa.Core.Web.UI.Controls.CachedImageService" />
-/// </httpHandlers>
-/// </summary>
+    /// <summary>
+    /// Cached Image Service
+    /// Add the following configuration to web.config
+    /// <httpHandlers>
+    ///   <remove verb="*" path="*.asmx"/>
+    ///   <add verb="GET" path="cachedimageservice.axd" type="Hexa.Core.Web.UI.Controls.CachedImageService" />
+    /// </httpHandlers>
+    /// </summary>
     public class CachedImageService : IHttpHandler
     {
         /// <summary>

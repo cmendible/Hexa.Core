@@ -7,15 +7,15 @@ using System.Reflection;
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// Provides a standard base class for facilitating comparison of value objects using all the object's fields.
-/// </summary>
-/// <remarks>
-/// For a discussion of the implementation of Equals/GetHashCode, see
-/// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-/// and http://groups.google.com/group/sharp-architecture/browse_thread/thread/f76d1678e68e3ece?hl=en for
-/// an in depth and conclusive resolution.
-/// </remarks>
+    /// <summary>
+    /// Provides a standard base class for facilitating comparison of value objects using all the object's fields.
+    /// </summary>
+    /// <remarks>
+    /// For a discussion of the implementation of Equals/GetHashCode, see
+    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
+    /// and http://groups.google.com/group/sharp-architecture/browse_thread/thread/f76d1678e68e3ece?hl=en for
+    /// an in depth and conclusive resolution.
+    /// </remarks>
     [Serializable]
     public abstract class ValueObject
     {
@@ -107,10 +107,10 @@ namespace Hexa.Core.Domain
         }
     }
 
-/// <summary>
-/// Provides a standard base class for facilitating comparison of value objects using all the object's fields.
-/// </summary>
-/// <typeparam name="T"></typeparam>
+    /// <summary>
+    /// Provides a standard base class for facilitating comparison of value objects using all the object's fields.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>

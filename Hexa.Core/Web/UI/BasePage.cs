@@ -28,9 +28,9 @@ using Hexa.Core.Web.UI.Controls;
 namespace Hexa.Core.Web.UI
 {
 
-/// <summary>
-/// Base Page
-/// </summary>
+    /// <summary>
+    /// Base Page
+    /// </summary>
     public class BasePage : System.Web.UI.Page
     {
         protected Control FirstControl2SetFocus

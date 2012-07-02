@@ -19,17 +19,17 @@ using Hexa.Core.Logging;
 
 namespace Hexa.Core.Domain
 {
-/// <summary>
-/// Default base class for repostories. This generic repository
-/// is a default implementation of <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
-/// and your specific repositories can inherit from this base class so automatically will get default implementation.
-/// IMPORTANT: Using this Base Repository class IS NOT mandatory. It is just a useful base class:
-/// You could also decide that you do not want to use this base Repository class, because sometimes you don't want a
-/// specific Repository getting all these features and it might be wrong for a specific Repository.
-/// For instance, you could want just read-only data methods for your Repository, etc.
-/// in that case, just simply do not use this base class on your Repository.
-/// </summary>
-/// <typeparam name="TEntity">Type of elements in repostory</typeparam>
+    /// <summary>
+    /// Default base class for repostories. This generic repository
+    /// is a default implementation of <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
+    /// and your specific repositories can inherit from this base class so automatically will get default implementation.
+    /// IMPORTANT: Using this Base Repository class IS NOT mandatory. It is just a useful base class:
+    /// You could also decide that you do not want to use this base Repository class, because sometimes you don't want a
+    /// specific Repository getting all these features and it might be wrong for a specific Repository.
+    /// For instance, you could want just read-only data methods for your Repository, etc.
+    /// in that case, just simply do not use this base class on your Repository.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of elements in repostory</typeparam>
     public class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {

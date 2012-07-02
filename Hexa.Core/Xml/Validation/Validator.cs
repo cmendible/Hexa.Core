@@ -24,9 +24,9 @@ using System.Xml.Schema;
 
 namespace Hexa.Core.Xml
 {
-/// <summary>
-/// Static class used to validate an XML file.
-/// </summary>
+    /// <summary>
+    /// Static class used to validate an XML file.
+    /// </summary>
     public static class XmlValidator
     {
         // Validation Error Count

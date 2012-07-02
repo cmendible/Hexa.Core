@@ -15,9 +15,9 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// Extension methods for add And and Or with parameters rebinder
-/// </summary>
+    /// <summary>
+    /// Extension methods for add And and Or with parameters rebinder
+    /// </summary>
     public static class ExpressionBuilder
     {
         /// <summary>

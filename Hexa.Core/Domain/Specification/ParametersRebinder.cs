@@ -14,11 +14,11 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-/// <summary>
-/// Helper for rebinder parameters without use Invoke method in expressions
-/// ( this methods is not supported in all linq query providers,
-/// for example in Linq2Entities is not supported)
-/// </summary>
+    /// <summary>
+    /// Helper for rebinder parameters without use Invoke method in expressions
+    /// ( this methods is not supported in all linq query providers,
+    /// for example in Linq2Entities is not supported)
+    /// </summary>
     public class ParameterRebinder : ExpressionVisitor
     {
         private readonly Dictionary<ParameterExpression, ParameterExpression> map;

@@ -7,9 +7,9 @@ using NHibernate.UserTypes;
 
 namespace Hexa.Core.Domain
 {
-/// <summary />
-/// Implements a IUserVersionType based on TicksType, but returned as String instead of DateTime.
-/// </summary />
+    /// <summary />
+    /// Implements a IUserVersionType based on TicksType, but returned as String instead of DateTime.
+    /// </summary />
     public class TicksAsString : IUserVersionType
     {
         #region IUserVersionType Members

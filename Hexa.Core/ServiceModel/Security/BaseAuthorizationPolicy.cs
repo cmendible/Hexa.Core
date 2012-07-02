@@ -25,9 +25,9 @@ using log4net;
 
 namespace Hexa.Core.ServiceModel.Security
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public abstract class BaseAuthorizationPolicy : IAuthorizationPolicy
     {
         private static readonly ILog _Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

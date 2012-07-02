@@ -20,9 +20,9 @@
 
 namespace Hexa.Core.Validation
 {
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public interface IRegexValidationInfo : IValidationInfo
     {
         /// <summary>
@@ -35,10 +35,10 @@ namespace Hexa.Core.Validation
         }
     }
 
-/// <summary>
-///
-/// </summary>
-/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <summary>
+    ///
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class RegexValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRegexValidationInfo
     {
         private string expression;

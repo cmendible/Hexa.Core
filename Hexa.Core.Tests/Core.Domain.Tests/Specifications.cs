@@ -18,9 +18,9 @@ using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {
-/// <summary>
-/// Summary description for SpecificationTests
-/// </summary>
+    /// <summary>
+    /// Summary description for SpecificationTests
+    /// </summary>
     [TestFixture]
     public class SpecificationTests
     {

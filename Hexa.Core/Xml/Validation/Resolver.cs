@@ -27,9 +27,9 @@ using System.Xml;
 namespace Hexa.Core.Xml
 {
 
-/// <summary>
-/// Used to resolve xml name spaces.
-/// </summary>
+    /// <summary>
+    /// Used to resolve xml name spaces.
+    /// </summary>
     public class SchemaResolver : XmlResolver
     {
         private Dictionary<string, byte[]> _schemas = null;

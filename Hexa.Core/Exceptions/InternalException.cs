@@ -23,9 +23,9 @@ using System.Security.Permissions;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// Internal Exception.
-/// </summary>
+    /// <summary>
+    /// Internal Exception.
+    /// </summary>
     [Serializable()]
     public class InternalException : CoreException
     {

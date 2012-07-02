@@ -16,9 +16,9 @@
 namespace Hexa.Core.Web.Seo
 {
 
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public class SeoUrlInfo
     {
         private string _key;

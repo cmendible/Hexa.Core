@@ -24,11 +24,11 @@ using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core
 {
-/// <summary>
-/// This is a helper for accessing dependencies via the Common Service Locator (CSL).  But while
-/// the CSL will throw object reference errors if used before initialization, this will inform
-/// you of what the problem is.  Perhaps it would be more aptly named "InformativeServiceLocator."
-/// </summary>
+    /// <summary>
+    /// This is a helper for accessing dependencies via the Common Service Locator (CSL).  But while
+    /// the CSL will throw object reference errors if used before initialization, this will inform
+    /// you of what the problem is.  Perhaps it would be more aptly named "InformativeServiceLocator."
+    /// </summary>
     public static class ServiceLocator
     {
         /// <summary>

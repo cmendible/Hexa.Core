@@ -6,9 +6,9 @@ using Hexa.Core.ServiceModel.Security;
 namespace Hexa.Core.ServiceModel
 {
 
-/// <summary>
-///
-/// </summary>
+    /// <summary>
+    ///
+    /// </summary>
     public class Settings : ConfigurationSection
     {
         /// <summary>

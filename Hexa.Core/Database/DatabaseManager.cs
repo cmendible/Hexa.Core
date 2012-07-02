@@ -9,9 +9,9 @@ using log4net;
 
 namespace Hexa.Core.Data
 {
-/// <summary>
-/// Handles Db creation, deletion, etc.
-/// </summary>
+    /// <summary>
+    /// Handles Db creation, deletion, etc.
+    /// </summary>
     public class DatabaseManager
     {
         private static ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
