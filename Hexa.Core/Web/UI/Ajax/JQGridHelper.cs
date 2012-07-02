@@ -308,20 +308,20 @@ namespace Hexa.Core.Web.UI.Ajax
     public static class jqGridSearchHelper
     {
         static Dictionary<string, string> _linqOperations = new Dictionary<string, string> {
-            {"eq","=="}, //equal
-            {"ne","!="},//not equal
-            {"lt","<"}, //less than
-            {"le","<="},//less than or equal
-            {"gt",">"}, //greater than
-            {"ge",">="},//greater than or equal
-            {"bw","{0}.StartsWith({1})"}, //begins with
-            {"bn","!{0}.StartsWith({1})"}, //doesn"t begin with
-            {"in","{0}.Contains({1})"}, //is in
-            {"ni","!{0}.Contains({1})"}, //is not in
-            {"ew","{0}.EndsWith({1})"}, //ends with
-            {"en","!{0}.EndsWith({1})"}, //doesn"t end with
-            {"cn","{0}.Contains({1})"}, // contains
-            {"nc","!{0}.Contains({1})"}  //doesn"t contain
+            {"eq", "=="}, //equal
+            {"ne", "!="},//not equal
+            {"lt", "<"}, //less than
+            {"le", "<="},//less than or equal
+            {"gt", ">"}, //greater than
+            {"ge", ">="},//greater than or equal
+            {"bw", "{0}.StartsWith({1})"}, //begins with
+            {"bn", "!{0}.StartsWith({1})"}, //doesn"t begin with
+            {"in", "{0}.Contains({1})"}, //is in
+            {"ni", "!{0}.Contains({1})"}, //is not in
+            {"ew", "{0}.EndsWith({1})"}, //ends with
+            {"en", "!{0}.EndsWith({1})"}, //doesn"t end with
+            {"cn", "{0}.Contains({1})"}, // contains
+            {"nc", "!{0}.Contains({1})"}  //doesn"t contain
         };
 
         public static string ToLinq(string operation, string column, string value)
