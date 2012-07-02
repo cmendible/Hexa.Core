@@ -21,13 +21,17 @@ using System;
 
 namespace Hexa.Core.Domain
 {
-	[Serializable]
+    [Serializable]
     public abstract class RootEntity<TEntity> : BaseEntityWithUniqueId<TEntity>
     {
         /// <summary>
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>The timestamp.</value>
-        public virtual string Version { get; protected set; }
+        public virtual string Version
+        {
+            get;
+            protected set;
+        }
     }
 }

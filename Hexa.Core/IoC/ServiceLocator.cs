@@ -24,11 +24,11 @@ using SL = Microsoft.Practices.ServiceLocation;
 
 namespace Hexa.Core
 {
-    /// <summary>
-    /// This is a helper for accessing dependencies via the Common Service Locator (CSL).  But while
-    /// the CSL will throw object reference errors if used before initialization, this will inform
-    /// you of what the problem is.  Perhaps it would be more aptly named "InformativeServiceLocator."
-    /// </summary>
+/// <summary>
+/// This is a helper for accessing dependencies via the Common Service Locator (CSL).  But while
+/// the CSL will throw object reference errors if used before initialization, this will inform
+/// you of what the problem is.  Perhaps it would be more aptly named "InformativeServiceLocator."
+/// </summary>
     public static class ServiceLocator
     {
         /// <summary>
@@ -50,20 +50,20 @@ namespace Hexa.Core
             object service;
 
             try
-            {
-                service = SL.ServiceLocator.Current.GetService(dependencyType);
-            }
+                {
+                    service = SL.ServiceLocator.Current.GetService(dependencyType);
+                }
             catch (NullReferenceException)
-            {
-                throw new NullReferenceException("ServiceLocator has not been initialized; " +
-                    "I was trying to retrieve " + dependencyType.ToString());
-            }
+                {
+                    throw new NullReferenceException("ServiceLocator has not been initialized; " +
+                                                     "I was trying to retrieve " + dependencyType.ToString());
+                }
             catch (SL.ActivationException)
-            {
-                throw new SL.ActivationException("The needed dependency of type " + dependencyType.Name +
-                    " could not be located with the ServiceLocator. You'll need to register it with " +
-                    "the Common Service Locator (CSL) via your IoC's CSL adapter.");
-            }
+                {
+                    throw new SL.ActivationException("The needed dependency of type " + dependencyType.Name +
+                                                     " could not be located with the ServiceLocator. You'll need to register it with " +
+                                                     "the Common Service Locator (CSL) via your IoC's CSL adapter.");
+                }
 
             return service;
         }
@@ -75,17 +75,17 @@ namespace Hexa.Core
         public static TDependency TryGetInstance<TDependency>()
         {
             try
-            {
-                var services = SL.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
+                {
+                    var services = SL.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
-                if (services != null)
-                    return (TDependency)services.FirstOrDefault();
-            }
+                    if (services != null)
+                        return (TDependency)services.FirstOrDefault();
+                }
             catch (NullReferenceException)
-            {
-                throw new InternalException("ServiceLocator has not been initialized; " +
-                    "I was trying to retrieve " + typeof(TDependency).ToString());
-            }
+                {
+                    throw new InternalException("ServiceLocator has not been initialized; " +
+                                                "I was trying to retrieve " + typeof(TDependency).ToString());
+                }
 
             return default(TDependency);
         }
@@ -94,17 +94,17 @@ namespace Hexa.Core
         public static TDependency[] GetAllInstances<TDependency>()
         {
             try
-            {
-                var services = SL.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
+                {
+                    var services = SL.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
-                if (services != null)
-                    return services.Cast<TDependency>().ToArray();
-            }
+                    if (services != null)
+                        return services.Cast<TDependency>().ToArray();
+                }
             catch (NullReferenceException)
-            {
-                throw new InternalException("ServiceLocator has not been initialized; " +
-                    "I was trying to retrieve " + typeof(TDependency).ToString());
-            }
+                {
+                    throw new InternalException("ServiceLocator has not been initialized; " +
+                                                "I was trying to retrieve " + typeof(TDependency).ToString());
+                }
 
             return default(TDependency[]);
         }

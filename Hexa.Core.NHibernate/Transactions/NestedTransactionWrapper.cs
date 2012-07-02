@@ -8,7 +8,7 @@ namespace Hexa.Core.Domain
     public class NestedTransactionWrapper : TransactionWrapper
     {
         public NestedTransactionWrapper(global::NHibernate.ITransaction transaction)
-            : base(transaction)
+        : base(transaction)
         {
         }
 

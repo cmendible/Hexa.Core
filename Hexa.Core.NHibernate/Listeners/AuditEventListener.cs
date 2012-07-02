@@ -68,21 +68,21 @@ namespace Hexa.Core.Domain
 
             var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
             if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(e.Persister.EntityName))
-            {
-                var tableName = e.Persister.EntityName;
-                var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
-                foreach (var idx in changedPropertiesIdx)
                 {
-                    var propertyName = e.Persister.PropertyNames[idx];
-                    var oldValue = e.OldState[idx];
-                    var newValue = e.State[idx];
+                    var tableName = e.Persister.EntityName;
+                    var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
+                    foreach (var idx in changedPropertiesIdx)
+                        {
+                            var propertyName = e.Persister.PropertyNames[idx];
+                            var oldValue = e.OldState[idx];
+                            var newValue = e.State[idx];
 
-                    var auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(), 
-                        propertyName, oldValue, newValue, userUniqueId, updatedAt);
+                            var auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(),
+                                             propertyName, oldValue, newValue, userUniqueId, updatedAt);
 
-                    e.Session.Save(auditTrail);
+                            e.Session.Save(auditTrail);
+                        }
                 }
-            }
 
             _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
             _Set(e.Persister, e.State, "UpdatedAt", updatedAt);
@@ -101,18 +101,18 @@ namespace Hexa.Core.Domain
         }
     }
 
-    //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
+//http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
         protected override void DirtyCheck(FlushEntityEvent e)
         {
             base.DirtyCheck(e);
             if (e.DirtyProperties != null &&
-                e.DirtyProperties.Any() &&
-                //IAuditableEntity is my inteface for audited entities
-                e.Entity is IAuditableEntity)
+                    e.DirtyProperties.Any() &&
+                    //IAuditableEntity is my inteface for audited entities
+                    e.Entity is IAuditableEntity)
                 e.DirtyProperties = e.DirtyProperties
-                 .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
+                                    .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
         }
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)

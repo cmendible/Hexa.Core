@@ -26,8 +26,15 @@ namespace Hexa.Core.Pooling
 {
     public interface IObjectWithExpiration<T> : IDisposable
     {
-        DateTime TimeOut { get; set; }
-        bool IsExpired { get; }
+        DateTime TimeOut
+        {
+            get;
+            set;
+        }
+        bool IsExpired
+        {
+            get;
+        }
     }
 
     public class Pool<T> : IDisposable
@@ -47,7 +54,7 @@ namespace Hexa.Core.Pooling
         {
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size", size,
-                    "Argument 'size' must be greater than zero.");
+                                                      "Argument 'size' must be greater than zero.");
             if (factory == null)
                 throw new ArgumentNullException("factory");
 
@@ -57,9 +64,9 @@ namespace Hexa.Core.Pooling
             _eagerLoad = eagerLoad;
 
             if (_eagerLoad)
-            {
-                _PreloadItems(size);
-            }
+                {
+                    _PreloadItems(size);
+                }
 
             _usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
         }
@@ -68,81 +75,84 @@ namespace Hexa.Core.Pooling
         {
             _sync.WaitOne();
             lock (_queue)
-            {
-                var item = default(T);
-                if (!_eagerLoad)
                 {
-                    if (_queue.Count > 0)
-                        item = _queue.Dequeue();
+                    var item = default(T);
+                    if (!_eagerLoad)
+                        {
+                            if (_queue.Count > 0)
+                                item = _queue.Dequeue();
+                            else
+                                item  = _factory(this);
+                        }
                     else
-                        item  = _factory(this);
-                }
-                else
-                {
-                    item = _queue.Dequeue();
-                }
+                        {
+                            item = _queue.Dequeue();
+                        }
 
-                if (_usingExpirableObjects)
-                {
-                    var expirableObject = item as IObjectWithExpiration<T>;
-                    if (expirableObject.IsExpired)
-                    {
-                        try
+                    if (_usingExpirableObjects)
                         {
-                            expirableObject.Dispose();
+                            var expirableObject = item as IObjectWithExpiration<T>;
+                            if (expirableObject.IsExpired)
+                                {
+                                    try
+                                        {
+                                            expirableObject.Dispose();
+                                        }
+                                    finally
+                                        {
+                                            item = _factory(this);
+                                        }
+                                }
                         }
-                        finally
-                        {
-                            item = _factory(this);
-                        }
-                    }
+                    return item;
                 }
-                return item;
-            }
         }
 
         public void Release(T item)
         {
             lock (_queue)
-            {
-                _queue.Enqueue(item);
-            }
+                {
+                    _queue.Enqueue(item);
+                }
             _sync.Release();
         }
 
         public void Dispose()
         {
             if (_isDisposed)
-            {
-                return;
-            }
+                {
+                    return;
+                }
             _isDisposed = true;
             if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
-            {
-                lock (_queue)
                 {
-                    while (_queue.Count > 0)
-                    {
-                        IDisposable disposable = (IDisposable)_queue.Dequeue();
-                        disposable.Dispose();
-                    }
+                    lock (_queue)
+                        {
+                            while (_queue.Count > 0)
+                                {
+                                    IDisposable disposable = (IDisposable)_queue.Dequeue();
+                                    disposable.Dispose();
+                                }
+                        }
                 }
-            }
             _sync.Close();
         }
 
         public bool IsDisposed
         {
-            get { return _isDisposed; }
+            get
+                {
+                    return _isDisposed;
+                }
         }
 
         private void _PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
-            {
-                T item = _factory(this);
-                _queue.Enqueue(item);
-            }
+                {
+                    T item = _factory(this);
+                    _queue.Enqueue(item);
+                }
         }
     }
 

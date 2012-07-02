@@ -25,13 +25,13 @@ using FluentNHibernate.Conventions.Instances;
 namespace Hexa.Core.Domain
 {
     public class StringLengthConvention : IPropertyConvention
-	{
-		public void Apply(IPropertyInstance target)
-		{
-			var attribute = Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
+    {
+        public void Apply(IPropertyInstance target)
+        {
+            var attribute = Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
 
-			if (attribute != null)
-				target.Length(attribute.MaximumLength);
-		}
-	}
+            if (attribute != null)
+                target.Length(attribute.MaximumLength);
+        }
+    }
 }

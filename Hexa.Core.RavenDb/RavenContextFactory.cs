@@ -29,11 +29,14 @@ namespace Hexa.Core.Domain
         public RavenContextFactory()
         {
             if (_documenFactory == null)
-            {
-                _documenFactory = new EmbeddableDocumentStore() { DataDirectory = "Data" };
-                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
-                _documenFactory.Initialize();
-            }
+                {
+                    _documenFactory = new EmbeddableDocumentStore()
+                    {
+                        DataDirectory = "Data"
+                    };
+                    _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
+                    _documenFactory.Initialize();
+                }
         }
 
         public IUnitOfWork Create()
@@ -44,7 +47,7 @@ namespace Hexa.Core.Domain
         // Registers Raven IDocumentStore for testing purposes.
         public void RegisterSessionFactory(IoCContainer container)
         {
-            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);        
+            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);
         }
 
         public bool DatabaseExists()
@@ -54,17 +57,17 @@ namespace Hexa.Core.Domain
 
         public void CreateDatabase()
         {
-            
+
         }
 
         public void ValidateDatabaseSchema()
         {
-            
+
         }
 
         public void DeleteDatabase()
         {
-            
+
         }
     }
 }

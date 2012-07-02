@@ -14,7 +14,7 @@ namespace Hexa.Core.Tests.Sql
     public abstract class BaseDatabaseTest
     {
         protected abstract NHContextFactory CreateNHContextFactory();
-        protected abstract string ConnectionString(); 
+        protected abstract string ConnectionString();
 
         [TestFixtureSetUp]
         public void FixtureSetup()
@@ -27,7 +27,7 @@ namespace Hexa.Core.Tests.Sql
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            var ctxFactory = CreateNHContextFactory(); 
+            var ctxFactory = CreateNHContextFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -51,14 +51,14 @@ namespace Hexa.Core.Tests.Sql
         public void FixtureTearDown()
         {
             try
-            {
-                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-                dbManager.DeleteDatabase();
-            }
+                {
+                    var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+                    dbManager.DeleteDatabase();
+                }
             finally
-            {
-                ApplicationContext.Stop();
-            }
+                {
+                    ApplicationContext.Stop();
+                }
         }
 
         private Human _Add_Human()
@@ -186,6 +186,6 @@ namespace Hexa.Core.Tests.Sql
                 Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
             }
         }
-        
+
     }
 }

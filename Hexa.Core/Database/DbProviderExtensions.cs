@@ -12,18 +12,18 @@ namespace Hexa.Core.Data
                 conn.ConnectionString = connectionString;
 
                 try
-                {
-                    conn.Open();
-                    using (var cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = command;
-                        cmd.ExecuteNonQuery();
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = command;
+                            cmd.ExecuteNonQuery();
+                        }
                     }
-                }
                 finally
-                {
-                    conn.Close();
-                }
+                    {
+                        conn.Close();
+                    }
             }
         }
 
@@ -35,19 +35,19 @@ namespace Hexa.Core.Data
                 conn.ConnectionString = connectionString;
 
                 try
-                {
-                    conn.Open();
-                    using (var cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = command;
-                        var ret = cmd.ExecuteScalar();
-                        return ret;
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = command;
+                            var ret = cmd.ExecuteScalar();
+                            return ret;
+                        }
                     }
-                }
                 finally
-                {
-                    conn.Close();
-                }
+                    {
+                        conn.Close();
+                    }
             }
         }
     }

@@ -23,10 +23,10 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-    /// <summary>
-    /// Class used to convert from a RegularExpression attribute to a BaseValidator
-    /// </summary>
-	internal class RegularExpressionConverter : BaseConverter
+/// <summary>
+/// Class used to convert from a RegularExpression attribute to a BaseValidator
+/// </summary>
+    internal class RegularExpressionConverter : BaseConverter
     {
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="attribute">Attribute representing the validator</param>
         /// <param name="pi">Property that holds attribute</param>
         /// <returns>A BaseValidator</returns>
-		public override BaseValidator Convert(IValidationInfo validationInfo)
+        public override BaseValidator Convert(IValidationInfo validationInfo)
         {
-			IRegexValidationInfo regexRuleInfo = validationInfo as IRegexValidationInfo;
-			ExtendedRegularExpressionValidator regularExpressionValidator = new ExtendedRegularExpressionValidator();
+            IRegexValidationInfo regexRuleInfo = validationInfo as IRegexValidationInfo;
+            ExtendedRegularExpressionValidator regularExpressionValidator = new ExtendedRegularExpressionValidator();
 
-			regularExpressionValidator.ValidationExpression = regexRuleInfo.Expression;
+            regularExpressionValidator.ValidationExpression = regexRuleInfo.Expression;
 
             return regularExpressionValidator;
         }

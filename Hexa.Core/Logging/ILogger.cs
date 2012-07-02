@@ -21,11 +21,11 @@ using System;
 
 namespace Hexa.Core.Logging
 {
-    /// <summary>
-    /// logger manager contract for trace instrumentation
-    /// </summary>
-	public interface ILogger
-	{
+/// <summary>
+/// logger manager contract for trace instrumentation
+/// </summary>
+    public interface ILogger
+    {
         void Debug(object message);
         void Debug(object message, Exception exception);
         void DebugFormat(string format, params object[] args);
@@ -46,5 +46,5 @@ namespace Hexa.Core.Logging
         void Warn(object message, Exception exception);
         void WarnFormat(string format, params object[] args);
         void WarnFormat(IFormatProvider provider, string format, params object[] args);
-	}
+    }
 }

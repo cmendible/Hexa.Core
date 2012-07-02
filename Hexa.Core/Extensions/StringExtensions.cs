@@ -25,29 +25,29 @@ using System.Text.RegularExpressions;
 
 namespace System
 {
-	public static class MD5Helper
-	{
-		public static string CalculateMD5Hash(this string input)
-		{
+    public static class MD5Helper
+    {
+        public static string CalculateMD5Hash(this string input)
+        {
             byte[] inputBytes;
             byte[] hash;
 
-			// step 1, calculate MD5 hash from input
+            // step 1, calculate MD5 hash from input
             using (MD5 md5 = MD5.Create())
             {
                 inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
                 hash = md5.ComputeHash(inputBytes);
             }
 
-			// step 2, convert byte array to hex string
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < hash.Length; i++)
-			{
-				sb.Append(hash[i].ToString("X2", System.Globalization.CultureInfo.InvariantCulture));
-			}
-			return sb.ToString();
-		}
-	}
+            // step 2, convert byte array to hex string
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+                {
+                    sb.Append(hash[i].ToString("X2", System.Globalization.CultureInfo.InvariantCulture));
+                }
+            return sb.ToString();
+        }
+    }
 
     public static class StringSlugExtension
     {
@@ -60,8 +60,8 @@ namespace System
             var validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
             rules1 = invalidChars.ToDictionary(i => i.ToString(), i => validChars[invalidChars.IndexOf(i)].ToString());
 
-            invalidChars = new char[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' }.ToList();
-            var validStrings = new string[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" }.ToList();
+            invalidChars = new char[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' } .ToList();
+            var validStrings = new string[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" } .ToList();
             rules2 = invalidChars.ToDictionary(i => i.ToString(), i => validStrings[invalidChars.IndexOf(i)]);
         }
 
@@ -77,14 +77,14 @@ namespace System
 
             MatchEvaluator evaluator =
                 delegate(Match m)
-                {
-                    string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
+            {
+                string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
 
-                    if (replacements.ContainsKey(match))
-                        return replacements[match];
-                    else
-                        return match;
-                };
+                if (replacements.ContainsKey(match))
+                    return replacements[match];
+                else
+                    return match;
+            };
 
             return regex.Replace(source, evaluator);
         }
@@ -105,7 +105,7 @@ namespace System
             // Final clean up.
             str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
 
-            // convert multiple spaces/hyphens into one space       
+            // convert multiple spaces/hyphens into one space
             str = Regex.Replace(str, @"[\s-]+", " ").Trim();
 
             // hyphens

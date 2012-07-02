@@ -22,10 +22,10 @@ using System.Web.UI.WebControls;
 using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
-{    
-    /// <summary>
-    /// Class used to convert from a Email attribute to a BaseValidator
-    /// </summary>
+{
+/// <summary>
+/// Class used to convert from a Email attribute to a BaseValidator
+/// </summary>
     internal class EmailConverter : BaseConverter
     {
         /// <summary>
@@ -38,9 +38,9 @@ namespace Hexa.Core.Web.UI.Controls
         {
             ExtendedRegularExpressionValidator regularExpressionValidator = new ExtendedRegularExpressionValidator();
 
-			IRegexValidationInfo regexValidationInfo = validationInfo as IRegexValidationInfo;
+            IRegexValidationInfo regexValidationInfo = validationInfo as IRegexValidationInfo;
 
-			regularExpressionValidator.ValidationExpression = regexValidationInfo.Expression;
+            regularExpressionValidator.ValidationExpression = regexValidationInfo.Expression;
 
             return regularExpressionValidator;
         }

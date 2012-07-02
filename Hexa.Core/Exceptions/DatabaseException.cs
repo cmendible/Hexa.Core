@@ -24,19 +24,19 @@ using System.Security.Permissions;
 namespace Hexa.Core
 {
 
-    /// <summary>
-    /// Database Exception.
-    /// </summary>
-	[Serializable()]
+/// <summary>
+/// Database Exception.
+/// </summary>
+    [Serializable()]
     public class DatabaseException : CoreException
     {
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
         /// </summary>
-		public DatabaseException()
-		{ 
-		}
+        public DatabaseException()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
@@ -61,9 +61,9 @@ namespace Hexa.Core
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
         protected DatabaseException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+        : base(info, context)
+        {
+        }
 
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
@@ -77,11 +77,11 @@ namespace Hexa.Core
         /// 	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
         /// 	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
-		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-		}
+        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
 
     }
 }

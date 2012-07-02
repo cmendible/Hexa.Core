@@ -12,7 +12,11 @@ namespace Hexa.Core.Domain
             Transaction = transaction;
         }
 
-        protected global::NHibernate.ITransaction Transaction { get; set; }
+        protected global::NHibernate.ITransaction Transaction
+        {
+            get;
+            set;
+        }
 
         #region ITransaction Members
 

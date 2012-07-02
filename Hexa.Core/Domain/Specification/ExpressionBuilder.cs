@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -15,9 +15,9 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-    /// <summary>
-    /// Extension methods for add And and Or with parameters rebinder
-    /// </summary>
+/// <summary>
+/// Extension methods for add And and Or with parameters rebinder
+/// </summary>
     public static class ExpressionBuilder
     {
         /// <summary>
@@ -35,7 +35,7 @@ namespace Hexa.Core.Domain.Specification
 
             // replace parameters in the second lambda expression with parameters from the first
             var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
-            // apply composition of lambda expression bodies to parameters from the first expression 
+            // apply composition of lambda expression bodies to parameters from the first expression
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
         /// <summary>

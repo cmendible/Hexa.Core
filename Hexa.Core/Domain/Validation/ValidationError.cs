@@ -2,80 +2,92 @@ using System;
 
 namespace Hexa.Core.Validation
 {
-    /// <summary>
-    /// Details of a validation error
-    /// </summary>
+/// <summary>
+/// Details of a validation error
+/// </summary>
     public class ValidationError
-	{
-		#region Properties
+    {
+        #region Properties
 
-		/// <summary>
-		/// Gets the type of the entity.
-		/// </summary>
-		/// <value>The type of the entity.</value>
-        public Type EntityType { get; private set; }
-
-		/// <summary>
-		/// Gets the name of the property.
-		/// </summary>
-		/// <value>The name of the property.</value>
-        public string PropertyName { get; private set; }
-
-		/// <summary>
-		/// Gets the message.
-		/// </summary>
-		/// <value>The message.</value>
-        public string Message { get; private set; }
-
-		#endregion
-
-		#region ctor
-
-		/// <summary>
-		/// Default Constructor.
-		/// Creates a new instance of the <see cref="ValidationError"/> data structure.
-		/// </summary>
-		/// <param name="message">string. The validation error message.</param>
-		/// <param name="property">string. The property that was validated.</param>
-		public ValidationError(string message, string property)
-		{
-			Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(message),
-												 "Please provide a valid non null string as the validation error message");
-			Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
-												 "Please provide a valid non null string as the validation property name");
-			
-            EntityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
-			Message = message;
-			PropertyName = property;
-		}
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="ValidationError"/> data structure.
-		/// </summary>
-		/// <param name="entityType">Type of the entity.</param>
-		/// <param name="message">string. The validation error message.</param>
-		/// <param name="property">string. The property that was validated.</param>
-		public ValidationError(Type entityType, string message, string property)
+        /// <summary>
+        /// Gets the type of the entity.
+        /// </summary>
+        /// <value>The type of the entity.</value>
+        public Type EntityType
         {
-			Guard.Against<ArgumentNullException>(entityType == null,
-									 "Please provide a valid non null Type as the validated Entity");
-			Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("message"),
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>The name of the property.</value>
+        public string PropertyName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        public string Message
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region ctor
+
+        /// <summary>
+        /// Default Constructor.
+        /// Creates a new instance of the <see cref="ValidationError"/> data structure.
+        /// </summary>
+        /// <param name="message">string. The validation error message.</param>
+        /// <param name="property">string. The property that was validated.</param>
+        public ValidationError(string message, string property)
+        {
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(message),
                                                  "Please provide a valid non null string as the validation error message");
-            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("property"),
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
                                                  "Please provide a valid non null string as the validation property name");
-			EntityType = entityType;
-			Message = message;
+
+            EntityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
+            Message = message;
             PropertyName = property;
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidationError"/> struct.
-		/// </summary>
-		/// <param name="ex">The exception which caused the validation error.</param>
-		public ValidationError(string property, Exception ex)
-			: this(ex.Message, property)
-		{
-		}
+        /// <summary>
+        /// Creates a new instance of the <see cref="ValidationError"/> data structure.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="message">string. The validation error message.</param>
+        /// <param name="property">string. The property that was validated.</param>
+        public ValidationError(Type entityType, string message, string property)
+        {
+            Guard.Against<ArgumentNullException>(entityType == null,
+                                                 "Please provide a valid non null Type as the validated Entity");
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("message"),
+                                                 "Please provide a valid non null string as the validation error message");
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("property"),
+                                                 "Please provide a valid non null string as the validation property name");
+            EntityType = entityType;
+            Message = message;
+            PropertyName = property;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationError"/> struct.
+        /// </summary>
+        /// <param name="ex">The exception which caused the validation error.</param>
+        public ValidationError(string property, Exception ex)
+        : this(ex.Message, property)
+        {
+        }
 
         #endregion
 
@@ -110,8 +122,8 @@ namespace Hexa.Core.Validation
         public bool Equals(ValidationError obj)
         {
             return Equals(obj.EntityType, EntityType)
-				&& Equals(obj.PropertyName, PropertyName)
-				&& Equals(obj.Message, Message);
+                   && Equals(obj.PropertyName, PropertyName)
+                   && Equals(obj.Message, Message);
         }
 
         /// <summary>

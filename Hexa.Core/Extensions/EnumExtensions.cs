@@ -20,16 +20,16 @@
 
 namespace System
 {
-	public static class EnumExtensions
-	{
-		public static string GetEnumMemberValue(this Enum value)
-		{
-			System.Runtime.Serialization.EnumMemberAttribute[] attributes
-				= value.GetType().GetField(value.ToString())
-				.GetCustomAttributes(typeof(System.Runtime.Serialization.EnumMemberAttribute), false)
-				as System.Runtime.Serialization.EnumMemberAttribute[];
+    public static class EnumExtensions
+    {
+        public static string GetEnumMemberValue(this Enum value)
+        {
+            System.Runtime.Serialization.EnumMemberAttribute[] attributes
+                = value.GetType().GetField(value.ToString())
+                  .GetCustomAttributes(typeof(System.Runtime.Serialization.EnumMemberAttribute), false)
+                  as System.Runtime.Serialization.EnumMemberAttribute[];
 
-			return attributes.Length > 0 ? attributes[0].Value : string.Empty;
-		}
-	}
+            return attributes.Length > 0 ? attributes[0].Value : string.Empty;
+        }
+    }
 }

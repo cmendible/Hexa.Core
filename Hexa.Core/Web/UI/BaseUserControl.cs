@@ -22,37 +22,37 @@ using System.Globalization;
 
 namespace Hexa.Core.Web.UI
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class BaseUserControl : System.Web.UI.UserControl
-	{
-		#region  Globalization
+/// <summary>
+///
+/// </summary>
+    public class BaseUserControl : System.Web.UI.UserControl
+    {
+        #region  Globalization
 
-		/// <summary>
-		/// Translates the specified key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <returns></returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
-		protected string t(string key)
-		{
-			System.Reflection.Assembly assembly = null;
+        /// <summary>
+        /// Translates the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
+        protected string t(string key)
+        {
+            System.Reflection.Assembly assembly = null;
 
-			if (!this.GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
-				assembly = System.Reflection.Assembly.GetCallingAssembly();
-			else
-				assembly = this.GetType().BaseType.Assembly;
+            if (!this.GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
+                assembly = System.Reflection.Assembly.GetCallingAssembly();
+            else
+                assembly = this.GetType().BaseType.Assembly;
 
-			return GNU.Gettext.GettextHelper.t(key, assembly);
-		}
+            return GNU.Gettext.GettextHelper.t(key, assembly);
+        }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
-		protected String t(String key, params object[] args)
-		{
-			return String.Format(CultureInfo.InvariantCulture, t(key), args);
-		}
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        protected String t(String key, params object[] args)
+        {
+            return String.Format(CultureInfo.InvariantCulture, t(key), args);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -21,22 +21,22 @@ using System;
 
 namespace Hexa.Core.Web.UI
 {
-	[global::System.Serializable]
-	public class RequestLengthException : Exception
-	{
-		//
-		// For guidelines regarding the creation of new exception types, see
-		//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-		// and
-		//    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-		//
+    [global::System.Serializable]
+    public class RequestLengthException : Exception
+    {
+        //
+        // For guidelines regarding the creation of new exception types, see
+        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+        // and
+        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+        //
 
-		public RequestLengthException() { }
-		public RequestLengthException(string message) : base(message) { }
-		public RequestLengthException(string message, Exception inner) : base(message, inner) { }
-		protected RequestLengthException(
-		  System.Runtime.Serialization.SerializationInfo info,
-		  System.Runtime.Serialization.StreamingContext context)
-			: base(info, context) { }
-	}
+        public RequestLengthException() { }
+        public RequestLengthException(string message) : base(message) { }
+        public RequestLengthException(string message, Exception inner) : base(message, inner) { }
+        protected RequestLengthException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context)
+        : base(info, context) { }
+    }
 }

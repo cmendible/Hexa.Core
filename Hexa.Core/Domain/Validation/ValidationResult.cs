@@ -3,37 +3,43 @@ using System.Collections.Generic;
 
 namespace Hexa.Core.Validation
 {
-    /// <summary>
-    /// Contains the result of a <see cref="IValidator{TEntity}.Validate"/> method call.
-    /// </summary>
+/// <summary>
+/// Contains the result of a <see cref="IValidator{TEntity}.Validate"/> method call.
+/// </summary>
     public sealed class ValidationResult : IEnumerable<ValidationError>
     {
         #region fields
         private readonly List<ValidationError> _errors = new List<ValidationError>();
         #endregion
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidationResult"/> class.
-		/// </summary>
-		public ValidationResult()
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationResult"/> class.
+        /// </summary>
+        public ValidationResult()
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidationResult"/> class.
-		/// </summary>
-		/// <param name="errors">The errors.</param>
-		public ValidationResult(IEnumerable<ValidationError> errors)
-			: this()
-		{
-			_errors.AddRange(errors);
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationResult"/> class.
+        /// </summary>
+        /// <param name="errors">The errors.</param>
+        public ValidationResult(IEnumerable<ValidationError> errors)
+        : this()
+        {
+            _errors.AddRange(errors);
+        }
 
         #region properties
         /// <summary>
         /// Gets wheater the validation operation on an entity was valid or not.
         /// </summary>
-        public bool IsValid { get { return _errors.Count == 0; } }
+        public bool IsValid
+        {
+            get
+                {
+                    return _errors.Count == 0;
+                }
+        }
 
         /// <summary>
         /// Gets an <see cref="IEnumerable{ValidationError}"/> that can be used to enumerate over
@@ -43,10 +49,10 @@ namespace Hexa.Core.Validation
         public IEnumerable<ValidationError> Errors
         {
             get
-            {
-                foreach (var error in _errors)
-                    yield return error;
-            }
+                {
+                    foreach (var error in _errors)
+                        yield return error;
+                }
         }
         #endregion
 
@@ -57,7 +63,7 @@ namespace Hexa.Core.Validation
         /// <param name="error"></param>
         public void AddError(ValidationError error)
         {
-            _errors.Add(error);    
+            _errors.Add(error);
         }
 
         /// <summary>
@@ -71,28 +77,28 @@ namespace Hexa.Core.Validation
         }
         #endregion
 
-		#region IEnumerable..
-		/// <summary>
-		/// Returns an enumerator that iterates through a collection.
-		/// </summary>
-		/// <returns>
-		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-		/// </returns>
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return Errors.GetEnumerator();
-		}
+        #region IEnumerable..
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Errors.GetEnumerator();
+        }
 
-		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-		/// </returns>
-		IEnumerator<ValidationError> IEnumerable<ValidationError>.GetEnumerator()
-		{
-			return Errors.GetEnumerator();
-		}
-		#endregion
-	}
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator<ValidationError> IEnumerable<ValidationError>.GetEnumerator()
+        {
+            return Errors.GetEnumerator();
+        }
+        #endregion
+    }
 }

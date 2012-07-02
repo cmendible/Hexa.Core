@@ -23,11 +23,35 @@ namespace Hexa.Core.Domain
 {
     public interface IEntityAuditTrail
     {
-        string UpdateBy { get; set; }
-        string EntityUniqueId { get; set; }
-        string PropertyName  { get; set; }
-        object OldValue  { get; set; }
-        object NewValue  { get; set; }
-        DateTime UpdatedAt { get; set; }
+        string UpdateBy
+        {
+            get;
+            set;
+        }
+        string EntityUniqueId
+        {
+            get;
+            set;
+        }
+        string PropertyName
+        {
+            get;
+            set;
+        }
+        object OldValue
+        {
+            get;
+            set;
+        }
+        object NewValue
+        {
+            get;
+            set;
+        }
+        DateTime UpdatedAt
+        {
+            get;
+            set;
+        }
     }
 }

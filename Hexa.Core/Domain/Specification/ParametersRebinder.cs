@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System.Collections.Generic;
@@ -14,11 +14,11 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-    /// <summary>
-    /// Helper for rebinder parameters without use Invoke method in expressions 
-    /// ( this methods is not supported in all linq query providers, 
-    /// for example in Linq2Entities is not supported)
-    /// </summary>
+/// <summary>
+/// Helper for rebinder parameters without use Invoke method in expressions
+/// ( this methods is not supported in all linq query providers,
+/// for example in Linq2Entities is not supported)
+/// </summary>
     public class ParameterRebinder : ExpressionVisitor
     {
         private readonly Dictionary<ParameterExpression, ParameterExpression> map;
@@ -50,9 +50,9 @@ namespace Hexa.Core.Domain.Specification
         {
             ParameterExpression replacement;
             if (map.TryGetValue(p, out replacement))
-            {
-                p = replacement;
-            }
+                {
+                    p = replacement;
+                }
 
             return base.VisitParameter(p);
         }

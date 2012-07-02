@@ -24,10 +24,10 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-    /// <summary>
-    /// Class used to convert from a Range attribute to a BaseValidator
-    /// </summary>
-	internal class RangeConverter : BaseConverter
+/// <summary>
+/// Class used to convert from a Range attribute to a BaseValidator
+/// </summary>
+    internal class RangeConverter : BaseConverter
     {
         /// <summary>
         /// Converts a given attribute to a BaseValidator
@@ -35,17 +35,17 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="attribute">Attribute representing the validator</param>
         /// <param name="pi">Property that holds attribute</param>
         /// <returns>A BaseValidator</returns>
-		public override BaseValidator Convert(IValidationInfo validationInfo)
+        public override BaseValidator Convert(IValidationInfo validationInfo)
         {
-			ExtendedRangeValidator rangeValidator = new ExtendedRangeValidator();
+            ExtendedRangeValidator rangeValidator = new ExtendedRangeValidator();
 
-			IRangeValidationInfo rangevalidationInfo = validationInfo as IRangeValidationInfo;
+            IRangeValidationInfo rangevalidationInfo = validationInfo as IRangeValidationInfo;
 
-			rangeValidator.MinimumValue = rangevalidationInfo.Minimum.ToString();
-			rangeValidator.MaximumValue = rangevalidationInfo.Maximum.ToString();
+            rangeValidator.MinimumValue = rangevalidationInfo.Minimum.ToString();
+            rangeValidator.MaximumValue = rangevalidationInfo.Maximum.ToString();
 
-			switch (Type.GetTypeCode(rangevalidationInfo.Minimum.GetType()))
-            {
+            switch (Type.GetTypeCode(rangevalidationInfo.Minimum.GetType()))
+                {
                 case TypeCode.Int16:
                 case TypeCode.Int32:
                 case TypeCode.Int64:
@@ -60,7 +60,7 @@ namespace Hexa.Core.Web.UI.Controls
                 case TypeCode.String:
                     rangeValidator.Type = ValidationDataType.String;
                     break;
-            }
+                }
 
             return rangeValidator;
         }

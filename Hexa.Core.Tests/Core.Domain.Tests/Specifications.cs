@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -18,9 +18,9 @@ using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {
-    /// <summary>
-    /// Summary description for SpecificationTests
-    /// </summary>
+/// <summary>
+/// Summary description for SpecificationTests
+/// </summary>
     [TestFixture]
     public class SpecificationTests
     {
@@ -192,7 +192,7 @@ namespace Hexa.Core.Domain.Tests
             ISpecification<Entity> andSpec = leftAdHocSpecification & rightAdHocSpecification;
             andSpec = leftAdHocSpecification || rightAdHocSpecification;
             //Assert
-            
+
 
             InvocationExpression invokedExpr = Expression.Invoke(rightSpec, leftSpec.Parameters.Cast<Expression>());
             expected = Expression.Lambda<Func<Entity, bool>>(Expression.AndAlso(leftSpec.Body, invokedExpr), leftSpec.Parameters);
@@ -242,13 +242,13 @@ namespace Hexa.Core.Domain.Tests
             NotSpecification<Entity> notSpec = new NotSpecification<Entity>(specification);
 
             Expression<Func<Entity, bool>> resultCriteria = notSpec.GetType()
-                .GetField("_OriginalCriteria", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(notSpec) as Expression<Func<Entity, bool>>;
+                    .GetField("_OriginalCriteria", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(notSpec) as Expression<Func<Entity, bool>>;
 
             //Assert
             Assert.IsNotNull(notSpec);
             Assert.IsNotNull(resultCriteria);
             Assert.IsNotNull(notSpec.SatisfiedBy());
-            
+
         }
 
         [Test()]
@@ -256,7 +256,7 @@ namespace Hexa.Core.Domain.Tests
         {
             //Arrange
             Expression<Func<Entity, bool>> specificationCriteria = t => t.Id == 0;
-            
+
 
             //Act
             NotSpecification<Entity> notSpec = new NotSpecification<Entity>(specificationCriteria);
@@ -279,7 +279,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Assert
             Assert.IsNotNull(notSpec);
-            
+
         }
 
         [Test()]

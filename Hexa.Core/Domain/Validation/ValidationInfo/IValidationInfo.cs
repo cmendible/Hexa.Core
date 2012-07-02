@@ -21,52 +21,64 @@ using System.Reflection;
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// Validation Info interface.
-	/// </summary>
-	public interface IValidationInfo
-	{
-		string ErrorMessage { get; }
-		PropertyInfo PropertyInfo { get; }
-	}
+/// <summary>
+/// Validation Info interface.
+/// </summary>
+    public interface IValidationInfo
+    {
+        string ErrorMessage
+        {
+            get;
+        }
+        PropertyInfo PropertyInfo
+        {
+            get;
+        }
+    }
 
-	/// <summary>
-	/// Abstarct class for Validation infos.
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public abstract class BaseValidationInfo<TEntity> : IValidationInfo
-	{
-		private string _ErrorMessage;
-		private PropertyInfo _PropertyInfo;
+/// <summary>
+/// Abstarct class for Validation infos.
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public abstract class BaseValidationInfo<TEntity> : IValidationInfo
+    {
+        private string _ErrorMessage;
+        private PropertyInfo _PropertyInfo;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BaseValidationInfo&lt;TEntity&gt;"/> class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="error">The error.</param>
-		protected BaseValidationInfo(string propertyName, string error)
-		{
-			_ErrorMessage = error;
-			_PropertyInfo = typeof(TEntity).GetProperty(propertyName);
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseValidationInfo&lt;TEntity&gt;"/> class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="error">The error.</param>
+        protected BaseValidationInfo(string propertyName, string error)
+        {
+            _ErrorMessage = error;
+            _PropertyInfo = typeof(TEntity).GetProperty(propertyName);
+        }
 
-		/// <summary>
-		/// Gets the error.
-		/// </summary>
-		/// <value>The error.</value>
-		public virtual string ErrorMessage
-		{
-			get { return _ErrorMessage; }
-		}
+        /// <summary>
+        /// Gets the error.
+        /// </summary>
+        /// <value>The error.</value>
+        public virtual string ErrorMessage
+        {
+            get
+                {
+                    return _ErrorMessage;
+                }
+        }
 
-		/// <summary>
-		/// Gets the property info.
-		/// </summary>
-		/// <value>The property info.</value>
-		public virtual PropertyInfo PropertyInfo
-		{
-			get { return _PropertyInfo; }
-		}
+        /// <summary>
+        /// Gets the property info.
+        /// </summary>
+        /// <value>The property info.</value>
+        public virtual PropertyInfo PropertyInfo
+        {
+            get
+                {
+                    return _PropertyInfo;
+                }
+        }
 
-	}
+    }
 }

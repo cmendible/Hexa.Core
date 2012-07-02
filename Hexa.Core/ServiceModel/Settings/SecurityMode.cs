@@ -1,7 +1,7 @@
 ﻿
 namespace Hexa.Core.ServiceModel.Security
 {
-    public enum SecurityMode 
+    public enum SecurityMode
     {
         None,
         Message,

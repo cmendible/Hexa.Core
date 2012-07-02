@@ -23,15 +23,23 @@ using NHibernate.Dialect;
 
 namespace Hexa.Core.Domain
 {
-	public class BaseClassMap<TEntity> : ClassMap<TEntity> 
-	{
-        protected Dialect Dialect { get; private set; }
-        protected Configuration Configuration { get; private set; }
+    public class BaseClassMap<TEntity> : ClassMap<TEntity>
+    {
+        protected Dialect Dialect
+        {
+            get;
+            private set;
+        }
+        protected Configuration Configuration
+        {
+            get;
+            private set;
+        }
 
         public BaseClassMap()
-		{
+        {
             this.Configuration = ServiceLocator.GetInstance<Configuration>();
             this.Dialect = Dialect.GetDialect(this.Configuration.Properties);
-		}
-	}
+        }
+    }
 }

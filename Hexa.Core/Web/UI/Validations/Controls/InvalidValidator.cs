@@ -21,51 +21,57 @@ using System.Web.UI;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-	/// <summary>
-	/// Validator used to show a custom message in a ValidationSummary Control.
-	/// </summary>
-	internal class InvalidValidator : IValidator
-	{
-		/// <summary>
-		/// Initializes a new instance of the ShowErrorValidator class.
-		/// </summary>
-		/// <param name="message">The message.</param>
-		public InvalidValidator(string message)
-		{
-			ErrorMessage = message;
-		}
+/// <summary>
+/// Validator used to show a custom message in a ValidationSummary Control.
+/// </summary>
+    internal class InvalidValidator : IValidator
+    {
+        /// <summary>
+        /// Initializes a new instance of the ShowErrorValidator class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public InvalidValidator(string message)
+        {
+            ErrorMessage = message;
+        }
 
-		/// <summary>
-		/// When implemented by a class, gets or sets the error message text generated when the condition being validated fails.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The error message to generate.
-		/// </returns>
-		public string ErrorMessage
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// When implemented by a class, gets or sets the error message text generated when the condition being validated fails.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The error message to generate.
+        /// </returns>
+        public string ErrorMessage
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// When implemented by a class, gets or sets a value indicating whether the user-entered content in the specified control passes validation.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the content is valid; otherwise, false.
-		/// </returns>
-		public bool IsValid
-		{
-			get { return false; }
-			set { return; }
-		}
+        /// <summary>
+        /// When implemented by a class, gets or sets a value indicating whether the user-entered content in the specified control passes validation.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the content is valid; otherwise, false.
+        /// </returns>
+        public bool IsValid
+        {
+            get
+                {
+                    return false;
+                }
+            set
+                {
+                    return;
+                }
+        }
 
-		/// <summary>
-		/// When implemented by a class, evaluates the condition it checks and updates the <see cref="P:System.Web.UI.IValidator.IsValid"/> property.
-		/// </summary>
-		public void Validate()
-		{
-			return;
-		}
-	}
+        /// <summary>
+        /// When implemented by a class, evaluates the condition it checks and updates the <see cref="P:System.Web.UI.IValidator.IsValid"/> property.
+        /// </summary>
+        public void Validate()
+        {
+            return;
+        }
+    }
 }

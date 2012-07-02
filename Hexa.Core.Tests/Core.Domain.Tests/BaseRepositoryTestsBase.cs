@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -18,13 +18,13 @@ using NUnit.Framework;
 
 namespace Hexa.Core.Domain.Tests
 {
-    /// <summary>
-    /// This is a base class for testing repositories. This base class
-    /// implement all method defined in IRepository for any type. Inherit
-    /// of this class to add test implementation in a concrete repository.
-    /// For view all tests correctly in a TestView windows please add column Full Class Name
-    /// </summary>
-    /// <typeparam name="TEntity">Inner type of respository</typeparam>
+/// <summary>
+/// This is a base class for testing repositories. This base class
+/// implement all method defined in IRepository for any type. Inherit
+/// of this class to add test implementation in a concrete repository.
+/// For view all tests correctly in a TestView windows please add column Full Class Name
+/// </summary>
+/// <typeparam name="TEntity">Inner type of respository</typeparam>
     public abstract class RepositoryTestsBase<TEntity>
         where TEntity : class
     {
@@ -34,12 +34,18 @@ namespace Hexa.Core.Domain.Tests
         /// <summary>
         /// Specification of filter expression for a particular type
         /// </summary>
-        public abstract Expression<Func<TEntity, bool>> FilterExpression { get; }
+        public abstract Expression<Func<TEntity, bool>> FilterExpression
+        {
+            get;
+        }
 
         /// <summary>
         /// Specification of order by expression for a particular type
         /// </summary>
-        public abstract Expression<Func<TEntity, string>> OrderByExpression { get; }
+        public abstract Expression<Func<TEntity, string>> OrderByExpression
+        {
+            get;
+        }
 
         public abstract TEntity CreateEntity();
 
@@ -87,7 +93,7 @@ namespace Hexa.Core.Domain.Tests
             //Assret
             Assert.AreEqual(unitOfWork, actual);
         }
-        
+
         [Test()]
         public virtual void Repository_AddValidItem_Test()
         {
@@ -100,7 +106,7 @@ namespace Hexa.Core.Domain.Tests
             TEntity item = CreateEntity();
             repository.Add(item);
         }
-       
+
         [Test()]
         [ExpectedException(typeof(ArgumentNullException))]
         public virtual void Repository_AddNullItemThrowArgumentNullException_Test()
@@ -112,7 +118,7 @@ namespace Hexa.Core.Domain.Tests
             BaseRepository<TEntity> repository = new BaseRepository<TEntity>(traceManager);
             repository.Add(null);
         }
-        
+
         [Test()]
         public virtual void Repository_DeleteValidItemTest()
         {
@@ -150,7 +156,7 @@ namespace Hexa.Core.Domain.Tests
             BaseRepository<TEntity> repository = new BaseRepository<TEntity>(traceManager);
             TEntity item = CreateEntity();
             repository.Modify(item);
-            
+
         }
 
         [Test()]
@@ -224,7 +230,7 @@ namespace Hexa.Core.Domain.Tests
             //Assert
             Assert.IsNotNull(entities);
         }
-        
+
         [Test()]
         public void Repository_GetFilteredElementsWithOrderDescending_Invoke_Test()
         {
@@ -254,7 +260,7 @@ namespace Hexa.Core.Domain.Tests
             //Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements<int>(FilterExpression, null,false);
         }
-        
+
         [Test()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithFilterNullAndOrderNotNullThrowNewArgumentNullException_Test()
@@ -268,7 +274,7 @@ namespace Hexa.Core.Domain.Tests
             //Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements<string>(null, OrderByExpression, false);
         }
-       
+
         [Test()]
         public void Repository_GetFilteredElementsWithPaggingAscending_Invoke_Test()
         {

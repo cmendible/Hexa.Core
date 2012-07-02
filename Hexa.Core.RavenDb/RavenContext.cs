@@ -39,7 +39,7 @@ namespace Hexa.Core.Domain
 
         public void RollbackChanges()
         {
-           
+
         }
 
         public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
@@ -55,11 +55,11 @@ namespace Hexa.Core.Domain
         {
             UnitOfWorkScope.DisposeCurrent();
             if (_session != null)
-            {
-                _session.Dispose();
+                {
+                    _session.Dispose();
 
-                _session = null;
-            }
+                    _session = null;
+                }
         }
 
         #endregion

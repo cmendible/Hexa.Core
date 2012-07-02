@@ -23,10 +23,10 @@ namespace Hexa.Core.Domain
             XmlDocument document = new XmlDocument();
             string val = rs[names[0]] as string;
             if (val != null)
-            {
-                document.LoadXml(val);
-                return document;
-            }
+                {
+                    document.LoadXml(val);
+                    return document;
+                }
             return null;
         }
 
@@ -34,10 +34,10 @@ namespace Hexa.Core.Domain
         {
             DbParameter parameter = (DbParameter)cmd.Parameters[index];
             if(value == null)
-            {
-                parameter.Value = DBNull.Value;
-                return;
-            }
+                {
+                    parameter.Value = DBNull.Value;
+                    return;
+                }
             parameter.Value = ((XmlDocument)value).OuterXml;
         }
 
@@ -71,23 +71,29 @@ namespace Hexa.Core.Domain
 
         public SqlType[] SqlTypes
         {
-            get 
-            {
-                return new SqlType[] { new SqlXmlType() };
-            }
+            get
+                {
+                    return new SqlType[] { new SqlXmlType() };
+                }
         }
 
         public System.Type ReturnedType
         {
-            get { return typeof(XmlDocument); }
+            get
+                {
+                    return typeof(XmlDocument);
+                }
         }
 
         public bool IsMutable
         {
-            get { return true; }
+            get
+                {
+                    return true;
+                }
         }
     }
-    
+
     public class SqlXmlType : SqlType
     {
         public SqlXmlType() : base(System.Data.DbType.Xml)

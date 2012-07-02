@@ -23,10 +23,10 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-    /// <summary>
-    /// Class used to convert from a Required attribute to a BaseValidator
-    /// </summary>
-	internal class RequiredConverter : BaseConverter
+/// <summary>
+/// Class used to convert from a Required attribute to a BaseValidator
+/// </summary>
+    internal class RequiredConverter : BaseConverter
     {
         /// <summary>
         /// Converts a given attribute to a BaseValidator
@@ -34,7 +34,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="attribute">Attribute representing the validator</param>
         /// <param name="pi">Property that holds attribute</param>
         /// <returns>A BaseValidator</returns>
-		public override BaseValidator Convert(IValidationInfo validationInfo)
+        public override BaseValidator Convert(IValidationInfo validationInfo)
         {
             return new ExtendedRequiredFieldValidator();
         }

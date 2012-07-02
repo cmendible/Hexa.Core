@@ -29,25 +29,25 @@ namespace Hexa.Core.Domain
         public static IUnitOfWork Current
         {
             get
-            {
-                if (RunningScopes.Count > 0)
-                {
-                    var unitOfWork = RunningScopes.Peek();
-                    return unitOfWork;
-                }
-                else
-                    return null;
-            }
-            private set
-            {
-                if (value == null)
                 {
                     if (RunningScopes.Count > 0)
-                        RunningScopes.Pop();
+                        {
+                            var unitOfWork = RunningScopes.Peek();
+                            return unitOfWork;
+                        }
+                    else
+                        return null;
                 }
-                else
-                    RunningScopes.Push(value);
-            }
+            private set
+                {
+                    if (value == null)
+                        {
+                            if (RunningScopes.Count > 0)
+                                RunningScopes.Pop();
+                        }
+                    else
+                        RunningScopes.Push(value);
+                }
         }
 
         public static IUnitOfWork Start()
@@ -70,7 +70,11 @@ namespace Hexa.Core.Domain
         {
             #region Members
 
-            public object Value { get; set; }
+            public object Value
+            {
+                get;
+                set;
+            }
 
             #endregion
 
@@ -96,42 +100,42 @@ namespace Hexa.Core.Domain
         public static Stack<IUnitOfWork> RunningScopes
         {
             get
-            {
-                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                if (OperationContext.Current != null)
                 {
-                    //WCF without HttpContext environment
-                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
-
-                    if (containerExtension == null)
-                    {
-                        containerExtension = new ContainerExtension()
+                    //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
+                    if (OperationContext.Current != null)
                         {
-                            Value = new Stack<IUnitOfWork>()
-                        };
+                            //WCF without HttpContext environment
+                            var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
 
-                        OperationContext.Current.Extensions.Add(containerExtension);
-                    }
+                            if (containerExtension == null)
+                                {
+                                    containerExtension = new ContainerExtension()
+                                    {
+                                        Value = new Stack<IUnitOfWork>()
+                                    };
 
-                    return containerExtension.Value as Stack<IUnitOfWork>;
+                                    OperationContext.Current.Extensions.Add(containerExtension);
+                                }
+
+                            return containerExtension.Value as Stack<IUnitOfWork>;
+                        }
+                    else if (HttpContext.Current != null)
+                        {
+                            //HttpContext avaiable ( ASP.NET ..)
+                            if (HttpContext.Current.Items[_key.ToString()] == null)
+                                HttpContext.Current.Items[_key.ToString()] = new Stack<IUnitOfWork>();
+
+                            return HttpContext.Current.Items[_key.ToString()] as Stack<IUnitOfWork>;
+                        }
+                    else
+                        {
+                            if (CallContext.GetData(_key.ToString()) == null)
+                                CallContext.SetData(_key.ToString(), new Stack<IUnitOfWork>());
+
+                            //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
+                            return CallContext.GetData(_key.ToString()) as Stack<IUnitOfWork>;
+                        }
                 }
-                else if (HttpContext.Current != null)
-                {
-                    //HttpContext avaiable ( ASP.NET ..)
-                    if (HttpContext.Current.Items[_key.ToString()] == null)
-                        HttpContext.Current.Items[_key.ToString()] = new Stack<IUnitOfWork>();
-
-                    return HttpContext.Current.Items[_key.ToString()] as Stack<IUnitOfWork>;
-                }
-                else
-                {
-                    if (CallContext.GetData(_key.ToString()) == null)
-                        CallContext.SetData(_key.ToString(), new Stack<IUnitOfWork>());
-
-                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                    return CallContext.GetData(_key.ToString()) as Stack<IUnitOfWork>;
-                }
-            }
         }
     }
 

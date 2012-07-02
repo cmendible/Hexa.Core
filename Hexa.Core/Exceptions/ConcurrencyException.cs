@@ -24,30 +24,33 @@ using System.Security.Permissions;
 namespace Hexa.Core
 {
 
-    /// <summary>
-    /// Concurrency Exception.
-    /// </summary>
-	[Serializable()]
+/// <summary>
+/// Concurrency Exception.
+/// </summary>
+    [Serializable()]
     public class ConcurrencyException : CoreException
     {
 
-		public ConcurrencyException()
-		{ 
-		}
+        public ConcurrencyException()
+        {
+        }
 
         /// <summary>
         /// Exception unique id used for logging purposes.
         /// </summary>
-		private Guid _UniqueId = GuidExtensions.NewCombGuid();
+        private Guid _UniqueId = GuidExtensions.NewCombGuid();
 
         /// <summary>
         /// Gets the unique id.
         /// </summary>
         /// <value>The unique id.</value>
-		public Guid UniqueId
-		{
-			get { return _UniqueId; }
-		}
+        public Guid UniqueId
+        {
+            get
+                {
+                    return _UniqueId;
+                }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyException"/> class.
@@ -66,16 +69,16 @@ namespace Hexa.Core
         {
         }
 
-		protected ConcurrencyException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+        protected ConcurrencyException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+        {
+        }
 
-		[SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-		}
+        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
 
     }
 }

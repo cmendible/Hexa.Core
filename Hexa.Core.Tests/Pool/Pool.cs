@@ -28,23 +28,26 @@ namespace Hexa.Core.Tests
         public DateTime TimeOut
         {
             get
-            {
-                throw new NotImplementedException();
-            }
+                {
+                    throw new NotImplementedException();
+                }
             set
-            {
-                throw new NotImplementedException();
-            }
+                {
+                    throw new NotImplementedException();
+                }
         }
 
         public bool IsExpired
         {
-            get { return true; }
+            get
+                {
+                    return true;
+                }
         }
 
         public void Dispose()
         {
-            
+
         }
     }
 

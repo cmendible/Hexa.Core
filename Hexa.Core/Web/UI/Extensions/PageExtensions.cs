@@ -21,7 +21,7 @@ using System.Web.UI;
 
 namespace Hexa.Core.Web.UI
 {
-	public static class PageExtensions
+    public static class PageExtensions
     {
         #region Post Back
 
@@ -35,35 +35,35 @@ namespace Hexa.Core.Web.UI
             Control control = null;
             string ctrlname = page.Request.Params["__EVENTTARGET"];
             if (!string.IsNullOrEmpty(ctrlname))
-            {
-                control = page.FindControl(ctrlname);
-            }
-            else
-            {
-                // if __EVENTTARGET is null, control is a button type and need to 
-                // iterate over the form collection to find it
-                string ctrlStr = string.Empty;
-                Control c = null;
-
-                foreach (string ctl in page.Request.Form)
                 {
-                    // handle ImageButton controls
-					if (ctl.EndsWith(".x", System.StringComparison.Ordinal) | ctl.EndsWith(".y", System.StringComparison.Ordinal))
-                    {
-                        ctrlStr = ctl.Substring(0, ctl.Length - 2);
-                        c = page.FindControl(ctrlStr);
-                    }
-                    else
-                    {
-                        c = page.FindControl(ctl);
-                    }
-                    if (c is System.Web.UI.WebControls.Button | c is System.Web.UI.WebControls.ImageButton)
-                    {
-                        control = c;
-                        break;
-                    }
+                    control = page.FindControl(ctrlname);
                 }
-            }
+            else
+                {
+                    // if __EVENTTARGET is null, control is a button type and need to
+                    // iterate over the form collection to find it
+                    string ctrlStr = string.Empty;
+                    Control c = null;
+
+                    foreach (string ctl in page.Request.Form)
+                        {
+                            // handle ImageButton controls
+                            if (ctl.EndsWith(".x", System.StringComparison.Ordinal) | ctl.EndsWith(".y", System.StringComparison.Ordinal))
+                                {
+                                    ctrlStr = ctl.Substring(0, ctl.Length - 2);
+                                    c = page.FindControl(ctrlStr);
+                                }
+                            else
+                                {
+                                    c = page.FindControl(ctl);
+                                }
+                            if (c is System.Web.UI.WebControls.Button | c is System.Web.UI.WebControls.ImageButton)
+                                {
+                                    control = c;
+                                    break;
+                                }
+                        }
+                }
 
 
             return control;
@@ -85,66 +85,66 @@ namespace Hexa.Core.Web.UI
 
         #endregion
 
-		#region Download
+        #region Download
 
-		/// <summary>
-		/// Starts a Download based on the specified byes and mime type.
-		/// </summary>
-		/// <param name="page">The page.</param>
-		/// <param name="bytes">The bytes.</param>
-		/// <param name="id">The id.</param>
-		/// <param name="mimeType">Type of the MIME.</param>
-		public static void Download(this System.Web.UI.Page page, byte[] data, string id, string mimeType)
-		{
-			page.Response.Clear();
-			page.Response.Buffer = true;
+        /// <summary>
+        /// Starts a Download based on the specified byes and mime type.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="bytes">The bytes.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="mimeType">Type of the MIME.</param>
+        public static void Download(this System.Web.UI.Page page, byte[] data, string id, string mimeType)
+        {
+            page.Response.Clear();
+            page.Response.Buffer = true;
 
-			page.Response.ContentType = mimeType;
-			page.Response.AppendHeader("content-disposition", "attachment; filename=" + id);
+            page.Response.ContentType = mimeType;
+            page.Response.AppendHeader("content-disposition", "attachment; filename=" + id);
 
-			page.Response.BinaryWrite(data);
-			page.Response.End();
-		}
+            page.Response.BinaryWrite(data);
+            page.Response.End();
+        }
 
-		#endregion
+        #endregion
 
-		#region AJAX
+        #region AJAX
 
-		/// <summary>
-		/// Determines whether [the specified page] [is in async post back].
-		/// </summary>
-		/// <param name="page">The page.</param>
-		/// <param name="scriptManagerId">The script manager id.</param>
-		/// <returns>
-		/// 	<c>true</c> if [the specified page] [is in async post back]; otherwise, <c>false</c>.
-		/// </returns>
-		public static bool IsInAsyncPostBack(this Page page, string scriptManagerId)
-		{
-			ScriptManager scriptManager;
+        /// <summary>
+        /// Determines whether [the specified page] [is in async post back].
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="scriptManagerId">The script manager id.</param>
+        /// <returns>
+        /// 	<c>true</c> if [the specified page] [is in async post back]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsInAsyncPostBack(this Page page, string scriptManagerId)
+        {
+            ScriptManager scriptManager;
 
-			if (page.Master != null)
-				scriptManager = page.Master.FindControl(scriptManagerId) as ScriptManager;
-			else
-				scriptManager = page.FindControl(scriptManagerId) as ScriptManager;
+            if (page.Master != null)
+                scriptManager = page.Master.FindControl(scriptManagerId) as ScriptManager;
+            else
+                scriptManager = page.FindControl(scriptManagerId) as ScriptManager;
 
-			if (scriptManager != null && scriptManager.IsInAsyncPostBack)
-				return true;
-			else
-				return false;
-		}
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+                return true;
+            else
+                return false;
+        }
 
-		/// <summary>
-		/// Determines whether [the specified page] [is in async post back].
-		/// </summary>
-		/// <param name="page">The page.</param>
-		/// <returns>
-		/// 	<c>true</c> if [the specified page] [is in async post back]; otherwise, <c>false</c>.
-		/// </returns>
-		public static bool IsInAsyncPostBack(this Page page)
-		{
-			return IsInAsyncPostBack(page, "ScriptManager");
-		}
+        /// <summary>
+        /// Determines whether [the specified page] [is in async post back].
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns>
+        /// 	<c>true</c> if [the specified page] [is in async post back]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsInAsyncPostBack(this Page page)
+        {
+            return IsInAsyncPostBack(page, "ScriptManager");
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

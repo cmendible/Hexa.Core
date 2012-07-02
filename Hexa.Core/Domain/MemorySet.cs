@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -16,11 +16,11 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain
 {
-    /// <summary>
-    /// In memory IObjectSet. This class is intended only
-    /// for testing purposes.
-    /// </summary>
-    /// <typeparam name="TEntity">Type of elements in objectSet</typeparam>
+/// <summary>
+/// In memory IObjectSet. This class is intended only
+/// for testing purposes.
+/// </summary>
+/// <typeparam name="TEntity">Type of elements in objectSet</typeparam>
     public sealed class MemorySet<TEntity> : IEntitySet<TEntity>
         where TEntity : class
     {
@@ -34,7 +34,7 @@ namespace Hexa.Core.Domain
         #region Constructor
 
         /// <summary>
-        /// Default constructor 
+        /// Default constructor
         /// </summary>
         /// <param name="innerList">A List{T} with inner values of this IObjectSet</param>
         public MemorySet(List<TEntity> innerList)
@@ -79,11 +79,11 @@ namespace Hexa.Core.Domain
         public void Attach(TEntity entity)
         {
             if (entity != null
-                &&
-                !_InnerList.Contains(entity))
-            {
-                _InnerList.Add(entity);
-            }
+                    &&
+                    !_InnerList.Contains(entity))
+                {
+                    _InnerList.Add(entity);
+                }
         }
 
         public void Detach(TEntity entity)
@@ -138,21 +138,30 @@ namespace Hexa.Core.Domain
         /// </summary>
         public Type ElementType
         {
-            get { return typeof(TEntity); }
+            get
+                {
+                    return typeof(TEntity);
+                }
         }
         /// <summary>
         /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
         public System.Linq.Expressions.Expression Expression
         {
-            get { return _InnerList.AsQueryable().Expression; }
+            get
+                {
+                    return _InnerList.AsQueryable().Expression;
+                }
         }
         /// <summary>
         /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
         public IQueryProvider Provider
         {
-            get { return _InnerList.AsQueryable().Provider; }
+            get
+                {
+                    return _InnerList.AsQueryable().Provider;
+                }
         }
 
         #endregion

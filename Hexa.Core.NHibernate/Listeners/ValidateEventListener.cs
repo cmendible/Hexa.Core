@@ -34,32 +34,32 @@ namespace Hexa.Core.Domain
         private static IValidator Validator
         {
             get
-            {
-                lock (padlock)
                 {
-                    if (validator == null)
-                    {
-                        validator = ServiceLocator.GetInstance<IValidator>();
-                    }
+                    lock (padlock)
+                        {
+                            if (validator == null)
+                                {
+                                    validator = ServiceLocator.GetInstance<IValidator>();
+                                }
+                        }
+                    return validator;
                 }
-                return validator;
-            }
             set
-            {
-                lock (padlock)
                 {
-                    validator = value;
+                    lock (padlock)
+                        {
+                            validator = value;
+                        }
                 }
-            }
         }
 
         // Methods
         private static void Validate(object entity)
         {
             if (entity != null)
-            {
-                Validator.AssertValidation(entity);
-            }
+                {
+                    Validator.AssertValidation(entity);
+                }
         }
 
         public void Initialize(Configuration cfg)

@@ -23,9 +23,9 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-    /// <summary>
-    /// Base type converter
-    /// </summary>
+/// <summary>
+/// Base type converter
+/// </summary>
     internal abstract class BaseConverter
     {
         /// <summary>
@@ -34,6 +34,6 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="attribute">Attribute representing the validator</param>
         /// <param name="pi">Property that holds attribute</param>
         /// <returns>A BaseValidator</returns>
-		public abstract BaseValidator Convert(IValidationInfo validationInfo);
+        public abstract BaseValidator Convert(IValidationInfo validationInfo);
     }
 }

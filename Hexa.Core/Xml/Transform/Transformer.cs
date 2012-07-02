@@ -23,8 +23,8 @@ using System.Xml.Xsl;
 
 namespace Hexa.Core.Xml
 {
-	public static class Transformer
-	{
+    public static class Transformer
+    {
         public static byte[] Transform(byte[] inputDocument, byte[] xsl)
         {
             XslCompiledTransform xslt = new XslCompiledTransform();
@@ -45,5 +45,5 @@ namespace Hexa.Core.Xml
                 return memOut.ToArray();
             }
         }
-	}
+    }
 }

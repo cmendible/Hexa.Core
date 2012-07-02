@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -14,10 +14,10 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-    /// <summary>
-    /// True specification
-    /// </summary>
-    /// <typeparam name="TEntity">Type of entity in this specification</typeparam>
+/// <summary>
+/// True specification
+/// </summary>
+/// <typeparam name="TEntity">Type of entity in this specification</typeparam>
     public class TrueSpecification<TEntity>
         :Specification<TEntity>
         where TEntity:class

@@ -31,15 +31,15 @@ namespace Hexa.Core.Web.UI.Controls
         public string ThemeVariableName
         {
             get
-            {
-                String s = (String)ViewState["ThemeVariableName"];
-                return ((s == null) ? "%Theme" : s);
-            }
+                {
+                    String s = (String)ViewState["ThemeVariableName"];
+                    return ((s == null) ? "%Theme" : s);
+                }
 
             set
-            {
-                ViewState["ThemeVariableName"] = value;
-            }
+                {
+                    ViewState["ThemeVariableName"] = value;
+                }
         }
 
         /// <summary>
@@ -50,30 +50,30 @@ namespace Hexa.Core.Web.UI.Controls
             base.OnPreRender(e);
 
             if (this.Visible)
-            {
-                // Hide any server side css 
-                foreach (Control c in this.Page.Header.Controls)
                 {
-                    if (c is HtmlControl && ((HtmlControl)c).TagName.Equals("link",
-                                StringComparison.OrdinalIgnoreCase))
-                    {
-                        c.Visible = false;
-                    }
-                }
+                    // Hide any server side css
+                    foreach (Control c in this.Page.Header.Controls)
+                        {
+                            if (c is HtmlControl && ((HtmlControl)c).TagName.Equals("link",
+                                    StringComparison.OrdinalIgnoreCase))
+                                {
+                                    c.Visible = false;
+                                }
+                        }
 
-                // Replace ThemeVariableName with actual theme path
-                Regex reg = new Regex(ThemeVariableName,
-                                      System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    // Replace ThemeVariableName with actual theme path
+                    Regex reg = new Regex(ThemeVariableName,
+                                          System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                foreach (Control c in this.Controls)
-                {
-                    if (c is LiteralControl)
-                    {
-                        LiteralControl l = (LiteralControl)c;
-                        l.Text = reg.Replace(l.Text, this.ThemePath);
-                    }
+                    foreach (Control c in this.Controls)
+                        {
+                            if (c is LiteralControl)
+                                {
+                                    LiteralControl l = (LiteralControl)c;
+                                    l.Text = reg.Replace(l.Text, this.ThemePath);
+                                }
+                        }
                 }
-            }
         }
 
         /// <summary>
@@ -82,11 +82,11 @@ namespace Hexa.Core.Web.UI.Controls
         public string ThemePath
         {
             get
-            {
-                return String.Format("{0}/App_Themes/{1}",
-                                     this.Page.Request.ApplicationPath,
-                                     this.Page.Theme).Replace("//", "/");
-            }
+                {
+                    return String.Format("{0}/App_Themes/{1}",
+                                         this.Page.Request.ApplicationPath,
+                                         this.Page.Theme).Replace("//", "/");
+                }
         }
     }
 }

@@ -20,48 +20,48 @@
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
-	public interface IRequiredValidationInfo : IValidationInfo
-	{
-	}
+/// <summary>
+///
+/// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+    public interface IRequiredValidationInfo : IValidationInfo
+    {
+    }
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public class RequiredValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRequiredValidationInfo
-	{
+/// <summary>
+///
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public class RequiredValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRequiredValidationInfo
+    {
 
-		/// <summary>
-		/// Initializes a new instance of the RequiredValidationInfo class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		public RequiredValidationInfo(string propertyName)
-			: this(propertyName, null)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the RequiredValidationInfo class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        public RequiredValidationInfo(string propertyName)
+        : this(propertyName, null)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the RequiredValidationInfo class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="error">The error.</param>
-		public RequiredValidationInfo(string propertyName, string error)
-            : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the RequiredValidationInfo class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="error">The error.</param>
+        public RequiredValidationInfo(string propertyName, string error)
+        : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
+        {
+        }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
-		{
-			if (string.IsNullOrEmpty(error))
+        {
+            if (string.IsNullOrEmpty(error))
                 return string.Format(Hexa.Core.Resources.Resource.IsRequired, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
-			else
-				return error;
-		}
-	}
+            else
+                return error;
+        }
+    }
 
 }

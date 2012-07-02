@@ -21,31 +21,31 @@ using System.Collections.Generic;
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// Validation Provider Interface.
-	/// </summary>
-	public interface IValidationInfoProvider
-	{
-		/// <summary>
-		/// Gets the validation info.
-		/// </summary>
-		/// <returns></returns>
-		IList<IValidationInfo> GetValidationInfo();
+/// <summary>
+/// Validation Provider Interface.
+/// </summary>
+    public interface IValidationInfoProvider
+    {
+        /// <summary>
+        /// Gets the validation info.
+        /// </summary>
+        /// <returns></returns>
+        IList<IValidationInfo> GetValidationInfo();
 
-		/// <summary>
-		/// Gets the validation info.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <returns></returns>
-		IList<IValidationInfo> GetValidationInfo(string propertyName);
-	}
+        /// <summary>
+        /// Gets the validation info.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        IList<IValidationInfo> GetValidationInfo(string propertyName);
+    }
 
-	/// <summary>
-	/// Validation Provider Interface for TEntity.
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+/// <summary>
+/// Validation Provider Interface for TEntity.
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
     public interface IValidationInfoProvider<TEntity> : IValidationInfoProvider
-	{
-	}
+    {
+    }
 }

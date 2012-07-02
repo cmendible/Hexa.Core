@@ -24,5 +24,5 @@ namespace Hexa.Core.Domain
     {
         IUnitOfWork Create();
     }
-        
+
 }

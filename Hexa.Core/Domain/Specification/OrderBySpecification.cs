@@ -27,14 +27,26 @@ namespace Hexa.Core.Domain.Specification
 
         public OrderDirection Direction
         {
-            get { return _descending ? OrderDirection.Descending : OrderDirection.Ascending; }
-            set { _descending = (value == OrderDirection.Descending) ? true : false; }
+            get
+                {
+                    return _descending ? OrderDirection.Descending : OrderDirection.Ascending;
+                }
+            set
+                {
+                    _descending = (value == OrderDirection.Descending) ? true : false;
+                }
         }
 
         public OrderDirection ThenByDirection
         {
-            get { return _descending2 ? OrderDirection.Descending : OrderDirection.Ascending; }
-            set { _descending2 = (value == OrderDirection.Descending) ? true : false; }
+            get
+                {
+                    return _descending2 ? OrderDirection.Descending : OrderDirection.Ascending;
+                }
+            set
+                {
+                    _descending2 = (value == OrderDirection.Descending) ? true : false;
+                }
         }
         #endregion
 
@@ -69,7 +81,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="descending">if set to <c>true</c> [descending] order will be used.</param>
         /// <param name="thenBy">The then by.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, bool descending, Expression<Func<TEntity, object>> thenBy)
-            : this(orderBy, descending, thenBy, false)
+        : this(orderBy, descending, thenBy, false)
         {
         }
 
@@ -82,7 +94,7 @@ namespace Hexa.Core.Domain.Specification
         /// satisfy the specification.</param>
         /// <param name="thenBy">The then by.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, Expression<Func<TEntity, object>> thenBy)
-            : this(orderBy, false, thenBy, false)
+        : this(orderBy, false, thenBy, false)
         {
         }
 
@@ -95,7 +107,7 @@ namespace Hexa.Core.Domain.Specification
         /// satisfy the specification.</param>
         /// <param name="descending">if set to <c>true</c> [descending] order will be used.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> predicate, bool descending)
-            : this(predicate, descending, null, false)
+        : this(predicate, descending, null, false)
         {
         }
 
@@ -106,7 +118,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="predicate">A predicate that can be used to check entities that
         /// satisfy the specification.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> predicate)
-            : this(predicate, false)
+        : this(predicate, false)
         {
         }
 

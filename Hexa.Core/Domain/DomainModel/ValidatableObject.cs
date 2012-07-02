@@ -4,7 +4,7 @@ using Hexa.Core.Validation;
 
 namespace Hexa.Core.Domain
 {
-	[Serializable]
+    [Serializable]
     public abstract class ValidatableObject : IValidatable
     {
 
@@ -20,12 +20,12 @@ namespace Hexa.Core.Domain
         private IValidator Validator
         {
             get
-            {
-                if (_validator == null)
-                    _validator = ServiceLocator.GetInstance<IValidator>();
+                {
+                    if (_validator == null)
+                        _validator = ServiceLocator.GetInstance<IValidator>();
 
-                return _validator;
-            }
+                    return _validator;
+                }
         }
 
         /// <summary>

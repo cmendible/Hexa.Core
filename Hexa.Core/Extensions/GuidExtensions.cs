@@ -1,9 +1,9 @@
 ﻿
 namespace System
 {
-    /// <summary>
-    /// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
-    /// </summary>
+/// <summary>
+/// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
+/// </summary>
     public static class GuidExtensions
     {
         /// <summary>
@@ -59,20 +59,20 @@ namespace System
             DateTime now = DateTime.Now;
             byte[] guidArray = System.Guid.NewGuid().ToByteArray();
 
-            // Get the days and milliseconds which will be used to build the byte string 
+            // Get the days and milliseconds which will be used to build the byte string
             TimeSpan days = new TimeSpan(now.Ticks - baseDate.Ticks);
             TimeSpan msecs = new TimeSpan(now.Ticks - (new DateTime(now.Year, now.Month, now.Day).Ticks));
 
-            // Convert to a byte array 
-            // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333 
+            // Convert to a byte array
+            // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333
             byte[] daysArray = BitConverter.GetBytes(days.Days);
             byte[] msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds / 3.333333));
 
-            // Reverse the bytes to match SQL Servers ordering 
+            // Reverse the bytes to match SQL Servers ordering
             Array.Reverse(daysArray);
             Array.Reverse(msecsArray);
 
-            // Copy the bytes into the guid 
+            // Copy the bytes into the guid
             Array.Copy(daysArray, daysArray.Length - 2, guidArray, guidArray.Length - 6, 2);
             Array.Copy(msecsArray, msecsArray.Length - 4, guidArray, guidArray.Length - 4, 4);
             return new System.Guid(guidArray);
@@ -103,7 +103,7 @@ namespace System
             Array.Copy(guidBits, guidBits.Length - 6, dayBits, 2, 2);
             Array.Copy(guidBits, guidBits.Length - 4, msecBits, 0, 4);
 
-            // Now we need to reverse both arrays into an appropiate order 
+            // Now we need to reverse both arrays into an appropiate order
             // so we can work with them.. remember Intel (and .Net) is little endian ;)
             Array.Reverse(dayBits);
             Array.Reverse(msecBits);
@@ -119,7 +119,7 @@ namespace System
             // and multiply it by 3.33333
             double tmp = ((double)BitConverter.ToInt32(msecBits, 0)) * 3.333333;
 
-            // Now we can convert this into a TimeSpan, passing milliseconds 
+            // Now we can convert this into a TimeSpan, passing milliseconds
             // as Ticks. Remeber, ticks is a "normally" a constant value
             // witch 10000/1 times a second. But you should not assume this value
             // but instead you should use TimeSpan.TicksPerMillisecond constant
@@ -149,18 +149,18 @@ namespace System
             const int VariantBits = (0x2 << VariantShift);
 
             if ((bits[8] & VariantMask) != VariantBits)
-            {
-                return false;
-            }
+                {
+                    return false;
+                }
 
             const int VersionShift = 4;
             const int VersionMask = (0xf << VersionShift);
             const int VersionBits = (0x4 << VersionShift);
 
             if ((bits[7] & VersionMask) != VersionBits)
-            {
-                return false;
-            }
+                {
+                    return false;
+                }
             return true;
         }
     }

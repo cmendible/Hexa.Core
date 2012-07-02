@@ -25,14 +25,14 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace Hexa.Core.Domain
 {
-	public class NotNullable : IPropertyConvention
-	{
-		public void Apply(IPropertyInstance target)
-		{
+    public class NotNullable : IPropertyConvention
+    {
+        public void Apply(IPropertyInstance target)
+        {
             var attribute = Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(RequiredAttribute)) as RequiredAttribute;
 
-			if (attribute != null)
-				target.Not.Nullable();
-		}
-	}
+            if (attribute != null)
+                target.Not.Nullable();
+        }
+    }
 }

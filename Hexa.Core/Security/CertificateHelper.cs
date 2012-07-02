@@ -16,20 +16,20 @@ namespace Hexa.Core.Security
             st.Open(OpenFlags.ReadOnly);
             X509Certificate2 card = null;
             try
-            {
-                X509Certificate2Collection col = st.Certificates;
-                X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates", "Select one to sign", X509SelectionFlag.SingleSelection);
-                if (sel.Count > 0)
                 {
-                    X509Certificate2Enumerator en = sel.GetEnumerator();
-                    en.MoveNext();
-                    card = en.Current;
+                    X509Certificate2Collection col = st.Certificates;
+                    X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates", "Select one to sign", X509SelectionFlag.SingleSelection);
+                    if (sel.Count > 0)
+                        {
+                            X509Certificate2Enumerator en = sel.GetEnumerator();
+                            en.MoveNext();
+                            card = en.Current;
+                        }
                 }
-            }
             finally
-            {
-                st.Close();
-            }
+                {
+                    st.Close();
+                }
             return card;
         }
 
@@ -54,20 +54,20 @@ namespace Hexa.Core.Security
             X509Store store = new X509Store(StoreName.My, location);
             store.Open(OpenFlags.ReadOnly);
             try
-            {
-                X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, false);
-                if (certs.Count == 1)
                 {
-                    cert = certs[0];
+                    X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, false);
+                    if (certs.Count == 1)
+                        {
+                            cert = certs[0];
+                        }
+                    else
+                        cert = null;
                 }
-                else
-                    cert = null;
-            }
             finally
-            {
-                if (store != null)
-                    store.Close();
-            }
+                {
+                    if (store != null)
+                        store.Close();
+                }
             return cert;
         }
 

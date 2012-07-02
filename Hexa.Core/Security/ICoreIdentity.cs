@@ -24,6 +24,9 @@ namespace Hexa.Core.Security
 {
     public interface ICoreIdentity : IIdentity
     {
-        string Id { get; }
+        string Id
+        {
+            get;
+        }
     }
 }

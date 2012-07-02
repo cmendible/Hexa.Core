@@ -1,17 +1,17 @@
 ﻿#region license
-//Copyright 2010 Ritesh Rao 
+//Copyright 2010 Ritesh Rao
 
-// Licensed under the Apache License, Version 2.0 (the "License"); 
-// you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 
-// http://www.apache.org/licenses/LICENSE-2.0 
+// http://www.apache.org/licenses/LICENSE-2.0
 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and 
-// See the License for the specific language governing permissions and 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
 #endregion
 /*
 * CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
@@ -22,10 +22,10 @@ using System.Text.RegularExpressions;
 
 namespace Hexa.Core.Domain
 {
-    ///<summary>
-    /// Implementation of the Infelctor in Ruby that transforms words from singular to plural, 
-    /// class names to table names, modularized class names to ones without, and class names to foreign keys
-    ///</summary>
+///<summary>
+/// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
+/// class names to table names, modularized class names to ones without, and class names to foreign keys
+///</summary>
     public static class Inflector
     {
         private static readonly List<Rule> Plurals = new List<Rule>();
@@ -111,9 +111,9 @@ namespace Hexa.Core.Domain
             public string Apply(string word)
             {
                 if (!_regex.IsMatch(word))
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
 
                 return _regex.Replace(word, _replacement);
             }
@@ -145,15 +145,15 @@ namespace Hexa.Core.Domain
             string result = word;
 
             if (!Uncountables.Contains(word.ToLower()))
-            {
-                for (int i = rules.Count - 1; i >= 0; i--)
                 {
-                    if ((result = rules[i].Apply(word)) != null)
-                    {
-                        break;
-                    }
+                    for (int i = rules.Count - 1; i >= 0; i--)
+                        {
+                            if ((result = rules[i].Apply(word)) != null)
+                                {
+                                    break;
+                                }
+                        }
                 }
-            }
 
             return result;
         }
@@ -186,10 +186,10 @@ namespace Hexa.Core.Domain
         public static string Titleize(string word)
         {
             return Regex.Replace(Humanize(Underscore(word)), @"\b([a-z])",
-                                    delegate(Match match)
-                                    {
-                                        return match.Captures[0].Value.ToUpper();
-                                    });
+                                 delegate(Match match)
+            {
+                return match.Captures[0].Value.ToUpper();
+            });
         }
 
         /// <summary>
@@ -211,10 +211,10 @@ namespace Hexa.Core.Domain
         public static string Pascalize(string lowercaseAndUnderscoredWord)
         {
             return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
-                                    delegate(Match match)
-                                    {
-                                        return match.Groups[1].Value.ToUpper();
-                                    });
+                                 delegate(Match match)
+            {
+                return match.Groups[1].Value.ToUpper();
+            });
         }
 
         /// <summary>
@@ -228,16 +228,16 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// Makes an underscored form from the expression in the string. 
+        /// Makes an underscored form from the expression in the string.
         /// </summary>
         /// <param name="pascalCasedWord">string. The word to underscore.</param>
         /// <returns>string. The word with underscore seperators.</returns>
         public static string Underscore(string pascalCasedWord)
         {
             return Regex.Replace(
-                Regex.Replace(
-                Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
-                "$1_$2"), @"[-\s]", "_").ToLower();
+                       Regex.Replace(
+                           Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
+                           "$1_$2"), @"[-\s]", "_").ToLower();
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// Ordinalize turns a number into an ordinal string used to denote the position in an ordered 
+        /// Ordinalize turns a number into an ordinal string used to denote the position in an ordered
         /// sequence such as 1st, 2nd, 3rd, 4th
         /// </summary>
         /// <param name="number">string. The number to ordinalize.</param>
@@ -272,12 +272,12 @@ namespace Hexa.Core.Domain
             int nMod100 = n % 100;
 
             if (nMod100 >= 11 && nMod100 <= 13)
-            {
-                return number + "th";
-            }
+                {
+                    return number + "th";
+                }
 
             switch (n % 10)
-            {
+                {
                 case 1:
                     return number + "st";
                 case 2:
@@ -286,7 +286,7 @@ namespace Hexa.Core.Domain
                     return number + "rd";
                 default:
                     return number + "th";
-            }
+                }
         }
 
         /// <summary>

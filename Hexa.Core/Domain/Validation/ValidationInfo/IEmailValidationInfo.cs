@@ -20,50 +20,50 @@
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
-	public interface IEmailValidationInfo : IValidationInfo
-	{
-	}
+/// <summary>
+///
+/// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces")]
+    public interface IEmailValidationInfo : IValidationInfo
+    {
+    }
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public class EmailValidationInfo<TEntity> : RegexValidationInfo<TEntity>
-	{
-		private const string EMAILREGEX = @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";
+/// <summary>
+///
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public class EmailValidationInfo<TEntity> : RegexValidationInfo<TEntity>
+    {
+        private const string EMAILREGEX = @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="EmailValidationInfo&lt;TEntity&gt;"/> class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		public EmailValidationInfo(string propertyName)
-			: this(propertyName, null)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailValidationInfo&lt;TEntity&gt;"/> class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        public EmailValidationInfo(string propertyName)
+        : this(propertyName, null)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="EmailValidationInfo&lt;TEntity&gt;"/> class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="error">The error.</param>
-		public EmailValidationInfo(string propertyName, string error)
-            : base(propertyName, DefaultMessage<TEntity>(propertyName, error), EMAILREGEX)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailValidationInfo&lt;TEntity&gt;"/> class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="error">The error.</param>
+        public EmailValidationInfo(string propertyName, string error)
+        : base(propertyName, DefaultMessage<TEntity>(propertyName, error), EMAILREGEX)
+        {
+        }
 
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
-		{
-			if (string.IsNullOrEmpty(error))
+        {
+            if (string.IsNullOrEmpty(error))
                 return string.Format(Hexa.Core.Resources.Resource.ValueIsNotAnEmail, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
-			else
-				return error;
-		}
-	}
+            else
+                return error;
+        }
+    }
 }
 

@@ -76,17 +76,26 @@ namespace Hexa.Core.Domain
 
         public Type ElementType
         {
-            get { return typeof(TEntity); }
+            get
+                {
+                    return typeof(TEntity);
+                }
         }
 
         public System.Linq.Expressions.Expression Expression
         {
-            get { return _set.Expression; }
+            get
+                {
+                    return _set.Expression;
+                }
         }
 
         public IQueryProvider Provider
         {
-            get { return _set.Provider; }
+            get
+                {
+                    return _set.Provider;
+                }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
@@ -141,6 +150,6 @@ namespace Hexa.Core.Domain
 
             return query.List<T>();
         }
-        
+
     }
 }

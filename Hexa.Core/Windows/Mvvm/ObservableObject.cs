@@ -17,9 +17,9 @@ namespace Hexa.Core.Windows.Mvvm
         {
             var handler = this.PropertyChanged;
             if (handler != null)
-            {
-                handler(this, e);
-            }
+                {
+                    handler(this, e);
+                }
         }
 
         protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpresssion)
@@ -42,12 +42,12 @@ namespace Hexa.Core.Windows.Mvvm
         [DebuggerStepThrough]
         public void VerifyPropertyName(String propertyName)
         {
-            // verify that the property name matches a real,  
+            // verify that the property name matches a real,
             // public, instance property on this Object.
             if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-            {
-                Debug.Fail("Invalid property name: " + propertyName);
-            }
+                {
+                    Debug.Fail("Invalid property name: " + propertyName);
+                }
         }
     }
 }

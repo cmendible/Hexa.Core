@@ -23,9 +23,9 @@ using System.Security.Permissions;
 
 namespace Hexa.Core
 {
-    /// <summary>
-    /// Internal Exception.
-    /// </summary>
+/// <summary>
+/// Internal Exception.
+/// </summary>
     [Serializable()]
     public class InternalException : CoreException
     {
@@ -42,7 +42,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="message">The message.</param>
         public InternalException(string message)
-            : base(message)
+        : base(message)
         {
         }
 
@@ -52,7 +52,7 @@ namespace Hexa.Core
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
         public InternalException(string message, System.Exception ex)
-            : base(message, ex)
+        : base(message, ex)
         {
         }
 
@@ -62,7 +62,7 @@ namespace Hexa.Core
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
         protected InternalException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        : base(info, context)
         {
         }
 

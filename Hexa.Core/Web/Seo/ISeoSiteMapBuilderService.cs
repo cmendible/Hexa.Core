@@ -16,9 +16,9 @@
 namespace Hexa.Core.Web.Seo
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
+/// <summary>
+///
+/// </summary>
     public class SeoUrlInfo
     {
         private string _key;
@@ -27,12 +27,12 @@ namespace Hexa.Core.Web.Seo
         private string _priority;
 
         public SeoUrlInfo(string key)
-            : this(key, "daily", 100)
+        : this(key, "daily", 100)
         {
         }
 
         public SeoUrlInfo(string key, string changeFrequency, int priorityPercentage)
-            : this(key, key, changeFrequency, priorityPercentage)
+        : this(key, key, changeFrequency, priorityPercentage)
         {
         }
 
@@ -48,39 +48,63 @@ namespace Hexa.Core.Web.Seo
         }
 
         /// <summary>
-        /// 
-        /// </summary>  
+        ///
+        /// </summary>
         public string Url
         {
-            get { return _url; }
-            set { _url = value; }
+            get
+                {
+                    return _url;
+                }
+            set
+                {
+                    _url = value;
+                }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string Key
         {
-            get { return _key; }
-            set { _key = value; }
+            get
+                {
+                    return _key;
+                }
+            set
+                {
+                    _key = value;
+                }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string ChangeFrequency
         {
-            get { return _changeFrequency; }
-            set { _changeFrequency = value; }
+            get
+                {
+                    return _changeFrequency;
+                }
+            set
+                {
+                    _changeFrequency = value;
+                }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string Priority
         {
-            get { return _priority; }
-            set { _priority = value; }
+            get
+                {
+                    return _priority;
+                }
+            set
+                {
+                    _priority = value;
+                }
         }
     }
 
@@ -91,7 +115,10 @@ namespace Hexa.Core.Web.Seo
         void AddUrl(SeoUrlInfo url, SeoUrlInfo parent, int preferredDisplayOrder);
         void AddUrl(SeoUrlInfo url, int preferredDisplayOrder);
         System.Collections.ObjectModel.ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
-        SeoUrlInfo RootUrl { get; }
+        SeoUrlInfo RootUrl
+        {
+            get;
+        }
         string SeoXml();
     }
 }

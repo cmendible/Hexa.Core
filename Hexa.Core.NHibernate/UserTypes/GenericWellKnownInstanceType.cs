@@ -8,11 +8,11 @@ using NHibernate.UserTypes;
 
 namespace uNhAddIns.UserTypes
 {
-    /// <summary>
-    /// http://code.google.com/p/unhaddins/
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TId">The type of the id.</typeparam>
+/// <summary>
+/// http://code.google.com/p/unhaddins/
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <typeparam name="TId">The type of the id.</typeparam>
     [Serializable]
     public abstract class GenericWellKnownInstanceType<T, TId> : IUserType where T : class
     {
@@ -35,24 +35,30 @@ namespace uNhAddIns.UserTypes
 
         public Type ReturnedType
         {
-            get { return typeof(T); }
+            get
+                {
+                    return typeof(T);
+                }
         }
 
         public bool IsMutable
         {
-            get { return false; }
+            get
+                {
+                    return false;
+                }
         }
 
         public new bool Equals(object x, object y)
         {
             if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
+                {
+                    return true;
+                }
             if (ReferenceEquals(null, x) || ReferenceEquals(null, y))
-            {
-                return false;
-            }
+                {
+                    return false;
+                }
 
             return x.Equals(y);
         }
@@ -66,9 +72,9 @@ namespace uNhAddIns.UserTypes
         {
             int index0 = rs.GetOrdinal(names[0]);
             if (rs.IsDBNull(index0))
-            {
-                return null;
-            }
+                {
+                    return null;
+                }
 
             var value = (TId)rs.GetValue(index0);
             return repository.FirstOrDefault(x => findPredicate(x, value));
@@ -77,13 +83,13 @@ namespace uNhAddIns.UserTypes
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
             if (value == null)
-            {
-                ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
-            }
+                {
+                    ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
+                }
             else
-            {
-                ((IDbDataParameter)cmd.Parameters[index]).Value = idGetter((T)value);
-            }
+                {
+                    ((IDbDataParameter)cmd.Parameters[index]).Value = idGetter((T)value);
+                }
         }
 
         public object DeepCopy(object value)
@@ -107,8 +113,11 @@ namespace uNhAddIns.UserTypes
         }
 
         /// <summary>
-        /// The SQL types for the columns mapped by this type. 
+        /// The SQL types for the columns mapped by this type.
         /// </summary>
-        public abstract SqlType[] SqlTypes { get; }
+        public abstract SqlType[] SqlTypes
+        {
+            get;
+        }
     }
 }

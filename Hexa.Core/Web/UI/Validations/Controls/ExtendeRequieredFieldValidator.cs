@@ -23,39 +23,39 @@ using System.Web.UI.WebControls;
 
 namespace Hexa.Core.Web.UI.Controls
 {
-	public class ExtendedRequiredFieldValidator : RequiredFieldValidator
-	{
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings"), UrlProperty]
-		public virtual string ImageUrl
-		{
-			get
-			{
-				string imageUrl = string.Empty;
-				object o = ViewState["ImageUrl"];
-				if (o != null)
-					imageUrl = ViewState["ImageUrl"].ToString();
+    public class ExtendedRequiredFieldValidator : RequiredFieldValidator
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings"), UrlProperty]
+        public virtual string ImageUrl
+        {
+            get
+                {
+                    string imageUrl = string.Empty;
+                    object o = ViewState["ImageUrl"];
+                    if (o != null)
+                        imageUrl = ViewState["ImageUrl"].ToString();
 
-				return imageUrl;
-			}
-			set
-			{
-				ViewState["ImageUrl"] = value;
-			}
-		}
+                    return imageUrl;
+                }
+            set
+                {
+                    ViewState["ImageUrl"] = value;
+                }
+        }
 
-		protected override void OnPreRender(EventArgs e)
-		{
+        protected override void OnPreRender(EventArgs e)
+        {
             base.OnPreRender(e);
 
-			if (!string.IsNullOrEmpty(ImageUrl))
-			{
-				Image img = new Image();
-                img.ID = "i" + ID;
-				img.ToolTip = ErrorMessage;
-				img.ImageUrl = ImageUrl;
-				Controls.Add(img);
-			}
-		}
+            if (!string.IsNullOrEmpty(ImageUrl))
+                {
+                    Image img = new Image();
+                    img.ID = "i" + ID;
+                    img.ToolTip = ErrorMessage;
+                    img.ImageUrl = ImageUrl;
+                    Controls.Add(img);
+                }
+        }
 
-	}
+    }
 }

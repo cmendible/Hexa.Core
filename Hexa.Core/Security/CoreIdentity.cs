@@ -22,111 +22,111 @@ using System.Security.Principal;
 
 namespace Hexa.Core.Security
 {
-	/// <summary>
-    /// Class used to hold user name info.
-	/// </summary>
-	[Serializable]
-	public class CoreIdentity : MarshalByRefObject, ICoreIdentity 
-	{
-		// Fields
-		private string _name;
-		private string _type;
+/// <summary>
+/// Class used to hold user name info.
+/// </summary>
+    [Serializable]
+    public class CoreIdentity : MarshalByRefObject, ICoreIdentity
+    {
+        // Fields
+        private string _name;
+        private string _type;
         private string _id;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CoreIdentity"/> class.
-		/// </summary>
-		/// <param name="name">The name.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public CoreIdentity(string name)
-            : this(name, "Unknown", name)
-        { 
-        
+        : this(name, "Unknown", name)
+        {
+
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CoreIdentity"/> class.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type">The type.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="type">The type.</param>
         public CoreIdentity(string name, string type)
-            : this(name, type, name)
-        { 
+        : this(name, type, name)
+        {
         }
 
-		/// <summary>
-		/// Gets the type of authentication used.
-		/// </summary>
-		/// <value></value>
-		/// <returns>The type of authentication used to identify the user.</returns>
-		public virtual string AuthenticationType
-		{
-			get
-			{
-				return _type;
-			}
-		}
+        /// <summary>
+        /// Gets the type of authentication used.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The type of authentication used to identify the user.</returns>
+        public virtual string AuthenticationType
+        {
+            get
+                {
+                    return _type;
+                }
+        }
 
-		/// <summary>
-		/// Gets a value that indicates whether the user has been authenticated.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the user was authenticated; otherwise, false.</returns>
-		public virtual bool IsAuthenticated
-		{
-			get
-			{
-				return !string.IsNullOrEmpty(_name);
-			}
-		}
+        /// <summary>
+        /// Gets a value that indicates whether the user has been authenticated.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the user was authenticated; otherwise, false.</returns>
+        public virtual bool IsAuthenticated
+        {
+            get
+                {
+                    return !string.IsNullOrEmpty(_name);
+                }
+        }
 
-		/// <summary>
-		/// Gets the name of the current user.
-		/// </summary>
-		/// <value></value>
-		/// <returns>The name of the user on whose behalf the code is running.</returns>
-		public virtual string Name
-		{
-			get
-			{
-				return _name;
-			}
-		}
+        /// <summary>
+        /// Gets the name of the current user.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The name of the user on whose behalf the code is running.</returns>
+        public virtual string Name
+        {
+            get
+                {
+                    return _name;
+                }
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CoreIdentity"/> class.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type">The type.</param>
-		/// <param name="id">The id.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="id">The id.</param>
         public CoreIdentity(string name, string type, string id)
         {
             if (name == null)
-            {
-                throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
-            }
+                {
+                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.NameCannotBeNull);
+                }
             if (type == null)
-            {
-                throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
-            }
+                {
+                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
+                }
             if (id == null)
-            {
-                throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
-            }
+                {
+                    throw new ArgumentNullException(Hexa.Core.Resources.Resource.TypeCannotBeNull);
+                }
             _name = name;
             _type = type;
             _id = id;
         }
 
-		/// <summary>
-		/// Gets or sets the id.
-		/// </summary>
-		/// <value>The id.</value>
-		public string Id
+        /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
+        /// <value>The id.</value>
+        public string Id
         {
             get
-            {
-                return _id;
-            }
+                {
+                    return _id;
+                }
         }
-	}
+    }
 }

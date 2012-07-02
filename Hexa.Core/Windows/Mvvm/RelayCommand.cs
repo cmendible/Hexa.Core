@@ -6,9 +6,9 @@ using System.Windows.Input;
 
 namespace Hexa.Core.Windows.Mvvm
 {
-    /// <summary>
-    /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
-    /// </summary>
+/// <summary>
+/// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
+/// </summary>
     public class RelayCommand<T> : ICommand
     {
 
@@ -26,7 +26,7 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         public RelayCommand(Action<T> execute)
-            : this(execute, null)
+        : this(execute, null)
         {
         }
 
@@ -51,17 +51,17 @@ namespace Hexa.Core.Windows.Mvvm
         public event EventHandler CanExecuteChanged
         {
             add
-            {
+                {
 
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested += value;
-            }
+                    if (_canExecute != null)
+                        CommandManager.RequerySuggested += value;
+                }
             remove
-            {
+                {
 
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested -= value;
-            }
+                    if (_canExecute != null)
+                        CommandManager.RequerySuggested -= value;
+                }
         }
 
         [DebuggerStepThrough]
@@ -78,9 +78,9 @@ namespace Hexa.Core.Windows.Mvvm
         #endregion
     }
 
-    /// <summary>
-    /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
-    /// </summary>
+/// <summary>
+/// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
+/// </summary>
     public class RelayCommand : ICommand
     {
 
@@ -98,7 +98,7 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         public RelayCommand(Action execute)
-            : this(execute, null)
+        : this(execute, null)
         {
         }
 
@@ -123,17 +123,17 @@ namespace Hexa.Core.Windows.Mvvm
         public event EventHandler CanExecuteChanged
         {
             add
-            {
+                {
 
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested += value;
-            }
+                    if (_canExecute != null)
+                        CommandManager.RequerySuggested += value;
+                }
             remove
-            {
+                {
 
-                if (_canExecute != null)
-                    CommandManager.RequerySuggested -= value;
-            }
+                    if (_canExecute != null)
+                        CommandManager.RequerySuggested -= value;
+                }
         }
 
         [DebuggerStepThrough]

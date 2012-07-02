@@ -27,9 +27,9 @@ using System.Xml;
 namespace Hexa.Core.Xml
 {
 
-    /// <summary>
-    /// Used to resolve xml name spaces.
-    /// </summary>
+/// <summary>
+/// Used to resolve xml name spaces.
+/// </summary>
     public class SchemaResolver : XmlResolver
     {
         private Dictionary<string, byte[]> _schemas = null;
@@ -44,9 +44,9 @@ namespace Hexa.Core.Xml
             string name = absoluteUri.AbsoluteUri.Split(new char[] { '/' }).Last<string>();
             byte[] stream = _schemas[name];
             if (stream != null)
-            {
-                return new MemoryStream(stream);;
-            }
+                {
+                    return new MemoryStream(stream);;
+                }
             XmlUrlResolver resolver = new XmlUrlResolver();
             return resolver.GetEntity(absoluteUri, role, ofObjectToReturn);
         }
@@ -59,8 +59,8 @@ namespace Hexa.Core.Xml
         public override ICredentials Credentials
         {
             set
-            {
-            }
+                {
+                }
         }
     }
 }

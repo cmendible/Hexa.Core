@@ -24,66 +24,66 @@ using System.Text.RegularExpressions;
 namespace Hexa.Core.Data
 {
 
-	/// <summary>
-	/// Helper class to execute scripts against a Sql Server database.
-	/// </summary>
-	public sealed class SqlScriptHelper
+/// <summary>
+/// Helper class to execute scripts against a Sql Server database.
+/// </summary>
+    public sealed class SqlScriptHelper
     {
         private SqlScriptHelper()
-		{ 
-		}
+        {
+        }
 
-		/// <summary>
-		/// Executes the specified script.
-		/// </summary>
-		/// <param name="connection">The connection.</param>
-		/// <param name="script">The script.</param>
+        /// <summary>
+        /// Executes the specified script.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="script">The script.</param>
         public static void Execute(string connection, string script)
         {
             try
-            {
-				using (SqlConnection sqlConn = new SqlConnection(connection))
-				{
-					using (SqlCommand command = new SqlCommand())
-					{
-						command.Connection = sqlConn;
-						sqlConn.Open();
-						ExecuteCommands(command, GetCommandsFromScript(script));
-						sqlConn.Close();
-					}
-				}
-            }
+                {
+                    using (SqlConnection sqlConn = new SqlConnection(connection))
+                    {
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = sqlConn;
+                            sqlConn.Open();
+                            ExecuteCommands(command, GetCommandsFromScript(script));
+                            sqlConn.Close();
+                        }
+                    }
+                }
             catch (SqlException e)
-            {
-				Console.WriteLine(e.Message);
-            }
+                {
+                    Console.WriteLine(e.Message);
+                }
         }
 
-		/// <summary>
-		/// Gets the commands from the specified script.
-		/// </summary>
-		/// <param name="script">The script.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Gets the commands from the specified script.
+        /// </summary>
+        /// <param name="script">The script.</param>
+        /// <returns></returns>
         private static string[] GetCommandsFromScript(string script)
         {
             return Regex.Split(script, "GO\r\n", RegexOptions.IgnoreCase);
         }
 
-		/// <summary>
-		/// Executes the commands.
-		/// </summary>
-		/// <param name="command">The command.</param>
-		/// <param name="sqlCommands">The SQL commands.</param>
+        /// <summary>
+        /// Executes the commands.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="sqlCommands">The SQL commands.</param>
         private static void ExecuteCommands(SqlCommand command, string[] sqlCommands)
         {
             foreach (string cmd in sqlCommands)
-            {
-                if (cmd.Length > 0)
                 {
-                    command.CommandText = cmd;
-                    command.ExecuteNonQuery();
+                    if (cmd.Length > 0)
+                        {
+                            command.CommandText = cmd;
+                            command.ExecuteNonQuery();
+                        }
                 }
-            }
         }
 
     }

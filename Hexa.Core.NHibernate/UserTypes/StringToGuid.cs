@@ -44,34 +44,37 @@ namespace Hexa.Core.Domain
 
         public bool IsMutable
         {
-            get { return true; }
+            get
+                {
+                    return true;
+                }
         }
 
         public object NullSafeGet(System.Data.IDataReader rs, string[] names, object owner)
         {
             Int32 index = rs.GetOrdinal(names[0]);
             if (rs.IsDBNull(index))
-            {
-                return null;
-            }
+                {
+                    return null;
+                }
 
             try
-            {
-                return rs[index].ToString();
-            }
+                {
+                    return rs[index].ToString();
+                }
             catch (FormatException)
-            {
-                return null;
-            }
+                {
+                    return null;
+                }
         }
 
         public void NullSafeSet(System.Data.IDbCommand cmd, object value, int index)
         {
             if (value == null || value == DBNull.Value)
-            {
-                NHibernateUtil.String.NullSafeSet(cmd, null, index);
-                return;
-            }
+                {
+                    NHibernateUtil.String.NullSafeSet(cmd, null, index);
+                    return;
+                }
 
             var obj = Guid.Parse(value.ToString());
             NHibernateUtil.String.Set(cmd, obj, index);
@@ -84,12 +87,18 @@ namespace Hexa.Core.Domain
 
         public Type ReturnedType
         {
-            get { return typeof(string); }
+            get
+                {
+                    return typeof(string);
+                }
         }
 
         public NHibernate.SqlTypes.SqlType[] SqlTypes
         {
-            get { return new SqlType[] { NHibernateUtil.Guid.SqlType }; }
+            get
+                {
+                    return new SqlType[] { NHibernateUtil.Guid.SqlType };
+                }
         }
 
         #endregion

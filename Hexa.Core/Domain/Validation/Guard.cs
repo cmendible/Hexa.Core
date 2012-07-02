@@ -22,9 +22,9 @@ using System.Globalization;
 
 namespace Hexa.Core
 {
-    /// <summary>
-    /// Provides utility methods to guard parameter and local variables.
-    /// </summary>
+/// <summary>
+/// Provides utility methods to guard parameter and local variables.
+/// </summary>
     public static class Guard
     {
         /// <summary>
@@ -52,10 +52,10 @@ namespace Hexa.Core
         public static void Against<TException>(bool assertion, string message, params object[] args) where TException : Exception
         {
             if (assertion)
-            {
-                var msg = string.Format(CultureInfo.InvariantCulture, message, args);
-                throw (TException)Activator.CreateInstance(typeof(TException), msg);
-            }
+                {
+                    var msg = string.Format(CultureInfo.InvariantCulture, message, args);
+                    throw (TException)Activator.CreateInstance(typeof(TException), msg);
+                }
         }
 
         /// <summary>

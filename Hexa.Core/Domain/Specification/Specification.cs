@@ -1,12 +1,12 @@
 ﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-// =================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 // ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
 using System;
@@ -14,20 +14,20 @@ using System.Linq.Expressions;
 
 namespace Hexa.Core.Domain.Specification
 {
-    /// <summary>
-    /// Represent a Expression Specification
-    /// <remarks>
-    /// Specification overload operators for create AND,OR or NOT specifications.
-    /// Additionally overload AND and OR operators with the same sense of ( binary And and binary Or ).
-    /// C# couldn’t overload the AND and OR operators directly since the framework doesn’t allow such craziness. But
-    /// with overloading false and true operators this is posible. For explain this behavior please read
-    /// http://msdn.microsoft.com/en-us/library/aa691312(VS.71).aspx
-    /// </remarks>
-    /// </summary>
-    /// <typeparam name="TEntity">Type of item in the criteria</typeparam>
+/// <summary>
+/// Represent a Expression Specification
+/// <remarks>
+/// Specification overload operators for create AND,OR or NOT specifications.
+/// Additionally overload AND and OR operators with the same sense of ( binary And and binary Or ).
+/// C# couldn’t overload the AND and OR operators directly since the framework doesn’t allow such craziness. But
+/// with overloading false and true operators this is posible. For explain this behavior please read
+/// http://msdn.microsoft.com/en-us/library/aa691312(VS.71).aspx
+/// </remarks>
+/// </summary>
+/// <typeparam name="TEntity">Type of item in the criteria</typeparam>
     public abstract class Specification<TEntity>
-         : ISpecification<TEntity>
-         where TEntity : class
+        : ISpecification<TEntity>
+        where TEntity : class
     {
         #region ISpecification<TEntity> Members
 
@@ -72,7 +72,7 @@ namespace Hexa.Core.Domain.Specification
         {
             return new NotSpecification<TEntity>(specification);
         }
-      
+
         /// <summary>
         /// Override operator false, only for support AND OR operators
         /// </summary>
@@ -94,6 +94,6 @@ namespace Hexa.Core.Domain.Specification
         }
         #endregion
     }
-    
+
 }
 

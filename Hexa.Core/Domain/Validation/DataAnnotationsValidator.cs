@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Hexa.Core.Validation
 {
-	[Serializable]
+    [Serializable]
     public class DataAnnotationsValidator : IValidator
     {
         public bool IsValid(object instance)
@@ -44,9 +44,9 @@ namespace Hexa.Core.Validation
             var entityType = instance.GetType();
 
             var errors = from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
-                from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                where !attribute.IsValid(prop.GetValue(instance))
-                select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
+                         from attribute in prop.Attributes.OfType<ValidationAttribute>()
+                         where !attribute.IsValid(prop.GetValue(instance))
+                             select new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty), DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
                 return new ValidationResult(errors.Cast<ValidationError>());
@@ -54,6 +54,6 @@ namespace Hexa.Core.Validation
                 return new ValidationResult();
         }
 
-        
+
     }
 }

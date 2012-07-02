@@ -20,16 +20,16 @@
 
 namespace Hexa.Core.Domain
 {
-    public class EntityMap<TEntity> : BaseClassMap<TEntity> 
-		where TEntity : Entity<TEntity>
-	{
-		public EntityMap()
-		{
-			Id(x => x.Id)
-				.UnsavedValue(0)
-				.GeneratedBy.Native();
-		}
-	}
+    public class EntityMap<TEntity> : BaseClassMap<TEntity>
+        where TEntity : Entity<TEntity>
+    {
+        public EntityMap()
+        {
+            Id(x => x.Id)
+            .UnsavedValue(0)
+            .GeneratedBy.Native();
+        }
+    }
 
     public class BaseEntityWithUniqueIdMap<TEntity> : BaseClassMap<TEntity>
         where TEntity : BaseEntityWithUniqueId<TEntity>
@@ -37,7 +37,7 @@ namespace Hexa.Core.Domain
         public BaseEntityWithUniqueIdMap()
         {
             Id(x => x.UniqueId)
-                .GeneratedBy.GuidComb();
+            .GeneratedBy.GuidComb();
         }
     }
 }

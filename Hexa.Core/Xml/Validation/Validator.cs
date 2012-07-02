@@ -24,9 +24,9 @@ using System.Xml.Schema;
 
 namespace Hexa.Core.Xml
 {
-    /// <summary>
-    /// Static class used to validate an XML file.
-    /// </summary>
+/// <summary>
+/// Static class used to validate an XML file.
+/// </summary>
     public static class XmlValidator
     {
         // Validation Error Count
@@ -64,14 +64,14 @@ namespace Hexa.Core.Xml
                 {
                     // Validate XML data
                     while (_reader.Read()) ;
-                        _reader.Close();
+                    _reader.Close();
                 }
 
                 // Raise exception, if XML validation fails
                 if (_errorsCount > 0)
-                {
-                    throw new XmlException(_errorMessage);
-                }
+                    {
+                        throw new XmlException(_errorMessage);
+                    }
             }
         }
 

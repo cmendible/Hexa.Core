@@ -34,23 +34,23 @@ namespace Hexa.Core.Logging
             public override string ToString()
             {
                 try
-                {
+                    {
 
-                    if (HttpContext.Current == null)
-                        return null;
+                        if (HttpContext.Current == null)
+                            return null;
 
-                    if (HttpContext.Current.User == null)
-                        return null;
+                        if (HttpContext.Current.User == null)
+                            return null;
 
-                    if (HttpContext.Current.User.Identity == null)
-                        return null;
+                        if (HttpContext.Current.User.Identity == null)
+                            return null;
 
-                    return HttpContext.Current.User.Identity.Name;
-                }
+                        return HttpContext.Current.User.Identity.Name;
+                    }
                 catch
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
 
@@ -59,24 +59,24 @@ namespace Hexa.Core.Logging
             public override string ToString()
             {
                 try
-                {
-
-                    if (HttpContext.Current != null && HttpContext.Current.Request != null)
-                        return HttpContext.Current.Request.UserHostAddress;
-
-                    var context = OperationContext.Current;
-                    if (context != null && context.IncomingMessageProperties != null && context.IncomingMessageProperties.ContainsKey(RemoteEndpointMessageProperty.Name))
                     {
-                        var endpointProperty = context.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-                        return endpointProperty.Address;
-                    }
 
-                    return null;
-                }
+                        if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                            return HttpContext.Current.Request.UserHostAddress;
+
+                        var context = OperationContext.Current;
+                        if (context != null && context.IncomingMessageProperties != null && context.IncomingMessageProperties.ContainsKey(RemoteEndpointMessageProperty.Name))
+                            {
+                                var endpointProperty = context.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+                                return endpointProperty.Address;
+                            }
+
+                        return null;
+                    }
                 catch
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
 
@@ -85,16 +85,16 @@ namespace Hexa.Core.Logging
             public override string ToString()
             {
                 try
-                {
-                    if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Session != null)
-                        return HttpContext.Current.Session.SessionID;
+                    {
+                        if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Session != null)
+                            return HttpContext.Current.Session.SessionID;
 
-                    return null;
-                }
+                        return null;
+                    }
                 catch
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
 
@@ -112,29 +112,29 @@ namespace Hexa.Core.Logging
         }
 
         public Log4NetLoggerFactory()
-            : this(null)
+        : this(null)
         {
         }
 
         public Log4NetLoggerFactory(FileInfo configFile)
         {
             if (!_initialized)
-            {
-                if (configFile != null)
-                    XmlConfigurator.ConfigureAndWatch(configFile);
-                else
-                    XmlConfigurator.Configure();
-
-                // Register log4net context loggers..
-                if (_isWebContext())
                 {
-                    GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
-                    GlobalContext.Properties["User"] = new UserLogContext();
-                    GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
-                }
+                    if (configFile != null)
+                        XmlConfigurator.ConfigureAndWatch(configFile);
+                    else
+                        XmlConfigurator.Configure();
 
-                _initialized = true;
-            }
+                    // Register log4net context loggers..
+                    if (_isWebContext())
+                        {
+                            GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
+                            GlobalContext.Properties["User"] = new UserLogContext();
+                            GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
+                        }
+
+                    _initialized = true;
+                }
         }
 
         public ILogger Create(Type type)

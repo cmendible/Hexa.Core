@@ -20,64 +20,70 @@
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public interface IRegexValidationInfo : IValidationInfo
-	{
-		/// <summary>
-		/// Gets the expression.
-		/// </summary>
-		/// <value>The expression.</value>
-		string Expression { get; }
-	}
+/// <summary>
+///
+/// </summary>
+    public interface IRegexValidationInfo : IValidationInfo
+    {
+        /// <summary>
+        /// Gets the expression.
+        /// </summary>
+        /// <value>The expression.</value>
+        string Expression
+        {
+            get;
+        }
+    }
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
-	public class RegexValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRegexValidationInfo
-	{
-		private string expression;
+/// <summary>
+///
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+    public class RegexValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRegexValidationInfo
+    {
+        private string expression;
 
-		/// <summary>
-		/// Initializes a new instance of the RequiredValidationInfo class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="expression">The expression.</param>
-		public RegexValidationInfo(string propertyName, string expression)
-			: this(propertyName, null, expression)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the RequiredValidationInfo class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="expression">The expression.</param>
+        public RegexValidationInfo(string propertyName, string expression)
+        : this(propertyName, null, expression)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the RequiredValidationInfo class.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <param name="error">The error.</param>
-		/// <param name="expression">The expression.</param>
-		public RegexValidationInfo(string propertyName, string error, string expression)
-            : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
-		{
-			this.expression = expression;
-		}
+        /// <summary>
+        /// Initializes a new instance of the RequiredValidationInfo class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="error">The error.</param>
+        /// <param name="expression">The expression.</param>
+        public RegexValidationInfo(string propertyName, string error, string expression)
+        : base(propertyName, DefaultMessage<TEntity>(propertyName, error))
+        {
+            this.expression = expression;
+        }
 
-		/// <summary>
-		/// Gets the expression.
-		/// </summary>
-		/// <value>The expression.</value>
-		public string Expression
-		{
-			get { return this.expression; }
-		}
+        /// <summary>
+        /// Gets the expression.
+        /// </summary>
+        /// <value>The expression.</value>
+        public string Expression
+        {
+            get
+                {
+                    return this.expression;
+                }
+        }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
-		{
-			if (string.IsNullOrEmpty(error))
+        {
+            if (string.IsNullOrEmpty(error))
                 return string.Format(Hexa.Core.Resources.Resource.ValueIsNotCorrectlyFormatted, DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
-			else
-				return error;
-		}
-	}
+            else
+                return error;
+        }
+    }
 }

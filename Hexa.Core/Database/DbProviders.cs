@@ -9,13 +9,13 @@ namespace Hexa.Core.Data
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Lite")]
         [EnumMember(Value = "System.Data.SQLite")]
-        SQLiteProvider, 
+        SQLiteProvider,
 
         [EnumMember(Value = "System.Data.SqlClient")]
-        MsSqlProvider,  
+        MsSqlProvider,
 
         [EnumMember(Value = "Oracle.DataAccess.Client")]
-        OracleDataProvider,  
+        OracleDataProvider,
 
         [EnumMember(Value = "Npgsql")]
         PostgreSQLProvider,

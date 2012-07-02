@@ -31,33 +31,33 @@ namespace Hexa.Core.Domain
         {
             var sqle = ADOExceptionHelper.ExtractDbException(exInfo.SqlException) as SqlException;
             if (sqle != null)
-            {
-                switch (sqle.Number)
                 {
-                    case 17:
-                    // 	SQL Server does not exist or access denied.
-                    case 4060:
-                    // Invalid Database
-                    case 18456:
-                        // Login Failed
-                        return new DatabaseException(sqle.Message, sqle);
-                    case 547:
-                        // ForeignKey Violation
-                        return new Hexa.Core.ConstraintException(_ParseConstraintName(sqle.Message), sqle);
-                    case 1205:
-                        // DeadLock Victim
-                        return new DatabaseException(sqle.Message, sqle);
-                    case 2627:
-                    case 2601:
-                        // Unique Index/Constriant Violation
-                        return new Hexa.Core.ConstraintException(_ParseConstraintName(sqle.Message), sqle);
-                    default:
-                        // throw a general DAL Exception
-                        return new DatabaseException(sqle.Message, sqle);
+                    switch (sqle.Number)
+                        {
+                        case 17:
+                            // 	SQL Server does not exist or access denied.
+                        case 4060:
+                            // Invalid Database
+                        case 18456:
+                            // Login Failed
+                            return new DatabaseException(sqle.Message, sqle);
+                        case 547:
+                            // ForeignKey Violation
+                            return new Hexa.Core.ConstraintException(_ParseConstraintName(sqle.Message), sqle);
+                        case 1205:
+                            // DeadLock Victim
+                            return new DatabaseException(sqle.Message, sqle);
+                        case 2627:
+                        case 2601:
+                            // Unique Index/Constriant Violation
+                            return new Hexa.Core.ConstraintException(_ParseConstraintName(sqle.Message), sqle);
+                        default:
+                            // throw a general DAL Exception
+                            return new DatabaseException(sqle.Message, sqle);
+                        }
                 }
-            }
             return SQLStateConverter.HandledNonSpecificException(exInfo.SqlException,
-                exInfo.Message, exInfo.Sql);
+                    exInfo.Message, exInfo.Sql);
         }
 
         /// <summary>

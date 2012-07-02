@@ -6,9 +6,9 @@ using Hexa.Core.ServiceModel.Security;
 namespace Hexa.Core.ServiceModel
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
+/// <summary>
+///
+/// </summary>
     public class Settings : ConfigurationSection
     {
         /// <summary>
@@ -19,56 +19,60 @@ namespace Hexa.Core.ServiceModel
         internal static Settings Get()
         {
             try
-            {
-                return ConfigurationManager.GetSection("Hexa.Core.ServiceModel.Settings") as Settings;
-            }
+                {
+                    return ConfigurationManager.GetSection("Hexa.Core.ServiceModel.Settings") as Settings;
+                }
             catch
-            {
-                return null;
-            }
+                {
+                    return null;
+                }
         }
 
-		/// <summary>
-		/// Gets a boolean value indicating whether debug should be enabled or not.
-		/// </summary>
-		/// <value><c>true</c> if debug; otherwise, <c>false</c>.</value>
-		[ConfigurationProperty("Debug", DefaultValue="true")]
-		public bool Debug
-		{
-			get 
-            {
-				return (bool)this["Debug"];
-			}
-		}
+        /// <summary>
+        /// Gets a boolean value indicating whether debug should be enabled or not.
+        /// </summary>
+        /// <value><c>true</c> if debug; otherwise, <c>false</c>.</value>
+        [ConfigurationProperty("Debug", DefaultValue="true")]
+        public bool Debug
+        {
+            get
+                {
+                    return (bool)this["Debug"];
+                }
+        }
 
-		[ConfigurationProperty("SecurityMode", IsRequired = false, DefaultValue = SecurityMode.Message)]
-		internal SecurityMode SecurityMode
-		{
-			get {
-				if (String.IsNullOrEmpty(this["SecurityMode"] as string))
-					return SecurityMode.Message;
+        [ConfigurationProperty("SecurityMode", IsRequired = false, DefaultValue = SecurityMode.Message)]
+        internal SecurityMode SecurityMode
+        {
+            get
+                {
+                    if (String.IsNullOrEmpty(this["SecurityMode"] as string))
+                        return SecurityMode.Message;
 
-				return (SecurityMode)Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string); 
-			}
-		}
+                    return (SecurityMode)Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
+                }
+        }
 
-		[ConfigurationProperty("ServiceCredentials", IsRequired = true)]
-		internal ServiceCredentialsElement ServiceCredentials
-		{
-			get { return this["ServiceCredentials"] as ServiceCredentialsElement; }
-		}
-        
+        [ConfigurationProperty("ServiceCredentials", IsRequired = true)]
+        internal ServiceCredentialsElement ServiceCredentials
+        {
+            get
+                {
+                    return this["ServiceCredentials"] as ServiceCredentialsElement;
+                }
+        }
+
         [ConfigurationProperty("ExcludedServices", IsRequired = false)]
         public ServicesCollection ExcludedServices
         {
             get
-            {
-                return this["ExcludedServices"] as ServicesCollection;
-            }
+                {
+                    return this["ExcludedServices"] as ServicesCollection;
+                }
             set
-            {
-                this["ExcludedServices"] = value;
-            }
+                {
+                    this["ExcludedServices"] = value;
+                }
         }
     }
 
@@ -77,17 +81,17 @@ namespace Hexa.Core.ServiceModel
         public Url this[int index]
         {
             get
-            {
-                return base.BaseGet(index) as Url;
-            }
-            set
-            {
-                if (base.BaseGet(index) != null)
                 {
-                    base.BaseRemoveAt(index);
+                    return base.BaseGet(index) as Url;
                 }
-                this.BaseAdd(index, value);
-            }
+            set
+                {
+                    if (base.BaseGet(index) != null)
+                        {
+                            base.BaseRemoveAt(index);
+                        }
+                    this.BaseAdd(index, value);
+                }
         }
 
         protected override void BaseAdd(ConfigurationElement element)
@@ -123,14 +127,14 @@ namespace Hexa.Core.ServiceModel
         public string Name
         {
             get
-            {
-                return this["Name"] as string;
-            }
+                {
+                    return this["Name"] as string;
+                }
 
             set
-            {
-                this["Name"] = value;
-            }
+                {
+                    this["Name"] = value;
+                }
         }
 
     }

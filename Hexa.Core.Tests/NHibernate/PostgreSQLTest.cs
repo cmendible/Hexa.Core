@@ -6,14 +6,14 @@ using NUnit.Framework;
 
 namespace Hexa.Core.Mono.Tests
 {
-	[TestFixture()]
+    [TestFixture()]
     public class PostgreSQLTest
-	{
-		[SetUp]
+    {
+        [SetUp]
         public void FixtureSetup()
         {
-			var cnnString = "Server=127.0.0.1;Port=5432;Database=HexaCorePostgreSqlTest;User Id=postgres;Password=password;";
-			
+            var cnnString = "Server=127.0.0.1;Port=5432;Database=HexaCorePostgreSqlTest;User Id=postgres;Password=password;";
+
             ApplicationContext.Start(cnnString);
 
             // Validator and TraceManager
@@ -23,7 +23,7 @@ namespace Hexa.Core.Mono.Tests
 
             // Context Factory
             var ctxFactory = new NHContextFactory(DbProvider.PostgreSQLProvider,
-                cnnString, string.Empty, typeof(PostgreSQLTest).Assembly, ApplicationContext.Container);
+                                                  cnnString, string.Empty, typeof(PostgreSQLTest).Assembly, ApplicationContext.Container);
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -51,17 +51,17 @@ namespace Hexa.Core.Mono.Tests
 //            }
 //            finally
 //            {
-//               
+//
 //            }
             ApplicationContext.Stop();
         }
-		
-		[Test]
+
+        [Test]
         [Ignore]
-		public void SimpleTest()
-		{
-			Assert.IsTrue(true);
-		}
-	}
+        public void SimpleTest()
+        {
+            Assert.IsTrue(true);
+        }
+    }
 }
 

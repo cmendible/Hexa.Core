@@ -23,32 +23,32 @@ using NHibernate.Dialect;
 namespace Hexa.Core.Domain
 {
     public class RootEntityMap<TEntity> : BaseClassMap<TEntity>
-		where TEntity : RootEntity<TEntity>
-	{
-		public RootEntityMap()
-			: base()
-		{
-			// Setup UniqueId property as CombGuid
-			Id(x => x.UniqueId)
-				.GeneratedBy.GuidComb();
+        where TEntity : RootEntity<TEntity>
+    {
+        public RootEntityMap()
+        : base()
+        {
+            // Setup UniqueId property as CombGuid
+            Id(x => x.UniqueId)
+            .GeneratedBy.GuidComb();
 
-			// Use versioned timestamp as optimistick lock mechanism.
-			OptimisticLock.Version();
+            // Use versioned timestamp as optimistick lock mechanism.
+            OptimisticLock.Version();
 
-			// Create Insert statements dynamically.
-			DynamicInsert();
-			// Create Update statements dynamically.
-			DynamicUpdate();
+            // Create Insert statements dynamically.
+            DynamicInsert();
+            // Create Update statements dynamically.
+            DynamicUpdate();
 
-			// Setup timestamp..
+            // Setup timestamp..
             if (Dialect is SQLiteDialect)
                 Version(x => x.Version)
-                    .Column("Timestamp")
-				    .CustomType<TicksAsString>();
+                .Column("Timestamp")
+                .CustomType<TicksAsString>();
             else
                 Version(x => x.Version)
-                    .Column("`Timestamp`")
-                    .CustomType<TicksAsString>();
-		}
-	}
+                .Column("`Timestamp`")
+                .CustomType<TicksAsString>();
+        }
+    }
 }

@@ -23,54 +23,54 @@ using System.Reflection;
 
 namespace GNU.Gettext
 {
-    /// <summary>
-    /// Class used to call Gettext.
-    /// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
-	public sealed class GettextHelper
+/// <summary>
+/// Class used to call Gettext.
+/// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Gettext")]
+    public sealed class GettextHelper
     {
-		private GettextHelper()
-		{ 
-		}
+        private GettextHelper()
+        {
+        }
 
         /// <summary>
         /// Gettext resource manager.
         /// </summary>
         private static Dictionary<string, GettextResourceManager> _ResourceManager = new Dictionary<string, GettextResourceManager>();
 
-		/// <summary>
-		/// Translates a string using Gettext resource manager.
-		/// </summary>
-		/// <param name="key">The string.</param>
-		/// <returns></returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
-		public static string t(string key)
-		{
-			return t(key, Assembly.GetCallingAssembly());
-		}
+        /// <summary>
+        /// Translates a string using Gettext resource manager.
+        /// </summary>
+        /// <param name="key">The string.</param>
+        /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
+        public static string t(string key)
+        {
+            return t(key, Assembly.GetCallingAssembly());
+        }
 
-		/// <summary>
-		/// Translates a string using Gettext resource manager.
-		/// </summary>
-		/// <param name="key">The string</param>
-		/// <param name="callingAssembly">The calling assembly.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Translates a string using Gettext resource manager.
+        /// </summary>
+        /// <param name="key">The string</param>
+        /// <param name="callingAssembly">The calling assembly.</param>
+        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "t")]
-		public static string t(string key, Assembly callingAssembly)
-		{
-			// Get Assembly Name
-			string assemblyName = callingAssembly.GetName().Name;
+        public static string t(string key, Assembly callingAssembly)
+        {
+            // Get Assembly Name
+            string assemblyName = callingAssembly.GetName().Name;
 
-			if (!_ResourceManager.Keys.Contains(assemblyName))
-				_ResourceManager.Add(assemblyName, new GettextResourceManager(assemblyName, callingAssembly));
+            if (!_ResourceManager.Keys.Contains(assemblyName))
+                _ResourceManager.Add(assemblyName, new GettextResourceManager(assemblyName, callingAssembly));
 
-			return _ResourceManager[assemblyName].GetString(key);
-		}
+            return _ResourceManager[assemblyName].GetString(key);
+        }
 
-		public static void ForceInvariantCulture()
-		{
-			System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
-		}
+        public static void ForceInvariantCulture()
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+        }
     }
 
 }

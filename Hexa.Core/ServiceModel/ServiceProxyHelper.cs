@@ -23,13 +23,13 @@ using System.ServiceModel;
 namespace Hexa.Core.ServiceModel
 {
 
-	/// <summary>
-    /// Generic helper class for a WCF service proxy.
-    /// </summary>
-    /// <typeparam name="TProxy">The type of WCF service proxy to wrap.</typeparam>
-    /// <typeparam name="TChannel">The type of WCF service interface to wrap.</typeparam>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
-	public class ServiceProxyHelper<TProxy, TChannel>: IDisposable
+/// <summary>
+/// Generic helper class for a WCF service proxy.
+/// </summary>
+/// <typeparam name="TProxy">The type of WCF service proxy to wrap.</typeparam>
+/// <typeparam name="TChannel">The type of WCF service interface to wrap.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+    public class ServiceProxyHelper<TProxy, TChannel>: IDisposable
         where TProxy : ClientBase<TChannel>, new()
         where TChannel : class
     {
@@ -44,12 +44,12 @@ namespace Hexa.Core.ServiceModel
         public TProxy Proxy
         {
             get
-            {
-                if (_proxy != null)
-                    return _proxy;
-                else
-                    throw new ObjectDisposedException("ServiceProxyHelper");
-            }
+                {
+                    if (_proxy != null)
+                        return _proxy;
+                    else
+                        throw new ObjectDisposedException("ServiceProxyHelper");
+                }
         }
 
         /// <summary>
@@ -57,46 +57,46 @@ namespace Hexa.Core.ServiceModel
         /// </summary>
         public ServiceProxyHelper(TProxy proxy)
         {
-			_proxy = proxy;
+            _proxy = proxy;
         }
 
         /// <summary>
         /// Disposes of this instance.
         /// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly")]
-		public void Dispose()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly")]
+        public void Dispose()
         {
             try
-            {
-                if (_proxy != null)
                 {
-                    if (_proxy.State != CommunicationState.Faulted)
-                    {
-                        _proxy.Close();
-                    }
-                    else
-                    {
-                        _proxy.Abort();
-                    }
+                    if (_proxy != null)
+                        {
+                            if (_proxy.State != CommunicationState.Faulted)
+                                {
+                                    _proxy.Close();
+                                }
+                            else
+                                {
+                                    _proxy.Abort();
+                                }
+                        }
                 }
-            }
             catch (CommunicationException)
-            {
-                _proxy.Abort();
-            }
+                {
+                    _proxy.Abort();
+                }
             catch (TimeoutException)
-            {
-                _proxy.Abort();
-            }
+                {
+                    _proxy.Abort();
+                }
             catch (Exception)
-            {
-                _proxy.Abort();
-                throw;
-            }
+                {
+                    _proxy.Abort();
+                    throw;
+                }
             finally
-            {
-                _proxy = null;
-            }
+                {
+                    _proxy = null;
+                }
         }
     }
 

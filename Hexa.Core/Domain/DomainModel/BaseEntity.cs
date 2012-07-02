@@ -5,21 +5,21 @@ using System;
 
 namespace Hexa.Core.Domain
 {
-    /// <summary>
-    /// Base entity with an abstract key.
-    /// </summary>
-    /// <remarks>
-    /// Derived from SharpArch.Core.EntityWithTypedId.
-    /// For a discussion of this object, see 
-    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-    /// </remarks>
+/// <summary>
+/// Base entity with an abstract key.
+/// </summary>
+/// <remarks>
+/// Derived from SharpArch.Core.EntityWithTypedId.
+/// For a discussion of this object, see
+/// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
+/// </remarks>
     [Serializable]
     public abstract class BaseEntity<TKey> : ValidatableObject
         where TKey : IEquatable<TKey>
     {
         private int? cachedHashcode;
         /// <summary>
-        /// To help ensure hashcode uniqueness, a carefully selected random number multiplier 
+        /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
         /// Algorithms in Java asserts that 31, 33, 37, 39 and 41 will produce the fewest number
         /// of collissions.  See http://computinglife.wordpress.com/2008/11/20/why-do-hash-functions-use-prime-numbers/
@@ -30,17 +30,21 @@ namespace Hexa.Core.Domain
         #region BaseEntity Members
         /// <summary>
         /// Id may be of type string, int, custom type, etc.
-        /// Setter is protected to allow unit tests to set this property via reflection and to allow 
+        /// Setter is protected to allow unit tests to set this property via reflection and to allow
         /// domain objects more flexibility in setting this for those objects with assigned Ids.
         /// It's virtual to allow NHibernate-backed objects to be lazily loaded.
-        /// 
+        ///
         /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
         /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
         /// </summary>
-        protected virtual TKey EntityId { get; set; }
+        protected virtual TKey EntityId
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Transient objects are not associated with an item already in storage.  For instance,
-        /// a Customer is transient if its Id is 0.  It's virtual to allow NHibernate-backed 
+        /// a Customer is transient if its Id is 0.  It's virtual to allow NHibernate-backed
         /// objects to be lazily loaded.
         /// </summary>
         public virtual bool IsTransient()
@@ -51,14 +55,14 @@ namespace Hexa.Core.Domain
 
         #region Entity comparison support && IEquatable<>
         /// <summary>
-        /// Returns true if self and the provided entity have the same Id values 
+        /// Returns true if self and the provided entity have the same Id values
         /// and the Ids are not of the default Id value
         /// </summary>
         private bool HasSameNonDefaultIdAs(BaseEntity<TKey> compareTo)
         {
             return !IsTransient() &&
-                  !compareTo.IsTransient() &&
-                  EntityId.Equals(compareTo.EntityId);
+                   !compareTo.IsTransient() &&
+                   EntityId.Equals(compareTo.EntityId);
         }
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -83,8 +87,8 @@ namespace Hexa.Core.Domain
             if (HasSameNonDefaultIdAs(compareTo))
                 return true;
 
-            // Since the Ids aren't the same, both of them must be transient to 
-            // compare domain signatures; because if one is transient and the 
+            // Since the Ids aren't the same, both of them must be transient to
+            // compare domain signatures; because if one is transient and the
             // other is a persisted entity, then they cannot be the same object.
             return IsTransient() && compareTo.IsTransient(); //&& HasSameObjectSignatureAs(compareTo);
         }
@@ -92,7 +96,7 @@ namespace Hexa.Core.Domain
         protected virtual Type TypeUnproxied()
         {
             return GetType();
-        } 
+        }
 
         /// <summary>
         /// This is used to provide the hashcode identifier of an object using the signature
@@ -111,34 +115,34 @@ namespace Hexa.Core.Domain
                 return cachedHashcode.Value;
 
             if (IsTransient())
-            {
-                cachedHashcode = base.GetHashCode();
-            }
-            else
-            {
-                unchecked
                 {
-                    // It's possible for two objects to return the same hash code based on 
-                    // identically valued properties, even if they're of two different types, 
-                    // so we include the object's type in the hash calculation
-                    int hashCode = GetType().GetHashCode();
-                    cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ EntityId.GetHashCode();
+                    cachedHashcode = base.GetHashCode();
                 }
-            }
+            else
+                {
+                    unchecked
+                    {
+                        // It's possible for two objects to return the same hash code based on
+                        // identically valued properties, even if they're of two different types,
+                        // so we include the object's type in the hash calculation
+                        int hashCode = GetType().GetHashCode();
+                        cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ EntityId.GetHashCode();
+                    }
+                }
 
             return cachedHashcode.Value;
         }
         #endregion
     }
 
-    /// <summary>
-    /// Base entity with an abstract key which implements IEquatable.
-    /// </summary>
-    /// <remarks>
-    /// Derived from SharpArch.Core.EntityWithTypedId.
-    /// For a discussion of this object, see 
-    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-    /// </remarks>
+/// <summary>
+/// Base entity with an abstract key which implements IEquatable.
+/// </summary>
+/// <remarks>
+/// Derived from SharpArch.Core.EntityWithTypedId.
+/// For a discussion of this object, see
+/// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
+/// </remarks>
     [Serializable]
     public abstract class BaseEntity<TEntity, TKey> : BaseEntity<TKey>, IEquatable<TEntity>
         where TKey : IEquatable<TKey>
@@ -154,9 +158,9 @@ namespace Hexa.Core.Domain
         }
     }
 
-    /// <summary>
-    /// BaseEntity with a long Primary Id.
-    /// </summary>
+/// <summary>
+/// BaseEntity with a long Primary Id.
+/// </summary>
     [Serializable]
     public abstract class BaseEntityWithId<TEntity> : BaseEntity<TEntity, long>
     {
@@ -171,14 +175,20 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual long Id
         {
-            get { return (long)base.EntityId; }
-            protected set { base.EntityId = (long)value; }
+            get
+                {
+                    return (long)base.EntityId;
+                }
+            protected set
+                {
+                    base.EntityId = (long)value;
+                }
         }
     }
 
-    /// <summary>
-    /// BaseEntity with an Guid/UniqueId Primary Id.
-    /// </summary>
+/// <summary>
+/// BaseEntity with an Guid/UniqueId Primary Id.
+/// </summary>
     [Serializable]
     public abstract class BaseEntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
     {
@@ -193,8 +203,14 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual Guid UniqueId
         {
-            get { return (Guid)base.EntityId; }
-            protected set { base.EntityId = (Guid)value; }
+            get
+                {
+                    return (Guid)base.EntityId;
+                }
+            protected set
+                {
+                    base.EntityId = (Guid)value;
+                }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Hexa.Core.Domain
     {
         bool IsEntityRegistered(string entityName);
 
-        IEntityAuditTrail CreateAuditTrail(string entityName, string entityUniqueId, string propertyName, 
-            object oldValue, object newValue, string updatedBy, DateTime updatedAt);
+        IEntityAuditTrail CreateAuditTrail(string entityName, string entityUniqueId, string propertyName,
+                                           object oldValue, object newValue, string updatedBy, DateTime updatedAt);
     }
 }

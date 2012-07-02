@@ -22,72 +22,72 @@ using System.Web.UI;
 
 namespace Hexa.Core.Web.UI
 {
-	public static class ControlExtensions
-	{
-		/// <summary>
-		/// Finds the control.
-		/// </summary>
-		/// <param name="parent">The parent.</param>
-		/// <param name="controlID">The control ID.</param>
-		/// <returns></returns>
-		public static Control FindControlRecursive(this Control parent, string controlId)
-		{
-			Control current = parent;
-			LinkedList<Control> controlList = new LinkedList<Control>();
+    public static class ControlExtensions
+    {
+        /// <summary>
+        /// Finds the control.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="controlID">The control ID.</param>
+        /// <returns></returns>
+        public static Control FindControlRecursive(this Control parent, string controlId)
+        {
+            Control current = parent;
+            LinkedList<Control> controlList = new LinkedList<Control>();
 
-			while (current != null)
-			{
-				if (current.ID == controlId)
-				{
-					return current;
-				}
+            while (current != null)
+                {
+                    if (current.ID == controlId)
+                        {
+                            return current;
+                        }
 
-				foreach (Control child in current.Controls)
-				{
-					if (child.ID == controlId)
-					{
-						return child;
-					}
-					if (child.HasControls())
-					{
-						controlList.AddLast(child);
-					}
-				}
+                    foreach (Control child in current.Controls)
+                        {
+                            if (child.ID == controlId)
+                                {
+                                    return child;
+                                }
+                            if (child.HasControls())
+                                {
+                                    controlList.AddLast(child);
+                                }
+                        }
 
-				if (controlList.Count == 0)
-				{
-					return null;
-				}
+                    if (controlList.Count == 0)
+                        {
+                            return null;
+                        }
 
-				current = controlList.First.Value;
-				controlList.Remove(current);
-			}
+                    current = controlList.First.Value;
+                    controlList.Remove(current);
+                }
 
-			return null;
-		}
+            return null;
+        }
 
-		/// <summary>
-		/// Determines whether the control is inside an <see cref="INamingContainer"/>.
-		/// </summary>
-		/// <param name="control">The control.</param>
-		/// <returns>
-		/// 	<c>true</c> if inside an <see cref="INamingContainer"/>; otherwise, <c>false</c>.
-		/// </returns>
-		public static bool IsInNamingContainer(this Control control)
-		{
-			// If control is Page or null return false.
-			if (control == null || control is Page)
-			{
-				return false;
-			}
+        /// <summary>
+        /// Determines whether the control is inside an <see cref="INamingContainer"/>.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>
+        /// 	<c>true</c> if inside an <see cref="INamingContainer"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsInNamingContainer(this Control control)
+        {
+            // If control is Page or null return false.
+            if (control == null || control is Page)
+                {
+                    return false;
+                }
 
-			// Return true if inside an INamingContainer
-			if (control is INamingContainer)
-			{
-				return true;
-			}
+            // Return true if inside an INamingContainer
+            if (control is INamingContainer)
+                {
+                    return true;
+                }
 
-			return IsInNamingContainer(control.NamingContainer);
-		}
-	}
+            return IsInNamingContainer(control.NamingContainer);
+        }
+    }
 }

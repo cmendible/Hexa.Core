@@ -22,33 +22,33 @@ using System.Linq;
 
 namespace Hexa.Core.Validation
 {
-	/// <summary>
-	/// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
-	/// </summary>
-	/// <typeparam name="TEntity">The type of the entity.</typeparam>
+/// <summary>
+/// Returns the IValidationInfos corresponding to the DataAnnotations in type Tentity
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class DataAnnotationValidationInfoProvider<TEntity> : IValidationInfoProvider
     {
         #region IValidationInfoProvider Members
 
         /// <summary>
-		/// Gets the validation info.
-		/// </summary>
-		/// <returns></returns>
-		public IList<IValidationInfo> GetValidationInfo()
-		{
-			return DataAnnotationHelper.GetValidationInfoList<TEntity>();
-		}
+        /// Gets the validation info.
+        /// </summary>
+        /// <returns></returns>
+        public IList<IValidationInfo> GetValidationInfo()
+        {
+            return DataAnnotationHelper.GetValidationInfoList<TEntity>();
+        }
 
-		/// <summary>
-		/// Gets the validation info.
-		/// </summary>
-		/// <param name="propertyName">Name of the property.</param>
-		/// <returns></returns>
-		public IList<IValidationInfo> GetValidationInfo(string propertyName)
-		{
-			return GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
-		}
+        /// <summary>
+        /// Gets the validation info.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        public IList<IValidationInfo> GetValidationInfo(string propertyName)
+        {
+            return GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

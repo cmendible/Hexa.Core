@@ -22,46 +22,46 @@ using System;
 namespace Hexa.Core.Domain
 {
     public class AuditableRootEntityMap<TEntity> : AuditableRootEntityMap<TEntity, string>
-		where TEntity : AuditableRootEntity<TEntity>
-	{
+        where TEntity : AuditableRootEntity<TEntity>
+    {
         public AuditableRootEntityMap()
-			: base()
-		{
-		}
-	}
+        : base()
+        {
+        }
+    }
 
     public class AuditableRootEntityMap<TEntity, TKey> : RootEntityMap<TEntity>
         where TEntity : AuditableRootEntity<TEntity>
     {
         public AuditableRootEntityMap()
-            : base()
+        : base()
         {
             Map(x => x.CreatedAt)
-                .Not.Nullable();
+            .Not.Nullable();
 
             Map(x => x.UpdatedAt)
-                .Not.Nullable();
+            .Not.Nullable();
 
             var keyType = typeof(TKey);
             if (keyType.Equals(typeof(string)))
-            {
-                Map(x => x.CreatedBy);
-                Map(x => x.UpdatedBy);
-            }
+                {
+                    Map(x => x.CreatedBy);
+                    Map(x => x.UpdatedBy);
+                }
             else if (keyType.Equals(typeof(Guid)))
-            {
-                Map(x => x.CreatedBy)
+                {
+                    Map(x => x.CreatedBy)
                     .CustomType<StringToGuid>();
-                Map(x => x.UpdatedBy)
+                    Map(x => x.UpdatedBy)
                     .CustomType<StringToGuid>();
-            }
+                }
             else if (keyType.Equals(typeof(int)))
-            {
-                Map(x => x.CreatedBy)
+                {
+                    Map(x => x.CreatedBy)
                     .CustomType<StringToInt>();
-                Map(x => x.UpdatedBy)
+                    Map(x => x.UpdatedBy)
                     .CustomType<StringToInt>();
-            }
+                }
         }
 
     }
