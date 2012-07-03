@@ -26,6 +26,7 @@
   
   <PropertyGroup>
       <CodeMetricsTool>"$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
+	  <Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
   </PropertyGroup>
 
   <!-- This is needed by MSBuild to locate the NUnit task -->
@@ -81,8 +82,14 @@
 
 	<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(ProjectDirectory)\Reports\CodeMetricsReport.xml&quot; /f:&quot;$(ProjectDirectory)\Hexa.Core.Tests\bin\Release\Hexa*.dll&quot; /gac' />
 
+	<!-- Run Simian -->
+	<Message Text="Running code Simian..." Importance="high" />	
+	
+	<Exec Command='$(Simian) -formatter=xml:$(ProjectDirectory)\Reports\Simian.xml -includes=$(ProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' />
+	
 	<!-- Run FxCop -->
 	<Message Text="Starting FxCop Analysis..." Importance="high" />
+	
     <ItemGroup>
 		<FilesToAnalyze Include="$(ProjectDirectory)/**/bin/Release/Hexa*.dll" Exclude="$(ProjectDirectory)/**/bin/Release/Hexa*.Tests.dll"/>
 		<DependencyDirectories Include="$(ProjectDirectory)\libs\**\*.dll"/>
