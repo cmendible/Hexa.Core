@@ -1,10 +1,10 @@
-﻿using System.Configuration;
-using Hexa.Core.Data;
-using Hexa.Core.Domain;
-using NUnit.Framework;
-
-namespace Hexa.Core.Tests.Sql
+﻿namespace Hexa.Core.Tests.Sql
 {
+    using System.Configuration;
+    using Hexa.Core.Data;
+    using Hexa.Core.Domain;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SqlCeTests : BaseDatabaseTest
     {

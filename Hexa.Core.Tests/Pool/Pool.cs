@@ -54,19 +54,19 @@ namespace Hexa.Core.Tests
         [Test]
         public void CreatePool()
         {
-            _Pool = new Pool<ExpirableEntity>(10, (p) => { return new ExpirableEntity(); }, true);
-            ExpirableEntity obj = _Pool.Acquire();
+            this._Pool = new Pool<ExpirableEntity>(10, (p) => { return new ExpirableEntity(); }, true);
+            ExpirableEntity obj = this._Pool.Acquire();
 
             Assert.IsNotNull(obj);
             Assert.AreEqual(typeof (ExpirableEntity), obj.GetType());
 
-            _objectFromPool = obj;
+            this._objectFromPool = obj;
         }
 
         [Test]
         public void ReleaseObject()
         {
-            _Pool.Release(_objectFromPool);
+            this._Pool.Release(this._objectFromPool);
         }
     }
 }

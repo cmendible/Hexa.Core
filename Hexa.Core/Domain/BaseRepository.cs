@@ -40,7 +40,7 @@ namespace Hexa.Core.Domain
 
         protected ILogger Logger
         {
-            get { return _logger; }
+            get { return this._logger; }
         }
 
         #endregion
@@ -58,15 +58,15 @@ namespace Hexa.Core.Domain
 
             IUnitOfWork context = UnitOfWorkScope.Start();
 
-            //check preconditions
+            // check preconditions
             if (context == null)
                 throw new ArgumentNullException("context", "No context in scope.");
 
-            //set internal values
-            _context = context;
-            _logger = loggerFactory.Create(GetType());
+            // set internal values
+            this._context = context;
+            this._logger = loggerFactory.Create(GetType());
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "",
                               typeof (TEntity).Name));
@@ -79,7 +79,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         protected IUnitOfWork Context
         {
-            get { return _context; }
+            get { return this._context; }
         }
 
         #region IRepository<TEntity> Members
@@ -89,7 +89,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _context; }
+            get { return this._context; }
         }
 
         /// <summary>
@@ -98,14 +98,14 @@ namespace Hexa.Core.Domain
         /// <param name="item"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         public virtual void Add(TEntity item)
         {
-            //check item
+            // check item
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            //add object to IObjectSet for this type
-            (_context.CreateSet<TEntity>()).AddObject(item);
+            // add object to IObjectSet for this type
+            (this._context.CreateSet<TEntity>()).AddObject(item);
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Added a {0} entity",
                               typeof (TEntity).Name));
@@ -117,21 +117,21 @@ namespace Hexa.Core.Domain
         /// <param name="item"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         public virtual void Remove(TEntity item)
         {
-            //check item
+            // check item
             if (item == null)
                 throw new ArgumentNullException("item");
 
 
-            IEntitySet<TEntity> objectSet = (_context.CreateSet<TEntity>());
+            IEntitySet<TEntity> objectSet = (this._context.CreateSet<TEntity>());
 
-            //Attach object to context and delete this
+            // Attach object to context and delete this
             // this is valid only if T is a type in model
             objectSet.Attach(item);
 
-            //delete object to IObjectSet for this type
+            // delete object to IObjectSet for this type
             objectSet.DeleteObject(item);
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Deleted a {0} entity",
                               typeof (TEntity).Name));
@@ -146,9 +146,9 @@ namespace Hexa.Core.Domain
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            _context.CreateSet<TEntity>().Attach(item);
+            this._context.CreateSet<TEntity>().Attach(item);
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Attached {0} to context",
                               typeof (TEntity).Name));
@@ -156,14 +156,14 @@ namespace Hexa.Core.Domain
 
         public virtual void Modify(TEntity item)
         {
-            //check arguments
+            // check arguments
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            //apply changes for item object
-            _context.CreateSet<TEntity>().ModifyObject(item);
+            // apply changes for item object
+            this._context.CreateSet<TEntity>().ModifyObject(item);
 
-            _logger.Info(
+            this._logger.Info(
                 string.Format(CultureInfo.InvariantCulture,
                               "Applied changes to: {0}",
                               typeof (TEntity).Name));
@@ -175,13 +175,13 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public IEnumerable<TEntity> GetAll()
         {
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting all {0}",
                               typeof (TEntity).Name));
 
-            //Create IObjectSet and perform query
-            return (_context.CreateSet<TEntity>()).AsEnumerable();
+            // Create IObjectSet and perform query
+            return (this._context.CreateSet<TEntity>()).AsEnumerable();
         }
 
         /// <summary>
@@ -194,12 +194,12 @@ namespace Hexa.Core.Domain
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting {0} by specification",
                               typeof (TEntity).Name));
 
-            return (_context.CreateSet<TEntity>()
+            return (this._context.CreateSet<TEntity>()
                 .Where(specification.SatisfiedBy())
                 .AsEnumerable());
         }
@@ -211,17 +211,17 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>b
         public IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter)
         {
-            //checking query arguments
+            // checking query arguments
             if (filter == null)
                 throw new ArgumentNullException("filter");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting filtered elements {0}",
                               typeof (TEntity).Name, filter.ToString()));
 
-            //Create IObjectSet and perform query
-            return _context.CreateSet<TEntity>()
+            // Create IObjectSet and perform query
+            return this._context.CreateSet<TEntity>()
                 .Where(filter)
                 .ToList();
         }
@@ -237,20 +237,20 @@ namespace Hexa.Core.Domain
                                                            Expression<Func<TEntity, S>> orderByExpression,
                                                            bool ascending)
         {
-            //Checking query arguments
+            // Checking query arguments
             if (filter == null)
                 throw new ArgumentNullException("filter");
 
             if (orderByExpression == null)
                 throw new ArgumentNullException("orderByExpression");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting filtered elements {0}",
                               typeof (TEntity).Name, filter.ToString()));
 
-            //Create IObjectSet for this type and perform query
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            // Create IObjectSet for this type and perform query
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             return (ascending)
                        ? objectSet
@@ -275,7 +275,7 @@ namespace Hexa.Core.Domain
                                                           Expression<Func<TEntity, S>>
                                                               orderByExpression, bool ascending)
         {
-            //checking arguments for this query
+            // checking arguments for this query
             if (pageIndex < 0)
                 throw new ArgumentException("pageIndex");
 
@@ -285,14 +285,14 @@ namespace Hexa.Core.Domain
             if (orderByExpression == null)
                 throw new ArgumentNullException("orderByExpression");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}",
                               typeof (TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
-            //Create associated IObjectSet and perform query
+            // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             int total = objectSet.Count();
 
@@ -323,7 +323,7 @@ namespace Hexa.Core.Domain
                                                           Expression<Func<TEntity, S>> orderByExpression,
                                                           ISpecification<TEntity> specification, bool ascending)
         {
-            //checking arguments for this query
+            // checking arguments for this query
             if (pageIndex < 0)
                 throw new ArgumentException("pageIndex");
 
@@ -336,14 +336,14 @@ namespace Hexa.Core.Domain
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}",
                               typeof (TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
-            //Create associated IObjectSet and perform query
+            // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -365,7 +365,7 @@ namespace Hexa.Core.Domain
                                                           Expression<Func<TEntity, S>> orderByExpression,
                                                           Expression<Func<TEntity, bool>> filter, bool ascending)
         {
-            //checking arguments for this query
+            // checking arguments for this query
             if (pageIndex < 0)
                 throw new ArgumentException("pageIndex");
 
@@ -375,18 +375,18 @@ namespace Hexa.Core.Domain
             if (orderByExpression == null)
                 throw new ArgumentNullException("orderByExpression");
 
-            //checking query arguments
+            // checking query arguments
             if (filter == null)
                 throw new ArgumentNullException("filter");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}",
                               typeof (TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
-            //Create associated IObjectSet and perform query
+            // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -408,7 +408,7 @@ namespace Hexa.Core.Domain
                                                        IOrderBySpecification<TEntity> orderBySpecification,
                                                        ISpecification<TEntity> specification)
         {
-            //checking arguments for this query
+            // checking arguments for this query
             if (pageIndex < 0)
                 throw new ArgumentException("pageIndex");
 
@@ -418,17 +418,17 @@ namespace Hexa.Core.Domain
             if (orderBySpecification == null)
                 throw new ArgumentNullException("orderBySpecification");
 
-            //checking query arguments
+            // checking query arguments
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}",
                               typeof (TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
-            //Create associated IObjectSet and perform query
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            // Create associated IObjectSet and perform query
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -445,7 +445,7 @@ namespace Hexa.Core.Domain
                                                        IOrderBySpecification<TEntity> orderBySpecification,
                                                        Expression<Func<TEntity, bool>> filter)
         {
-            //checking arguments for this query
+            // checking arguments for this query
             if (pageIndex < 0)
                 throw new ArgumentException("pageIndex");
 
@@ -455,17 +455,17 @@ namespace Hexa.Core.Domain
             if (orderBySpecification == null)
                 throw new ArgumentNullException("orderBySpecification");
 
-            //checking query arguments
+            // checking query arguments
             if (filter == null)
                 throw new ArgumentNullException("filter");
 
-            _logger.Debug(
+            this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}",
                               typeof (TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
-            //Create associated IObjectSet and perform query
-            IEntitySet<TEntity> objectSet = _context.CreateSet<TEntity>();
+            // Create associated IObjectSet and perform query
+            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();

@@ -31,9 +31,9 @@ namespace Hexa.Core.Domain
     {
         #region IPreInsertEventListener Members
 
-        public bool OnPreInsert(PreInsertEvent e)
+        public bool OnPreInsert(PreInsertEvent @event)
         {
-            var auditable = e.Entity as IAuditableEntity;
+            var auditable = @event.Entity as IAuditableEntity;
             if (auditable == null)
                 return false;
 
@@ -43,10 +43,10 @@ namespace Hexa.Core.Domain
 
             DateTime createdAt = DateTime.Now;
 
-            _Set(e.Persister, e.State, "CreatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "CreatedAt", createdAt);
-            _Set(e.Persister, e.State, "UpdatedAt", createdAt);
+            _Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
+            _Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            _Set(@event.Persister, @event.State, "CreatedAt", createdAt);
+            _Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
 
             auditable.CreatedBy = userUniqueId;
             auditable.UpdatedBy = userUniqueId;
@@ -60,9 +60,9 @@ namespace Hexa.Core.Domain
 
         #region IPreUpdateEventListener Members
 
-        public bool OnPreUpdate(PreUpdateEvent e)
+        public bool OnPreUpdate(PreUpdateEvent @event)
         {
-            var auditable = e.Entity as IAuditableEntity;
+            var auditable = @event.Entity as IAuditableEntity;
             if (auditable == null)
                 return false;
 
@@ -73,28 +73,28 @@ namespace Hexa.Core.Domain
             DateTime updatedAt = DateTime.Now;
 
             var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
-            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(e.Persister.EntityName))
+            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(@event.Persister.EntityName))
             {
-                string tableName = e.Persister.EntityName;
-                int[] changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity,
-                                                                   e.Session.GetSessionImplementation());
+                string tableName = @event.Persister.EntityName;
+                int[] changedPropertiesIdx = @event.Persister.FindDirty(@event.State, @event.OldState, @event.Entity,
+                                                                   @event.Session.GetSessionImplementation());
                 foreach (int idx in changedPropertiesIdx)
                 {
-                    string propertyName = e.Persister.PropertyNames[idx];
-                    object oldValue = e.OldState[idx];
-                    object newValue = e.State[idx];
+                    string propertyName = @event.Persister.PropertyNames[idx];
+                    object oldValue = @event.OldState[idx];
+                    object newValue = @event.State[idx];
 
-                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(),
+                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, @event.Id.ToString(),
                                                                                       propertyName, oldValue, newValue,
                                                                                       userUniqueId,
                                                                                       updatedAt);
 
-                    e.Session.Save(auditTrail);
+                    @event.Session.Save(auditTrail);
                 }
             }
 
-            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "UpdatedAt", updatedAt);
+            _Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            _Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
             auditable.UpdatedBy = userUniqueId;
             auditable.UpdatedAt = updatedAt;
 
@@ -115,15 +115,15 @@ namespace Hexa.Core.Domain
     //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
-        protected override void DirtyCheck(FlushEntityEvent e)
+        protected override void DirtyCheck(FlushEntityEvent @event)
         {
-            base.DirtyCheck(e);
-            if (e.DirtyProperties != null &&
-                e.DirtyProperties.Any() &&
+            base.DirtyCheck(@event);
+            if (@event.DirtyProperties != null &&
+                @event.DirtyProperties.Any() &&
                 //IAuditableEntity is my inteface for audited entities
-                e.Entity is IAuditableEntity)
-                e.DirtyProperties = e.DirtyProperties
-                    .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
+                @event.Entity is IAuditableEntity)
+                @event.DirtyProperties = @event.DirtyProperties
+                    .Concat(_GetAdditionalDirtyProperties(@event)).ToArray();
         }
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)

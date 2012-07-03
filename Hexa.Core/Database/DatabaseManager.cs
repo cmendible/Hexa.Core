@@ -36,9 +36,9 @@ namespace Hexa.Core.Data
         public DatabaseManager(DbProvider provider, string connectionString)
         {
             string providerName = provider.GetEnumMemberValue();
-            _connectionProvider = DbProviderFactories.GetFactory(providerName);
-            _providerName = providerName;
-            _connectionString = connectionString;
+            this._connectionProvider = DbProviderFactories.GetFactory(providerName);
+            this._providerName = providerName;
+            this._connectionString = connectionString;
         }
 
         #region private methods..
@@ -253,8 +253,8 @@ namespace Hexa.Core.Data
                 MethodInfo createDatabase = type.GetMethod("CreateDatabase",
                                                            new[]
                                                                {
-                                                                   typeof (string), typeof (int), typeof (bool),
-                                                                   typeof (bool)
+                                                                   typeof(string), typeof(int), typeof(bool),
+                                                                   typeof(bool)
                                                                });
 
                 object engine = Activator.CreateInstance(type);
@@ -329,20 +329,20 @@ namespace Hexa.Core.Data
                 string cmd = string.Format(CultureInfo.InvariantCulture,
                                            "USE master; ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;",
                                            dbName);
-                _connectionProvider.ExecuteNonQuery(connStr, cmd);
-                _connectionProvider.ExecuteNonQuery(connStr,
+                this._connectionProvider.ExecuteNonQuery(connStr, cmd);
+                this._connectionProvider.ExecuteNonQuery(connStr,
                                                     string.Format(CultureInfo.InvariantCulture,
                                                                   "DROP DATABASE [{0}]", dbName));
             }
             else if (providerName == PostgreSQLProvider)
             {
-                _connectionProvider.ExecuteNonQuery(connStr,
+                this._connectionProvider.ExecuteNonQuery(connStr,
                                                     string.Format(CultureInfo.InvariantCulture,
                                                                   "DROP DATABASE \"{0}\"", dbName));
             }
             else
             {
-                _connectionProvider.ExecuteNonQuery(connStr,
+                this._connectionProvider.ExecuteNonQuery(connStr,
                                                     string.Format(CultureInfo.InvariantCulture,
                                                                   "DROP DATABASE '{0}'", dbName));
             }
@@ -356,7 +356,7 @@ namespace Hexa.Core.Data
         /// <value>The db provider factory.</value>
         public DbProviderFactory DbProviderFactory
         {
-            get { return _connectionProvider; }
+            get { return this._connectionProvider; }
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace Hexa.Core.Data
         /// <returns></returns>
         public bool DatabaseExists()
         {
-            return _DatabaseExists(_connectionProvider, _connectionString, _providerName);
+            return _DatabaseExists(this._connectionProvider, this._connectionString, this._providerName);
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace Hexa.Core.Data
         /// </summary>
         public void CreateDatabase()
         {
-            _CreateDatabase(_connectionProvider, _connectionString, _providerName);
+            _CreateDatabase(this._connectionProvider, this._connectionString, this._providerName);
         }
 
         /// <summary>
@@ -381,7 +381,7 @@ namespace Hexa.Core.Data
         /// </summary>
         public void DropDatabase()
         {
-            _DropDatabase(_connectionProvider, _connectionString, _providerName);
+            _DropDatabase(this._connectionProvider, this._connectionString, this._providerName);
         }
     }
 }

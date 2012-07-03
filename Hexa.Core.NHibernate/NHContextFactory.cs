@@ -47,18 +47,18 @@ namespace Hexa.Core.Domain
         public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider,
                                 Assembly mappingsAssembly, IoCContainer container)
         {
-            _DbProvider = provider;
-            _connectionString = connectionString;
+            this._DbProvider = provider;
+            this._connectionString = connectionString;
 
             FluentConfiguration cfg = null;
 
-            switch (_DbProvider)
+            switch (this._DbProvider)
             {
                 case DbProvider.MsSqlProvider:
                     {
                         cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
                                                                 .Raw("format_sql", "true")
-                                                                .ConnectionString(_connectionString))
+                                                                .ConnectionString(this._connectionString))
                             .ExposeConfiguration(
                                 c =>
                                 c.Properties.Add(Environment.SqlExceptionConverter,
@@ -71,9 +71,9 @@ namespace Hexa.Core.Domain
                     {
                         cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
                                                                 .Raw("format_sql", "true")
-                                                                .ConnectionString(_connectionString));
+                                                                .ConnectionString(this._connectionString));
 
-                        _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
+                        _InMemoryDatabase = this._connectionString.ToUpperInvariant().Contains(":MEMORY:");
 
                         break;
                     }
@@ -81,13 +81,13 @@ namespace Hexa.Core.Domain
                     {
                         cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
                                                                 .Raw("format_sql", "true")
-                                                                .ConnectionString(_connectionString))
+                                                                .ConnectionString(this._connectionString))
                             .ExposeConfiguration(
                                 c =>
                                 c.Properties.Add(Environment.SqlExceptionConverter,
                                                  typeof (SqlExceptionHandler).AssemblyQualifiedName));
 
-                        _validationSupported = false;
+                        this._validationSupported = false;
 
                         break;
                     }
@@ -95,7 +95,7 @@ namespace Hexa.Core.Domain
                     {
                         cfg = Fluently.Configure().Database(new FirebirdConfiguration()
                                                                 .Raw("format_sql", "true")
-                                                                .ConnectionString(_connectionString));
+                                                                .ConnectionString(this._connectionString));
 
                         break;
                     }
@@ -103,9 +103,9 @@ namespace Hexa.Core.Domain
                     {
                         cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
                                                                 .Raw("format_sql", "true")
-                                                                .ConnectionString(_connectionString));
+                                                                .ConnectionString(this._connectionString));
 
-                        _validationSupported = false;
+                        this._validationSupported = false;
 
                         break;
                     }
@@ -113,7 +113,7 @@ namespace Hexa.Core.Domain
 
             Guard.IsNotNull(cfg,
                             string.Format("Db provider {0} is currently not supported.",
-                                          EnumExtensions.GetEnumMemberValue(_DbProvider)));
+                                          EnumExtensions.GetEnumMemberValue(this._DbProvider)));
 
             PropertyInfo pinfo = typeof (FluentConfiguration)
                 .GetProperty("Configuration",
@@ -138,24 +138,24 @@ namespace Hexa.Core.Domain
                     .ExposeConfiguration(c => c.Properties.Add(Environment.UseQueryCache, "true"));
             }
 
-            _builtConfiguration = cfg.BuildConfiguration();
-            _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
+            this._builtConfiguration = cfg.BuildConfiguration();
+            this._builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
                                             typeof (ProxyFactoryFactory).
                                                 AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....
 
-            _builtConfiguration.SetListeners(ListenerType.FlushEntity,
+            this._builtConfiguration.SetListeners(ListenerType.FlushEntity,
                                              new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
 
-            _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
+            this._builtConfiguration.SetListeners(ListenerType.PreInsert,
+                                             this._builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
                                                  new IPreInsertEventListener[]
                                                      {new ValidateEventListener(), new AuditEventListener()}).
                                                  ToArray());
 
-            _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
+            this._builtConfiguration.SetListeners(ListenerType.PreUpdate,
+                                             this._builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
                                                  new IPreUpdateEventListener[]
                                                      {new ValidateEventListener(), new AuditEventListener()}).
                                                  ToArray());
@@ -167,23 +167,23 @@ namespace Hexa.Core.Domain
 
         public bool DatabaseExists()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(this._DbProvider, this._connectionString);
             return dbManager.DatabaseExists();
         }
 
         public void CreateDatabase()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(this._DbProvider, this._connectionString);
 
             // Check if database exists.. (and create it if needed)
             if (!dbManager.DatabaseExists())
             {
                 dbManager.CreateDatabase();
-                new SchemaExport(_builtConfiguration).Create(false, true);
+                new SchemaExport(this._builtConfiguration).Create(false, true);
 
                 if (_DbProvider == DbProvider.MsSqlProvider)
                 {
-                    using (var conn = new SqlConnection(_connectionString))
+                    using (var conn = new SqlConnection(this._connectionString))
                     {
                         try
                         {
@@ -206,13 +206,13 @@ namespace Hexa.Core.Domain
 
         public void ValidateDatabaseSchema()
         {
-            if (!_InMemoryDatabase && _validationSupported)
-                new SchemaValidator(_builtConfiguration).Validate();
+            if (!this._InMemoryDatabase && this._validationSupported)
+                new SchemaValidator(this._builtConfiguration).Validate();
         }
 
         public void DeleteDatabase()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(this._DbProvider, this._connectionString);
 
             if (dbManager.DatabaseExists())
                 dbManager.DropDatabase();
@@ -224,30 +224,30 @@ namespace Hexa.Core.Domain
 
         public IUnitOfWork Create()
         {
-            _CreateSessionFactory();
+            this._CreateSessionFactory();
 
-            if (_InMemoryDatabase)
+            if (this._InMemoryDatabase)
             {
-                ISession session = _sessionFactory.OpenSession();
-                new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
-                return new NHibernateUnitOfWork(_sessionFactory);
+                ISession session = this._sessionFactory.OpenSession();
+                new SchemaExport(this._builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
+                return new NHibernateUnitOfWork(this._sessionFactory);
             }
 
-            return new NHibernateUnitOfWork(_sessionFactory);
+            return new NHibernateUnitOfWork(this._sessionFactory);
         }
 
         #endregion
 
         private void _CreateSessionFactory()
         {
-            if (_sessionFactory == null)
-                _sessionFactory = _builtConfiguration.BuildSessionFactory();
+            if (this._sessionFactory == null)
+                this._sessionFactory = this._builtConfiguration.BuildSessionFactory();
         }
 
         public void RegisterSessionFactory(IoCContainer container)
         {
-            _CreateSessionFactory();
-            container.RegisterInstance<ISessionFactory>(_sessionFactory);
+            this._CreateSessionFactory();
+            container.RegisterInstance<ISessionFactory>(this._sessionFactory);
         }
     }
 }

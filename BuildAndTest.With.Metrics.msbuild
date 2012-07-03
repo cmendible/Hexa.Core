@@ -63,7 +63,7 @@
     <!-- Runs Tests -->
 	<Message Text="Starting Tests..." Importance="high" />
 
-    <!-- Finds test DLL's -->
+    <!-- Finds test DLL's --> 
     <CreateItem Include="$(ProjectDirectory)/**/bin/Release/*.Tests.dll">
       <Output TaskParameter="Include" ItemName="TestFiles"/>
     </CreateItem>
@@ -96,6 +96,7 @@
 		RuleLibraries="@(FxCopRuleAssemblies)"
 		Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
 		AnalysisReportFileName="$(ProjectDirectory)\Reports\FxCop.xml"
+		CustomDictionary="$(ProjectDirectory)\CodeAnalysisDictionary.xml"
 		Verbose="True"
 		FailOnError="False"
 	/>

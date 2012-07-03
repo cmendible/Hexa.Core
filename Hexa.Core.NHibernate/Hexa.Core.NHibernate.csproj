@@ -133,7 +133,7 @@
   <ItemGroup>
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />
-    <Compile Include="Conventions\ForeingKeyConstraintNames.cs" />
+    <Compile Include="Conventions\ForeignKeyConstraintNames.cs" />
     <Compile Include="Conventions\NotNullable.cs" />
     <Compile Include="Conventions\StringLength.cs" />
     <Compile Include="Conventions\TableNames.cs" />
@@ -177,6 +177,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Mappings\Schema\RenameUniqueKeys.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
+      <Link>CodeAnalysisDictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -51,68 +51,68 @@ namespace Hexa.Core.Pooling
             if (factory == null)
                 throw new ArgumentNullException("factory");
 
-            _factory = factory;
-            _sync = new Semaphore(size, size);
-            _queue = new Queue<T>(size);
-            _eagerLoad = eagerLoad;
+            this._factory = factory;
+            this._sync = new Semaphore(size, size);
+            this._queue = new Queue<T>(size);
+            this._eagerLoad = eagerLoad;
 
-            if (_eagerLoad)
+            if (this._eagerLoad)
             {
-                _PreloadItems(size);
+                this._PreloadItems(size);
             }
 
-            _usingExpirableObjects = typeof (IObjectWithExpiration<T>).IsAssignableFrom(typeof (T));
+            this._usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
         }
 
         public bool IsDisposed
         {
-            get { return _isDisposed; }
+            get { return this._isDisposed; }
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 return;
             }
-            _isDisposed = true;
+            this._isDisposed = true;
             if (typeof (IDisposable).IsAssignableFrom(typeof (T)))
             {
-                lock (_queue)
+                lock (this._queue)
                 {
-                    while (_queue.Count > 0)
+                    while (this._queue.Count > 0)
                     {
-                        var disposable = (IDisposable) _queue.Dequeue();
+                        var disposable = (IDisposable)this._queue.Dequeue();
                         disposable.Dispose();
                     }
                 }
             }
-            _sync.Close();
+            this._sync.Close();
         }
 
         #endregion
 
         public T Acquire()
         {
-            _sync.WaitOne();
-            lock (_queue)
+            this._sync.WaitOne();
+            lock (this._queue)
             {
                 T item = default(T);
-                if (!_eagerLoad)
+                if (!this._eagerLoad)
                 {
-                    if (_queue.Count > 0)
-                        item = _queue.Dequeue();
+                    if (this._queue.Count > 0)
+                        item = this._queue.Dequeue();
                     else
-                        item = _factory(this);
+                        item = this._factory(this);
                 }
                 else
                 {
-                    item = _queue.Dequeue();
+                    item = this._queue.Dequeue();
                 }
 
-                if (_usingExpirableObjects)
+                if (this._usingExpirableObjects)
                 {
                     var expirableObject = item as IObjectWithExpiration<T>;
                     if (expirableObject.IsExpired)
@@ -123,7 +123,7 @@ namespace Hexa.Core.Pooling
                         }
                         finally
                         {
-                            item = _factory(this);
+                            item = this._factory(this);
                         }
                     }
                 }
@@ -133,19 +133,19 @@ namespace Hexa.Core.Pooling
 
         public void Release(T item)
         {
-            lock (_queue)
+            lock (this._queue)
             {
-                _queue.Enqueue(item);
+                this._queue.Enqueue(item);
             }
-            _sync.Release();
+            this._sync.Release();
         }
 
         private void _PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
             {
-                T item = _factory(this);
-                _queue.Enqueue(item);
+                T item = this._factory(this);
+                this._queue.Enqueue(item);
             }
         }
     }

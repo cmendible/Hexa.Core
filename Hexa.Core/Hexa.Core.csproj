@@ -400,6 +400,11 @@
       <Link>Hexa.Core.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
+      <Link>CodeAnalysisDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- <Import Project="$(ProjectDir)..\Scripts\SmartAssembly.targets" /> -->
   <PropertyGroup>
