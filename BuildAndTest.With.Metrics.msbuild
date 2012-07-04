@@ -82,10 +82,10 @@
 
 	<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(ProjectDirectory)\Reports\CodeMetricsReport.xml&quot; /f:&quot;$(ProjectDirectory)\Hexa.Core.Tests\bin\Release\Hexa*.dll&quot; /gac' />
 
-	<!-- Run Simian 
-	<Message Text="Running code Simian..." Importance="high" /	
+	<!-- Run Simian -->
+	<Message Text="Running code Simian..." Importance="high" />
 	
-	<Exec Command='$(Simian) -formatter=xml:$(ProjectDirectory)\Reports\Simian.xml -includes=$(ProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' / -->
+	<Exec Command='$(Simian) -formatter=xml:$(ProjectDirectory)\Reports\Simian.xml -includes=$(ProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' />
 	
 	<!-- Run FxCop -->
 	<Message Text="Starting FxCop Analysis..." Importance="high" />
