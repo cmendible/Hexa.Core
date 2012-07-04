@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -24,31 +24,7 @@ namespace Hexa.Core.Web.UI
 
     public static class UrlResolver
     {
-        public static string ResolveUrl(string originalUrl)
-        {
-            if (originalUrl == null)
-                return null;
-
-            // *** Absolute path - just return
-            if (originalUrl.IndexOf("://") != -1)
-                return originalUrl;
-
-            // *** Fix up image path for ~ root app dir directory
-            if (originalUrl.StartsWith("~"))
-            {
-                string newUrl = "";
-                if (HttpContext.Current != null)
-                    newUrl = HttpContext.Current.Request.ApplicationPath + originalUrl.Substring(1).Replace("//", "/");
-                else
-                    // *** Not context: assume current directory is the base directory
-                    throw new ArgumentException("Invalid URL: Relative URL not allowed.");
-
-                // *** Just to be sure fix up any double slashes
-                return newUrl.Replace("//", "/");
-            }
-
-            return originalUrl;
-        }
+        #region Methods
 
         public static string ResolveServerUrl(string serverUrl)
         {
@@ -59,7 +35,9 @@ namespace Hexa.Core.Web.UI
         {
             // *** Is it already an absolute Url?
             if (serverUrl.IndexOf("://") > -1)
+            {
                 return serverUrl;
+            }
 
             // *** Start by fixing up the Url an Application relative Url
             string newUrl = ResolveUrl(serverUrl);
@@ -71,5 +49,41 @@ namespace Hexa.Core.Web.UI
 
             return newUrl;
         }
+
+        public static string ResolveUrl(string originalUrl)
+        {
+            if (originalUrl == null)
+            {
+                return null;
+            }
+
+            // *** Absolute path - just return
+            if (originalUrl.IndexOf("://") != -1)
+            {
+                return originalUrl;
+            }
+
+            // *** Fix up image path for ~ root app dir directory
+            if (originalUrl.StartsWith("~"))
+            {
+                string newUrl = "";
+                if (HttpContext.Current != null)
+                {
+                    newUrl = HttpContext.Current.Request.ApplicationPath + originalUrl.Substring(1).Replace("//", "/");
+                }
+                else
+                    // *** Not context: assume current directory is the base directory
+                {
+                    throw new ArgumentException("Invalid URL: Relative URL not allowed.");
+                }
+
+                // *** Just to be sure fix up any double slashes
+                return newUrl.Replace("//", "/");
+            }
+
+            return originalUrl;
+        }
+
+        #endregion Methods
     }
 }

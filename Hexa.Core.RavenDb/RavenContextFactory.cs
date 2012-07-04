@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,64 +15,69 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
     using Data;
+
     using Raven.Client.Embedded;
 
     public class RavenContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
+        #region Fields
+
         private static EmbeddableDocumentStore _documenFactory;
+
+        #endregion Fields
+
+        #region Constructors
 
         public RavenContextFactory()
         {
             if (_documenFactory == null)
             {
                 _documenFactory = new EmbeddableDocumentStore
-                                      {
-                                          DataDirectory = "Data"
-                                      };
+                {
+                    DataDirectory = "Data"
+                };
                 _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
                 _documenFactory.Initialize();
             }
         }
 
-        #region IDatabaseManager Members
+        #endregion Constructors
 
-        public bool DatabaseExists()
-        {
-            return false;
-        }
-
-        public void CreateDatabase()
-        {
-        }
-
-        public void ValidateDatabaseSchema()
-        {
-        }
-
-        public void DeleteDatabase()
-        {
-        }
-
-        #endregion
-
-        #region IUnitOfWorkFactory Members
+        #region Methods
 
         public IUnitOfWork Create()
         {
             return new RavenUnitOfWork(_documenFactory.OpenSession());
         }
 
-        #endregion
+        public void CreateDatabase()
+        {
+        }
+
+        public bool DatabaseExists()
+        {
+            return false;
+        }
+
+        public void DeleteDatabase()
+        {
+        }
 
         // Registers Raven IDocumentStore for testing purposes.
         public void RegisterSessionFactory(IoCContainer container)
         {
             container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);
         }
+
+        public void ValidateDatabaseSchema()
+        {
+        }
+
+        #endregion Methods
     }
 }

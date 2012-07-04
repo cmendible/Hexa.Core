@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -28,93 +28,49 @@ namespace Hexa.Core
     /// </summary>
     public static class PrinterHelper
     {
-        #region Printer State and Status
+        #region Fields
 
-        private static readonly string[] _Status = {
-                                                       "Other", "Unknown", "Idle", "Printing", "WarmUp",
-                                                       "Stopped Printing",
-                                                       "Offline"
-                                                   };
-
-        private static readonly string[] _ErrorState = {
-                                                           "Unknown", "Other", "No Error", "Low Paper", "No Paper",
-                                                           "Low Toner",
-                                                           "No Toner",
-                                                           "Door Open", "Jammed", "Offline", "Service Requested",
-                                                           "Output Bin Full"
-                                                       };
-
-        /// <summary>
-        /// Reads the default printer status.
-        /// </summary>
-        /// <returns></returns>
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Convert.ToInt32(System.Object)")]
-        public static string ReadPrinterStatus()
+        private static readonly string[] _ErrorState = 
         {
-            using (var searcher = new ManagementObjectSearcher
-                ("SELECT * FROM Win32_Printer Where Default = True"))
-            {
-                foreach (ManagementObject service in searcher.Get())
-                {
-                    foreach (PropertyData pData in service.Properties)
-                    {
-                        if (pData.Name == "PrinterStatus")
-                            return _Status[Convert.ToInt32(pData.Value)];
-                    }
-                }
-            }
+            "Unknown", "Other", "No Error", "Low Paper", "No Paper",
+            "Low Toner",
+            "No Toner",
+            "Door Open", "Jammed", "Offline", "Service Requested",
+            "Output Bin Full"
+        };
+        private static readonly string[] _Status = 
+        {
+            "Other", "Unknown", "Idle", "Printing", "WarmUp",
+            "Stopped Printing",
+            "Offline"
+        };
 
-            return string.Empty;
-        }
+        #endregion Fields
+
+        #region Methods
 
         /// <summary>
         /// Reads the default state of the printer.
         /// </summary>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Convert.ToInt32(System.Object)")]
+                         MessageId = "System.Convert.ToInt32(System.Object)")]
         public static string ReadPrinterState()
         {
             using (var searcher = new ManagementObjectSearcher
-                ("SELECT * FROM Win32_Printer Where Default = True"))
+            ("SELECT * FROM Win32_Printer Where Default = True"))
             {
                 foreach (ManagementObject service in searcher.Get())
                 {
                     foreach (PropertyData pData in service.Properties)
                     {
                         if (pData.Name == "DetectedErrorState")
+                        {
                             return _ErrorState[Convert.ToInt32(pData.Value)];
+                        }
                     }
                 }
             }
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Reads the printer status.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns></returns>
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.String.Format(System.String,System.Object)"),
-         SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-             MessageId = "System.Convert.ToInt32(System.Object)")]
-        public static string ReadPrinterStatus(string name)
-        {
-            using (var searcher = new ManagementObjectSearcher
-                (string.Format("SELECT * FROM Win32_Printer Where Name = {0}", name)))
-            {
-                foreach (ManagementObject service in searcher.Get())
-                {
-                    foreach (PropertyData pData in service.Properties)
-                    {
-                        if (pData.Name == "PrinterStatus")
-                            return _Status[Convert.ToInt32(pData.Value)];
-                    }
-                }
-            }
-
             return string.Empty;
         }
 
@@ -124,26 +80,83 @@ namespace Hexa.Core
         /// <param name="name">The name.</param>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.String.Format(System.String,System.Object)"),
-         SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-             MessageId = "System.Convert.ToInt32(System.Object)")]
+                         MessageId = "System.String.Format(System.String,System.Object)"),
+        SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.Convert.ToInt32(System.Object)")]
         public static string ReadPrinterState(string name)
         {
             using (var searcher = new ManagementObjectSearcher
-                (string.Format("SELECT * FROM Win32_Printer Where Name = {0}", name)))
+            (string.Format("SELECT * FROM Win32_Printer Where Name = {0}", name)))
             {
                 foreach (ManagementObject service in searcher.Get())
                 {
                     foreach (PropertyData pData in service.Properties)
                     {
                         if (pData.Name == "DetectedErrorState")
+                        {
                             return _ErrorState[Convert.ToInt32(pData.Value)];
+                        }
                     }
                 }
             }
             return string.Empty;
         }
 
-        #endregion
+        /// <summary>
+        /// Reads the default printer status.
+        /// </summary>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.Convert.ToInt32(System.Object)")]
+        public static string ReadPrinterStatus()
+        {
+            using (var searcher = new ManagementObjectSearcher
+            ("SELECT * FROM Win32_Printer Where Default = True"))
+            {
+                foreach (ManagementObject service in searcher.Get())
+                {
+                    foreach (PropertyData pData in service.Properties)
+                    {
+                        if (pData.Name == "PrinterStatus")
+                        {
+                            return _Status[Convert.ToInt32(pData.Value)];
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Reads the printer status.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.String.Format(System.String,System.Object)"),
+        SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.Convert.ToInt32(System.Object)")]
+        public static string ReadPrinterStatus(string name)
+        {
+            using (var searcher = new ManagementObjectSearcher
+            (string.Format("SELECT * FROM Win32_Printer Where Name = {0}", name)))
+            {
+                foreach (ManagementObject service in searcher.Get())
+                {
+                    foreach (PropertyData pData in service.Properties)
+                    {
+                        if (pData.Name == "PrinterStatus")
+                        {
+                            return _Status[Convert.ToInt32(pData.Value)];
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        #endregion Methods
     }
 }

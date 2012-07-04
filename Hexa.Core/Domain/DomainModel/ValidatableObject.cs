@@ -2,14 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Validation;
 
     [Serializable]
     public abstract class ValidatableObject : IValidatable
     {
-        #region IValidatable Implementation
+        #region Fields
 
         private IValidator _validator;
+
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// Gets the validator.
@@ -21,9 +26,27 @@
             get
             {
                 if (_validator == null)
+                {
                     _validator = ServiceLocator.GetInstance<IValidator>();
+                }
 
                 return _validator;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Validates this instance.
+        /// If instance is not valid, method must throw a ValidationException.
+        /// </summary>
+        public virtual void AssertValidation()
+        {
+            if (!Validator.IsValid(this))
+            {
+                throw new ValidationException(GetType(), Validator.Validate(this));
             }
         }
 
@@ -48,16 +71,6 @@
             return Validator.Validate(this);
         }
 
-        /// <summary>
-        /// Validates this instance.
-        /// If instance is not valid, method must throw a ValidationException.
-        /// </summary>
-        public virtual void AssertValidation()
-        {
-            if (!Validator.IsValid(this))
-                throw new ValidationException(GetType(), Validator.Validate(this));
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

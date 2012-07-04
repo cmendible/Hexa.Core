@@ -8,11 +8,13 @@
     /// </summary>
     public sealed class ValidationResult : IEnumerable<ValidationError>
     {
-        #region fields
+        #region Fields
 
         private readonly List<ValidationError> _errors = new List<ValidationError>();
 
-        #endregion
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationResult"/> class.
@@ -31,15 +33,9 @@
             _errors.AddRange(errors);
         }
 
-        #region properties
+        #endregion Constructors
 
-        /// <summary>
-        /// Gets wheater the validation operation on an entity was valid or not.
-        /// </summary>
-        public bool IsValid
-        {
-            get { return _errors.Count == 0; }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets an <see cref="IEnumerable{ValidationError}"/> that can be used to enumerate over
@@ -51,13 +47,26 @@
             get
             {
                 foreach (ValidationError error in _errors)
+                {
                     yield return error;
+                }
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets wheater the validation operation on an entity was valid or not.
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return _errors.Count == 0;
+            }
+        }
 
-        #region methods
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Adds a validation error into the result.
@@ -67,20 +76,6 @@
         {
             _errors.Add(error);
         }
-
-        /// <summary>
-        /// Removes a validation error from the result.
-        /// </summary>
-        /// <param name="error"></param>
-        public void RemoveError(ValidationError error)
-        {
-            if (_errors.Contains(error))
-                _errors.Remove(error);
-        }
-
-        #endregion
-
-        #region IEnumerable..
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
@@ -104,6 +99,18 @@
             return Errors.GetEnumerator();
         }
 
-        #endregion
+        /// <summary>
+        /// Removes a validation error from the result.
+        /// </summary>
+        /// <param name="error"></param>
+        public void RemoveError(ValidationError error)
+        {
+            if (_errors.Contains(error))
+            {
+                _errors.Remove(error);
+            }
+        }
+
+        #endregion Methods
     }
 }

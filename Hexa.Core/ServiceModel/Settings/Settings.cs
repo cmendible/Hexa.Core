@@ -4,71 +4,19 @@
     using System.ComponentModel;
     using System.Configuration;
     using System.Diagnostics.CodeAnalysis;
+
     using Security;
-
-    /// <summary>
-    ///
-    /// </summary>
-    public class Settings : ConfigurationSection
-    {
-        /// <summary>
-        /// Gets a boolean value indicating whether debug should be enabled or not.
-        /// </summary>
-        /// <value><c>true</c> if debug; otherwise, <c>false</c>.</value>
-        [ConfigurationProperty("Debug", DefaultValue = "true")]
-        public bool Debug
-        {
-            get { return (bool) this["Debug"]; }
-        }
-
-        [ConfigurationProperty("SecurityMode", IsRequired = false, DefaultValue = SecurityMode.Message)]
-        internal SecurityMode SecurityMode
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(this["SecurityMode"] as string))
-                    return SecurityMode.Message;
-
-                return (SecurityMode) Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
-            }
-        }
-
-        [ConfigurationProperty("ServiceCredentials", IsRequired = true)]
-        internal ServiceCredentialsElement ServiceCredentials
-        {
-            get { return this["ServiceCredentials"] as ServiceCredentialsElement; }
-        }
-
-        [ConfigurationProperty("ExcludedServices", IsRequired = false)]
-        public ServicesCollection ExcludedServices
-        {
-            get { return this["ExcludedServices"] as ServicesCollection; }
-            set { this["ExcludedServices"] = value; }
-        }
-
-        /// <summary>
-        /// Gets this instance.
-        /// </summary>
-        /// <returns></returns>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        internal static Settings Get()
-        {
-            try
-            {
-                return ConfigurationManager.GetSection("Hexa.Core.ServiceModel.Settings") as Settings;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-    }
 
     public class ServicesCollection : ConfigurationElementCollection
     {
+        #region Indexers
+
         public Url this[int index]
         {
-            get { return base.BaseGet(index) as Url; }
+            get
+            {
+                return base.BaseGet(index) as Url;
+            }
             set
             {
                 if (base.BaseGet(index) != null)
@@ -77,6 +25,20 @@
                 }
                 BaseAdd(index, value);
             }
+        }
+
+        #endregion Indexers
+
+        #region Methods
+
+        public void Add(ConfigurationElement element)
+        {
+            BaseAdd(element);
+        }
+
+        public void Delete(string element)
+        {
+            BaseRemove(element);
         }
 
         protected override void BaseAdd(ConfigurationElement element)
@@ -94,26 +56,108 @@
             return ((Url) element).Name;
         }
 
-        public void Add(ConfigurationElement element)
+        #endregion Methods
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public class Settings : ConfigurationSection
+    {
+        #region Properties
+
+        /// <summary>
+        /// Gets a boolean value indicating whether debug should be enabled or not.
+        /// </summary>
+        /// <value><c>true</c> if debug; otherwise, <c>false</c>.</value>
+        [ConfigurationProperty("Debug", DefaultValue = "true")]
+        public bool Debug
         {
-            BaseAdd(element);
+            get
+            {
+                return (bool) this["Debug"];
+            }
         }
 
-        public void Delete(string element)
+        [ConfigurationProperty("ExcludedServices", IsRequired = false)]
+        public ServicesCollection ExcludedServices
         {
-            BaseRemove(element);
+            get
+            {
+                return this["ExcludedServices"] as ServicesCollection;
+            }
+            set
+            {
+                this["ExcludedServices"] = value;
+            }
         }
+
+        [ConfigurationProperty("SecurityMode", IsRequired = false, DefaultValue = SecurityMode.Message)]
+        internal SecurityMode SecurityMode
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this["SecurityMode"] as string))
+                {
+                    return SecurityMode.Message;
+                }
+
+                return (SecurityMode) Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
+            }
+        }
+
+        [ConfigurationProperty("ServiceCredentials", IsRequired = true)]
+        internal ServiceCredentialsElement ServiceCredentials
+        {
+            get
+            {
+                return this["ServiceCredentials"] as ServiceCredentialsElement;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Gets this instance.
+        /// </summary>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        internal static Settings Get()
+        {
+            try
+            {
+                return ConfigurationManager.GetSection("Hexa.Core.ServiceModel.Settings") as Settings;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion Methods
     }
 
     [TypeConverter(typeof(Url))]
     public class Url : ConfigurationElement
     {
+        #region Properties
+
         [ConfigurationProperty("Name")]
         public string Name
         {
-            get { return this["Name"] as string; }
+            get
+            {
+                return this["Name"] as string;
+            }
 
-            set { this["Name"] = value; }
+            set
+            {
+                this["Name"] = value;
+            }
         }
+
+        #endregion Properties
     }
 }

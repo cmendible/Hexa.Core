@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Controls
 {
@@ -29,60 +29,19 @@ namespace Hexa.Core.Web.UI.Controls
 
     public class GridView : System.Web.UI.WebControls.GridView, IPostBackDataHandler, IPostBackEventHandler
     {
-        #region  Private Variables
+        #region Fields
 
         private bool _designMode = (HttpContext.Current == null);
-
         private bool _isScrollable = true;
         private Unit _maxHeight = Unit.Pixel(140);
         private bool _useDefaultCssClass = true;
 
-        #endregion
+        #endregion Fields
 
-        #region  Properties
-
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Convert.ToBoolean(System.Object)")]
-        public bool SelectFirstRow
-        {
-            get
-            {
-                bool tempSelectFirstRow = false;
-                if (ViewState["SelectFirstRow"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["SelectFirstRow"]);
-                }
-                else
-                {
-                    tempSelectFirstRow = true;
-                }
-                return tempSelectFirstRow;
-            }
-            set { ViewState["SelectFirstRow"] = value; }
-        }
+        #region Properties
 
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Convert.ToBoolean(System.Object)")]
-        public bool AllowRowSelection
-        {
-            get
-            {
-                bool tempAllowRowSelection = false;
-                if (ViewState["AllowRowSelection"] != null)
-                {
-                    return Convert.ToBoolean(ViewState["AllowRowSelection"]);
-                }
-                else
-                {
-                    tempAllowRowSelection = false;
-                }
-                return tempAllowRowSelection;
-            }
-            set { ViewState["AllowRowSelection"] = value; }
-        }
-
-        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Convert.ToBoolean(System.Object)")]
+                         MessageId = "System.Convert.ToBoolean(System.Object)")]
         public bool AllowClickRow
         {
             get
@@ -98,49 +57,97 @@ namespace Hexa.Core.Web.UI.Controls
                 }
                 return tempAllowClickRow;
             }
-            set { ViewState["AllowClickRow"] = value; }
+            set
+            {
+                ViewState["AllowClickRow"] = value;
+            }
         }
 
-        public bool UseDefaultCssClass
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.Convert.ToBoolean(System.Object)")]
+        public bool AllowRowSelection
         {
-            get { return _useDefaultCssClass; }
-            set { _useDefaultCssClass = value; }
-        }
-
-        public Unit MaxHeight
-        {
-            get { return _maxHeight; }
-            set { _maxHeight = value; }
+            get
+            {
+                bool tempAllowRowSelection = false;
+                if (ViewState["AllowRowSelection"] != null)
+                {
+                    return Convert.ToBoolean(ViewState["AllowRowSelection"]);
+                }
+                else
+                {
+                    tempAllowRowSelection = false;
+                }
+                return tempAllowRowSelection;
+            }
+            set
+            {
+                ViewState["AllowRowSelection"] = value;
+            }
         }
 
         public bool IsScrollable
         {
-            get { return _isScrollable; }
-            set { _isScrollable = value; }
-        }
-
-        #endregion
-
-        #region  Methods
-
-        public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            if (AllowRowSelection)
+            get
             {
-                string hidxName = ClientID + "_idx";
-
-                if (postCollection[hidxName] != null)
-                {
-                    SelectedIndex = Convert.ToInt32(postCollection[hidxName]);
-                }
+                return _isScrollable;
             }
-            return false;
+            set
+            {
+                _isScrollable = value;
+            }
         }
 
-        public void RaisePostDataChangedEvent()
+        public Unit MaxHeight
         {
-            //NOT IMPLEMENTED
+            get
+            {
+                return _maxHeight;
+            }
+            set
+            {
+                _maxHeight = value;
+            }
         }
+
+        [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+                         MessageId = "System.Convert.ToBoolean(System.Object)")]
+        public bool SelectFirstRow
+        {
+            get
+            {
+                bool tempSelectFirstRow = false;
+                if (ViewState["SelectFirstRow"] != null)
+                {
+                    return Convert.ToBoolean(ViewState["SelectFirstRow"]);
+                }
+                else
+                {
+                    tempSelectFirstRow = true;
+                }
+                return tempSelectFirstRow;
+            }
+            set
+            {
+                ViewState["SelectFirstRow"] = value;
+            }
+        }
+
+        public bool UseDefaultCssClass
+        {
+            get
+            {
+                return _useDefaultCssClass;
+            }
+            set
+            {
+                _useDefaultCssClass = value;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public int GetSelectedItemIndex()
         {
@@ -166,13 +173,29 @@ namespace Hexa.Core.Web.UI.Controls
             }
         }
 
-        protected override void OnRowCreated(GridViewRowEventArgs e)
+        public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            if (AllowRowSelection && e.Row.RowType == DataControlRowType.DataRow)
+            if (AllowRowSelection)
             {
-                e.Row.Attributes.Add("onclick",
-                                     String.Format("MSDatagridSelectRow('{0}', {1});", ClientID, e.Row.RowIndex));
+                string hidxName = ClientID + "_idx";
+
+                if (postCollection[hidxName] != null)
+                {
+                    SelectedIndex = Convert.ToInt32(postCollection[hidxName]);
+                }
             }
+            return false;
+        }
+
+        public void RaisePostDataChangedEvent()
+        {
+            //NOT IMPLEMENTED
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            base.SelectedIndexChanged += GridView_SelectedIndexChanged;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -206,7 +229,7 @@ namespace Hexa.Core.Web.UI.Controls
                     sb.Append("grd.rows.item(actualidx).setAttribute('ocolor', row.className);").Append("\r\n");
                     sb.Append(
                         "grd.rows.item(parseInt(hdn.item(0).value) + 1).className = grd.rows.item(parseInt(hdn.item(0).value) + 1).getAttribute('ocolor');")
-                        .Append("\r\n");
+                    .Append("\r\n");
                     sb.Append("hdn.item(0).value = row;").Append("\r\n");
                     sb.Append("grd.rows.item(actualidx).className = '").Append(SelectedRowStyle.CssClass).Append(
                         "';").Append("\r\n");
@@ -216,10 +239,13 @@ namespace Hexa.Core.Web.UI.Controls
             }
         }
 
-        protected override void OnInit(EventArgs e)
+        protected override void OnRowCreated(GridViewRowEventArgs e)
         {
-            base.OnInit(e);
-            base.SelectedIndexChanged += GridView_SelectedIndexChanged;
+            if (AllowRowSelection && e.Row.RowType == DataControlRowType.DataRow)
+            {
+                e.Row.Attributes.Add("onclick",
+                                     String.Format("MSDatagridSelectRow('{0}', {1});", ClientID, e.Row.RowIndex));
+            }
         }
 
         private void GridView_SelectedIndexChanged(object sender, EventArgs e)
@@ -227,6 +253,6 @@ namespace Hexa.Core.Web.UI.Controls
             SelectedIndex = base.SelectedIndex;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

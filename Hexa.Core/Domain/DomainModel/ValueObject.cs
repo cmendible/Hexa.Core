@@ -1,6 +1,5 @@
 ﻿//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -19,6 +18,13 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class ValueObject
     {
+        #region Fields
+
+        /// <summary>
+        /// Flags used to reflect over Generic Equeatable
+        /// </summary>
+        protected BindingFlags RelfectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
@@ -28,39 +34,18 @@ namespace Hexa.Core.Domain
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
 
-        /// <summary>
-        /// Flags used to reflect over Generic Equeatable
-        /// </summary>
-        protected BindingFlags RelfectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        #endregion Fields
 
-        /// <summary>
-        /// Serves as a hash function for a particular type.
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override int GetHashCode()
+        #region Methods
+
+        public static bool operator !=(ValueObject x, ValueObject y)
         {
-            //int startValue = 17;
-            //int hashCode = startValue;
+            return !Equals(x, y);
+        }
 
-            // It's possible for two objects to return the same hash code based on
-            // identically valued properties, even if they're of two different types,
-            // so we include the object's type in the hash calculation
-            int hashCode = GetType().GetHashCode();
-
-            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
-            {
-                object value = field.GetValue(this);
-
-                if (value != null)
-                    unchecked
-                    {
-                        hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
-                    }
-            }
-
-            return hashCode;
+        public static bool operator ==(ValueObject x, ValueObject y)
+        {
+            return Equals(x, y);
         }
 
         /// <summary>
@@ -104,15 +89,37 @@ namespace Hexa.Core.Domain
             return true;
         }
 
-        public static bool operator ==(ValueObject x, ValueObject y)
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override int GetHashCode()
         {
-            return Equals(x, y);
+            //int startValue = 17;
+            //int hashCode = startValue;
+
+            // It's possible for two objects to return the same hash code based on
+            // identically valued properties, even if they're of two different types,
+            // so we include the object's type in the hash calculation
+            int hashCode = GetType().GetHashCode();
+
+            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
+            {
+                object value = field.GetValue(this);
+
+                if (value != null)
+                    unchecked
+                {
+                    hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
+                }
+            }
+
+            return hashCode;
         }
 
-        public static bool operator !=(ValueObject x, ValueObject y)
-        {
-            return !Equals(x, y);
-        }
+        #endregion Methods
     }
 
     /// <summary>
@@ -123,6 +130,13 @@ namespace Hexa.Core.Domain
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>
     {
+        #region Fields
+
+        /// <summary>
+        /// Flags used to reflect over Generic Equeatable
+        /// </summary>
+        protected BindingFlags ReflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
@@ -132,12 +146,19 @@ namespace Hexa.Core.Domain
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
 
-        /// <summary>
-        /// Flags used to reflect over Generic Equeatable
-        /// </summary>
-        protected BindingFlags ReflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        #endregion Fields
 
-        #region IEquatable<T> Members
+        #region Methods
+
+        public static bool operator !=(ValueObject<T> x, ValueObject<T> y)
+        {
+            return !Equals(x, y);
+        }
+
+        public static bool operator ==(ValueObject<T> x, ValueObject<T> y)
+        {
+            return Equals(x, y);
+        }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -182,7 +203,27 @@ namespace Hexa.Core.Domain
             return true;
         }
 
-        #endregion
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <exception cref="T:System.NullReferenceException">
+        /// The <paramref name="obj"/> parameter is null.
+        /// </exception>
+        public override bool Equals(object obj)
+        {
+            var other = obj as T;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Equals(other);
+        }
 
         /// <summary>
         /// Serves as a hash function for a particular type.
@@ -206,32 +247,12 @@ namespace Hexa.Core.Domain
 
                 if (value != null)
                     unchecked
-                    {
-                        hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
-                    }
+                {
+                    hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
+                }
             }
 
             return hashCode;
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
-        /// <returns>
-        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-        /// </returns>
-        /// <exception cref="T:System.NullReferenceException">
-        /// The <paramref name="obj"/> parameter is null.
-        /// </exception>
-        public override bool Equals(object obj)
-        {
-            var other = obj as T;
-
-            if (other == null)
-                return false;
-
-            return Equals(other);
         }
 
         private IEnumerable<FieldInfo> GetFields(object obj)
@@ -249,14 +270,6 @@ namespace Hexa.Core.Domain
             return fields;
         }
 
-        public static bool operator ==(ValueObject<T> x, ValueObject<T> y)
-        {
-            return Equals(x, y);
-        }
-
-        public static bool operator !=(ValueObject<T> x, ValueObject<T> y)
-        {
-            return !Equals(x, y);
-        }
+        #endregion Methods
     }
 }

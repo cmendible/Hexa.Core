@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -26,6 +26,7 @@ namespace Hexa.Core.Validation
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+
     using GNU.Gettext;
 
     /// <summary>
@@ -33,17 +34,7 @@ namespace Hexa.Core.Validation
     /// </summary>
     internal static class DataAnnotationHelper
     {
-        /// <summary>
-        /// Reads the data annotations of type TEntity and return a list of corresponding IValidationInfos
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns></returns>
-        public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
-        {
-            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
-                    from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                    select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
-        }
+        #region Methods
 
         /// <summary>
         /// Reads the data annotations list.
@@ -56,6 +47,35 @@ namespace Hexa.Core.Validation
             return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
                     from attribute in prop.Attributes.OfType<ValidationAttribute>()
                     select new KeyValuePair<string, ValidationAttribute>(prop.Name, attribute)).ToList();
+        }
+
+        /// <summary>
+        /// Reads the data annotations of type TEntity and return a list of corresponding IValidationInfos
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns></returns>
+        public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
+        {
+            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
+                    from attribute in prop.Attributes.OfType<ValidationAttribute>()
+                    select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
+        }
+
+        public static string ParseDisplayName(Type entityType, string propertyName)
+        {
+            string displayName = propertyName;
+
+            DisplayAttribute displayAttribute = TypeDescriptor.GetProperties(entityType)
+                                                .Cast<PropertyDescriptor>()
+                                                .Where(p => p.Name == propertyName)
+                                                .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
+
+            if (displayAttribute != null)
+            {
+                displayName = displayAttribute.Name;
+            }
+
+            return GettextHelper.t(displayName, entityType.Assembly);
         }
 
         /// <summary>
@@ -88,27 +108,14 @@ namespace Hexa.Core.Validation
                 var lengthAtt = att as StringLengthAttribute;
                 return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage,
                                                         string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
-                                                                      "^[\\s\\S]{0,",
-                                                                      lengthAtt.MaximumLength.ToString(
-                                                                          CultureInfo.InvariantCulture), "}$"));
+                                                                "^[\\s\\S]{0,",
+                                                                lengthAtt.MaximumLength.ToString(
+                                                                        CultureInfo.InvariantCulture), "}$"));
             }
 
             return null;
         }
 
-        public static string ParseDisplayName(Type entityType, string propertyName)
-        {
-            string displayName = propertyName;
-
-            DisplayAttribute displayAttribute = TypeDescriptor.GetProperties(entityType)
-                .Cast<PropertyDescriptor>()
-                .Where(p => p.Name == propertyName)
-                .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
-
-            if (displayAttribute != null)
-                displayName = displayAttribute.Name;
-
-            return GettextHelper.t(displayName, entityType.Assembly);
-        }
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -25,7 +25,26 @@ namespace Hexa.Core.Web.UI
 
     public static class PageExtensions
     {
-        #region Post Back
+        #region Methods
+
+        /// <summary>
+        /// Starts a Download based on the specified byes and mime type.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="bytes">The bytes.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="mimeType">Type of the MIME.</param>
+        public static void Download(this Page page, byte[] data, string id, string mimeType)
+        {
+            page.Response.Clear();
+            page.Response.Buffer = true;
+
+            page.Response.ContentType = mimeType;
+            page.Response.AppendHeader("content-disposition", "attachment; filename=" + id);
+
+            page.Response.BinaryWrite(data);
+            page.Response.End();
+        }
 
         /// <summary>
         /// Gets the post back control.
@@ -68,7 +87,6 @@ namespace Hexa.Core.Web.UI
                 }
             }
 
-
             return control;
         }
 
@@ -81,37 +99,14 @@ namespace Hexa.Core.Web.UI
         {
             Control control = GetPostBackControl(page);
             if (control != null)
+            {
                 return control.ID;
+            }
             else
+            {
                 return string.Empty;
+            }
         }
-
-        #endregion
-
-        #region Download
-
-        /// <summary>
-        /// Starts a Download based on the specified byes and mime type.
-        /// </summary>
-        /// <param name="page">The page.</param>
-        /// <param name="bytes">The bytes.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="mimeType">Type of the MIME.</param>
-        public static void Download(this Page page, byte[] data, string id, string mimeType)
-        {
-            page.Response.Clear();
-            page.Response.Buffer = true;
-
-            page.Response.ContentType = mimeType;
-            page.Response.AppendHeader("content-disposition", "attachment; filename=" + id);
-
-            page.Response.BinaryWrite(data);
-            page.Response.End();
-        }
-
-        #endregion
-
-        #region AJAX
 
         /// <summary>
         /// Determines whether [the specified page] [is in async post back].
@@ -126,14 +121,22 @@ namespace Hexa.Core.Web.UI
             ScriptManager scriptManager;
 
             if (page.Master != null)
+            {
                 scriptManager = page.Master.FindControl(scriptManagerId) as ScriptManager;
+            }
             else
+            {
                 scriptManager = page.FindControl(scriptManagerId) as ScriptManager;
+            }
 
             if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         /// <summary>
@@ -148,6 +151,6 @@ namespace Hexa.Core.Web.UI
             return IsInAsyncPostBack(page, "ScriptManager");
         }
 
-        #endregion
+        #endregion Methods
     }
 }

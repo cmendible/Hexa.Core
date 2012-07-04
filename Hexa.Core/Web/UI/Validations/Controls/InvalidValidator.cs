@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Controls
 {
@@ -26,6 +26,8 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     internal class InvalidValidator : IValidator
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the ShowErrorValidator class.
         /// </summary>
@@ -35,7 +37,9 @@ namespace Hexa.Core.Web.UI.Controls
             ErrorMessage = message;
         }
 
-        #region IValidator Members
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// When implemented by a class, gets or sets the error message text generated when the condition being validated fails.
@@ -44,7 +48,11 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>
         /// The error message to generate.
         /// </returns>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// When implemented by a class, gets or sets a value indicating whether the user-entered content in the specified control passes validation.
@@ -54,9 +62,19 @@ namespace Hexa.Core.Web.UI.Controls
         /// </returns>
         public bool IsValid
         {
-            get { return false; }
-            set { return; }
+            get
+            {
+                return false;
+            }
+            set
+            {
+                return;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// When implemented by a class, evaluates the condition it checks and updates the <see cref="P:System.Web.UI.IValidator.IsValid"/> property.
@@ -66,6 +84,6 @@ namespace Hexa.Core.Web.UI.Controls
             return;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

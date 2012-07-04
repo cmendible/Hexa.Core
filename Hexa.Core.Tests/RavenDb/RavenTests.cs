@@ -4,70 +4,24 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+
     using Core.Data;
     using Core.Domain;
+
     using Data;
+
     using Domain;
+
     using Logging;
+
     using NUnit.Framework;
+
     using Validation;
 
     [TestFixture]
     public class RavenTests
     {
-        [TestFixtureSetUp]
-        public void FixtureSetup()
-        {
-            ApplicationContext.Start("Data");
-
-            // Validator and TraceManager
-            IoCContainer container = ApplicationContext.Container;
-            container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-            container.RegisterType<IValidator, DataAnnotationsValidator>();
-
-            // Context Factory
-            var ctxFactory = new RavenContextFactory();
-
-            container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
-            container.RegisterInstance<IDatabaseManager>(ctxFactory);
-
-            // Repositories
-            container.RegisterType<IHumanRepository, HumanRepository>();
-
-            // Services
-
-            if (!ctxFactory.DatabaseExists())
-                ctxFactory.CreateDatabase();
-
-            ctxFactory.ValidateDatabaseSchema();
-
-            ctxFactory.RegisterSessionFactory(container);
-        }
-
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
-        {
-            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-            dbManager.DeleteDatabase();
-
-            ApplicationContext.Stop();
-        }
-
-        private Human _Add_Human()
-        {
-            var human = new Human();
-            human.Name = "Martin";
-            human.isMale = true;
-
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
-            {
-                repo.Add(human);
-                ctx.Commit();
-            }
-
-            return human;
-        }
+        #region Methods
 
         [Test]
         public void Add_Human()
@@ -105,6 +59,46 @@
             {
                 Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
             }
+        }
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            ApplicationContext.Start("Data");
+
+            // Validator and TraceManager
+            IoCContainer container = ApplicationContext.Container;
+            container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
+            container.RegisterType<IValidator, DataAnnotationsValidator>();
+
+            // Context Factory
+            var ctxFactory = new RavenContextFactory();
+
+            container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
+            container.RegisterInstance<IDatabaseManager>(ctxFactory);
+
+            // Repositories
+            container.RegisterType<IHumanRepository, HumanRepository>();
+
+            // Services
+
+            if (!ctxFactory.DatabaseExists())
+            {
+                ctxFactory.CreateDatabase();
+            }
+
+            ctxFactory.ValidateDatabaseSchema();
+
+            ctxFactory.RegisterSessionFactory(container);
+        }
+
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+            dbManager.DeleteDatabase();
+
+            ApplicationContext.Stop();
         }
 
         [Test]
@@ -151,5 +145,23 @@
                 //Assert.Greater(human2.UpdatedAt, human2.CreatedAt);
             }
         }
+
+        private Human _Add_Human()
+        {
+            var human = new Human();
+            human.Name = "Martin";
+            human.isMale = true;
+
+            var repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (IUnitOfWork ctx = repo.UnitOfWork)
+            {
+                repo.Add(human);
+                ctx.Commit();
+            }
+
+            return human;
+        }
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.ServiceModel.Security
 {
@@ -24,6 +24,7 @@ namespace Hexa.Core.ServiceModel.Security
     using System.IdentityModel.Policy;
     using System.Reflection;
     using System.Security.Principal;
+
     using log4net;
 
     /// <summary>
@@ -31,8 +32,14 @@ namespace Hexa.Core.ServiceModel.Security
     /// </summary>
     public abstract class BaseAuthorizationPolicy : IAuthorizationPolicy
     {
-        private static readonly ILog _Log =
+        #region Fields
+
+        private static readonly ILog _Log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthorizationPolicy"/> class.
@@ -43,14 +50,27 @@ namespace Hexa.Core.ServiceModel.Security
             _Log.DebugFormat("New instance {0} created.", Id);
         }
 
-        #region IAuthorizationPolicy Members
+        #endregion Constructors
 
-        public string Id { get; protected set; }
+        #region Properties
+
+        public string Id
+        {
+            get;
+            protected set;
+        }
 
         public ClaimSet Issuer
         {
-            get { return ClaimSet.System; }
+            get
+            {
+                return ClaimSet.System;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Evaluates whether a user meets the requirements for this authorization policy.
@@ -61,8 +81,6 @@ namespace Hexa.Core.ServiceModel.Security
         /// false if the <see cref="M:System.IdentityModel.Policy.IAuthorizationPolicy.Evaluate(System.IdentityModel.Policy.EvaluationContext,System.Object@)"/> method for this authorization policy must be called if additional claims are added by other authorization policies to <paramref name="evaluationContext"/>; otherwise, true to state no additional evaluation is required by this authorization policy.
         /// </returns>
         public abstract bool Evaluate(EvaluationContext evaluationContext, ref object state);
-
-        #endregion
 
         /// <summary>
         /// Setup ups the evaluation context.
@@ -76,5 +94,7 @@ namespace Hexa.Core.ServiceModel.Security
             _Log.DebugFormat("User: {0} was authorized", principal.Identity.Name);
             context.Properties["Principal"] = principal;
         }
+
+        #endregion Methods
     }
 }

@@ -41,14 +41,14 @@ namespace Hexa.Core.Resources
         internal static global::System.Resources.ResourceManager ResourceManager
         {
             get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
                 {
-                    if (object.ReferenceEquals(resourceMan, null))
-                        {
-                            global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hexa.Core.Resources.Resource", typeof(Resource).Assembly);
-                            resourceMan = temp;
-                        }
-                    return resourceMan;
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Hexa.Core.Resources.Resource", typeof(Resource).Assembly);
+                    resourceMan = temp;
                 }
+                return resourceMan;
+            }
         }
 
         /// <summary>
@@ -59,13 +59,13 @@ namespace Hexa.Core.Resources
         internal static global::System.Globalization.CultureInfo Culture
         {
             get
-                {
-                    return resourceCulture;
-                }
+            {
+                return resourceCulture;
+            }
             set
-                {
-                    resourceCulture = value;
-                }
+            {
+                resourceCulture = value;
+            }
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace Hexa.Core.Resources
         internal static string AnObjectOfType0WasNotAvailableFromThePool
         {
             get
-                {
-                    return ResourceManager.GetString("AnObjectOfType0WasNotAvailableFromThePool", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("AnObjectOfType0WasNotAvailableFromThePool", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace Hexa.Core.Resources
         internal static string CanNotDirectlySaveAChildObject
         {
             get
-                {
-                    return ResourceManager.GetString("CanNotDirectlySaveAChildObject", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CanNotDirectlySaveAChildObject", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -96,9 +96,9 @@ namespace Hexa.Core.Resources
         internal static string CertificateFileNameFormatNotValidFilePassword
         {
             get
-                {
-                    return ResourceManager.GetString("CertificateFileNameFormatNotValidFilePassword", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CertificateFileNameFormatNotValidFilePassword", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -107,9 +107,9 @@ namespace Hexa.Core.Resources
         internal static string Code0WasNotPresentInDataSetCollection
         {
             get
-                {
-                    return ResourceManager.GetString("Code0WasNotPresentInDataSetCollection", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("Code0WasNotPresentInDataSetCollection", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -118,9 +118,9 @@ namespace Hexa.Core.Resources
         internal static string CodeFieldNameNotSpecifiedUnableToFetchByCode
         {
             get
-                {
-                    return ResourceManager.GetString("CodeFieldNameNotSpecifiedUnableToFetchByCode", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CodeFieldNameNotSpecifiedUnableToFetchByCode", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -129,9 +129,9 @@ namespace Hexa.Core.Resources
         internal static string CouldNotCreateType
         {
             get
-                {
-                    return ResourceManager.GetString("CouldNotCreateType", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CouldNotCreateType", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -140,9 +140,9 @@ namespace Hexa.Core.Resources
         internal static string CouldNotDefineType
         {
             get
-                {
-                    return ResourceManager.GetString("CouldNotDefineType", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CouldNotDefineType", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -151,9 +151,9 @@ namespace Hexa.Core.Resources
         internal static string CouldNotGenerateAssembly
         {
             get
-                {
-                    return ResourceManager.GetString("CouldNotGenerateAssembly", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CouldNotGenerateAssembly", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -162,9 +162,9 @@ namespace Hexa.Core.Resources
         internal static string CouldNotGenerateModuleBuilder
         {
             get
-                {
-                    return ResourceManager.GetString("CouldNotGenerateModuleBuilder", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CouldNotGenerateModuleBuilder", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -173,9 +173,9 @@ namespace Hexa.Core.Resources
         internal static string CreationTimeoutCannotBeNegative
         {
             get
-                {
-                    return ResourceManager.GetString("CreationTimeoutCannotBeNegative", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("CreationTimeoutCannotBeNegative", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -184,9 +184,9 @@ namespace Hexa.Core.Resources
         internal static string DataLayerServiceCanTBeNull
         {
             get
-                {
-                    return ResourceManager.GetString("DataLayerServiceCanTBeNull", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("DataLayerServiceCanTBeNull", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -195,9 +195,9 @@ namespace Hexa.Core.Resources
         internal static string ErrorMasterObjectsCanNotSupportChildDeleteMethod
         {
             get
-                {
-                    return ResourceManager.GetString("ErrorMasterObjectsCanNotSupportChildDeleteMethod", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ErrorMasterObjectsCanNotSupportChildDeleteMethod", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -206,9 +206,9 @@ namespace Hexa.Core.Resources
         internal static string ErrorReadingField0FormTheDataSource
         {
             get
-                {
-                    return ResourceManager.GetString("ErrorReadingField0FormTheDataSource", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ErrorReadingField0FormTheDataSource", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -217,9 +217,9 @@ namespace Hexa.Core.Resources
         internal static string IdentityCanNotBeNull
         {
             get
-                {
-                    return ResourceManager.GetString("IdentityCanNotBeNull", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("IdentityCanNotBeNull", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -228,9 +228,9 @@ namespace Hexa.Core.Resources
         internal static string IEndpointBehaviorTypeSpecifiedMustHaveAPublicEmptyConstructor
         {
             get
-                {
-                    return ResourceManager.GetString("IEndpointBehaviorTypeSpecifiedMustHaveAPublicEmptyConstructor", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("IEndpointBehaviorTypeSpecifiedMustHaveAPublicEmptyConstructor", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -239,9 +239,9 @@ namespace Hexa.Core.Resources
         internal static string InvalidConnectionStringId
         {
             get
-                {
-                    return ResourceManager.GetString("InvalidConnectionStringId", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("InvalidConnectionStringId", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -250,9 +250,9 @@ namespace Hexa.Core.Resources
         internal static string IsRequired
         {
             get
-                {
-                    return ResourceManager.GetString("IsRequired", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("IsRequired", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -261,9 +261,9 @@ namespace Hexa.Core.Resources
         internal static string LinqEntityAttributeNotDefined
         {
             get
-                {
-                    return ResourceManager.GetString("LinqEntityAttributeNotDefined", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("LinqEntityAttributeNotDefined", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -272,9 +272,9 @@ namespace Hexa.Core.Resources
         internal static string MaxPoolSizeCannotBeNegative
         {
             get
-                {
-                    return ResourceManager.GetString("MaxPoolSizeCannotBeNegative", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("MaxPoolSizeCannotBeNegative", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -283,9 +283,9 @@ namespace Hexa.Core.Resources
         internal static string MinPoolSizeCannotBeGreaterThanMaxPoolSize
         {
             get
-                {
-                    return ResourceManager.GetString("MinPoolSizeCannotBeGreaterThanMaxPoolSize", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("MinPoolSizeCannotBeGreaterThanMaxPoolSize", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -294,9 +294,9 @@ namespace Hexa.Core.Resources
         internal static string MinPoolSizeCannotBeNegative
         {
             get
-                {
-                    return ResourceManager.GetString("MinPoolSizeCannotBeNegative", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("MinPoolSizeCannotBeNegative", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -305,9 +305,9 @@ namespace Hexa.Core.Resources
         internal static string MustBeGreaterOrEqualThan1
         {
             get
-                {
-                    return ResourceManager.GetString("MustBeGreaterOrEqualThan1", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("MustBeGreaterOrEqualThan1", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -316,9 +316,9 @@ namespace Hexa.Core.Resources
         internal static string NameCannotBeNull
         {
             get
-                {
-                    return ResourceManager.GetString("NameCannotBeNull", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("NameCannotBeNull", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -327,9 +327,9 @@ namespace Hexa.Core.Resources
         internal static string ObjectIsNotChildAndCanNotBeSaved
         {
             get
-                {
-                    return ResourceManager.GetString("ObjectIsNotChildAndCanNotBeSaved", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ObjectIsNotChildAndCanNotBeSaved", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -338,9 +338,9 @@ namespace Hexa.Core.Resources
         internal static string ObjectIsNotValidAndCanNotBeSaved
         {
             get
-                {
-                    return ResourceManager.GetString("ObjectIsNotValidAndCanNotBeSaved", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ObjectIsNotValidAndCanNotBeSaved", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -349,9 +349,9 @@ namespace Hexa.Core.Resources
         internal static string ObjectIsStillBeingEditedAndCanNotBeSaved
         {
             get
-                {
-                    return ResourceManager.GetString("ObjectIsStillBeingEditedAndCanNotBeSaved", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ObjectIsStillBeingEditedAndCanNotBeSaved", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -360,9 +360,9 @@ namespace Hexa.Core.Resources
         internal static string PageMustBeGreaterOrEqualTo1
         {
             get
-                {
-                    return ResourceManager.GetString("PageMustBeGreaterOrEqualTo1", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("PageMustBeGreaterOrEqualTo1", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -371,9 +371,9 @@ namespace Hexa.Core.Resources
         internal static string Type0CannotBeUnregisteredBecauseThereAreActiveThreadsWaitingForAnObject
         {
             get
-                {
-                    return ResourceManager.GetString("Type0CannotBeUnregisteredBecauseThereAreActiveThreadsWaitingForAnObject", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("Type0CannotBeUnregisteredBecauseThereAreActiveThreadsWaitingForAnObject", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -382,9 +382,9 @@ namespace Hexa.Core.Resources
         internal static string Type0IsNotRegisteredInTheObjectPool
         {
             get
-                {
-                    return ResourceManager.GetString("Type0IsNotRegisteredInTheObjectPool", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("Type0IsNotRegisteredInTheObjectPool", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -393,9 +393,9 @@ namespace Hexa.Core.Resources
         internal static string TypeCannotBeNull
         {
             get
-                {
-                    return ResourceManager.GetString("TypeCannotBeNull", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("TypeCannotBeNull", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -404,9 +404,9 @@ namespace Hexa.Core.Resources
         internal static string TypeIsAlreadyRegisteredInTheObjectPool
         {
             get
-                {
-                    return ResourceManager.GetString("TypeIsAlreadyRegisteredInTheObjectPool", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("TypeIsAlreadyRegisteredInTheObjectPool", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -415,9 +415,9 @@ namespace Hexa.Core.Resources
         internal static string UnableToReadKeyOrIv
         {
             get
-                {
-                    return ResourceManager.GetString("UnableToReadKeyOrIv", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("UnableToReadKeyOrIv", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -426,9 +426,9 @@ namespace Hexa.Core.Resources
         internal static string UnableToStartProvider
         {
             get
-                {
-                    return ResourceManager.GetString("UnableToStartProvider", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("UnableToStartProvider", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -437,9 +437,9 @@ namespace Hexa.Core.Resources
         internal static string ValueIsNotAnEmail
         {
             get
-                {
-                    return ResourceManager.GetString("ValueIsNotAnEmail", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ValueIsNotAnEmail", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -448,9 +448,9 @@ namespace Hexa.Core.Resources
         internal static string ValueIsNotCorrectlyFormatted
         {
             get
-                {
-                    return ResourceManager.GetString("ValueIsNotCorrectlyFormatted", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ValueIsNotCorrectlyFormatted", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -459,9 +459,9 @@ namespace Hexa.Core.Resources
         internal static string ValueIsNotOfTheCorrectType
         {
             get
-                {
-                    return ResourceManager.GetString("ValueIsNotOfTheCorrectType", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ValueIsNotOfTheCorrectType", resourceCulture);
+            }
         }
 
         /// <summary>
@@ -470,9 +470,9 @@ namespace Hexa.Core.Resources
         internal static string ValueMustBeBetween1And2
         {
             get
-                {
-                    return ResourceManager.GetString("ValueMustBeBetween1And2", resourceCulture);
-                }
+            {
+                return ResourceManager.GetString("ValueMustBeBetween1And2", resourceCulture);
+            }
         }
     }
 }

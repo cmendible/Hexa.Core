@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -27,6 +27,8 @@ namespace Hexa.Core.Validation
     /// </summary>
     public interface IValidationInfoProvider
     {
+        #region Methods
+
         /// <summary>
         /// Gets the validation info.
         /// </summary>
@@ -39,6 +41,8 @@ namespace Hexa.Core.Validation
         /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
         IList<IValidationInfo> GetValidationInfo(string propertyName);
+
+        #endregion Methods
     }
 
     /// <summary>

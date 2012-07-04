@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Data
 {
@@ -28,9 +28,15 @@ namespace Hexa.Core.Data
     /// </summary>
     public sealed class SqlScriptHelper
     {
+        #region Constructors
+
         private SqlScriptHelper()
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         /// <summary>
         /// Executes the specified script.
@@ -59,16 +65,6 @@ namespace Hexa.Core.Data
         }
 
         /// <summary>
-        /// Gets the commands from the specified script.
-        /// </summary>
-        /// <param name="script">The script.</param>
-        /// <returns></returns>
-        private static string[] GetCommandsFromScript(string script)
-        {
-            return Regex.Split(script, "GO\r\n", RegexOptions.IgnoreCase);
-        }
-
-        /// <summary>
         /// Executes the commands.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -84,5 +80,17 @@ namespace Hexa.Core.Data
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the commands from the specified script.
+        /// </summary>
+        /// <param name="script">The script.</param>
+        /// <returns></returns>
+        private static string[] GetCommandsFromScript(string script)
+        {
+            return Regex.Split(script, "GO\r\n", RegexOptions.IgnoreCase);
+        }
+
+        #endregion Methods
     }
 }

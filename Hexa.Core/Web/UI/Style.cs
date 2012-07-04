@@ -1,13 +1,10 @@
 ﻿// Credits should go to Egil Hansen.
 // see: http://stackoverflow.com/questions/328763/how-to-take-control-of-style-sheets-in-asp-net-themes-with-the-styleplaceholder-a
-
-
- //<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
+//<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
 //<cc2:Styles runat="server">
 //    <link rel="Stylesheet" type="text/css" href="%Theme/StyleSheet.css" media="all"/>
 //    <link rel="Stylesheet" type="text/css" href="%Theme/Print.css" media="print"/>
 //</cc2:Styles>
-
 namespace Hexa.Core.Web.UI.Controls
 {
     using System;
@@ -22,21 +19,7 @@ namespace Hexa.Core.Web.UI.Controls
     [Themeable(true)]
     public class Styles : PlaceHolder
     {
-        [Bindable(true)]
-        [Category("Appearance")]
-        [DefaultValue("%Theme")]
-        [Localizable(false)]
-        [Description("Name of the variable that should be replaced by the actual theme path")]
-        public string ThemeVariableName
-        {
-            get
-            {
-                var s = (String) ViewState["ThemeVariableName"];
-                return ((s == null) ? "%Theme" : s);
-            }
-
-            set { ViewState["ThemeVariableName"] = value; }
-        }
+        #region Properties
 
         /// <summary>
         /// Get the theme path
@@ -51,6 +34,29 @@ namespace Hexa.Core.Web.UI.Controls
             }
         }
 
+        [Bindable(true)]
+        [Category("Appearance")]
+        [DefaultValue("%Theme")]
+        [Localizable(false)]
+        [Description("Name of the variable that should be replaced by the actual theme path")]
+        public string ThemeVariableName
+        {
+            get
+            {
+                var s = (String) ViewState["ThemeVariableName"];
+                return ((s == null) ? "%Theme" : s);
+            }
+
+            set
+            {
+                ViewState["ThemeVariableName"] = value;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Fix controls before render
         /// </summary>
@@ -64,7 +70,7 @@ namespace Hexa.Core.Web.UI.Controls
                 foreach (Control c in Page.Header.Controls)
                 {
                     if (c is HtmlControl && ((HtmlControl) c).TagName.Equals("link",
-                                                                             StringComparison.OrdinalIgnoreCase))
+                            StringComparison.OrdinalIgnoreCase))
                     {
                         c.Visible = false;
                     }
@@ -84,5 +90,7 @@ namespace Hexa.Core.Web.UI.Controls
                 }
             }
         }
+
+        #endregion Methods
     }
 }

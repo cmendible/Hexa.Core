@@ -4,19 +4,61 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+
     using Core.Data;
     using Core.Domain;
+
     using Data;
+
     using Domain;
+
     using Logging;
+
     using NUnit.Framework;
+
     using Security;
+
     using Validation;
 
     public abstract class BaseDatabaseTest
     {
-        protected abstract NHContextFactory CreateNHContextFactory();
-        protected abstract string ConnectionString();
+        #region Methods
+
+        [Test]
+        public void Add_Human()
+        {
+            Human human = _Add_Human();
+
+            Assert.IsNotNull(human);
+            Assert.IsNotNull(human.Version);
+            Assert.IsFalse(human.UniqueId == Guid.Empty);
+            Assert.AreEqual("Martin", human.Name);
+        }
+
+        [Test]
+        public void Delete_Human()
+        {
+            Human human = _Add_Human();
+
+            var repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (IUnitOfWork ctx = repo.UnitOfWork)
+            {
+                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                Assert.IsTrue(results.Count() > 0);
+
+                Human human2Delete = results.First();
+
+                repo.Remove(human2Delete);
+
+                ctx.Commit();
+            }
+
+            repo = ServiceLocator.GetInstance<IHumanRepository>();
+            using (IUnitOfWork ctx = repo.UnitOfWork)
+            {
+                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
+            }
+        }
 
         [TestFixtureSetUp]
         public void FixtureSetup()
@@ -40,7 +82,9 @@
             // Services
 
             if (!ctxFactory.DatabaseExists())
+            {
                 ctxFactory.CreateDatabase();
+            }
 
             ctxFactory.ValidateDatabaseSchema();
 
@@ -62,37 +106,6 @@
             {
                 ApplicationContext.Stop();
             }
-        }
-
-        private Human _Add_Human()
-        {
-            var human = new Human();
-            human.Name = "Martin";
-            human.isMale = true;
-
-            using (IUnitOfWork uow = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                using (IUnitOfWork ctx = repo.UnitOfWork)
-                {
-                    repo.Add(human);
-                    ctx.Commit();
-                }
-                uow.Commit();
-            }
-
-            return human;
-        }
-
-        [Test]
-        public void Add_Human()
-        {
-            Human human = _Add_Human();
-
-            Assert.IsNotNull(human);
-            Assert.IsNotNull(human.Version);
-            Assert.IsFalse(human.UniqueId == Guid.Empty);
-            Assert.AreEqual("Martin", human.Name);
         }
 
         [Test]
@@ -165,29 +178,30 @@
             }
         }
 
-        [Test]
-        public void Delete_Human()
+        protected abstract string ConnectionString();
+
+        protected abstract NHContextFactory CreateNHContextFactory();
+
+        private Human _Add_Human()
         {
-            Human human = _Add_Human();
+            var human = new Human();
+            human.Name = "Martin";
+            human.isMale = true;
 
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            using (IUnitOfWork uow = UnitOfWorkScope.Start())
             {
-                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
-
-                Human human2Delete = results.First();
-
-                repo.Remove(human2Delete);
-
-                ctx.Commit();
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
+                using (IUnitOfWork ctx = repo.UnitOfWork)
+                {
+                    repo.Add(human);
+                    ctx.Commit();
+                }
+                uow.Commit();
             }
 
-            repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
-            {
-                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
-            }
+            return human;
         }
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -26,8 +26,19 @@ namespace Hexa.Core.Validation
     /// </summary>
     public interface IValidationInfo
     {
-        string ErrorMessage { get; }
-        PropertyInfo PropertyInfo { get; }
+        #region Properties
+
+        string ErrorMessage
+        {
+            get;
+        }
+
+        PropertyInfo PropertyInfo
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 
     /// <summary>
@@ -36,8 +47,14 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public abstract class BaseValidationInfo<TEntity> : IValidationInfo
     {
+        #region Fields
+
         private readonly string _ErrorMessage;
         private readonly PropertyInfo _PropertyInfo;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseValidationInfo&lt;TEntity&gt;"/> class.
@@ -50,7 +67,9 @@ namespace Hexa.Core.Validation
             _PropertyInfo = typeof(TEntity).GetProperty(propertyName);
         }
 
-        #region IValidationInfo Members
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the error.
@@ -58,7 +77,10 @@ namespace Hexa.Core.Validation
         /// <value>The error.</value>
         public virtual string ErrorMessage
         {
-            get { return _ErrorMessage; }
+            get
+            {
+                return _ErrorMessage;
+            }
         }
 
         /// <summary>
@@ -67,9 +89,12 @@ namespace Hexa.Core.Validation
         /// <value>The property info.</value>
         public virtual PropertyInfo PropertyInfo
         {
-            get { return _PropertyInfo; }
+            get
+            {
+                return _PropertyInfo;
+            }
         }
 
-        #endregion
+        #endregion Properties
     }
 }

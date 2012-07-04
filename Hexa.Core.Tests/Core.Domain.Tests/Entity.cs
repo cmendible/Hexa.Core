@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,13 +15,26 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Tests
 {
     public class Entity
     {
-        public int Id { get; set; }
-        public string SampleProperty { get; set; }
+        #region Properties
+
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public string SampleProperty
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

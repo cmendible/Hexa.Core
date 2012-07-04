@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.ServiceModel.Security
 {
@@ -24,23 +24,34 @@ namespace Hexa.Core.ServiceModel.Security
     using System.Security.Principal;
     using System.ServiceModel;
     using System.Threading;
+
     using log4net;
 
     internal class ServiceAuthorizationManager : System.ServiceModel.ServiceAuthorizationManager
     {
-        protected static readonly ILog _Log =
+        #region Fields
+
+        protected static readonly ILog _Log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         protected static List<string> _AnonymousActions = new List<string>
-                                                              {
-                                                                  "http://schemas.xmlsoap.org/ws/2004/09/transfer/Get",
-                                                                  // WS-Transfer WSDL request.
-                                                              };
+        {
+            "http://schemas.xmlsoap.org/ws/2004/09/transfer/Get",
+            // WS-Transfer WSDL request.
+        };
+
+        #endregion Fields
+
+        #region Constructors
 
         public ServiceAuthorizationManager()
         {
             _Log.Debug("New instance constructed.");
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
@@ -59,7 +70,9 @@ namespace Hexa.Core.ServiceModel.Security
             {
                 int count = 0;
                 foreach (IIdentity idt in operationContext.ServiceSecurityContext.GetIdentities())
+                {
                     _Log.DebugFormat("Identity{1}-{0}: {2}", idt.AuthenticationType, count++, idt.Name);
+                }
             }
 
             if (operationContext.ServiceSecurityContext.AuthorizationContext.Properties.ContainsKey("Principal"))
@@ -70,7 +83,11 @@ namespace Hexa.Core.ServiceModel.Security
                 return base.CheckAccessCore(operationContext);
             }
             else
+            {
                 return false;
+            }
         }
+
+        #endregion Methods
     }
 }

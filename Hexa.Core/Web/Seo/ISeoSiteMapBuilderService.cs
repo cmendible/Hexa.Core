@@ -12,16 +12,45 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
 namespace Hexa.Core.Web.Seo
 {
     using System.Collections.ObjectModel;
+
+    public interface ISeoSiteMapBuilderService
+    {
+        #region Properties
+
+        SeoUrlInfo RootUrl
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        void AddUrl(SeoUrlInfo url);
+
+        void AddUrl(SeoUrlInfo url, SeoUrlInfo parent);
+
+        void AddUrl(SeoUrlInfo url, SeoUrlInfo parent, int preferredDisplayOrder);
+
+        void AddUrl(SeoUrlInfo url, int preferredDisplayOrder);
+
+        ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
+
+        string SeoXml();
+
+        #endregion Methods
+    }
 
     /// <summary>
     ///
     /// </summary>
     public class SeoUrlInfo
     {
+        #region Constructors
+
         public SeoUrlInfo(string key)
             : this(key, "daily", 100)
         {
@@ -43,35 +72,46 @@ namespace Hexa.Core.Web.Seo
             Priority = ((double) priorityPercentage/100).ToString();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public string Url { get; set; }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         ///
         /// </summary>
-        public string Key { get; set; }
+        public string ChangeFrequency
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         ///
         /// </summary>
-        public string ChangeFrequency { get; set; }
+        public string Key
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         ///
         /// </summary>
-        public string Priority { get; set; }
-    }
+        public string Priority
+        {
+            get;
+            set;
+        }
 
-    public interface ISeoSiteMapBuilderService
-    {
-        SeoUrlInfo RootUrl { get; }
-        void AddUrl(SeoUrlInfo url);
-        void AddUrl(SeoUrlInfo url, SeoUrlInfo parent);
-        void AddUrl(SeoUrlInfo url, SeoUrlInfo parent, int preferredDisplayOrder);
-        void AddUrl(SeoUrlInfo url, int preferredDisplayOrder);
-        ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
-        string SeoXml();
+        /// <summary>
+        ///
+        /// </summary>
+        public string Url
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

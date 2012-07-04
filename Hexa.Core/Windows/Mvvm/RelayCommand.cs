@@ -1,5 +1,4 @@
 ﻿//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
-
 namespace Hexa.Core.Windows.Mvvm
 {
     using System;
@@ -11,12 +10,12 @@ namespace Hexa.Core.Windows.Mvvm
     /// </summary>
     public class RelayCommand<T> : ICommand
     {
-        #region Declarations
+        #region Fields
 
         private readonly Predicate<T> _canExecute;
         private readonly Action<T> _execute;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -37,28 +36,38 @@ namespace Hexa.Core.Windows.Mvvm
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if (execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region ICommand Members
+        #region Events
 
         public event EventHandler CanExecuteChanged
         {
             add
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested += value;
+                }
             }
             remove
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested -= value;
+                }
             }
         }
+
+        #endregion Events
+
+        #region Methods
 
         [DebuggerStepThrough]
         public Boolean CanExecute(Object parameter)
@@ -71,7 +80,7 @@ namespace Hexa.Core.Windows.Mvvm
             _execute((T) parameter);
         }
 
-        #endregion
+        #endregion Methods
     }
 
     /// <summary>
@@ -79,12 +88,12 @@ namespace Hexa.Core.Windows.Mvvm
     /// </summary>
     public class RelayCommand : ICommand
     {
-        #region Declarations
+        #region Fields
 
         private readonly Func<Boolean> _canExecute;
         private readonly Action _execute;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -105,28 +114,38 @@ namespace Hexa.Core.Windows.Mvvm
         public RelayCommand(Action execute, Func<Boolean> canExecute)
         {
             if (execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region ICommand Members
+        #region Events
 
         public event EventHandler CanExecuteChanged
         {
             add
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested += value;
+                }
             }
             remove
             {
                 if (_canExecute != null)
+                {
                     CommandManager.RequerySuggested -= value;
+                }
             }
         }
+
+        #endregion Events
+
+        #region Methods
 
         [DebuggerStepThrough]
         public Boolean CanExecute(Object parameter)
@@ -139,6 +158,6 @@ namespace Hexa.Core.Windows.Mvvm
             _execute();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -16,7 +16,7 @@
 // ===================================================================================
 // Inspired on Pool<T> From http://pastebin.com/he1fYC29
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Pooling
 {
@@ -26,20 +26,40 @@ namespace Hexa.Core.Pooling
 
     public interface IObjectWithExpiration<T> : IDisposable
     {
-        DateTime TimeOut { get; set; }
-        bool IsExpired { get; }
+        #region Properties
+
+        bool IsExpired
+        {
+            get;
+        }
+
+        DateTime TimeOut
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 
     public class Pool<T> : IDisposable
     {
+        #region Fields
+
         private readonly bool _eagerLoad;
         private readonly Func<Pool<T>, T> _factory;
         private readonly Queue<T> _queue;
         private readonly Semaphore _sync;
         private readonly bool _usingExpirableObjects;
+
         private bool _isDisposed;
 
-        public Pool(int size, Func<Pool<T>, T> factory) : this(size, factory, false)
+        #endregion Fields
+
+        #region Constructors
+
+        public Pool(int size, Func<Pool<T>, T> factory)
+            : this(size, factory, false)
         {
         }
 
@@ -49,7 +69,9 @@ namespace Hexa.Core.Pooling
                 throw new ArgumentOutOfRangeException("size", size,
                                                       "Argument 'size' must be greater than zero.");
             if (factory == null)
+            {
                 throw new ArgumentNullException("factory");
+            }
 
             this._factory = factory;
             this._sync = new Semaphore(size, size);
@@ -64,35 +86,21 @@ namespace Hexa.Core.Pooling
             this._usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public bool IsDisposed
         {
-            get { return this._isDisposed; }
+            get
+            {
+                return this._isDisposed;
+            }
         }
 
-        #region IDisposable Members
+        #endregion Properties
 
-        public void Dispose()
-        {
-            if (this._isDisposed)
-            {
-                return;
-            }
-            this._isDisposed = true;
-            if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
-            {
-                lock (this._queue)
-                {
-                    while (this._queue.Count > 0)
-                    {
-                        var disposable = (IDisposable)this._queue.Dequeue();
-                        disposable.Dispose();
-                    }
-                }
-            }
-            this._sync.Close();
-        }
-
-        #endregion
+        #region Methods
 
         public T Acquire()
         {
@@ -103,9 +111,13 @@ namespace Hexa.Core.Pooling
                 if (!this._eagerLoad)
                 {
                     if (this._queue.Count > 0)
+                    {
                         item = this._queue.Dequeue();
+                    }
                     else
+                    {
                         item = this._factory(this);
+                    }
                 }
                 else
                 {
@@ -131,6 +143,27 @@ namespace Hexa.Core.Pooling
             }
         }
 
+        public void Dispose()
+        {
+            if (this._isDisposed)
+            {
+                return;
+            }
+            this._isDisposed = true;
+            if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
+            {
+                lock (this._queue)
+                {
+                    while (this._queue.Count > 0)
+                    {
+                        var disposable = (IDisposable)this._queue.Dequeue();
+                        disposable.Dispose();
+                    }
+                }
+            }
+            this._sync.Close();
+        }
+
         public void Release(T item)
         {
             lock (this._queue)
@@ -148,5 +181,7 @@ namespace Hexa.Core.Pooling
                 this._queue.Enqueue(item);
             }
         }
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -24,11 +24,13 @@ namespace Hexa.Core.Domain
     public class RootEntityMap<TEntity> : BaseClassMap<TEntity>
         where TEntity : RootEntity<TEntity>
     {
+        #region Constructors
+
         public RootEntityMap()
         {
             // Setup UniqueId property as CombGuid
             Id(x => x.UniqueId)
-                .GeneratedBy.GuidComb();
+            .GeneratedBy.GuidComb();
 
             // Use versioned timestamp as optimistick lock mechanism.
             OptimisticLock.Version();
@@ -41,12 +43,14 @@ namespace Hexa.Core.Domain
             // Setup timestamp..
             if (Dialect is SQLiteDialect)
                 Version(x => x.Version)
-                    .Column("Timestamp")
-                    .CustomType<TicksAsString>();
+                .Column("Timestamp")
+                .CustomType<TicksAsString>();
             else
                 Version(x => x.Version)
-                    .Column("`Timestamp`")
-                    .CustomType<TicksAsString>();
+                .Column("`Timestamp`")
+                .CustomType<TicksAsString>();
         }
+
+        #endregion Constructors
     }
 }

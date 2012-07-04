@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,20 +15,29 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
     using NHibernate.Cfg;
     using NHibernate.Event;
+
     using Validation;
 
     public sealed class ValidateEventListener : IPreInsertEventListener, IPreUpdateEventListener, IInitializable
     {
+        #region Fields
+
         // Fields
         private static readonly object padlock = new object();
+
         private static IValidator validator;
+
         private bool isInitialized;
+
+        #endregion Fields
+
+        #region Properties
 
         // Properties
         private static IValidator Validator
@@ -53,19 +62,17 @@ namespace Hexa.Core.Domain
             }
         }
 
-        // Methods
+        #endregion Properties
 
-        #region IInitializable Members
+        #region Methods
 
         public void Initialize(Configuration cfg)
         {
             if (!isInitialized && (cfg != null))
+            {
                 isInitialized = true;
+            }
         }
-
-        #endregion
-
-        #region IPreInsertEventListener Members
 
         public bool OnPreInsert(PreInsertEvent @event)
         {
@@ -73,17 +80,11 @@ namespace Hexa.Core.Domain
             return false;
         }
 
-        #endregion
-
-        #region IPreUpdateEventListener Members
-
         public bool OnPreUpdate(PreUpdateEvent @event)
         {
             Validate(@event.Entity);
             return false;
         }
-
-        #endregion
 
         private static void Validate(object entity)
         {
@@ -92,5 +93,13 @@ namespace Hexa.Core.Domain
                 Validator.AssertValidation(entity);
             }
         }
+
+        #endregion Methods
+
+        #region Other
+
+        // Methods
+
+        #endregion Other
     }
 }

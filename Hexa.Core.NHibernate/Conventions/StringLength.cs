@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,18 +15,19 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+
     using FluentNHibernate.Conventions;
     using FluentNHibernate.Conventions.Instances;
 
     public class StringLengthConvention : IPropertyConvention
     {
-        #region IPropertyConvention Members
+        #region Methods
 
         public void Apply(IPropertyInstance target)
         {
@@ -35,9 +36,11 @@ namespace Hexa.Core.Domain
                 StringLengthAttribute;
 
             if (attribute != null)
+            {
                 target.Length(attribute.MaximumLength);
+            }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

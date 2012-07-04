@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data;
+
     using NHibernate;
     using NHibernate.Engine;
     using NHibernate.SqlTypes;
@@ -12,21 +13,44 @@
     /// </summary />
     public class TicksAsString : IUserVersionType
     {
-        #region IUserVersionType Members
+        #region Properties
 
-        public object Next(object current, ISessionImplementor session)
+        public bool IsMutable
         {
-            return Seed(session);
+            get
+            {
+                return false;
+            }
         }
 
-        public object Seed(ISessionImplementor session)
+        public Type ReturnedType
         {
-            return DateTime.UtcNow.Ticks.ToString();
+            get
+            {
+                return typeof(string);
+            }
         }
+
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {new SqlType(DbType.Int64)};
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public object Assemble(object cached, object owner)
         {
             return DeepCopy(cached);
+        }
+
+        public int Compare(object x, object y)
+        {
+            return ((IComparable) x).CompareTo(y);
         }
 
         public object DeepCopy(object value)
@@ -44,9 +68,14 @@
             return x.GetHashCode();
         }
 
-        public bool IsMutable
+        bool IUserType.Equals(object x, object y)
         {
-            get { return false; }
+            return (x == y);
+        }
+
+        public object Next(object current, ISessionImplementor session)
+        {
+            return Seed(session);
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
@@ -54,7 +83,9 @@
             object ret = rs.GetValue(rs.GetOrdinal(names[0]));
 
             if (ret == null)
+            {
                 return null;
+            }
 
             return ret.ToString();
         }
@@ -69,26 +100,11 @@
             return original;
         }
 
-        public Type ReturnedType
+        public object Seed(ISessionImplementor session)
         {
-            get { return typeof(string); }
+            return DateTime.UtcNow.Ticks.ToString();
         }
 
-        public SqlType[] SqlTypes
-        {
-            get { return new[] {new SqlType(DbType.Int64)}; }
-        }
-
-        public int Compare(object x, object y)
-        {
-            return ((IComparable) x).CompareTo(y);
-        }
-
-        bool IUserType.Equals(object x, object y)
-        {
-            return (x == y);
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

@@ -5,6 +5,8 @@
     /// </summary>
     public static class GuidExtensions
     {
+        #region Methods
+
         /// <summary>
         /// Determines whether [is empty or null] [the specified GUID].
         /// </summary>
@@ -30,22 +32,34 @@
         }
 
         /// <summary>
-        /// Is the Guid empty or null.
+        /// Determines whether the specified GUID is valid.
         /// </summary>
         /// <param name="guid">The GUID.</param>
-        /// <returns></returns>
-        private static bool __IsEmptyOrNull(this Guid? value)
+        /// <returns>
+        /// 	<c>true</c> if the specified GUID is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValid(this Guid value)
         {
-            if (value == null)
-                return true;
+            byte[] bits = value.ToByteArray();
 
-            if (string.IsNullOrEmpty(value.ToString()))
-                return true;
+            const int VariantShift = 6;
+            const int VariantMask = (0x3 << VariantShift);
+            const int VariantBits = (0x2 << VariantShift);
 
-            if (value == new Guid())
-                return true;
+            if ((bits[8] & VariantMask) != VariantBits)
+            {
+                return false;
+            }
 
-            return false;
+            const int VersionShift = 4;
+            const int VersionMask = (0xf << VersionShift);
+            const int VersionBits = (0x4 << VersionShift);
+
+            if ((bits[7] & VersionMask) != VersionBits)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -132,34 +146,30 @@
         }
 
         /// <summary>
-        /// Determines whether the specified GUID is valid.
+        /// Is the Guid empty or null.
         /// </summary>
         /// <param name="guid">The GUID.</param>
-        /// <returns>
-        /// 	<c>true</c> if the specified GUID is valid; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsValid(this Guid value)
+        /// <returns></returns>
+        private static bool __IsEmptyOrNull(this Guid? value)
         {
-            byte[] bits = value.ToByteArray();
-
-            const int VariantShift = 6;
-            const int VariantMask = (0x3 << VariantShift);
-            const int VariantBits = (0x2 << VariantShift);
-
-            if ((bits[8] & VariantMask) != VariantBits)
+            if (value == null)
             {
-                return false;
+                return true;
             }
 
-            const int VersionShift = 4;
-            const int VersionMask = (0xf << VersionShift);
-            const int VersionBits = (0x4 << VersionShift);
-
-            if ((bits[7] & VersionMask) != VersionBits)
+            if (string.IsNullOrEmpty(value.ToString()))
             {
-                return false;
+                return true;
             }
-            return true;
+
+            if (value == new Guid())
+            {
+                return true;
+            }
+
+            return false;
         }
+
+        #endregion Methods
     }
 }

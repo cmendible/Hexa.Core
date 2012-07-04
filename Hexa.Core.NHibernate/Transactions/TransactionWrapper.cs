@@ -4,14 +4,26 @@
 
     public class TransactionWrapper : ITransactionWrapper
     {
+        #region Constructors
+
         public TransactionWrapper(ITransaction transaction)
         {
             Transaction = transaction;
         }
 
-        protected ITransaction Transaction { get; set; }
+        #endregion Constructors
 
-        #region ITransactionWrapper Members
+        #region Properties
+
+        protected ITransaction Transaction
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public virtual void Commit()
         {
@@ -21,11 +33,13 @@
         public void Rollback()
         {
             if (Transaction.WasRolledBack)
+            {
                 return;
+            }
 
             Transaction.Rollback();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

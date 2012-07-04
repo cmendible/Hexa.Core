@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -28,7 +28,7 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class DataAnnotationValidationInfoProvider<TEntity> : IValidationInfoProvider
     {
-        #region IValidationInfoProvider Members
+        #region Methods
 
         /// <summary>
         /// Gets the validation info.
@@ -49,6 +49,6 @@ namespace Hexa.Core.Validation
             return GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

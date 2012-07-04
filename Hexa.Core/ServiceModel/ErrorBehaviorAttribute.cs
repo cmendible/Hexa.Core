@@ -10,33 +10,44 @@
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class ErrorBehaviorAttribute : Attribute, IServiceBehavior
     {
+        #region Fields
+
         private readonly Type errorHandlerType;
+
+        #endregion Fields
+
+        #region Constructors
 
         public ErrorBehaviorAttribute(Type errorHandlerType)
         {
             this.errorHandlerType = errorHandlerType;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public Type ErrorHandlerType
         {
-            get { return errorHandlerType; }
+            get
+            {
+                return errorHandlerType;
+            }
         }
 
-        #region IServiceBehavior Members
+        #endregion Properties
 
-        void IServiceBehavior.Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
-        {
-        }
+        #region Methods
 
         void IServiceBehavior.AddBindingParameters(ServiceDescription serviceDescription,
-                                                   ServiceHostBase serviceHostBase,
-                                                   Collection<ServiceEndpoint> endpoints,
-                                                   BindingParameterCollection bindingParameters)
+            ServiceHostBase serviceHostBase,
+            Collection<ServiceEndpoint> endpoints,
+            BindingParameterCollection bindingParameters)
         {
         }
 
         void IServiceBehavior.ApplyDispatchBehavior(ServiceDescription serviceDescription,
-                                                    ServiceHostBase serviceHostBase)
+            ServiceHostBase serviceHostBase)
         {
             IErrorHandler errorHandler;
 
@@ -64,6 +75,10 @@
             }
         }
 
-        #endregion
+        void IServiceBehavior.Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
+        {
+        }
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -24,17 +24,27 @@ namespace Hexa.Core.Domain
     using System.ServiceModel;
     using System.Transactions;
     using System.Web;
+
     using NHibernate;
 
     public class NHibernateUnitOfWork : IUnitOfWork
     {
-        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
+        #region Fields
+
         private readonly ITransactionWrapper _transactionWrapper;
+
+        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
+
+        #endregion Fields
+
+        #region Constructors
 
         public NHibernateUnitOfWork(ISessionFactory sessionFactory)
         {
             if (RunningSession == null)
+            {
                 RunningSession = sessionFactory.OpenSession();
+            }
 
             _transactionWrapper = _BeginTransaction(RunningSession);
         }
@@ -44,6 +54,10 @@ namespace Hexa.Core.Domain
             RunningSession = session;
             _transactionWrapper = _BeginTransaction(RunningSession);
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         public static ISession RunningSession
         {
@@ -101,7 +115,9 @@ namespace Hexa.Core.Domain
             }
         }
 
-        #region IUnitOfWork Members
+        #endregion Properties
+
+        #region Methods
 
         public void Commit()
         {
@@ -115,12 +131,8 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public void RollbackChanges()
-        {
-            _transactionWrapper.Rollback();
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
+        public IEntitySet<TEntity> CreateSet<TEntity>()
+            where TEntity : class
         {
             return new NHibernateObjectSet<TEntity>(RunningSession);
         }
@@ -131,42 +143,9 @@ namespace Hexa.Core.Domain
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
-        #region Nested
-
-        /// <summary>
-        /// Custom extension for OperationContext scope
-        /// </summary>
-        private class ContainerExtension : IExtension<OperationContext>
+        public void RollbackChanges()
         {
-            #region Members
-
-            public object Value { get; set; }
-
-            #endregion
-
-            #region IExtension<OperationContext> Members
-
-            public void Attach(OperationContext owner)
-            {
-            }
-
-            public void Detach(OperationContext owner)
-            {
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        private static ITransactionWrapper _BeginTransaction(ISession session)
-        {
-            if (session.Transaction.IsActive)
-                return new NestedTransactionWrapper(session.Transaction);
-
-            return new TransactionWrapper(session.BeginTransaction());
+            _transactionWrapper.Rollback();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -183,7 +162,9 @@ namespace Hexa.Core.Domain
                             if (RunningSession.Transaction.IsActive)
                             {
                                 if (Transaction.Current == null)
+                                {
                                     _transactionWrapper.Rollback();
+                                }
                             }
 
                             RunningSession.Transaction.Dispose();
@@ -195,5 +176,49 @@ namespace Hexa.Core.Domain
                 }
             }
         }
+
+        private static ITransactionWrapper _BeginTransaction(ISession session)
+        {
+            if (session.Transaction.IsActive)
+            {
+                return new NestedTransactionWrapper(session.Transaction);
+            }
+
+            return new TransactionWrapper(session.BeginTransaction());
+        }
+
+        #endregion Methods
+
+        #region Nested Types
+
+        /// <summary>
+        /// Custom extension for OperationContext scope
+        /// </summary>
+        private class ContainerExtension : IExtension<OperationContext>
+        {
+            #region Properties
+
+            public object Value
+            {
+                get;
+                set;
+            }
+
+            #endregion Properties
+
+            #region Methods
+
+            public void Attach(OperationContext owner)
+            {
+            }
+
+            public void Detach(OperationContext owner)
+            {
+            }
+
+            #endregion Methods
+        }
+
+        #endregion Nested Types
     }
 }

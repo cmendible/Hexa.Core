@@ -14,7 +14,7 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     public class CachedImageService : IHttpHandler
     {
-        #region IHttpHandler Members
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
@@ -23,8 +23,15 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns>true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.</returns>
         public bool IsReusable
         {
-            get { return true; }
+            get
+            {
+                return true;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
@@ -40,7 +47,10 @@ namespace Hexa.Core.Web.UI.Controls
                 WriteError();
                 return;
             }
-            else storageKey = context.Request["data"];
+            else
+            {
+                storageKey = context.Request["data"];
+            }
 
             // Grab data from the cache
             object o = HttpContext.Current.Cache[storageKey];
@@ -59,20 +69,18 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 var image = o as Image;
                 if (image != null)
+                {
                     WriteImage(image);
+                }
             }
         }
 
-        #endregion
-
         /// <summary>
-        /// Writes the image bytes.
+        /// Writes the error.
         /// </summary>
-        /// <param name="img">The img.</param>
-        private static void WriteImageBytes(byte[] img)
+        private static void WriteError()
         {
-            HttpContext.Current.Response.ContentType = "image/jpeg";
-            HttpContext.Current.Response.OutputStream.Write(img, 0, img.Length);
+            HttpContext.Current.Response.Write("No image specified");
         }
 
         /// <summary>
@@ -86,11 +94,15 @@ namespace Hexa.Core.Web.UI.Controls
         }
 
         /// <summary>
-        /// Writes the error.
+        /// Writes the image bytes.
         /// </summary>
-        private static void WriteError()
+        /// <param name="img">The img.</param>
+        private static void WriteImageBytes(byte[] img)
         {
-            HttpContext.Current.Response.Write("No image specified");
+            HttpContext.Current.Response.ContentType = "image/jpeg";
+            HttpContext.Current.Response.OutputStream.Write(img, 0, img.Length);
         }
+
+        #endregion Methods
     }
 }

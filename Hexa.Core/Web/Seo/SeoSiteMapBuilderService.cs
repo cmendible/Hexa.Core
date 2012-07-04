@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
 namespace Hexa.Core.Web.Seo
 {
     using System;
@@ -27,10 +26,16 @@ namespace Hexa.Core.Web.Seo
     /// </summary>
     public class SeoSiteMapBuilderService : ISeoSiteMapBuilderService
     {
+        #region Fields
+
         private readonly Dictionary<string, List<SeoUrlInfo>> _childurls;
         private readonly Dictionary<string, SeoUrlInfo> _keyIndex;
         private readonly SeoUrlInfo _rooturl;
         private readonly Dictionary<string, int> _urlPreferredOrder;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initialize a new instance of <see cref="SeoSiteMapBuilderService"/>.
@@ -45,15 +50,24 @@ namespace Hexa.Core.Web.Seo
             this._childurls.Add(this._rooturl.Key, new List<SeoUrlInfo>());
         }
 
-        #region ISeoSiteMapBuilderService Members
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the current root url.
         /// </summary>
         public SeoUrlInfo RootUrl
         {
-            get { return this._rooturl; }
+            get
+            {
+                return this._rooturl;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Adds a url as child of the root url.
@@ -141,36 +155,6 @@ namespace Hexa.Core.Web.Seo
             return stringWriter.ToString();
         }
 
-        #endregion
-
-        private void SafeAddurl(SeoUrlInfo url)
-        {
-            Guard.IsNotNull(url, "url");
-
-            if (this._keyIndex.ContainsKey(url.Key))
-            {
-                throw new Exception("");
-            }
-
-            this._keyIndex.Add(url.Key, url);
-        }
-
-        private void AddurlWithOrder(string parentKey, SeoUrlInfo url, int preferredDisplayOrder)
-        {
-            this._urlPreferredOrder.Add(url.Key, preferredDisplayOrder);
-            for (int i = 0; i < this._childurls[parentKey].Count; i++)
-            {
-                string key = this._childurls[parentKey][i].Key;
-                if (this._urlPreferredOrder[key] > preferredDisplayOrder)
-                {
-                    this._childurls[parentKey].Insert(i, url);
-                    return;
-                }
-            }
-
-            this._childurls[parentKey].Add(url);
-        }
-
         internal static string FormatISODate(DateTime date)
         {
             var sb = new StringBuilder();
@@ -214,5 +198,35 @@ namespace Hexa.Core.Web.Seo
                 }
             }
         }
+
+        private void AddurlWithOrder(string parentKey, SeoUrlInfo url, int preferredDisplayOrder)
+        {
+            this._urlPreferredOrder.Add(url.Key, preferredDisplayOrder);
+            for (int i = 0; i < this._childurls[parentKey].Count; i++)
+            {
+                string key = this._childurls[parentKey][i].Key;
+                if (this._urlPreferredOrder[key] > preferredDisplayOrder)
+                {
+                    this._childurls[parentKey].Insert(i, url);
+                    return;
+                }
+            }
+
+            this._childurls[parentKey].Add(url);
+        }
+
+        private void SafeAddurl(SeoUrlInfo url)
+        {
+            Guard.IsNotNull(url, "url");
+
+            if (this._keyIndex.ContainsKey(url.Key))
+            {
+                throw new Exception("");
+            }
+
+            this._keyIndex.Add(url.Key, url);
+        }
+
+        #endregion Methods
     }
 }

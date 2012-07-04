@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Xml
 {
@@ -29,16 +29,35 @@ namespace Hexa.Core.Xml
     /// </summary>
     public static class XmlValidator
     {
-        // Validation Error Count
-        private static int _errorsCount;
+        #region Fields
 
         // Validation Error Message
         private static string _errorMessage = "";
 
-        private static void validationHandler(object sender, ValidationEventArgs args)
+        // Validation Error Count
+        private static int _errorsCount;
+
+        #endregion Fields
+
+        #region Methods
+
+        /// <summary>
+        /// Create a precompiled XMLSchemaSet.
+        /// </summary>
+        /// <param name="schemaName"></param>
+        /// <param name="schemas"></param>
+        /// <returns></returns>
+        public static XmlSchemaSet CreateXmlSchemaSet(string schemaName, Dictionary<string, byte[]> schemas)
         {
-            _errorMessage = _errorMessage + args.Message + "\r\n";
-            _errorsCount++;
+            //Create and compile XmlSchemaSet
+            using (var _XSDReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
+            {
+                var _schemaSet = new XmlSchemaSet();
+                _schemaSet.XmlResolver = new SchemaResolver(schemas);
+                _schemaSet.Add(null, _XSDReader);
+                _schemaSet.Compile();
+                return _schemaSet;
+            }
         }
 
         public static void Validate(byte[] xmlDoc, XmlSchemaSet schemas)
@@ -75,23 +94,12 @@ namespace Hexa.Core.Xml
             }
         }
 
-        /// <summary>
-        /// Create a precompiled XMLSchemaSet.
-        /// </summary>
-        /// <param name="schemaName"></param>
-        /// <param name="schemas"></param>
-        /// <returns></returns>
-        public static XmlSchemaSet CreateXmlSchemaSet(string schemaName, Dictionary<string, byte[]> schemas)
+        private static void validationHandler(object sender, ValidationEventArgs args)
         {
-            //Create and compile XmlSchemaSet
-            using (var _XSDReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
-            {
-                var _schemaSet = new XmlSchemaSet();
-                _schemaSet.XmlResolver = new SchemaResolver(schemas);
-                _schemaSet.Add(null, _XSDReader);
-                _schemaSet.Compile();
-                return _schemaSet;
-            }
+            _errorMessage = _errorMessage + args.Message + "\r\n";
+            _errorsCount++;
         }
+
+        #endregion Methods
     }
 }

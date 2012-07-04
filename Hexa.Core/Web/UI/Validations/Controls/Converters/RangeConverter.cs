@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,12 +15,13 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Controls
 {
     using System;
     using System.Web.UI.WebControls;
+
     using Validation;
 
     /// <summary>
@@ -28,6 +29,8 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     internal class RangeConverter : BaseConverter
     {
+        #region Methods
+
         /// <summary>
         /// Converts a given attribute to a BaseValidator
         /// </summary>
@@ -45,23 +48,25 @@ namespace Hexa.Core.Web.UI.Controls
 
             switch (Type.GetTypeCode(rangevalidationInfo.Minimum.GetType()))
             {
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                    rangeValidator.Type = ValidationDataType.Integer;
-                    break;
-                case TypeCode.Double:
-                    rangeValidator.Type = ValidationDataType.Double;
-                    break;
-                case TypeCode.DateTime:
-                    rangeValidator.Type = ValidationDataType.Date;
-                    break;
-                case TypeCode.String:
-                    rangeValidator.Type = ValidationDataType.String;
-                    break;
+            case TypeCode.Int16:
+            case TypeCode.Int32:
+            case TypeCode.Int64:
+                rangeValidator.Type = ValidationDataType.Integer;
+                break;
+            case TypeCode.Double:
+                rangeValidator.Type = ValidationDataType.Double;
+                break;
+            case TypeCode.DateTime:
+                rangeValidator.Type = ValidationDataType.Date;
+                break;
+            case TypeCode.String:
+                rangeValidator.Type = ValidationDataType.String;
+                break;
             }
 
             return rangeValidator;
         }
+
+        #endregion Methods
     }
 }

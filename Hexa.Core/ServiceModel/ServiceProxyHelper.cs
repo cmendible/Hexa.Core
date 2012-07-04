@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.ServiceModel
 {
@@ -33,10 +33,16 @@ namespace Hexa.Core.ServiceModel
         where TProxy : ClientBase<TChannel>, new()
         where TChannel : class
     {
+        #region Fields
+
         /// <summary>
         /// Private instance of the WCF service proxy.
         /// </summary>
         private TProxy _proxy;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Constructs an instance.
@@ -46,6 +52,10 @@ namespace Hexa.Core.ServiceModel
             this._proxy = proxy;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the WCF service proxy wrapped by this instance.
         /// </summary>
@@ -54,19 +64,25 @@ namespace Hexa.Core.ServiceModel
             get
             {
                 if (this._proxy != null)
+                {
                     return this._proxy;
+                }
                 else
+                {
                     throw new ObjectDisposedException("ServiceProxyHelper");
+                }
             }
         }
 
-        #region IDisposable Members
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Disposes of this instance.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly"),
-         SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly")]
+        SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly")]
         public void Dispose()
         {
             try
@@ -102,6 +118,6 @@ namespace Hexa.Core.ServiceModel
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

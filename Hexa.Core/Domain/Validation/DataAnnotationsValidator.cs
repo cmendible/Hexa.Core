@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -28,18 +28,20 @@ namespace Hexa.Core.Validation
     [Serializable]
     public class DataAnnotationsValidator : IValidator
     {
-        #region IValidator Members
-
-        public bool IsValid(object instance)
-        {
-            return Validate(instance).IsValid;
-        }
+        #region Methods
 
         public void AssertValidation(object instance)
         {
             ValidationResult result = Validate(instance);
             if (!result.IsValid)
+            {
                 throw new ValidationException(instance.GetType(), result.Errors);
+            }
+        }
+
+        public bool IsValid(object instance)
+        {
+            return Validate(instance).IsValid;
         }
 
         public ValidationResult Validate(object instance)
@@ -51,15 +53,19 @@ namespace Hexa.Core.Validation
                 from attribute in prop.Attributes.OfType<ValidationAttribute>()
                 where !attribute.IsValid(prop.GetValue(instance))
                 select
-                    new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty),
-                                        DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
+                new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty),
+                                    DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
+            {
                 return new ValidationResult(errors.Cast<ValidationError>());
+            }
             else
+            {
                 return new ValidationResult();
+            }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

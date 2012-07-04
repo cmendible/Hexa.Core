@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,28 +15,36 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
-    public class EntityMap<TEntity> : BaseClassMap<TEntity>
-        where TEntity : Entity<TEntity>
-    {
-        public EntityMap()
-        {
-            Id(x => x.Id)
-                .UnsavedValue(0)
-                .GeneratedBy.Native();
-        }
-    }
-
     public class BaseEntityWithUniqueIdMap<TEntity> : BaseClassMap<TEntity>
         where TEntity : BaseEntityWithUniqueId<TEntity>
     {
+        #region Constructors
+
         public BaseEntityWithUniqueIdMap()
         {
             Id(x => x.UniqueId)
-                .GeneratedBy.GuidComb();
+            .GeneratedBy.GuidComb();
         }
+
+        #endregion Constructors
+    }
+
+    public class EntityMap<TEntity> : BaseClassMap<TEntity>
+        where TEntity : Entity<TEntity>
+    {
+        #region Constructors
+
+        public EntityMap()
+        {
+            Id(x => x.Id)
+            .UnsavedValue(0)
+            .GeneratedBy.Native();
+        }
+
+        #endregion Constructors
     }
 }

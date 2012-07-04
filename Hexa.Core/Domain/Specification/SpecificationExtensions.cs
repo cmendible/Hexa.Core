@@ -2,6 +2,8 @@
 {
     public static class SpecificationExtensions
     {
+        #region Methods
+
         /// <summary>
         ///  AndAlso operator
         /// </summary>
@@ -9,7 +11,7 @@
         /// <param name="rightSideSpecification">right operand in this AND operation</param>
         /// <returns>New specification</returns>
         public static ISpecification<TEntity> AndAlso<TEntity>(this ISpecification<TEntity> leftSideSpecification,
-                                                               ISpecification<TEntity> rightSideSpecification)
+            ISpecification<TEntity> rightSideSpecification)
             where TEntity : class
         {
             return new AndAlsoSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
@@ -22,10 +24,12 @@
         /// <param name="rightSideSpecification">left operand in this OR operation</param>
         /// <returns>New specification</returns>
         public static ISpecification<TEntity> OrElse<TEntity>(this ISpecification<TEntity> leftSideSpecification,
-                                                              ISpecification<TEntity> rightSideSpecification)
+            ISpecification<TEntity> rightSideSpecification)
             where TEntity : class
         {
             return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
+
+        #endregion Methods
     }
 }

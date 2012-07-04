@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -24,18 +24,36 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class AuditableRootEntity<TEntity> : RootEntity<TEntity>, IAuditableEntity
     {
-        #region IAuditableEntity Members
+        #region Properties
 
         /// <summary>
         /// Gets or sets the date on which object was created.
         /// </summary>
         /// <value>The creation date.</value>
-        public virtual DateTime CreatedAt { get; set; }
+        public virtual DateTime CreatedAt
+        {
+            get;
+            set;
+        }
 
-        public virtual string CreatedBy { get; set; }
-        public virtual DateTime UpdatedAt { get; set; }
-        public virtual string UpdatedBy { get; set; }
+        public virtual string CreatedBy
+        {
+            get;
+            set;
+        }
 
-        #endregion
+        public virtual DateTime UpdatedAt
+        {
+            get;
+            set;
+        }
+
+        public virtual string UpdatedBy
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

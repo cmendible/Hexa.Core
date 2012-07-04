@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -24,7 +24,7 @@ namespace Hexa.Core.Domain
 
     public class ForeignKeyConstraintNames : IReferenceConvention, IHasManyConvention
     {
-        #region IHasManyConvention Members
+        #region Methods
 
         public void Apply(IOneToManyCollectionInstance instance)
         {
@@ -35,10 +35,6 @@ namespace Hexa.Core.Domain
             instance.Key.ForeignKey(string.Format("FK_{0}{1}_{2}", entity, member, child));
         }
 
-        #endregion
-
-        #region IReferenceConvention Members
-
         public void Apply(IManyToOneInstance instance)
         {
             string entity = instance.EntityType.Name;
@@ -47,6 +43,6 @@ namespace Hexa.Core.Domain
             instance.ForeignKey(string.Format("FK_{0}_{1}", entity, member));
         }
 
-        #endregion
+        #endregion Methods
     }
 }

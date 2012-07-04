@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -24,10 +24,18 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class RootEntity<TEntity> : BaseEntityWithUniqueId<TEntity>
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>The timestamp.</value>
-        public virtual string Version { get; protected set; }
+        public virtual string Version
+        {
+            get;
+            protected set;
+        }
+
+        #endregion Properties
     }
 }

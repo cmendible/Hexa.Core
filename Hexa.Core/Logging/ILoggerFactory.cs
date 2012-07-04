@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Logging
 {
@@ -23,7 +23,12 @@ namespace Hexa.Core.Logging
 
     public interface ILoggerFactory
     {
+        #region Methods
+
         ILogger Create(Type type);
+
         ILogger Create(string typeName);
+
+        #endregion Methods
     }
 }

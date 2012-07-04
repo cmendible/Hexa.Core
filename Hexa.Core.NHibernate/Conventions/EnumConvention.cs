@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -26,22 +26,18 @@ namespace Hexa.Core.Domain
 
     public class EnumConvention : IPropertyConvention, IPropertyConventionAcceptance
     {
-        #region IPropertyConvention Members
-
-        public void Apply(IPropertyInstance instance)
-        {
-            instance.CustomType(instance.Property.PropertyType);
-        }
-
-        #endregion
-
-        #region IPropertyConventionAcceptance Members
+        #region Methods
 
         public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             criteria.Expect(x => x.Property.PropertyType.IsEnum);
         }
 
-        #endregion
+        public void Apply(IPropertyInstance instance)
+        {
+            instance.CustomType(instance.Property.PropertyType);
+        }
+
+        #endregion Methods
     }
 }

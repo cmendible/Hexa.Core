@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -25,30 +25,40 @@ namespace Hexa.Core.Domain
     using System.Linq;
     using System.Linq.Expressions;
 
-    public interface IEntitySet<TEntity> : IQueryable<TEntity> where TEntity : class
+    public interface IEntitySet<TEntity> : IQueryable<TEntity>
+        where TEntity : class
     {
-        void Attach(TEntity entity);
+        #region Methods
+
         void AddObject(TEntity entity);
+
+        void Attach(TEntity entity);
+
+        IEntitySet<TEntity> Cacheable();
+
+        IEntitySet<TEntity> Cacheable(string cacheRegion);
+
         void DeleteObject(TEntity entity);
-        void ModifyObject(TEntity entity);
+
+        IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters);
+
+        IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters);
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path);
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter);
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter,
-                                       Expression<Func<TEntity, S>> orderByExpression);
+            Expression<Func<TEntity, S>> orderByExpression);
 
-        IEntitySet<TEntity> Cacheable();
-        IEntitySet<TEntity> Cacheable(string cacheRegion);
+        void ModifyObject(TEntity entity);
 
-        IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters);
-        IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters);
+        #endregion Methods
     }
 }

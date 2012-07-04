@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,12 +15,13 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Security
 {
     using System;
     using System.Security.Principal;
+
     using Resources;
 
     /// <summary>
@@ -29,8 +30,14 @@ namespace Hexa.Core.Security
     [Serializable]
     public class CorePrincipal : MarshalByRefObject, IPrincipal
     {
+        #region Fields
+
         private readonly IIdentity m_identity;
         private readonly string[] m_roles;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CorePrincipal"/> class.
@@ -54,7 +61,26 @@ namespace Hexa.Core.Security
             }
         }
 
-        #region IPrincipal Members
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the identity of the current principal.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The <see cref="T:System.Security.Principal.IIdentity"/> object associated with the current principal.</returns>
+        public virtual IIdentity Identity
+        {
+            get
+            {
+                return m_identity;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Determines whether the current principal belongs to the specified role.
@@ -79,16 +105,6 @@ namespace Hexa.Core.Security
             return false;
         }
 
-        /// <summary>
-        /// Gets the identity of the current principal.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The <see cref="T:System.Security.Principal.IIdentity"/> object associated with the current principal.</returns>
-        public virtual IIdentity Identity
-        {
-            get { return m_identity; }
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

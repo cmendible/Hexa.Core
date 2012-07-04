@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Xml
 {
@@ -25,6 +25,8 @@ namespace Hexa.Core.Xml
 
     public static class Transformer
     {
+        #region Methods
+
         public static byte[] Transform(byte[] inputDocument, byte[] xsl)
         {
             var xslt = new XslCompiledTransform();
@@ -45,5 +47,7 @@ namespace Hexa.Core.Xml
                 return memOut.ToArray();
             }
         }
+
+        #endregion Methods
     }
 }

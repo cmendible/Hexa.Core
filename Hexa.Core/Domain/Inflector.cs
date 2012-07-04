@@ -1,25 +1,21 @@
-﻿#region license
+﻿#region Header
 
 //Copyright 2010 Ritesh Rao
-
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-
 // http://www.apache.org/licenses/LICENSE-2.0
-
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 
-#endregion
+#endregion Header
 
 /*
 * CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
 */
-
 namespace Hexa.Core.Domain
 {
     using System.Collections.Generic;
@@ -32,15 +28,21 @@ namespace Hexa.Core.Domain
     ///</summary>
     public static class Inflector
     {
+        #region Fields
+
         private static readonly List<Rule> Plurals = new List<Rule>();
         private static readonly List<Rule> Singulars = new List<Rule>();
         private static readonly List<string> Uncountables = new List<string>();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Class Constructor.
         /// </summary>
         [SuppressMessage("Microsoft.Performance",
-            "CA1810:InitializeReferenceTypeStaticFieldsInline")]
+                         "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static Inflector()
         {
             AddPlural("$", "s");
@@ -102,43 +104,92 @@ namespace Hexa.Core.Domain
             AddUncountable("sheep");
         }
 
-        private static void AddIrregular(string singular, string plural)
+        #endregion Constructors
+
+        #region Methods
+
+        /// <summary>
+        /// Formats the string in Camel case.
+        /// </summary>
+        /// <param name="lowercaseAndUnderscoredWord">string. The word to format in Camel case.</param>
+        /// <returns>string. The word in Camel case.</returns>
+        public static string Camelize(string lowercaseAndUnderscoredWord)
         {
-            AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
-            AddSingular("(" + plural[0] + ")" + plural.Substring(1) + "$", "$1" + singular.Substring(1));
+            return Uncapitalize(Pascalize(lowercaseAndUnderscoredWord));
         }
 
-        private static void AddUncountable(string word)
+        /// <summary>
+        /// Capitalizes the word.
+        /// </summary>
+        /// <param name="word">string. The word to capitalize.</param>
+        /// <returns>The Capitalized word.</returns>
+        public static string Capitalize(string word)
         {
-            Uncountables.Add(word.ToLower());
+            return word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
         }
 
-        private static void AddPlural(string rule, string replacement)
+        /// <summary>
+        /// Replaces underscores with dashes in the string.
+        /// </summary>
+        /// <param name="underscoredWord">string. The word to dasherize.</param>
+        /// <returns>The word with dashes instead of underscores.</returns>
+        public static string Dasherize(string underscoredWord)
         {
-            Plurals.Add(new Rule(rule, replacement));
+            return underscoredWord.Replace('_', '-');
         }
 
-        private static void AddSingular(string rule, string replacement)
+        /// <summary>
+        /// Capitalizes the first word and turns underscores into spaces and strips _id. Formats the word into
+        /// human readable string.
+        /// </summary>
+        /// <param name="lowercaseAndUnderscoredWord">string. The word to humaize</param>
+        /// <returns>The humanized word.</returns>
+        public static string Humanize(string lowercaseAndUnderscoredWord)
         {
-            Singulars.Add(new Rule(rule, replacement));
+            return Capitalize(Regex.Replace(lowercaseAndUnderscoredWord, @"_", " "));
         }
 
-        private static string ApplyRules(List<Rule> rules, string word)
+        /// <summary>
+        /// Ordinalize turns a number into an ordinal string used to denote the position in an ordered
+        /// sequence such as 1st, 2nd, 3rd, 4th
+        /// </summary>
+        /// <param name="number">string. The number to ordinalize.</param>
+        /// <returns>string. The ordinalized number.</returns>
+        public static string Ordinalize(string number)
         {
-            string result = word;
+            int n = int.Parse(number);
+            int nMod100 = n%100;
 
-            if (!Uncountables.Contains(word.ToLower()))
+            if (nMod100 >= 11 && nMod100 <= 13)
             {
-                for (int i = rules.Count - 1; i >= 0; i--)
-                {
-                    if ((result = rules[i].Apply(word)) != null)
-                    {
-                        break;
-                    }
-                }
+                return number + "th";
             }
 
-            return result;
+            switch (n%10)
+            {
+            case 1:
+                return number + "st";
+            case 2:
+                return number + "nd";
+            case 3:
+                return number + "rd";
+            default:
+                return number + "th";
+            }
+        }
+
+        /// <summary>
+        /// Formats the string in pascal case.
+        /// </summary>
+        /// <param name="lowercaseAndUnderscoredWord">string. The word to Pascal case.</param>
+        /// <returns>The word in Pascal case.</returns>
+        public static string Pascalize(string lowercaseAndUnderscoredWord)
+        {
+            return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
+                                 delegate(Match match)
+            {
+                return match.Groups[1].Value.ToUpper();
+            });
         }
 
         /// <summary>
@@ -169,62 +220,10 @@ namespace Hexa.Core.Domain
         public static string Titleize(string word)
         {
             return Regex.Replace(Humanize(Underscore(word)), @"\b([a-z])",
-                                 delegate(Match match) { return match.Captures[0].Value.ToUpper(); });
-        }
-
-        /// <summary>
-        /// Capitalizes the first word and turns underscores into spaces and strips _id. Formats the word into
-        /// human readable string.
-        /// </summary>
-        /// <param name="lowercaseAndUnderscoredWord">string. The word to humaize</param>
-        /// <returns>The humanized word.</returns>
-        public static string Humanize(string lowercaseAndUnderscoredWord)
-        {
-            return Capitalize(Regex.Replace(lowercaseAndUnderscoredWord, @"_", " "));
-        }
-
-        /// <summary>
-        /// Formats the string in pascal case.
-        /// </summary>
-        /// <param name="lowercaseAndUnderscoredWord">string. The word to Pascal case.</param>
-        /// <returns>The word in Pascal case.</returns>
-        public static string Pascalize(string lowercaseAndUnderscoredWord)
-        {
-            return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
-                                 delegate(Match match) { return match.Groups[1].Value.ToUpper(); });
-        }
-
-        /// <summary>
-        /// Formats the string in Camel case.
-        /// </summary>
-        /// <param name="lowercaseAndUnderscoredWord">string. The word to format in Camel case.</param>
-        /// <returns>string. The word in Camel case.</returns>
-        public static string Camelize(string lowercaseAndUnderscoredWord)
-        {
-            return Uncapitalize(Pascalize(lowercaseAndUnderscoredWord));
-        }
-
-        /// <summary>
-        /// Makes an underscored form from the expression in the string.
-        /// </summary>
-        /// <param name="pascalCasedWord">string. The word to underscore.</param>
-        /// <returns>string. The word with underscore seperators.</returns>
-        public static string Underscore(string pascalCasedWord)
-        {
-            return Regex.Replace(
-                Regex.Replace(
-                    Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
-                    "$1_$2"), @"[-\s]", "_").ToLower();
-        }
-
-        /// <summary>
-        /// Capitalizes the word.
-        /// </summary>
-        /// <param name="word">string. The word to capitalize.</param>
-        /// <returns>The Capitalized word.</returns>
-        public static string Capitalize(string word)
-        {
-            return word.Substring(0, 1).ToUpper() + word.Substring(1).ToLower();
+                                 delegate(Match match)
+            {
+                return match.Captures[0].Value.ToUpper();
+            });
         }
 
         /// <summary>
@@ -238,56 +237,81 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// Ordinalize turns a number into an ordinal string used to denote the position in an ordered
-        /// sequence such as 1st, 2nd, 3rd, 4th
+        /// Makes an underscored form from the expression in the string.
         /// </summary>
-        /// <param name="number">string. The number to ordinalize.</param>
-        /// <returns>string. The ordinalized number.</returns>
-        public static string Ordinalize(string number)
+        /// <param name="pascalCasedWord">string. The word to underscore.</param>
+        /// <returns>string. The word with underscore seperators.</returns>
+        public static string Underscore(string pascalCasedWord)
         {
-            int n = int.Parse(number);
-            int nMod100 = n%100;
-
-            if (nMod100 >= 11 && nMod100 <= 13)
-            {
-                return number + "th";
-            }
-
-            switch (n%10)
-            {
-                case 1:
-                    return number + "st";
-                case 2:
-                    return number + "nd";
-                case 3:
-                    return number + "rd";
-                default:
-                    return number + "th";
-            }
+            return Regex.Replace(
+                       Regex.Replace(
+                           Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
+                           "$1_$2"), @"[-\s]", "_").ToLower();
         }
 
-        /// <summary>
-        /// Replaces underscores with dashes in the string.
-        /// </summary>
-        /// <param name="underscoredWord">string. The word to dasherize.</param>
-        /// <returns>The word with dashes instead of underscores.</returns>
-        public static string Dasherize(string underscoredWord)
+        private static void AddIrregular(string singular, string plural)
         {
-            return underscoredWord.Replace('_', '-');
+            AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
+            AddSingular("(" + plural[0] + ")" + plural.Substring(1) + "$", "$1" + singular.Substring(1));
         }
 
-        #region Nested type: Rule
+        private static void AddPlural(string rule, string replacement)
+        {
+            Plurals.Add(new Rule(rule, replacement));
+        }
+
+        private static void AddSingular(string rule, string replacement)
+        {
+            Singulars.Add(new Rule(rule, replacement));
+        }
+
+        private static void AddUncountable(string word)
+        {
+            Uncountables.Add(word.ToLower());
+        }
+
+        private static string ApplyRules(List<Rule> rules, string word)
+        {
+            string result = word;
+
+            if (!Uncountables.Contains(word.ToLower()))
+            {
+                for (int i = rules.Count - 1; i >= 0; i--)
+                {
+                    if ((result = rules[i].Apply(word)) != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        #endregion Methods
+
+        #region Nested Types
 
         private class Rule
         {
+            #region Fields
+
             private readonly Regex _regex;
             private readonly string _replacement;
+
+            #endregion Fields
+
+            #region Constructors
 
             public Rule(string pattern, string replacement)
             {
                 _regex = new Regex(pattern, RegexOptions.IgnoreCase);
                 _replacement = replacement;
             }
+
+            #endregion Constructors
+
+            #region Methods
 
             public string Apply(string word)
             {
@@ -298,8 +322,10 @@ namespace Hexa.Core.Domain
 
                 return _regex.Replace(word, _replacement);
             }
+
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Nested Types
     }
 }

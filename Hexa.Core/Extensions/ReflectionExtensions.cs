@@ -2,6 +2,8 @@
 {
     public static class ReflectionExtensions
     {
+        #region Methods
+
         public static bool IsSubclassOfGeneric(this Type source, Type generic)
         {
             while (source != null && source != typeof(object))
@@ -15,5 +17,7 @@
             }
             return false;
         }
+
+        #endregion Methods
     }
 }

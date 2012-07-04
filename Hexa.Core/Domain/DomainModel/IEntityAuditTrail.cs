@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -23,11 +23,44 @@ namespace Hexa.Core.Domain
 
     public interface IEntityAuditTrail
     {
-        string UpdateBy { get; set; }
-        string EntityUniqueId { get; set; }
-        string PropertyName { get; set; }
-        object OldValue { get; set; }
-        object NewValue { get; set; }
-        DateTime UpdatedAt { get; set; }
+        #region Properties
+
+        string EntityUniqueId
+        {
+            get;
+            set;
+        }
+
+        object NewValue
+        {
+            get;
+            set;
+        }
+
+        object OldValue
+        {
+            get;
+            set;
+        }
+
+        string PropertyName
+        {
+            get;
+            set;
+        }
+
+        string UpdateBy
+        {
+            get;
+            set;
+        }
+
+        DateTime UpdatedAt
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

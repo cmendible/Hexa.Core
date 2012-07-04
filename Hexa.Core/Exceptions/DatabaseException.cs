@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -29,6 +29,8 @@ namespace Hexa.Core
     [Serializable]
     public class DatabaseException : CoreException
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
         /// </summary>
@@ -40,7 +42,8 @@ namespace Hexa.Core
         /// Initializes a new instance of the <see cref="DatabaseException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DatabaseException(string message) : base(message)
+        public DatabaseException(string message)
+            : base(message)
         {
         }
 
@@ -49,7 +52,8 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
-        public DatabaseException(string message, Exception ex) : base(message, ex)
+        public DatabaseException(string message, Exception ex)
+            : base(message, ex)
         {
         }
 
@@ -62,6 +66,10 @@ namespace Hexa.Core
             : base(info, context)
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
@@ -80,5 +88,7 @@ namespace Hexa.Core
         {
             base.GetObjectData(info, context);
         }
+
+        #endregion Methods
     }
 }

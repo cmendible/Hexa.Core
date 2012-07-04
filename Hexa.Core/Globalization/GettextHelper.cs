@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace GNU.Gettext
 {
@@ -30,17 +30,32 @@ namespace GNU.Gettext
     /// Class used to call Gettext.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
-        MessageId = "Gettext")]
+                     MessageId = "Gettext")]
     public sealed class GettextHelper
     {
+        #region Fields
+
         /// <summary>
         /// Gettext resource manager.
         /// </summary>
-        private static readonly Dictionary<string, GettextResourceManager> _ResourceManager =
+        private static readonly Dictionary<string, GettextResourceManager> _ResourceManager = 
             new Dictionary<string, GettextResourceManager>();
+
+        #endregion Fields
+
+        #region Constructors
 
         private GettextHelper()
         {
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public static void ForceInvariantCulture()
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
         }
 
         /// <summary>
@@ -49,9 +64,9 @@ namespace GNU.Gettext
         /// <param name="key">The string.</param>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-             MessageId = "t")]
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+                         MessageId = "t")]
         public static string t(string key)
         {
             return t(key, Assembly.GetCallingAssembly());
@@ -64,25 +79,24 @@ namespace GNU.Gettext
         /// <param name="callingAssembly">The calling assembly.</param>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Design",
-            "CA1062:Validate arguments of public methods", MessageId = "1"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-             MessageId = "t")]
+                         "CA1062:Validate arguments of public methods", MessageId = "1"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+                         MessageId = "t")]
         public static string t(string key, Assembly callingAssembly)
         {
             // Get Assembly Name
             string assemblyName = callingAssembly.GetName().Name;
 
             if (!_ResourceManager.Keys.Contains(assemblyName))
+            {
                 _ResourceManager.Add(assemblyName, new GettextResourceManager(assemblyName, callingAssembly));
+            }
 
             return _ResourceManager[assemblyName].GetString(key);
         }
 
-        public static void ForceInvariantCulture()
-        {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-        }
+        #endregion Methods
     }
 }

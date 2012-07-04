@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -29,13 +29,15 @@ namespace Hexa.Core.Domain
     public class AuditableRootEntityMap<TEntity, TKey> : RootEntityMap<TEntity>
         where TEntity : AuditableRootEntity<TEntity>
     {
+        #region Constructors
+
         public AuditableRootEntityMap()
         {
             Map(x => x.CreatedAt)
-                .Not.Nullable();
+            .Not.Nullable();
 
             Map(x => x.UpdatedAt)
-                .Not.Nullable();
+            .Not.Nullable();
 
             Type keyType = typeof(TKey);
             if (keyType.Equals(typeof(string)))
@@ -46,17 +48,19 @@ namespace Hexa.Core.Domain
             else if (keyType.Equals(typeof(Guid)))
             {
                 Map(x => x.CreatedBy)
-                    .CustomType<StringToGuid>();
+                .CustomType<StringToGuid>();
                 Map(x => x.UpdatedBy)
-                    .CustomType<StringToGuid>();
+                .CustomType<StringToGuid>();
             }
             else if (keyType.Equals(typeof(int)))
             {
                 Map(x => x.CreatedBy)
-                    .CustomType<StringToInt>();
+                .CustomType<StringToInt>();
                 Map(x => x.UpdatedBy)
-                    .CustomType<StringToInt>();
+                .CustomType<StringToInt>();
             }
         }
+
+        #endregion Constructors
     }
 }

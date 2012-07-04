@@ -7,29 +7,7 @@ namespace Hexa.Core.Validation
     /// </summary>
     public class ValidationError
     {
-        #region Properties
-
-        /// <summary>
-        /// Gets the type of the entity.
-        /// </summary>
-        /// <value>The type of the entity.</value>
-        public Type EntityType { get; private set; }
-
-        /// <summary>
-        /// Gets the name of the property.
-        /// </summary>
-        /// <value>The name of the property.</value>
-        public string PropertyName { get; private set; }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>The message.</value>
-        public string Message { get; private set; }
-
-        #endregion
-
-        #region ctor
+        #region Constructors
 
         /// <summary>
         /// Default Constructor.
@@ -77,17 +55,64 @@ namespace Hexa.Core.Validation
         {
         }
 
-        #endregion
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the type of the entity.
+        /// </summary>
+        /// <value>The type of the entity.</value>
+        public Type EntityType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        public string Message
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>The name of the property.</value>
+        public string PropertyName
+        {
+            get;
+            private set;
+        }
+
+        #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Overriden. Gets a string that represents the validation error.
+        /// Inequality operator.
         /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
         /// <returns></returns>
-        public override string ToString()
+        public static bool operator !=(ValidationError left, ValidationError right)
         {
-            return string.Format("({0}::{1}) - {2}", this.EntityType, this.PropertyName, this.Message);
+            return !left.Equals(right);
+        }
+
+        /// <summary>
+        /// Equality operator.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static bool operator ==(ValidationError left, ValidationError right)
+        {
+            return left.Equals(right);
         }
 
         /// <summary>
@@ -97,7 +122,10 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(ValidationError)) return false;
+            if (obj.GetType() != typeof(ValidationError))
+            {
+                return false;
+            }
             return Equals((ValidationError) obj);
         }
 
@@ -130,27 +158,14 @@ namespace Hexa.Core.Validation
         }
 
         /// <summary>
-        /// Equality operator.
+        /// Overriden. Gets a string that represents the validation error.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator ==(ValidationError left, ValidationError right)
+        public override string ToString()
         {
-            return left.Equals(right);
+            return string.Format("({0}::{1}) - {2}", this.EntityType, this.PropertyName, this.Message);
         }
 
-        /// <summary>
-        /// Inequality operator.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool operator !=(ValidationError left, ValidationError right)
-        {
-            return !left.Equals(right);
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

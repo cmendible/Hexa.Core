@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Logging
 {
@@ -24,12 +24,19 @@ namespace Hexa.Core.Logging
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.Web;
+
     using log4net;
     using log4net.Config;
 
     public class Log4NetLoggerFactory : ILoggerFactory
     {
+        #region Fields
+
         private static bool initialized;
+
+        #endregion Fields
+
+        #region Constructors
 
         public Log4NetLoggerFactory()
             : this(null)
@@ -41,9 +48,13 @@ namespace Hexa.Core.Logging
             if (!initialized)
             {
                 if (configFile != null)
+                {
                     XmlConfigurator.ConfigureAndWatch(configFile);
+                }
                 else
+                {
                     XmlConfigurator.Configure();
+                }
 
                 // Register log4net context loggers..
                 if (_isWebContext())
@@ -57,7 +68,9 @@ namespace Hexa.Core.Logging
             }
         }
 
-        #region ILoggerFactory Members
+        #endregion Constructors
+
+        #region Methods
 
         public ILogger Create(Type type)
         {
@@ -69,29 +82,37 @@ namespace Hexa.Core.Logging
             return new Log4NetLogger(typeName);
         }
 
-        #endregion
-
         private static bool _isWebContext()
         {
             if (HttpContext.Current != null)
+            {
                 return true;
+            }
 
             if (OperationContext.Current != null)
+            {
                 return true;
+            }
 
             return false;
         }
 
-        #region Nested type: UserHostAddressLogContext
+        #endregion Methods
+
+        #region Nested Types
 
         private class UserHostAddressLogContext
         {
+            #region Methods
+
             public override string ToString()
             {
                 try
                 {
                     if (HttpContext.Current != null && HttpContext.Current.Request != null)
+                    {
                         return HttpContext.Current.Request.UserHostAddress;
+                    }
 
                     OperationContext context = OperationContext.Current;
                     if (context != null && context.IncomingMessageProperties != null &&
@@ -110,26 +131,32 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
+
+            #endregion Methods
         }
-
-        #endregion
-
-        #region Nested type: UserLogContext
 
         private class UserLogContext
         {
+            #region Methods
+
             public override string ToString()
             {
                 try
                 {
                     if (HttpContext.Current == null)
+                    {
                         return null;
+                    }
 
                     if (HttpContext.Current.User == null)
+                    {
                         return null;
+                    }
 
                     if (HttpContext.Current.User.Identity == null)
+                    {
                         return null;
+                    }
 
                     return HttpContext.Current.User.Identity.Name;
                 }
@@ -138,21 +165,23 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
+
+            #endregion Methods
         }
-
-        #endregion
-
-        #region Nested type: UserSessionIdLogContext
 
         private class UserSessionIdLogContext
         {
+            #region Methods
+
             public override string ToString()
             {
                 try
                 {
                     if (HttpContext.Current != null && HttpContext.Current.Request != null &&
                         HttpContext.Current.Session != null)
+                    {
                         return HttpContext.Current.Session.SessionID;
+                    }
 
                     return null;
                 }
@@ -161,8 +190,10 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
+
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Nested Types
     }
 }

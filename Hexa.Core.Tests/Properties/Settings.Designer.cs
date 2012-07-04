@@ -22,9 +22,9 @@ namespace Hexa.Core.Tests.Properties
         public static Settings Default
         {
             get
-                {
-                    return defaultInstance;
-                }
+            {
+                return defaultInstance;
+            }
         }
 
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
@@ -34,9 +34,9 @@ namespace Hexa.Core.Tests.Properties
         public string HexaCoreTestConnectionString
         {
             get
-                {
-                    return ((string)(this["HexaCoreTestConnectionString"]));
-                }
+            {
+                return ((string)(this["HexaCoreTestConnectionString"]));
+            }
         }
     }
 }

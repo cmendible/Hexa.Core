@@ -14,6 +14,7 @@ namespace Hexa.Core.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+
     using Specification;
 
     /// <summary>
@@ -30,22 +31,25 @@ namespace Hexa.Core.Domain
     public interface IRepository<TEntity>
         where TEntity : class
     {
+        #region Properties
+
         /// <summary>
         /// Get the context in this repository
         /// </summary>
-        IUnitOfWork UnitOfWork { get; }
+        IUnitOfWork UnitOfWork
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Add item into repository
         /// </summary>
         /// <param name="item">Item to add to repository</param>
         void Add(TEntity item);
-
-        /// <summary>
-        /// Delete item
-        /// </summary>
-        /// <param name="item">Item to delete</param>
-        void Remove(TEntity item);
 
         /// <summary>
         /// Attach entity to this repository.
@@ -55,17 +59,6 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <param name="item">Item to attach</param>
         void Attach(TEntity item);
-
-        /// <summary>
-        /// Sets modified entity into the repository.
-        /// When calling Commit() method in UnitOfWork
-        /// these changes will be saved into the storage
-        /// <remarks>
-        /// Internally this method always calls Repository.Attach() and Context.SetChanges()
-        /// </remarks>
-        /// </summary>
-        /// <param name="item">Item with changes</param>
-        void Modify(TEntity item);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -89,7 +82,7 @@ namespace Hexa.Core.Domain
         IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter);
 
         IEnumerable<TEntity> GetFilteredElements<S>(Expression<Func<TEntity, bool>> filter,
-                                                    Expression<Func<TEntity, S>> orderByExpression, bool ascending);
+            Expression<Func<TEntity, S>> orderByExpression, bool ascending);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -100,7 +93,7 @@ namespace Hexa.Core.Domain
         /// <param name="ascending">Specify if order is ascending</param>
         /// <returns>List of selected elements</returns>
         PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                   Expression<Func<TEntity, S>> orderByExpression, bool ascending);
+            Expression<Func<TEntity, S>> orderByExpression, bool ascending);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -112,16 +105,16 @@ namespace Hexa.Core.Domain
         /// <param name="specification">Specification that result meet</param>
         /// <returns>List of selected elements</returns>
         PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                   Expression<Func<TEntity, S>> orderByExpression,
-                                                   ISpecification<TEntity> specification, bool ascending);
+            Expression<Func<TEntity, S>> orderByExpression,
+            ISpecification<TEntity> specification, bool ascending);
 
         PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
-                                                IOrderBySpecification<TEntity> orderBySpecification,
-                                                ISpecification<TEntity> specification);
+            IOrderBySpecification<TEntity> orderBySpecification,
+            ISpecification<TEntity> specification);
 
         PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
-                                                IOrderBySpecification<TEntity> orderBySpecification,
-                                                Expression<Func<TEntity, bool>> filter);
+            IOrderBySpecification<TEntity> orderBySpecification,
+            Expression<Func<TEntity, bool>> filter);
 
         /// <summary>
         /// Get all elements of type {T} in repository
@@ -133,7 +126,26 @@ namespace Hexa.Core.Domain
         /// <param name="filter">filter</param>
         /// <returns>List of selected elements</returns>
         PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                   Expression<Func<TEntity, S>> orderByExpression,
-                                                   Expression<Func<TEntity, bool>> filter, bool ascending);
+            Expression<Func<TEntity, S>> orderByExpression,
+            Expression<Func<TEntity, bool>> filter, bool ascending);
+
+        /// <summary>
+        /// Sets modified entity into the repository.
+        /// When calling Commit() method in UnitOfWork
+        /// these changes will be saved into the storage
+        /// <remarks>
+        /// Internally this method always calls Repository.Attach() and Context.SetChanges()
+        /// </remarks>
+        /// </summary>
+        /// <param name="item">Item with changes</param>
+        void Modify(TEntity item);
+
+        /// <summary>
+        /// Delete item
+        /// </summary>
+        /// <param name="item">Item to delete</param>
+        void Remove(TEntity item);
+
+        #endregion Methods
     }
 }

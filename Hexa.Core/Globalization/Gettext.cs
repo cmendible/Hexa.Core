@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
  * USA.
  */
-
 /*
  * Using the GNU gettext approach, compiled message catalogs are assemblies
  * containing just one class, a subclass of GettextResourceSet. They are thus
@@ -43,16 +42,13 @@
  * To compile GNU gettext message catalogs into C# assemblies, the msgfmt
  * program can be used.
  */
-
 /* String, InvalidOperationException, Console */
-    /* Hashtable, ICollection, IEnumerator, IDictionaryEnumerator */
-    /* CultureInfo */
-    /* Path, FileNotFoundException, Stream */
-    /* Assembly, ConstructorInfo */
-    /* ResourceManager, ResourceSet, IResourceReader */
-
+/* Hashtable, ICollection, IEnumerator, IDictionaryEnumerator */
+/* CultureInfo */
+/* Path, FileNotFoundException, Stream */
+/* Assembly, ConstructorInfo */
+/* ResourceManager, ResourceSet, IResourceReader */
 /* StringBuilder */
-
 namespace GNU.Gettext
 {
     using System;
@@ -71,15 +67,21 @@ namespace GNU.Gettext
     /// language-neutral.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
-        MessageId = "Gettext")]
+                     MessageId = "Gettext")]
     public class GettextResourceManager : ResourceManager
     {
-        // ======================== Public Constructors ========================
+        #region Fields
 
+        // ======================== Public Constructors ========================
         private static readonly GettextResourceSet[] EmptyResourceSetArray = new GettextResourceSet[0];
 
         // Cache for already loaded GettextResourceSet cascades.
-        private readonly Hashtable /* CultureInfo -> GettextResourceSet[] */ Loaded = new Hashtable();
+        /* CultureInfo -> GettextResourceSet[] */
+        private readonly Hashtable Loaded = new Hashtable();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Constructor.
@@ -101,38 +103,98 @@ namespace GNU.Gettext
         {
         }
 
-        // ======================== Implementation ========================
+        #endregion Constructors
+
+        #region Methods
 
         /// <summary>
-        /// Loads and returns a satellite assembly.
+        /// Returns the translation of <paramref name="msgid"/> and
+        /// <paramref name="msgidPlural"/> in a given culture, choosing the right
+        /// plural form depending on the number <paramref name="n"/>.
         /// </summary>
-        // This is like Assembly.GetSatelliteAssembly, but uses resourceName
-        // instead of assembly.GetName().Name, and works around a bug in
-        // mono-0.28.
-        [SuppressMessage("Microsoft.Reliability",
-            "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
-        private static Assembly GetSatelliteAssembly(Assembly assembly, String resourceName, CultureInfo culture)
+        /// <param name="msgid">the key string to be translated, an ASCII
+        ///                     string</param>
+        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
+        ///                           an ASCII string</param>
+        /// <param name="n">the number, should be &gt;= 0</param>
+        /// <returns>the translation, or <paramref name="msgid"/> or
+        ///          <paramref name="msgidPlural"/> if none is found</returns>
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
+        public virtual String GetPluralString(String msgid, String msgidPlural, long n, CultureInfo culture)
         {
-            string culturePath = Path.DirectorySeparatorChar + culture.Name;
-
-            string asssemblyName = Path.DirectorySeparatorChar + resourceName + ".resources.dll";
-            string satelliteExpectedLocation = Path.GetDirectoryName(assembly.Location) + culturePath + asssemblyName;
-            string satellitePossibleLocation = AppDomain.CurrentDomain.RelativeSearchPath + culturePath + asssemblyName;
-
-            if (File.Exists(satelliteExpectedLocation))
-                return Assembly.LoadFile(satelliteExpectedLocation);
-            else if (File.Exists(satellitePossibleLocation))
-                return Assembly.LoadFile(satellitePossibleLocation);
-            else
-                return null;
+            foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
+            {
+                String translation = rs.GetPluralString(msgid, msgidPlural, n);
+                if (translation != null)
+                {
+                    return translation;
+                }
+            }
+            // Fallback: Germanic plural form.
+            return (n == 1 ? msgid : msgidPlural);
         }
 
         /// <summary>
-        /// Loads and returns the satellite assembly for a given culture.
+        /// Returns the translation of <paramref name="msgid"/> and
+        /// <paramref name="msgidPlural"/> in the current culture, choosing the
+        /// right plural form depending on the number <paramref name="n"/>.
         /// </summary>
-        private Assembly MySatelliteAssembly(CultureInfo culture)
+        /// <param name="msgid">the key string to be translated, an ASCII
+        ///                     string</param>
+        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
+        ///                           an ASCII string</param>
+        /// <param name="n">the number, should be &gt;= 0</param>
+        /// <returns>the translation, or <paramref name="msgid"/> or
+        ///          <paramref name="msgidPlural"/> if none is found</returns>
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
+        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
         {
-            return GetSatelliteAssembly(MainAssembly, BaseName, culture);
+            return GetPluralString(msgid, msgidPlural, n, CultureInfo.CurrentUICulture);
+        }
+
+        /// <summary>
+        /// Returns the translation of <paramref name="msgid"/> in a given culture.
+        /// </summary>
+        /// <param name="msgid">the key string to be translated, an ASCII
+        ///                     string</param>
+        /// <returns>the translation of <paramref name="msgid"/>, or
+        ///          <paramref name="msgid"/> if none is found</returns>
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
+        public override String GetString(String msgid, CultureInfo culture)
+        {
+            foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
+            {
+                String translation = rs.GetString(msgid);
+                if (translation != null)
+                {
+                    return translation;
+                }
+            }
+            // Fallback.
+            return msgid;
+        }
+
+        // ======================== Public Methods ========================
+        /// <summary>
+        /// Returns the translation of <paramref name="msgid"/> in the current
+        /// culture.
+        /// </summary>
+        /// <param name="msgid">the key string to be translated, an ASCII
+        ///                     string</param>
+        /// <returns>the translation of <paramref name="msgid"/>, or
+        ///          <paramref name="msgid"/> if none is found</returns>
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
+        public override String GetString(String msgid)
+        {
+            return GetString(msgid, CultureInfo.CurrentUICulture);
         }
 
         /// <summary>
@@ -152,10 +214,14 @@ namespace GNU.Gettext
                 char c = resourceName[i];
                 if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_')
                       || (i > 0 && c >= '0' && c <= '9')))
+                {
                     valid = false;
+                }
             }
             if (valid)
+            {
                 return resourceName;
+            }
             else
             {
                 // Use hexadecimal escapes, using the underscore as escape character.
@@ -196,9 +262,42 @@ namespace GNU.Gettext
                         b.Append(hexdigit[uc & 0x0f]);
                     }
                     else
+                    {
                         b.Append(c);
+                    }
                 }
                 return b.ToString();
+            }
+        }
+
+        // ======================== Implementation ========================
+        /// <summary>
+        /// Loads and returns a satellite assembly.
+        /// </summary>
+        // This is like Assembly.GetSatelliteAssembly, but uses resourceName
+        // instead of assembly.GetName().Name, and works around a bug in
+        // mono-0.28.
+        [SuppressMessage("Microsoft.Reliability",
+                         "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
+        private static Assembly GetSatelliteAssembly(Assembly assembly, String resourceName, CultureInfo culture)
+        {
+            string culturePath = Path.DirectorySeparatorChar + culture.Name;
+
+            string asssemblyName = Path.DirectorySeparatorChar + resourceName + ".resources.dll";
+            string satelliteExpectedLocation = Path.GetDirectoryName(assembly.Location) + culturePath + asssemblyName;
+            string satellitePossibleLocation = AppDomain.CurrentDomain.RelativeSearchPath + culturePath + asssemblyName;
+
+            if (File.Exists(satelliteExpectedLocation))
+            {
+                return Assembly.LoadFile(satelliteExpectedLocation);
+            }
+            else if (File.Exists(satellitePossibleLocation))
+            {
+                return Assembly.LoadFile(satellitePossibleLocation);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -215,7 +314,7 @@ namespace GNU.Gettext
         ///   The type has no no-arguments constructor.
         /// </exception>
         private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, String resourceName,
-                                                                 CultureInfo culture)
+            CultureInfo culture)
         {
             // We expect a class with a culture dependent class name.
             Type clazz =
@@ -247,7 +346,9 @@ namespace GNU.Gettext
                         // Determine the GettextResourceSets for the given culture.
                         if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture))
                             // Invariant culture.
+                        {
                             result = EmptyResourceSetArray;
+                        }
                         else
                         {
                             // Use a satellite assembly as primary GettextResourceSet, and
@@ -284,10 +385,14 @@ namespace GNU.Gettext
                                     Array.Copy(parentResult, 0, result, 1, parentResult.Length);
                                 }
                                 else
+                                {
                                     result = parentResult;
+                                }
                             }
                             else
+                            {
                                 result = parentResult;
+                            }
                         }
                         // Put the result into the cache.
                         Loaded.Add(culture, result);
@@ -299,91 +404,14 @@ namespace GNU.Gettext
         }
 
         /// <summary>
-        /// Returns the translation of <paramref name="msgid"/> in a given culture.
+        /// Loads and returns the satellite assembly for a given culture.
         /// </summary>
-        /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
-        /// <returns>the translation of <paramref name="msgid"/>, or
-        ///          <paramref name="msgid"/> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
-        public override String GetString(String msgid, CultureInfo culture)
+        private Assembly MySatelliteAssembly(CultureInfo culture)
         {
-            foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
-            {
-                String translation = rs.GetString(msgid);
-                if (translation != null)
-                    return translation;
-            }
-            // Fallback.
-            return msgid;
+            return GetSatelliteAssembly(MainAssembly, BaseName, culture);
         }
 
-        /// <summary>
-        /// Returns the translation of <paramref name="msgid"/> and
-        /// <paramref name="msgidPlural"/> in a given culture, choosing the right
-        /// plural form depending on the number <paramref name="n"/>.
-        /// </summary>
-        /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
-        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
-        ///                           an ASCII string</param>
-        /// <param name="n">the number, should be &gt;= 0</param>
-        /// <returns>the translation, or <paramref name="msgid"/> or
-        ///          <paramref name="msgidPlural"/> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n, CultureInfo culture)
-        {
-            foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
-            {
-                String translation = rs.GetPluralString(msgid, msgidPlural, n);
-                if (translation != null)
-                    return translation;
-            }
-            // Fallback: Germanic plural form.
-            return (n == 1 ? msgid : msgidPlural);
-        }
-
-        // ======================== Public Methods ========================
-
-        /// <summary>
-        /// Returns the translation of <paramref name="msgid"/> in the current
-        /// culture.
-        /// </summary>
-        /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
-        /// <returns>the translation of <paramref name="msgid"/>, or
-        ///          <paramref name="msgid"/> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
-        public override String GetString(String msgid)
-        {
-            return GetString(msgid, CultureInfo.CurrentUICulture);
-        }
-
-        /// <summary>
-        /// Returns the translation of <paramref name="msgid"/> and
-        /// <paramref name="msgidPlural"/> in the current culture, choosing the
-        /// right plural form depending on the number <paramref name="n"/>.
-        /// </summary>
-        /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
-        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
-        ///                           an ASCII string</param>
-        /// <param name="n">the number, should be &gt;= 0</param>
-        /// <returns>the translation, or <paramref name="msgid"/> or
-        ///          <paramref name="msgidPlural"/> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
-        {
-            return GetPluralString(msgid, msgidPlural, n, CultureInfo.CurrentUICulture);
-        }
+        #endregion Methods
     }
 
     /// <summary>
@@ -398,29 +426,23 @@ namespace GNU.Gettext
     // We need this subclass of ResourceSet, because the plural formula must come
     // from the same ResourceSet as the object containing the plural forms.
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"),
-     SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
-         MessageId = "Gettext"),
-     SuppressMessage("Microsoft.Design",
-         "CA1010:CollectionsShouldImplementGenericInterface")]
+    SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
+                     MessageId = "Gettext"),
+    SuppressMessage("Microsoft.Design",
+                     "CA1010:CollectionsShouldImplementGenericInterface")]
     public class GettextResourceSet : ResourceSet
     {
+        #region Fields
+
         /// <summary>
         /// A trivial instance of <c>IResourceReader</c> that does nothing.
         /// </summary>
         // Needed by the no-arguments constructor.
         private static readonly IResourceReader DummyResourceReader = new DummyIResourceReader();
 
-        /// <summary>
-        /// Creates a new message catalog. When using this constructor, you
-        /// must override the <c>ReadResources</c> method, in order to initialize
-        /// the <c>Table</c> property. The message catalog will support plural
-        /// forms only if the <c>ReadResources</c> method installs values of type
-        /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
-        /// </summary>
-        protected GettextResourceSet()
-            : base(DummyResourceReader)
-        {
-        }
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Creates a new message catalog, by reading the string/value pairs from
@@ -440,7 +462,7 @@ namespace GNU.Gettext
         /// forms.
         /// </summary>
         [SuppressMessage("Microsoft.Security",
-            "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
+                         "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
         public GettextResourceSet(Stream stream)
             : base(stream)
         {
@@ -458,12 +480,69 @@ namespace GNU.Gettext
         }
 
         /// <summary>
+        /// Creates a new message catalog. When using this constructor, you
+        /// must override the <c>ReadResources</c> method, in order to initialize
+        /// the <c>Table</c> property. The message catalog will support plural
+        /// forms only if the <c>ReadResources</c> method installs values of type
+        /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
+        /// </summary>
+        protected GettextResourceSet()
+            : base(DummyResourceReader)
+        {
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
         /// Returns the keys of this resource set, i.e. the strings for which
         /// <c>GetObject()</c> can return a non-null value.
         /// </summary>
         public virtual ICollection Keys
         {
-            get { return Table.Keys; }
+            get
+            {
+                return Table.Keys;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Returns the translation of <paramref name="msgid"/> and
+        /// <paramref name="msgidPlural"/>, choosing the right plural form
+        /// depending on the number <paramref name="n"/>.
+        /// </summary>
+        /// <param name="msgid">the key string to be translated, an ASCII
+        ///                     string</param>
+        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
+        ///                           an ASCII string</param>
+        /// <param name="n">the number, should be &gt;= 0</param>
+        /// <returns>the translation, or <c>null</c> if none is found</returns>
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"),
+        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
+        {
+            Object value = GetObject(msgid);
+            if (value == null || value is String)
+            {
+                return (String) value;
+            }
+            else if (value is String[])
+            {
+                var choices = (String[]) value;
+                long index = PluralEval(n);
+                return choices[index >= 0 && index < choices.Length ? index : 0];
+            }
+            else
+                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
+                                                    " is not a string");
         }
 
         /// <summary>
@@ -476,17 +555,21 @@ namespace GNU.Gettext
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
         [SuppressMessage("Microsoft.Naming",
-            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
-         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
+        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override String GetString(String msgid)
         {
             Object value = GetObject(msgid);
             if (value == null || value is String)
+            {
                 return (String) value;
+            }
             else if (value is String[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
+            {
                 return ((String[]) value)[0];
+            }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
                                                     " is not a string");
@@ -503,48 +586,20 @@ namespace GNU.Gettext
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
         [SuppressMessage("Microsoft.Naming",
-            "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
-         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
+        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override String GetString(String msgid, bool ignoreCase)
         {
             Object value = GetObject(msgid, ignoreCase);
             if (value == null || value is String)
+            {
                 return (String) value;
+            }
             else if (value is String[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
-                return ((String[]) value)[0];
-            else
-                throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
-                                                    " is not a string");
-        }
-
-        /// <summary>
-        /// Returns the translation of <paramref name="msgid"/> and
-        /// <paramref name="msgidPlural"/>, choosing the right plural form
-        /// depending on the number <paramref name="n"/>.
-        /// </summary>
-        /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
-        /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
-        ///                           an ASCII string</param>
-        /// <param name="n">the number, should be &gt;= 0</param>
-        /// <returns>the translation, or <c>null</c> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"),
-         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
-        {
-            Object value = GetObject(msgid);
-            if (value == null || value is String)
-                return (String) value;
-            else if (value is String[])
             {
-                var choices = (String[]) value;
-                long index = PluralEval(n);
-                return choices[index >= 0 && index < choices.Length ? index : 0];
+                return ((String[]) value)[0];
             }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
@@ -557,13 +612,15 @@ namespace GNU.Gettext
         /// zero for <paramref name="n"/> == 1, one for <paramref name="n"/> != 1.
         /// </summary>
         [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eval")]
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eval")]
         protected virtual long PluralEval(long n)
         {
             return (n == 1 ? 0 : 1);
         }
+
+        #endregion Methods
     }
 
     /// <summary>
@@ -571,9 +628,7 @@ namespace GNU.Gettext
     /// </summary>
     internal class DummyIResourceReader : IResourceReader
     {
-        // Implementation of IDisposable.
-
-        #region IResourceReader Members
+        #region Methods
 
         void IDisposable.Dispose()
         {
@@ -595,6 +650,12 @@ namespace GNU.Gettext
             return null;
         }
 
-        #endregion
+        #endregion Methods
+
+        #region Other
+
+        // Implementation of IDisposable.
+
+        #endregion Other
     }
 }

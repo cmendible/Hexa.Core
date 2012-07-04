@@ -16,7 +16,9 @@ namespace Hexa.Core.Domain
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+
     using Logging;
+
     using Specification;
 
     /// <summary>
@@ -33,19 +35,14 @@ namespace Hexa.Core.Domain
     public class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
-        #region Members
+        #region Fields
 
         private readonly IUnitOfWork _context;
         private readonly ILogger _logger;
 
-        protected ILogger Logger
-        {
-            get { return this._logger; }
-        }
+        #endregion Fields
 
-        #endregion
-
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Default constructor for GenericRepository
@@ -68,25 +65,43 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "", typeof(TEntity).Name));
         }
 
-        #endregion
+        #endregion Constructors
 
-        /// <summary>
-        /// Return a context in this repository
-        /// </summary>
-        protected IUnitOfWork Context
-        {
-            get { return this._context; }
-        }
-
-        #region IRepository<TEntity> Members
+        #region Properties
 
         /// <summary>
         /// Return a context in this repository
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._context; }
+            get
+            {
+                return this._context;
+            }
         }
+
+        /// <summary>
+        /// Return a context in this repository
+        /// </summary>
+        protected IUnitOfWork Context
+        {
+            get
+            {
+                return this._context;
+            }
+        }
+
+        protected ILogger Logger
+        {
+            get
+            {
+                return this._logger;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
@@ -107,27 +122,6 @@ namespace Hexa.Core.Domain
         /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
         /// </summary>
         /// <param name="item"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
-        public virtual void Remove(TEntity item)
-        {
-            // check item
-            Guard.IsNotNull(item, "item");
-
-            IEntitySet<TEntity> objectSet = (this._context.CreateSet<TEntity>());
-
-            // Attach object to context and delete this
-            // this is valid only if T is a type in model
-            objectSet.Attach(item);
-
-            // delete object to IObjectSet for this type
-            objectSet.DeleteObject(item);
-
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
-        }
-
-        /// <summary>
-        /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
-        /// </summary>
-        /// <param name="item"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         public void Attach(TEntity item)
         {
             Guard.IsNotNull(item, "item");
@@ -135,17 +129,6 @@ namespace Hexa.Core.Domain
             this._context.CreateSet<TEntity>().Attach(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
-        }
-
-        public virtual void Modify(TEntity item)
-        {
-            // check arguments
-            Guard.IsNotNull(item, "item");
-
-            // apply changes for item object
-            this._context.CreateSet<TEntity>().ModifyObject(item);
-
-            this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
         }
 
         /// <summary>
@@ -172,8 +155,8 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
             return (this._context.CreateSet<TEntity>()
-                .Where(specification.SatisfiedBy())
-                .AsEnumerable());
+                    .Where(specification.SatisfiedBy())
+                    .AsEnumerable());
         }
 
         /// <summary>
@@ -190,8 +173,8 @@ namespace Hexa.Core.Domain
 
             // Create IObjectSet and perform query
             return this._context.CreateSet<TEntity>()
-                .Where(filter)
-                .ToList();
+                   .Where(filter)
+                   .ToList();
         }
 
         /// <summary>
@@ -202,8 +185,8 @@ namespace Hexa.Core.Domain
         /// <param name="ascending"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public IEnumerable<TEntity> GetFilteredElements<S>(Expression<Func<TEntity, bool>> filter,
-                                                           Expression<Func<TEntity, S>> orderByExpression,
-                                                           bool ascending)
+            Expression<Func<TEntity, S>> orderByExpression,
+            bool ascending)
         {
             // Checking query arguments
             Guard.IsNotNull(filter, "filter");
@@ -215,14 +198,14 @@ namespace Hexa.Core.Domain
             IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
 
             return (ascending)
-                       ? objectSet
-                             .Where(filter)
-                             .OrderBy(orderByExpression)
-                             .ToList()
-                       : objectSet
-                             .Where(filter)
-                             .OrderByDescending(orderByExpression)
-                             .ToList();
+                   ? objectSet
+                   .Where(filter)
+                   .OrderBy(orderByExpression)
+                   .ToList()
+                   : objectSet
+                   .Where(filter)
+                   .OrderByDescending(orderByExpression)
+                   .ToList();
         }
 
         /// <summary>
@@ -234,8 +217,8 @@ namespace Hexa.Core.Domain
         /// <param name="ascending"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                          Expression<Func<TEntity, S>>
-                                                              orderByExpression, bool ascending)
+            Expression<Func<TEntity, S>>
+            orderByExpression, bool ascending)
         {
             // checking arguments for this query
             Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
@@ -244,8 +227,8 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                            "Getting paged elements {0}",
-                            typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
+                              "Getting paged elements {0}",
+                              typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
             // Create associated IObjectSet and perform query
 
@@ -254,16 +237,16 @@ namespace Hexa.Core.Domain
             int total = objectSet.Count();
 
             return (ascending)
-                       ? new PagedElements<TEntity>(
-                             objectSet.OrderBy(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total)
-                       : new PagedElements<TEntity>(
-                             objectSet.OrderByDescending(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total);
+                   ? new PagedElements<TEntity>(
+                       objectSet.OrderBy(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total)
+                   : new PagedElements<TEntity>(
+                       objectSet.OrderByDescending(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total);
         }
 
         /// <summary>
@@ -277,8 +260,8 @@ namespace Hexa.Core.Domain
         /// <param name="ascending"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                          Expression<Func<TEntity, S>> orderByExpression,
-                                                          ISpecification<TEntity> specification, bool ascending)
+            Expression<Func<TEntity, S>> orderByExpression,
+            ISpecification<TEntity> specification, bool ascending)
         {
             // checking arguments for this query
             Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
@@ -288,8 +271,8 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                                "Getting paged elements {0}",
-                                typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
+                              "Getting paged elements {0}",
+                              typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
             // Create associated IObjectSet and perform query
 
@@ -299,21 +282,21 @@ namespace Hexa.Core.Domain
             int total = query.Count();
 
             return (ascending)
-                       ? new PagedElements<TEntity>(
-                             query.OrderBy(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total)
-                       : new PagedElements<TEntity>(
-                             query.OrderByDescending(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total);
+                   ? new PagedElements<TEntity>(
+                       query.OrderBy(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total)
+                   : new PagedElements<TEntity>(
+                       query.OrderByDescending(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total);
         }
 
         public PagedElements<TEntity> GetPagedElements<S>(int pageIndex, int pageCount,
-                                                          Expression<Func<TEntity, S>> orderByExpression,
-                                                          Expression<Func<TEntity, bool>> filter, bool ascending)
+            Expression<Func<TEntity, S>> orderByExpression,
+            Expression<Func<TEntity, bool>> filter, bool ascending)
         {
             // checking arguments for this query
             Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
@@ -334,21 +317,21 @@ namespace Hexa.Core.Domain
             int total = query.Count();
 
             return (ascending)
-                       ? new PagedElements<TEntity>(
-                             query.OrderBy(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total)
-                       : new PagedElements<TEntity>(
-                             query.OrderByDescending(orderByExpression)
-                                 .Skip(pageIndex*pageCount)
-                                 .Take(pageCount)
-                                 .ToList(), total);
+                   ? new PagedElements<TEntity>(
+                       query.OrderBy(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total)
+                   : new PagedElements<TEntity>(
+                       query.OrderByDescending(orderByExpression)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total);
         }
 
         public PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
-                                                       IOrderBySpecification<TEntity> orderBySpecification,
-                                                       ISpecification<TEntity> specification)
+            IOrderBySpecification<TEntity> orderBySpecification,
+            ISpecification<TEntity> specification)
         {
             // checking arguments for this query
             Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
@@ -368,16 +351,16 @@ namespace Hexa.Core.Domain
             int total = query.Count();
 
             return new PagedElements<TEntity>(
-                query
-                    .OrderBySpecification(orderBySpecification)
-                    .Skip(pageIndex*pageCount)
-                    .Take(pageCount)
-                    .ToList(), total);
+                       query
+                       .OrderBySpecification(orderBySpecification)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total);
         }
 
         public PagedElements<TEntity> GetPagedElements(int pageIndex, int pageCount,
-                                                       IOrderBySpecification<TEntity> orderBySpecification,
-                                                       Expression<Func<TEntity, bool>> filter)
+            IOrderBySpecification<TEntity> orderBySpecification,
+            Expression<Func<TEntity, bool>> filter)
         {
             // checking arguments for this query
             Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
@@ -397,13 +380,45 @@ namespace Hexa.Core.Domain
             int total = query.Count();
 
             return new PagedElements<TEntity>(
-                query
-                    .OrderBySpecification(orderBySpecification)
-                    .Skip(pageIndex*pageCount)
-                    .Take(pageCount)
-                    .ToList(), total);
+                       query
+                       .OrderBySpecification(orderBySpecification)
+                       .Skip(pageIndex*pageCount)
+                       .Take(pageCount)
+                       .ToList(), total);
         }
 
-        #endregion
+        public virtual void Modify(TEntity item)
+        {
+            // check arguments
+            Guard.IsNotNull(item, "item");
+
+            // apply changes for item object
+            this._context.CreateSet<TEntity>().ModifyObject(item);
+
+            this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
+        }
+
+        /// <summary>
+        /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
+        /// </summary>
+        /// <param name="item"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
+        public virtual void Remove(TEntity item)
+        {
+            // check item
+            Guard.IsNotNull(item, "item");
+
+            IEntitySet<TEntity> objectSet = (this._context.CreateSet<TEntity>());
+
+            // Attach object to context and delete this
+            // this is valid only if T is a type in model
+            objectSet.Attach(item);
+
+            // delete object to IObjectSet for this type
+            objectSet.DeleteObject(item);
+
+            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
+        }
+
+        #endregion Methods
     }
 }

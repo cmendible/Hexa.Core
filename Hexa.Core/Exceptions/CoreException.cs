@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -29,17 +29,24 @@ namespace Hexa.Core
     [Serializable]
     public abstract class CoreException : Exception
     {
+        #region Fields
+
         /// <summary>
         /// Exception unique id used for logging purposes.
         /// </summary>
         private readonly Guid _UniqueId = GuidExtensions.NewCombGuid();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreException"/> class.
         /// </summary>
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
-        protected CoreException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected CoreException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 
@@ -69,14 +76,25 @@ namespace Hexa.Core
         {
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the unique id.
         /// </summary>
         /// <value>The unique id.</value>
         public Guid UniqueId
         {
-            get { return _UniqueId; }
+            get
+            {
+                return _UniqueId;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
@@ -95,5 +113,7 @@ namespace Hexa.Core
         {
             base.GetObjectData(info, context);
         }
+
+        #endregion Methods
     }
 }

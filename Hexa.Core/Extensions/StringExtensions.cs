@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,19 +15,25 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace System
 {
     using Collections.Generic;
+
     using Globalization;
+
     using Linq;
+
     using Security.Cryptography;
+
     using Text;
     using Text.RegularExpressions;
 
     public static class MD5Helper
     {
+        #region Methods
+
         public static string CalculateMD5Hash(this string input)
         {
             byte[] inputBytes;
@@ -48,12 +54,20 @@ namespace System
             }
             return sb.ToString();
         }
+
+        #endregion Methods
     }
 
     public static class StringSlugExtension
     {
+        #region Fields
+
         private static readonly Dictionary<string, string> rules1;
         private static readonly Dictionary<string, string> rules2;
+
+        #endregion Fields
+
+        #region Constructors
 
         static StringSlugExtension()
         {
@@ -61,35 +75,15 @@ namespace System
             List<char> validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
             rules1 = invalidChars.ToDictionary(i => i.ToString(), i => validChars[invalidChars.IndexOf(i)].ToString());
 
-            invalidChars = new[] {'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')'}.ToList();
+            invalidChars = new[] {'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')'} .ToList();
             List<string> validStrings =
-                new[] {"TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", ""}.ToList();
+                new[] {"TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", ""} .ToList();
             rules2 = invalidChars.ToDictionary(i => i.ToString(), i => validStrings[invalidChars.IndexOf(i)]);
         }
 
-        private static string _StrTr(this string source, Dictionary<string, string> replacements)
-        {
-            var finds = new string[replacements.Keys.Count];
+        #endregion Constructors
 
-            replacements.Keys.CopyTo(finds, 0);
-
-            string findpattern = string.Join("|", finds);
-
-            var regex = new Regex(findpattern);
-
-            MatchEvaluator evaluator =
-                delegate(Match m)
-                    {
-                        string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
-
-                        if (replacements.ContainsKey(match))
-                            return replacements[match];
-                        else
-                            return match;
-                    };
-
-            return regex.Replace(source, evaluator);
-        }
+        #region Methods
 
         /// <summary>
         /// Will transform "some $ugly ###url wit[]h spaces" into "some-ugly-url-with-spaces"
@@ -115,5 +109,35 @@ namespace System
 
             return str;
         }
+
+        private static string _StrTr(this string source, Dictionary<string, string> replacements)
+        {
+            var finds = new string[replacements.Keys.Count];
+
+            replacements.Keys.CopyTo(finds, 0);
+
+            string findpattern = string.Join("|", finds);
+
+            var regex = new Regex(findpattern);
+
+            MatchEvaluator evaluator =
+                delegate(Match m)
+            {
+                string match = m.Captures[0].Value; // either "hello" or "hi" from the original string
+
+                if (replacements.ContainsKey(match))
+                {
+                    return replacements[match];
+                }
+                else
+                {
+                    return match;
+                }
+            };
+
+            return regex.Replace(source, evaluator);
+        }
+
+        #endregion Methods
     }
 }

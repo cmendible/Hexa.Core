@@ -10,6 +10,8 @@
     [Serializable]
     public class ValidationException : CoreException
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationException"/> class.
         /// </summary>
@@ -48,16 +50,30 @@
             EntityType = entityType;
         }
 
-        /// <summary>
-        /// Gets or sets the validation errors.
-        /// </summary>
-        /// <value>The validation errors.</value>
-        public IEnumerable<ValidationError> ValidationErrors { get; private set; }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the type of the entity.
         /// </summary>
         /// <value>The type of the entity.</value>
-        public Type EntityType { get; protected set; }
+        public Type EntityType
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets or sets the validation errors.
+        /// </summary>
+        /// <value>The validation errors.</value>
+        public IEnumerable<ValidationError> ValidationErrors
+        {
+            get;
+            private set;
+        }
+
+        #endregion Properties
     }
 }

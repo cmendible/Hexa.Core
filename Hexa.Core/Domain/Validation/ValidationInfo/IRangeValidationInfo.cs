@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,12 +15,13 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Resources;
 
     /// <summary>
@@ -28,17 +29,27 @@ namespace Hexa.Core.Validation
     /// </summary>
     public interface IRangeValidationInfo : IValidationInfo
     {
+        #region Properties
+
         /// <summary>
         /// Gets the maximum.
         /// </summary>
         /// <value>The maximum.</value>
-        IComparable Maximum { get; }
+        IComparable Maximum
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the minimum.
         /// </summary>
         /// <value>The minimum.</value>
-        IComparable Minimum { get; }
+        IComparable Minimum
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 
     /// <summary>
@@ -47,8 +58,14 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class RangeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRangeValidationInfo
     {
+        #region Fields
+
         private readonly IComparable maximum;
         private readonly IComparable minimum;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeValidationInfo&lt;TEntity&gt;"/> class.
@@ -72,7 +89,7 @@ namespace Hexa.Core.Validation
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Int32.ToString")]
+                         MessageId = "System.Int32.ToString")]
         public RangeValidationInfo(string propertyName, string error, int minimum, int maximum)
             : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
         {
@@ -88,7 +105,7 @@ namespace Hexa.Core.Validation
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.Double.ToString")]
+                         MessageId = "System.Double.ToString")]
         public RangeValidationInfo(string propertyName, string error, double minimum, double maximum)
             : base(propertyName, DefaultMessage<TEntity>(propertyName, error, minimum.ToString(), maximum.ToString()))
         {
@@ -104,9 +121,8 @@ namespace Hexa.Core.Validation
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
         public RangeValidationInfo(string propertyName, string error, DateTime minimum, DateTime maximum)
-            : base(
-                propertyName,
-                DefaultMessage<TEntity>(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
+            : base(propertyName,
+            DefaultMessage<TEntity>(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
         {
             this.minimum = minimum;
             this.maximum = maximum;
@@ -126,16 +142,9 @@ namespace Hexa.Core.Validation
             this.maximum = maximum;
         }
 
-        #region IRangeValidationInfo Members
+        #endregion Constructors
 
-        /// <summary>
-        /// Gets the minimum.
-        /// </summary>
-        /// <value>The minimum.</value>
-        public IComparable Minimum
-        {
-            get { return minimum; }
-        }
+        #region Properties
 
         /// <summary>
         /// Gets the maximum.
@@ -143,13 +152,30 @@ namespace Hexa.Core.Validation
         /// <value>The maximum.</value>
         public IComparable Maximum
         {
-            get { return maximum; }
+            get
+            {
+                return maximum;
+            }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the minimum.
+        /// </summary>
+        /// <value>The minimum.</value>
+        public IComparable Minimum
+        {
+            get
+            {
+                return minimum;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)")]
+                         MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error, string minimum, string maximum)
         {
             if (string.IsNullOrEmpty(error))
@@ -157,7 +183,11 @@ namespace Hexa.Core.Validation
                                      DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName), minimum,
                                      maximum);
             else
+            {
                 return error;
+            }
         }
+
+        #endregion Methods
     }
 }

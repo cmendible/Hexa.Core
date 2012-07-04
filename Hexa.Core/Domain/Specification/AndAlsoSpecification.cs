@@ -18,18 +18,17 @@ namespace Hexa.Core.Domain.Specification
     /// A logic AND Specification
     /// </summary>
     /// <typeparam name="T">Type of entity that check this specification</typeparam>
-    public class AndAlsoSpecification<T>
-        : CompositeSpecification<T>
+    public class AndAlsoSpecification<T> : CompositeSpecification<T>
         where T : class
     {
-        #region Members
+        #region Fields
 
         private readonly ISpecification<T> _LeftSideSpecification;
         private readonly ISpecification<T> _RightSideSpecification;
 
-        #endregion
+        #endregion Fields
 
-        #region Public Constructor
+        #region Constructors
 
         /// <summary>
         /// Default constructor for AndSpecification
@@ -39,25 +38,32 @@ namespace Hexa.Core.Domain.Specification
         public AndAlsoSpecification(ISpecification<T> leftSide, ISpecification<T> rightSide)
         {
             if (leftSide == null)
+            {
                 throw new ArgumentNullException("leftSide");
+            }
 
             if (rightSide == null)
+            {
                 throw new ArgumentNullException("rightSide");
+            }
 
             _LeftSideSpecification = leftSide;
             _RightSideSpecification = rightSide;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Composite Specification overrides
+        #region Properties
 
         /// <summary>
         /// Left side specification
         /// </summary>
         public override ISpecification<T> LeftSideSpecification
         {
-            get { return _LeftSideSpecification; }
+            get
+            {
+                return _LeftSideSpecification;
+            }
         }
 
         /// <summary>
@@ -65,8 +71,15 @@ namespace Hexa.Core.Domain.Specification
         /// </summary>
         public override ISpecification<T> RightSideSpecification
         {
-            get { return _RightSideSpecification; }
+            get
+            {
+                return _RightSideSpecification;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{T}"/>
@@ -80,6 +93,6 @@ namespace Hexa.Core.Domain.Specification
             return (left.AndAlso(right));
         }
 
-        #endregion
+        #endregion Methods
     }
 }

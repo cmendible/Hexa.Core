@@ -1,5 +1,4 @@
-﻿ //Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
-
+﻿//Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
 namespace Hexa.Core.Windows.Mvvm
 {
     using System;
@@ -10,12 +9,30 @@ namespace Hexa.Core.Windows.Mvvm
     [Serializable]
     public abstract class ObservableObject : INotifyPropertyChanged
     {
-        #region INotifyPropertyChanged Members
+        #region Events
 
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
+        #endregion Events
+
+        #region Methods
+
+        /// <summary>
+        /// Warns the developer if this Object does not have a public property with
+        /// the specified name. This method does not exist in a Release build.
+        /// </summary>
+        [Conditional("DEBUG")]
+        [DebuggerStepThrough]
+        public void VerifyPropertyName(String propertyName)
+        {
+            // verify that the property name matches a real,
+            // public, instance property on this Object.
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
+            {
+                Debug.Fail("Invalid property name: " + propertyName);
+            }
+        }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
@@ -38,20 +55,6 @@ namespace Hexa.Core.Windows.Mvvm
             OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
         }
 
-        /// <summary>
-        /// Warns the developer if this Object does not have a public property with
-        /// the specified name. This method does not exist in a Release build.
-        /// </summary>
-        [Conditional("DEBUG")]
-        [DebuggerStepThrough]
-        public void VerifyPropertyName(String propertyName)
-        {
-            // verify that the property name matches a real,
-            // public, instance property on this Object.
-            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-            {
-                Debug.Fail("Invalid property name: " + propertyName);
-            }
-        }
+        #endregion Methods
     }
 }

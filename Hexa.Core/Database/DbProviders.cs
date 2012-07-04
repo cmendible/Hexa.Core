@@ -3,12 +3,14 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
+    #region Enumerations
+
     public enum DbProvider
     {
         [EnumMember(Value = "MySql.Data.MySQLClient")] MySqlProvider,
 
         [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Lite")] [EnumMember(Value = "System.Data.SQLite")] SQLiteProvider,
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Lite")] [EnumMember(Value = "System.Data.SQLite")] SQLiteProvider,
 
         [EnumMember(Value = "System.Data.SqlClient")] MsSqlProvider,
 
@@ -20,4 +22,6 @@
 
         [EnumMember(Value = "FirebirdSql.Data.FirebirdClient")] Firebird
     }
+
+    #endregion Enumerations
 }

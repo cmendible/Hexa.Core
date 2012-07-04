@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace System
 {
@@ -23,14 +23,18 @@ namespace System
 
     public static class EnumExtensions
     {
+        #region Methods
+
         public static string GetEnumMemberValue(this Enum value)
         {
             var attributes
                 = value.GetType().GetField(value.ToString())
-                      .GetCustomAttributes(typeof(EnumMemberAttribute), false)
+                  .GetCustomAttributes(typeof(EnumMemberAttribute), false)
                   as EnumMemberAttribute[];
 
             return attributes.Length > 0 ? attributes[0].Value : string.Empty;
         }
+
+        #endregion Methods
     }
 }

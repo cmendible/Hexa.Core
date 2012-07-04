@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -29,10 +29,16 @@ namespace Hexa.Core
     [Serializable]
     public class ConstraintException : CoreException
     {
+        #region Fields
+
         /// <summary>
         /// Exception unique id used for logging purposes.
         /// </summary>
         private readonly Guid _UniqueId = GuidExtensions.NewCombGuid();
+
+        #endregion Fields
+
+        #region Constructors
 
         public ConstraintException()
         {
@@ -42,7 +48,8 @@ namespace Hexa.Core
         /// Initializes a new instance of the <see cref="ConstraintException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public ConstraintException(string message) : base(message)
+        public ConstraintException(string message)
+            : base(message)
         {
         }
 
@@ -51,7 +58,8 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
-        public ConstraintException(string message, Exception ex) : base(message, ex)
+        public ConstraintException(string message, Exception ex)
+            : base(message, ex)
         {
         }
 
@@ -60,19 +68,32 @@ namespace Hexa.Core
         {
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the unique id.
         /// </summary>
         /// <value>The unique id.</value>
         public Guid UniqueId
         {
-            get { return _UniqueId; }
+            get
+            {
+                return _UniqueId;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }
+
+        #endregion Methods
     }
 }

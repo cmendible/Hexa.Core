@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Controls
 {
@@ -26,8 +26,10 @@ namespace Hexa.Core.Web.UI.Controls
 
     public class ExtendedRequiredFieldValidator : RequiredFieldValidator
     {
+        #region Properties
+
         [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings"),
-         UrlProperty]
+        UrlProperty]
         public virtual string ImageUrl
         {
             get
@@ -35,12 +37,21 @@ namespace Hexa.Core.Web.UI.Controls
                 string imageUrl = string.Empty;
                 object o = ViewState["ImageUrl"];
                 if (o != null)
+                {
                     imageUrl = ViewState["ImageUrl"].ToString();
+                }
 
                 return imageUrl;
             }
-            set { ViewState["ImageUrl"] = value; }
+            set
+            {
+                ViewState["ImageUrl"] = value;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -55,5 +66,7 @@ namespace Hexa.Core.Web.UI.Controls
                 Controls.Add(img);
             }
         }
+
+        #endregion Methods
     }
 }

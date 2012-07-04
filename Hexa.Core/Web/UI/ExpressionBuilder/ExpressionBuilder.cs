@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -29,6 +29,8 @@ namespace Hexa.Core.Web.UI
     [ExpressionPrefix("Code")]
     public sealed class CodeExpressionBuilder : ExpressionBuilder
     {
+        #region Methods
+
         /// <summary>
         /// When overridden in a derived class, returns code that is used during page execution to obtain the evaluated expression.
         /// Requieres de following configuration in web.config:
@@ -45,9 +47,11 @@ namespace Hexa.Core.Web.UI
         /// A <see cref="T:System.CodeDom.CodeExpression"/> that is used for property assignment.
         /// </returns>
         public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData,
-                                                         ExpressionBuilderContext context)
+            ExpressionBuilderContext context)
         {
             return new CodeSnippetExpression(entry.Expression);
         }
+
+        #endregion Methods
     }
 }

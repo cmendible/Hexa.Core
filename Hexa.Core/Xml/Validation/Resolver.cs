@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Xml
 {
@@ -31,17 +31,31 @@ namespace Hexa.Core.Xml
     /// </summary>
     public class SchemaResolver : XmlResolver
     {
+        #region Fields
+
         private readonly Dictionary<string, byte[]> _schemas;
+
+        #endregion Fields
+
+        #region Constructors
 
         public SchemaResolver(Dictionary<string, byte[]> schemas)
         {
             _schemas = schemas;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public override ICredentials Credentials
         {
             set { }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
@@ -60,5 +74,7 @@ namespace Hexa.Core.Xml
         {
             return base.ResolveUri(baseUri, relativeUri);
         }
+
+        #endregion Methods
     }
 }

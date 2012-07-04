@@ -6,6 +6,8 @@
 
     public static class PropertySupport
     {
+        #region Methods
+
         public static String ExtractPropertyName<T>(Expression<Func<T>> propertyExpresssion)
         {
             if (propertyExpresssion == null)
@@ -34,5 +36,7 @@
 
             return memberExpression.Member.Name;
         }
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,11 +15,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Security
 {
     using System;
+
     using Resources;
 
     /// <summary>
@@ -28,10 +29,16 @@ namespace Hexa.Core.Security
     [Serializable]
     public class CoreIdentity : MarshalByRefObject, ICoreIdentity
     {
+        #region Fields
+
         // Fields
         private readonly string _id;
         private readonly string _name;
         private readonly string _type;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
@@ -77,7 +84,9 @@ namespace Hexa.Core.Security
             _id = id;
         }
 
-        #region ICoreIdentity Members
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the type of authentication used.
@@ -86,7 +95,22 @@ namespace Hexa.Core.Security
         /// <returns>The type of authentication used to identify the user.</returns>
         public virtual string AuthenticationType
         {
-            get { return _type; }
+            get
+            {
+                return _type;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
+        /// <value>The id.</value>
+        public string Id
+        {
+            get
+            {
+                return _id;
+            }
         }
 
         /// <summary>
@@ -96,7 +120,10 @@ namespace Hexa.Core.Security
         /// <returns>true if the user was authenticated; otherwise, false.</returns>
         public virtual bool IsAuthenticated
         {
-            get { return !string.IsNullOrEmpty(_name); }
+            get
+            {
+                return !string.IsNullOrEmpty(_name);
+            }
         }
 
         /// <summary>
@@ -106,18 +133,12 @@ namespace Hexa.Core.Security
         /// <returns>The name of the user on whose behalf the code is running.</returns>
         public virtual string Name
         {
-            get { return _name; }
+            get
+            {
+                return _name;
+            }
         }
 
-        /// <summary>
-        /// Gets or sets the id.
-        /// </summary>
-        /// <value>The id.</value>
-        public string Id
-        {
-            get { return _id; }
-        }
-
-        #endregion
+        #endregion Properties
     }
 }

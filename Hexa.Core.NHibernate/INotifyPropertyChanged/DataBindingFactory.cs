@@ -2,11 +2,34 @@
 {
     using System;
     using System.ComponentModel;
+
     using Castle.DynamicProxy;
 
     public static class DataBindingFactory
     {
+        #region Fields
+
         private static readonly ProxyGenerator _ProxyGenerator = new ProxyGenerator();
+
+        #endregion Fields
+
+        #region Nested Interfaces
+
+        public interface IMarkerInterface
+        {
+            #region Properties
+
+            string TypeName
+            {
+                get;
+            }
+
+            #endregion Properties
+        }
+
+        #endregion Nested Interfaces
+
+        #region Methods
 
         public static T Create<T>()
         {
@@ -16,37 +39,39 @@
         public static object Create(Type type)
         {
             return _ProxyGenerator.CreateClassProxy(
-                type,
-                new[]
-                    {
-                        typeof(INotifyPropertyChanged),
-                        typeof(IMarkerInterface)
-                    },
-                new NotifyPropertyChangedInterceptor(type.FullName));
+                       type,
+                       new[]
+            {
+                typeof(INotifyPropertyChanged),
+                typeof(IMarkerInterface)
+            },
+            new NotifyPropertyChangedInterceptor(type.FullName));
         }
 
-        #region Nested type: IMarkerInterface
+        #endregion Methods
 
-        public interface IMarkerInterface
-        {
-            string TypeName { get; }
-        }
-
-        #endregion
-
-        #region Nested type: NotifyPropertyChangedInterceptor
+        #region Nested Types
 
         public class NotifyPropertyChangedInterceptor : IInterceptor
         {
+            #region Fields
+
             private readonly string typeName;
+
             private PropertyChangedEventHandler subscribers = delegate { };
+
+            #endregion Fields
+
+            #region Constructors
 
             public NotifyPropertyChangedInterceptor(string typeName)
             {
                 this.typeName = typeName;
             }
 
-            #region IInterceptor Members
+            #endregion Constructors
+
+            #region Methods
 
             public void Intercept(IInvocation invocation)
             {
@@ -78,9 +103,9 @@
                 }
             }
 
-            #endregion
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Nested Types
     }
 }

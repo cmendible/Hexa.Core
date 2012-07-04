@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,41 +15,62 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Tests
 {
     using System;
+
     using NUnit.Framework;
+
     using Pooling;
 
     public class ExpirableEntity : IObjectWithExpiration<ExpirableEntity>
     {
-        #region IObjectWithExpiration<ExpirableEntity> Members
-
-        public DateTime TimeOut
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        #region Properties
 
         public bool IsExpired
         {
-            get { return true; }
+            get
+            {
+                return true;
+            }
         }
+
+        public DateTime TimeOut
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public void Dispose()
         {
         }
 
-        #endregion
+        #endregion Methods
     }
 
     [TestFixture]
     public class ObjectPoolTests
     {
-        private Pool<ExpirableEntity> _Pool;
+        #region Fields
+
         private ExpirableEntity _objectFromPool;
+        private Pool<ExpirableEntity> _Pool;
+
+        #endregion Fields
+
+        #region Methods
 
         [Test]
         public void CreatePool()
@@ -68,5 +89,7 @@ namespace Hexa.Core.Tests
         {
             this._Pool.Release(this._objectFromPool);
         }
+
+        #endregion Methods
     }
 }

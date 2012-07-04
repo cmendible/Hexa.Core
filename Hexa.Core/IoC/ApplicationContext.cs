@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,9 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
-
-using SL = Microsoft.Practices.ServiceLocation;
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -26,23 +24,42 @@ namespace Hexa.Core
     using System.Security.Principal;
     using System.Threading;
     using System.Web;
+
     using log4net;
+
+    using SL = Microsoft.Practices.ServiceLocation;
 
     /// <summary>
     /// Core Context singleton class. Contains a reference to a root CoreContainer object.
     /// </summary>
     public static class ApplicationContext
     {
+        #region Fields
+
         /// <summary>
         /// log4net logger.
         /// </summary>
-        private static readonly ILog _Log =
+        private static readonly ILog _Log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion Fields
+
+        #region Properties
+
+        public static string ConnectionString
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// private ICoreContainer instance.
         /// </summary>
-        public static IoCContainer Container { get; private set; }
+        public static IoCContainer Container
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is initialized.
@@ -50,27 +67,39 @@ namespace Hexa.Core
         /// <value>
         /// 	<c>true</c> if this instance is initialized; otherwise, <c>false</c>.
         /// </value>
-        public static bool IsInitialized { get; private set; }
-
-        public static string ConnectionString { get; private set; }
+        public static bool IsInitialized
+        {
+            get;
+            private set;
+        }
 
         public static IPrincipal User
         {
             get
             {
                 if (HttpContext.Current != null)
+                {
                     return HttpContext.Current.User;
+                }
                 else
+                {
                     return Thread.CurrentPrincipal;
+                }
             }
             set
             {
                 if (HttpContext.Current != null)
+                {
                     HttpContext.Current.User = value;
+                }
 
                 Thread.CurrentPrincipal = value;
             }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Starts the Context.
@@ -84,7 +113,7 @@ namespace Hexa.Core
             var container = new IoCContainer(
                 (x, y) => dictionaryContainer.RegisterType(x, y),
                 (x, y) => dictionaryContainer.RegisterInstance(x, y)
-                );
+            );
 
             Start(container, connectionString);
         }
@@ -95,9 +124,9 @@ namespace Hexa.Core
         /// <param name="container">The container.</param>
         /// <param name="defaultDataLayer">The default data layer.</param>
         [SuppressMessage("Microsoft.Design",
-            "CA1062:Validate arguments of public methods", MessageId = "0"),
-         SuppressMessage("Microsoft.Naming",
-             "CA2204:Literals should be spelled correctly", MessageId = "CoreContext")]
+                         "CA1062:Validate arguments of public methods", MessageId = "0"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA2204:Literals should be spelled correctly", MessageId = "CoreContext")]
         public static void Start(IoCContainer container, string connectionString)
         {
             if (!IsInitialized)
@@ -126,5 +155,7 @@ namespace Hexa.Core
             IsInitialized = false;
             _Log.Info("Core Context Deactivation Successful");
         }
+
+        #endregion Methods
     }
 }

@@ -15,8 +15,7 @@ namespace Hexa.Core.Domain.Specification
     /// Base class for composite specifications
     /// </summary>
     /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
-    public abstract class CompositeSpecification<TEntity>
-        : Specification<TEntity>
+    public abstract class CompositeSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
         #region Properties
@@ -24,13 +23,19 @@ namespace Hexa.Core.Domain.Specification
         /// <summary>
         /// Left side specification for this composite element
         /// </summary>
-        public abstract ISpecification<TEntity> LeftSideSpecification { get; }
+        public abstract ISpecification<TEntity> LeftSideSpecification
+        {
+            get;
+        }
 
         /// <summary>
         /// Right side specification for this composite element
         /// </summary>
-        public abstract ISpecification<TEntity> RightSideSpecification { get; }
+        public abstract ISpecification<TEntity> RightSideSpecification
+        {
+            get;
+        }
 
-        #endregion
+        #endregion Properties
     }
 }

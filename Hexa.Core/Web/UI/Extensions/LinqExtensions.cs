@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -29,14 +29,22 @@ namespace Hexa.Core.Web.UI
     using System.Reflection;
     using System.Web;
     using System.Web.Caching;
+
     using log4net;
 
     public static class LinqExtensions
     {
+        #region Fields
+
         private static readonly ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        #endregion Fields
+
+        #region Methods
+
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public static IList<T> LinqCache<T>(this Table<T> query) where T : class
+        public static IList<T> LinqCache<T>(this Table<T> query)
+            where T : class
         {
             string tableName = query.Context.Mapping.GetTable(typeof(T)).TableName;
             IList<T> result = HttpContext.Current.Cache[tableName] as List<T>;
@@ -89,5 +97,7 @@ namespace Hexa.Core.Web.UI
             }
             return result;
         }
+
+        #endregion Methods
     }
 }

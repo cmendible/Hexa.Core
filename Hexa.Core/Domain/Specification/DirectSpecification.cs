@@ -20,17 +20,16 @@ namespace Hexa.Core.Domain.Specification
     /// in  constructor
     /// </summary>
     /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
-    public class DirectSpecification<TEntity>
-        : Specification<TEntity>
+    public class DirectSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Members
+        #region Fields
 
         private readonly Expression<Func<TEntity, bool>> _MatchingCriteria;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Default constructor for Direct Specification
@@ -39,14 +38,16 @@ namespace Hexa.Core.Domain.Specification
         public DirectSpecification(Expression<Func<TEntity, bool>> matchingCriteria)
         {
             if (matchingCriteria == null)
+            {
                 throw new ArgumentNullException("matchingCriteria");
+            }
 
             _MatchingCriteria = matchingCriteria;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Override
+        #region Methods
 
         /// <summary>
         ///
@@ -57,6 +58,6 @@ namespace Hexa.Core.Domain.Specification
             return _MatchingCriteria;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

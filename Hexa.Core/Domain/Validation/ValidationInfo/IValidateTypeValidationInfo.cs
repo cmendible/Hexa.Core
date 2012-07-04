@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,11 +15,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Resources;
 
     /// <summary>
@@ -36,6 +37,8 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class ValidateTypeValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IValidateTypeValidationInfo
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
         /// </summary>
@@ -55,18 +58,26 @@ namespace Hexa.Core.Validation
         {
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidateTypeValidationInfo&lt;TEntity&gt;"/> class.
         /// </summary>
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.String.Format(System.String,System.Object)")]
+                         MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
         {
             if (string.IsNullOrEmpty(error))
                 return string.Format(Resource.ValueIsNotOfTheCorrectType,
                                      DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
             else
+            {
                 return error;
+            }
         }
+
+        #endregion Methods
     }
 }

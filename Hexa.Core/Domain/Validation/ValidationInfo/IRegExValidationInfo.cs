@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,11 +15,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Validation
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Resources;
 
     /// <summary>
@@ -27,11 +28,18 @@ namespace Hexa.Core.Validation
     /// </summary>
     public interface IRegexValidationInfo : IValidationInfo
     {
+        #region Properties
+
         /// <summary>
         /// Gets the expression.
         /// </summary>
         /// <value>The expression.</value>
-        string Expression { get; }
+        string Expression
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 
     /// <summary>
@@ -40,7 +48,13 @@ namespace Hexa.Core.Validation
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class RegexValidationInfo<TEntity> : BaseValidationInfo<TEntity>, IRegexValidationInfo
     {
+        #region Fields
+
         private readonly string expression;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the RequiredValidationInfo class.
@@ -64,7 +78,9 @@ namespace Hexa.Core.Validation
             this.expression = expression;
         }
 
-        #region IRegexValidationInfo Members
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the expression.
@@ -72,20 +88,29 @@ namespace Hexa.Core.Validation
         /// <value>The expression.</value>
         public string Expression
         {
-            get { return expression; }
+            get
+            {
+                return expression;
+            }
         }
 
-        #endregion
+        #endregion Properties
+
+        #region Methods
 
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
-            MessageId = "System.String.Format(System.String,System.Object)")]
+                         MessageId = "System.String.Format(System.String,System.Object)")]
         private static string DefaultMessage<TEntity>(string propertyName, string error)
         {
             if (string.IsNullOrEmpty(error))
                 return string.Format(Resource.ValueIsNotCorrectlyFormatted,
                                      DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
             else
+            {
                 return error;
+            }
         }
+
+        #endregion Methods
     }
 }

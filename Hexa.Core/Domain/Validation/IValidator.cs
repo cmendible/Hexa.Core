@@ -6,6 +6,15 @@
     /// </summary>
     public interface IValidator<TEntity>
     {
+        #region Methods
+
+        /// <summary>
+        /// Validates this instance.
+        /// If instance is not valid, method must throw a ValidationException.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        void AssertValidation(TEntity instance);
+
         /// <summary>
         /// Determines whether the specified instance is valid.
         /// </summary>
@@ -16,18 +25,13 @@
         bool IsValid(TEntity instance);
 
         /// <summary>
-        /// Validates this instance.
-        /// If instance is not valid, method must throw a ValidationException.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        void AssertValidation(TEntity instance);
-
-        /// <summary>
         /// Validates the specified instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
         ValidationResult Validate(TEntity instance);
+
+        #endregion Methods
     }
 
     /// <summary>

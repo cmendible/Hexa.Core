@@ -7,6 +7,8 @@
 
     public static class ServiceSecurityContextExtensions
     {
+        #region Methods
+
         public static IList<IIdentity> GetIdentities(this ServiceSecurityContext context)
         {
             return GetIdentities(context.AuthorizationContext);
@@ -35,5 +37,7 @@
 
             return new List<IIdentity>();
         }
+
+        #endregion Methods
     }
 }

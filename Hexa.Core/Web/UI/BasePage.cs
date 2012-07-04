@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -29,8 +29,11 @@ namespace Hexa.Core.Web.UI
     using System.Text;
     using System.Threading;
     using System.Web.UI;
+
     using Controls;
+
     using GNU.Gettext;
+
     using Validation;
 
     /// <summary>
@@ -38,76 +41,17 @@ namespace Hexa.Core.Web.UI
     /// </summary>
     public class BasePage : Page
     {
-        protected Control FirstControl2SetFocus { get; set; }
+        #region Properties
 
-        #region ViewState Helper
-
-        /// <summary>
-        /// Helper method to get the value from the ViewState
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        [SuppressMessage("Microsoft.Design",
-            "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        protected T GetProperty<T>(string propertyName)
+        protected Control FirstControl2SetFocus
         {
-            if (ViewState[propertyName] == null)
-                return default(T);
-
-            return (T) ViewState[propertyName];
+            get;
+            set;
         }
 
-        /// <summary>
-        /// Helper method to set the value to the ViewState
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName"></param>
-        /// <param name="value"></param>
-        protected void SetProperty<T>(string propertyName, T value)
-        {
-            ViewState[propertyName] = value;
-        }
+        #endregion Properties
 
-        #endregion
-
-        #region  Methods
-
-        #region  Globalization
-
-        /// <summary>
-        /// Translates the specified key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-            MessageId = "t"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
-        protected string t(string key)
-        {
-            Assembly assembly = null;
-
-            if (!GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
-                assembly = Assembly.GetCallingAssembly();
-            else
-                assembly = GetType().BaseType.Assembly;
-
-            return GettextHelper.t(key, assembly);
-        }
-
-        [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-             MessageId = "t")]
-        protected String t(String key, params object[] args)
-        {
-            return String.Format(CultureInfo.InvariantCulture, t(key), args);
-        }
-
-        #endregion
-
-        #region Exceptions
+        #region Methods
 
         /// <summary>
         /// Displays the exception.
@@ -116,7 +60,9 @@ namespace Hexa.Core.Web.UI
         public void DisplayException(Exception exception)
         {
             if ((exception) is ThreadAbortException)
+            {
                 return;
+            }
 
             var sb = new StringBuilder();
             sb.Append(t(exception.Message));
@@ -128,7 +74,9 @@ namespace Hexa.Core.Web.UI
             }
 
             if (exception is ValidationException)
+            {
                 AddInvalidValidator(((ValidationException) exception).ValidationErrors.Select(e => e.Message));
+            }
             else
                 AddInvalidValidator(new[] {exception.Message});
         }
@@ -145,11 +93,74 @@ namespace Hexa.Core.Web.UI
         protected virtual void AddInvalidValidator(IEnumerable<string> errors)
         {
             foreach (string error in errors)
+            {
                 Validators.Add(new InvalidValidator(error));
+            }
         }
 
-        #endregion
+        /// <summary>
+        /// Helper method to get the value from the ViewState
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Design",
+                         "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        protected T GetProperty<T>(string propertyName)
+        {
+            if (ViewState[propertyName] == null)
+            {
+                return default(T);
+            }
 
-        #endregion
+            return (T) ViewState[propertyName];
+        }
+
+        /// <summary>
+        /// Helper method to set the value to the ViewState
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        protected void SetProperty<T>(string propertyName, T value)
+        {
+            ViewState[propertyName] = value;
+        }
+
+        /// <summary>
+        /// Translates the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+                         MessageId = "t"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
+        protected string t(string key)
+        {
+            Assembly assembly = null;
+
+            if (!GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
+            {
+                assembly = Assembly.GetCallingAssembly();
+            }
+            else
+            {
+                assembly = GetType().BaseType.Assembly;
+            }
+
+            return GettextHelper.t(key, assembly);
+        }
+
+        [SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+                         MessageId = "t")]
+        protected String t(String key, params object[] args)
+        {
+            return String.Format(CultureInfo.InvariantCulture, t(key), args);
+        }
+
+        #endregion Methods
     }
 }

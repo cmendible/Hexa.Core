@@ -26,14 +26,14 @@ namespace Hexa.Core.Domain
     public sealed class MemorySet<TEntity> : IEntitySet<TEntity>
         where TEntity : class
     {
-        #region Members
+        #region Fields
 
         private readonly List<string> _IncludePaths;
         private readonly List<TEntity> _InnerList;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -50,30 +50,46 @@ namespace Hexa.Core.Domain
             this._IncludePaths = new List<string>();
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Methods
+        #region Properties
 
         /// <summary>
-        /// Include path in query objects
+        /// <see cref="System.Linq.IQueryable{T}"/>
         /// </summary>
-        /// <param name="path">Path to include</param>
-        /// <returns>IObjectSet with include path</returns>
-        public MemorySet<TEntity> Include(string path)
+        public Type ElementType
         {
-            if (String.IsNullOrEmpty(path))
+            get
             {
-                throw new ArgumentNullException("path");
+                return typeof(TEntity);
             }
-
-            this._IncludePaths.Add(path);
-
-            return this;
         }
 
-        #endregion
+        /// <summary>
+        /// <see cref="System.Linq.IQueryable{T}"/>
+        /// </summary>
+        public Expression Expression
+        {
+            get
+            {
+                return this._InnerList.AsQueryable().Expression;
+            }
+        }
 
-        #region IEntitySet<TEntity> Members
+        /// <summary>
+        /// <see cref="System.Linq.IQueryable{T}"/>
+        /// </summary>
+        public IQueryProvider Provider
+        {
+            get
+            {
+                return this._InnerList.AsQueryable().Provider;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public void AddObject(TEntity entity)
         {
@@ -91,6 +107,16 @@ namespace Hexa.Core.Domain
             }
         }
 
+        public IEntitySet<TEntity> Cacheable()
+        {
+            return this;
+        }
+
+        public IEntitySet<TEntity> Cacheable(string cacheRegion)
+        {
+            return this;
+        }
+
         public void DeleteObject(TEntity entity)
         {
             if (entity != null)
@@ -99,8 +125,26 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public void ModifyObject(TEntity entity)
+        public void Detach(TEntity entity)
         {
+            if (entity != null)
+            {
+                this._InnerList.Remove(entity);
+            }
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -125,85 +169,50 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// <see cref="System.Linq.IQueryable{T}"/>
+        /// Include path in query objects
         /// </summary>
-        public Type ElementType
+        /// <param name="path">Path to include</param>
+        /// <returns>IObjectSet with include path</returns>
+        public MemorySet<TEntity> Include(string path)
         {
-            get { return typeof(TEntity); }
-        }
+            if (String.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException("path");
+            }
 
-        /// <summary>
-        /// <see cref="System.Linq.IQueryable{T}"/>
-        /// </summary>
-        public Expression Expression
-        {
-            get { return this._InnerList.AsQueryable().Expression; }
-        }
+            this._IncludePaths.Add(path);
 
-        /// <summary>
-        /// <see cref="System.Linq.IQueryable{T}"/>
-        /// </summary>
-        public IQueryProvider Provider
-        {
-            get { return this._InnerList.AsQueryable().Provider; }
+            return this;
         }
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
         {
             throw new NotImplementedException();
         }
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
-                                           Expression<Func<TEntity, bool>> filter)
+            Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
         [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
-                                              Expression<Func<TEntity, bool>> filter,
-                                              Expression<Func<TEntity, S>> orderByExpression)
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, S>> orderByExpression)
         {
             throw new NotImplementedException();
         }
 
-        public IEntitySet<TEntity> Cacheable()
+        public void ModifyObject(TEntity entity)
         {
-            return this;
         }
 
-        public IEntitySet<TEntity> Cacheable(string cacheRegion)
-        {
-            return this;
-        }
-
-        [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        [SuppressMessage("Microsoft.Design",
-            "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        public void Detach(TEntity entity)
-        {
-            if (entity != null)
-            {
-                this._InnerList.Remove(entity);
-            }
-        }
+        #endregion Methods
     }
 }

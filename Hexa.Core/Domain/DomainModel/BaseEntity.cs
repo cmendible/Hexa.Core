@@ -1,6 +1,5 @@
 ﻿//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -17,6 +16,8 @@ namespace Hexa.Core.Domain
     public abstract class BaseEntity<TKey> : ValidatableObject
         where TKey : IEquatable<TKey>
     {
+        #region Fields
+
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
@@ -28,6 +29,10 @@ namespace Hexa.Core.Domain
 
         private int? cachedHashcode;
 
+        #endregion Fields
+
+        #region Properties
+
         /// <summary>
         /// Id may be of type string, int, custom type, etc.
         /// Setter is protected to allow unit tests to set this property via reflection and to allow
@@ -37,30 +42,15 @@ namespace Hexa.Core.Domain
         /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
         /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
         /// </summary>
-        protected virtual TKey EntityId { get; set; }
-
-        /// <summary>
-        /// Transient objects are not associated with an item already in storage.  For instance,
-        /// a Customer is transient if its Id is 0.  It's virtual to allow NHibernate-backed
-        /// objects to be lazily loaded.
-        /// </summary>
-        public virtual bool IsTransient()
+        protected virtual TKey EntityId
         {
-            return EntityId == null || EntityId.Equals(default(TKey));
+            get;
+            set;
         }
 
-        #region Entity comparison support && IEquatable<>
+        #endregion Properties
 
-        /// <summary>
-        /// Returns true if self and the provided entity have the same Id values
-        /// and the Ids are not of the default Id value
-        /// </summary>
-        private bool HasSameNonDefaultIdAs(BaseEntity<TKey> compareTo)
-        {
-            return !IsTransient() &&
-                   !compareTo.IsTransient() &&
-                   EntityId.Equals(compareTo.EntityId);
-        }
+        #region Methods
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -77,23 +67,24 @@ namespace Hexa.Core.Domain
             var compareTo = obj as BaseEntity<TKey>;
 
             if (ReferenceEquals(this, compareTo))
+            {
                 return true;
+            }
 
             if (compareTo == null || !GetType().Equals(compareTo.TypeUnproxied()))
+            {
                 return false;
+            }
 
             if (HasSameNonDefaultIdAs(compareTo))
+            {
                 return true;
+            }
 
             // Since the Ids aren't the same, both of them must be transient to
             // compare domain signatures; because if one is transient and the
             // other is a persisted entity, then they cannot be the same object.
             return IsTransient() && compareTo.IsTransient(); //&& HasSameObjectSignatureAs(compareTo);
-        }
-
-        protected virtual Type TypeUnproxied()
-        {
-            return GetType();
         }
 
         /// <summary>
@@ -109,7 +100,9 @@ namespace Hexa.Core.Domain
         {
             // Once we have a hash code we'll never change it
             if (cachedHashcode.HasValue)
+            {
                 return cachedHashcode.Value;
+            }
 
             if (IsTransient())
             {
@@ -130,7 +123,33 @@ namespace Hexa.Core.Domain
             return cachedHashcode.Value;
         }
 
-        #endregion
+        /// <summary>
+        /// Transient objects are not associated with an item already in storage.  For instance,
+        /// a Customer is transient if its Id is 0.  It's virtual to allow NHibernate-backed
+        /// objects to be lazily loaded.
+        /// </summary>
+        public virtual bool IsTransient()
+        {
+            return EntityId == null || EntityId.Equals(default(TKey));
+        }
+
+        protected virtual Type TypeUnproxied()
+        {
+            return GetType();
+        }
+
+        /// <summary>
+        /// Returns true if self and the provided entity have the same Id values
+        /// and the Ids are not of the default Id value
+        /// </summary>
+        private bool HasSameNonDefaultIdAs(BaseEntity<TKey> compareTo)
+        {
+            return !IsTransient() &&
+                   !compareTo.IsTransient() &&
+                   EntityId.Equals(compareTo.EntityId);
+        }
+
+        #endregion Methods
     }
 
     /// <summary>
@@ -145,7 +164,7 @@ namespace Hexa.Core.Domain
     public abstract class BaseEntity<TEntity, TKey> : BaseEntity<TKey>, IEquatable<TEntity>
         where TKey : IEquatable<TKey>
     {
-        #region IEquatable<TEntity> Members
+        #region Methods
 
         /// <summary>
         /// Equalses the specified compare to.
@@ -157,7 +176,7 @@ namespace Hexa.Core.Domain
             return base.Equals(compareTo);
         }
 
-        #endregion
+        #endregion Methods
     }
 
     /// <summary>
@@ -166,6 +185,8 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class BaseEntityWithId<TEntity> : BaseEntity<TEntity, long>
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Entity's primary Id.
         /// Setter is protected to allow unit tests to set this property via reflection and to allow
@@ -177,9 +198,17 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual long Id
         {
-            get { return base.EntityId; }
-            protected set { base.EntityId = value; }
+            get
+            {
+                return base.EntityId;
+            }
+            protected set
+            {
+                base.EntityId = value;
+            }
         }
+
+        #endregion Properties
     }
 
     /// <summary>
@@ -188,6 +217,8 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class BaseEntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the Entity's primary Id.
         /// Setter is protected to allow unit tests to set this property via reflection and to allow
@@ -199,8 +230,16 @@ namespace Hexa.Core.Domain
         /// <value></value>
         public virtual Guid UniqueId
         {
-            get { return base.EntityId; }
-            protected set { base.EntityId = value; }
+            get
+            {
+                return base.EntityId;
+            }
+            protected set
+            {
+                base.EntityId = value;
+            }
         }
+
+        #endregion Properties
     }
 }

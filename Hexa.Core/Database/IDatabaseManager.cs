@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,18 +15,22 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Data
 {
     public interface IDatabaseManager
     {
-        bool DatabaseExists();
+        #region Methods
 
         void CreateDatabase();
 
-        void ValidateDatabaseSchema();
+        bool DatabaseExists();
 
         void DeleteDatabase();
+
+        void ValidateDatabaseSchema();
+
+        #endregion Methods
     }
 }

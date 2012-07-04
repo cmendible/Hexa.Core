@@ -3,22 +3,42 @@
     using System;
     using System.Data;
     using System.Net;
+
     using NHibernate;
     using NHibernate.SqlTypes;
     using NHibernate.UserTypes;
 
     public class IPAddressType : IUserType
     {
-        #region Equals member
+        #region Properties
 
-        bool IUserType.Equals(object x, object y)
+        public bool IsMutable
         {
-            return Equals(x, y);
+            get
+            {
+                return true;
+            }
         }
 
-        #endregion
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(IPAddress);
+            }
+        }
 
-        #region IUserType Members
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {NHibernateUtil.String.SqlType};
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -28,7 +48,9 @@
         public object DeepCopy(object value)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             return new IPAddress(((IPAddress) value).GetAddressBytes());
         }
@@ -43,9 +65,9 @@
             return x.GetHashCode();
         }
 
-        public bool IsMutable
+        bool IUserType.Equals(object x, object y)
         {
-            get { return true; }
+            return Equals(x, y);
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
@@ -84,16 +106,6 @@
             return original;
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(IPAddress); }
-        }
-
-        public SqlType[] SqlTypes
-        {
-            get { return new[] {NHibernateUtil.String.SqlType}; }
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

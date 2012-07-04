@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -24,8 +24,14 @@ namespace Hexa.Core
 
     public class IoCContainer
     {
+        #region Fields
+
         private readonly Action<Type, object> _registerInstanceCallback;
         private readonly Action<Type, Type> _registerTypeCallback;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IoCContainer"/> class.
@@ -37,34 +43,9 @@ namespace Hexa.Core
             _registerInstanceCallback = registerInstanceCallback;
         }
 
-        /// <summary>
-        /// Registers a service implementation.
-        /// </summary>
-        /// <typeparam name="I"></typeparam>
-        /// <typeparam name="T"></typeparam>
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
-            , MessageId = "T"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
-         SuppressMessage("Microsoft.Design",
-             "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void RegisterType<I, T>()
-            where T : I
-        {
-            if (_registerTypeCallback != null)
-                _registerTypeCallback(typeof(I), typeof(T));
-        }
+        #endregion Constructors
 
-        /// <summary>
-        /// Registers the type.
-        /// </summary>
-        /// <param name="interface">The @interface.</param>
-        /// <param name="type">The type.</param>
-        public void RegisterType(Type @interface, Type @type)
-        {
-            if (_registerTypeCallback != null)
-                _registerTypeCallback(@interface, @type);
-        }
+        #region Methods
 
         /// <summary>
         /// Registers the instance.
@@ -72,15 +53,17 @@ namespace Hexa.Core
         /// <typeparam name="I"></typeparam>
         /// <param name="instance">The instance.</param>
         [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
-            , MessageId = "T"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
-         SuppressMessage("Microsoft.Design",
-             "CA1004:GenericMethodsShouldProvideTypeParameter")]
+                         , MessageId = "T"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+        SuppressMessage("Microsoft.Design",
+                         "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void RegisterInstance<I>(object instance)
         {
             if (_registerInstanceCallback != null)
+            {
                 _registerInstanceCallback(typeof(I), instance);
+            }
         }
 
         /// <summary>
@@ -91,7 +74,44 @@ namespace Hexa.Core
         public void RegisterInstance(Type @type, object instance)
         {
             if (_registerInstanceCallback != null)
+            {
                 _registerInstanceCallback(@type, instance);
+            }
         }
+
+        /// <summary>
+        /// Registers a service implementation.
+        /// </summary>
+        /// <typeparam name="I"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
+                         , MessageId = "T"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
+        SuppressMessage("Microsoft.Design",
+                         "CA1004:GenericMethodsShouldProvideTypeParameter")]
+        public void RegisterType<I, T>()
+            where T : I
+        {
+            if (_registerTypeCallback != null)
+            {
+                _registerTypeCallback(typeof(I), typeof(T));
+            }
+        }
+
+        /// <summary>
+        /// Registers the type.
+        /// </summary>
+        /// <param name="interface">The @interface.</param>
+        /// <param name="type">The type.</param>
+        public void RegisterType(Type @interface, Type @type)
+        {
+            if (_registerTypeCallback != null)
+            {
+                _registerTypeCallback(@interface, @type);
+            }
+        }
+
+        #endregion Methods
     }
 }

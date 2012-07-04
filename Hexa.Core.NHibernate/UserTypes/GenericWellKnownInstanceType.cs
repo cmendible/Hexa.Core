@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+
     using NHibernate.SqlTypes;
     using NHibernate.UserTypes;
 
@@ -13,11 +14,18 @@
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TId">The type of the id.</typeparam>
     [Serializable]
-    public abstract class GenericWellKnownInstanceType<T, TId> : IUserType where T : class
+    public abstract class GenericWellKnownInstanceType<T, TId> : IUserType
+        where T : class
     {
+        #region Fields
+
         private readonly Func<T, TId, bool> findPredicate;
         private readonly Func<T, TId> idGetter;
         private readonly IEnumerable<T> repository;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Base constructor
@@ -26,23 +34,58 @@
         /// <param name="findPredicate">The predicate an instance by the persisted value.</param>
         /// <param name="idGetter">The getter of the persisted value.</param>
         protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate,
-                                               Func<T, TId> idGetter)
+            Func<T, TId> idGetter)
         {
             this.repository = repository;
             this.findPredicate = findPredicate;
             this.idGetter = idGetter;
         }
 
-        #region IUserType Members
+        #endregion Constructors
 
-        public Type ReturnedType
-        {
-            get { return typeof(T); }
-        }
+        #region Properties
 
         public bool IsMutable
         {
-            get { return false; }
+            get
+            {
+                return false;
+            }
+        }
+
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
+
+        /// <summary>
+        /// The SQL types for the columns mapped by this type.
+        /// </summary>
+        public abstract SqlType[] SqlTypes
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public object Assemble(object cached, object owner)
+        {
+            return cached;
+        }
+
+        public object DeepCopy(object value)
+        {
+            return value;
+        }
+
+        public object Disassemble(object value)
+        {
+            return value;
         }
 
         public new bool Equals(object x, object y)
@@ -88,31 +131,11 @@
             }
         }
 
-        public object DeepCopy(object value)
-        {
-            return value;
-        }
-
         public object Replace(object original, object target, object owner)
         {
             return original;
         }
 
-        public object Assemble(object cached, object owner)
-        {
-            return cached;
-        }
-
-        public object Disassemble(object value)
-        {
-            return value;
-        }
-
-        /// <summary>
-        /// The SQL types for the columns mapped by this type.
-        /// </summary>
-        public abstract SqlType[] SqlTypes { get; }
-
-        #endregion
+        #endregion Methods
     }
 }

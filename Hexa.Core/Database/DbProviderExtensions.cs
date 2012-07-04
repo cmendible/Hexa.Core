@@ -4,6 +4,8 @@ namespace Hexa.Core.Data
 
     public static class DbProviderExtensions
     {
+        #region Methods
+
         public static void ExecuteNonQuery(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
@@ -50,5 +52,7 @@ namespace Hexa.Core.Data
                 }
             }
         }
+
+        #endregion Methods
     }
 }

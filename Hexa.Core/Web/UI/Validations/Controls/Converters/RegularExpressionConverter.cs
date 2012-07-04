@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,11 +15,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Controls
 {
     using System.Web.UI.WebControls;
+
     using Validation;
 
     /// <summary>
@@ -27,6 +28,8 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     internal class RegularExpressionConverter : BaseConverter
     {
+        #region Methods
+
         /// <summary>
         /// Converts a given attribute to a BaseValidator
         /// </summary>
@@ -42,5 +45,7 @@ namespace Hexa.Core.Web.UI.Controls
 
             return regularExpressionValidator;
         }
+
+        #endregion Methods
     }
 }

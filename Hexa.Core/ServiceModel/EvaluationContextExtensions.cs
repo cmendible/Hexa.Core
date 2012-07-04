@@ -6,6 +6,19 @@
 
     public static class EvaluationContextExtensions
     {
+        #region Methods
+
+        public static IList<IIdentity> GetIdentities(this EvaluationContext context)
+        {
+            IList<IIdentity> list = TryGetIdentities(context);
+            if (list == null)
+            {
+                context.Properties["Identities"] = list = new List<IIdentity>();
+            }
+
+            return list;
+        }
+
         public static IIdentity GetPrimaryIdentity(this EvaluationContext context)
         {
             IList<IIdentity> identities = GetIdentities(context);
@@ -27,13 +40,6 @@
             return null;
         }
 
-        public static IList<IIdentity> GetIdentities(this EvaluationContext context)
-        {
-            IList<IIdentity> list = TryGetIdentities(context);
-            if (list == null)
-                context.Properties["Identities"] = list = new List<IIdentity>();
-
-            return list;
-        }
+        #endregion Methods
     }
 }

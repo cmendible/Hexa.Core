@@ -15,10 +15,16 @@ namespace Hexa.Core.Web.UI.Controls
     [ToolboxData("<{0}:DynamicImage runat=server></{0}:DynamicImage>")]
     public class DynamicImage : Image
     {
+        #region Fields
+
         private const string BaseUrl = "~/CachedImageService.axd?data={0}";
 
         private System.Drawing.Image _image;
         private byte[] _imageBytes;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicImage"/> class.
@@ -28,35 +34,25 @@ namespace Hexa.Core.Web.UI.Controls
             PreRender += DynamicImage_PreRender;
         }
 
-        /// <summary>
-        /// Gets or sets the storage key.
-        /// </summary>
-        /// <value>The storage key.</value>
-        protected string StorageKey
-        {
-            get { return Convert.ToString(ViewState["StorageKey"], CultureInfo.InvariantCulture); }
-            set { ViewState["StorageKey"] = value; }
-        }
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
-        /// Gets or sets the location of an image to display in the <see cref="T:System.Web.UI.WebControls.Image"/> control.
+        /// Gets or sets the image.
         /// </summary>
-        /// <value></value>
-        /// <returns>The location of an image to display in the <see cref="T:System.Web.UI.WebControls.Image"/> control.</returns>
-        public override string ImageUrl
+        /// <value>The image.</value>
+        [Browsable(false)]
+        public System.Drawing.Image Image
         {
-            get { return GetImageUrl(); }
-            set { throw new NotSupportedException(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the image file.
-        /// </summary>
-        /// <value>The image file.</value>
-        public string ImageFile
-        {
-            get { return Convert.ToString(ViewState["ImageFile"], CultureInfo.InvariantCulture); }
-            set { ViewState["ImageFile"] = value; }
+            get
+            {
+                return _image;
+            }
+            set
+            {
+                _image = value;
+            }
         }
 
         /// <summary>
@@ -64,10 +60,14 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         /// <value>The image bytes.</value>
         [SuppressMessage("Microsoft.Performance",
-            "CA1819:PropertiesShouldNotReturnArrays"), Browsable(false)]
+                         "CA1819:PropertiesShouldNotReturnArrays"),
+        Browsable(false)]
         public byte[] ImageBytes
         {
-            get { return _imageBytes; }
+            get
+            {
+                return _imageBytes;
+            }
             set
             {
                 Page.Cache.Remove(StorageKey);
@@ -78,14 +78,90 @@ namespace Hexa.Core.Web.UI.Controls
         }
 
         /// <summary>
-        /// Gets or sets the image.
+        /// Gets or sets the image file.
         /// </summary>
-        /// <value>The image.</value>
-        [Browsable(false)]
-        public System.Drawing.Image Image
+        /// <value>The image file.</value>
+        public string ImageFile
         {
-            get { return _image; }
-            set { _image = value; }
+            get
+            {
+                return Convert.ToString(ViewState["ImageFile"], CultureInfo.InvariantCulture);
+            }
+            set
+            {
+                ViewState["ImageFile"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the location of an image to display in the <see cref="T:System.Web.UI.WebControls.Image"/> control.
+        /// </summary>
+        /// <value></value>
+        /// <returns>The location of an image to display in the <see cref="T:System.Web.UI.WebControls.Image"/> control.</returns>
+        public override string ImageUrl
+        {
+            get
+            {
+                return GetImageUrl();
+            }
+            set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the storage key.
+        /// </summary>
+        /// <value>The storage key.</value>
+        protected string StorageKey
+        {
+            get
+            {
+                return Convert.ToString(ViewState["StorageKey"], CultureInfo.InvariantCulture);
+            }
+            set
+            {
+                ViewState["StorageKey"] = value;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Handles the PreRender event of the DynamicImage control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void DynamicImage_PreRender(object sender, EventArgs e)
+        {
+            if (ImageUrl.Length == 0)
+            {
+                return;
+            }
+
+            // Cache bytes or image
+            if (ImageBytes != null)
+            {
+                StoreImageBytes();
+            }
+            else if (Image != null)
+            {
+                StoreImage();
+            }
+
+            return;
+        }
+
+        /// <summary>
+        /// Gets the cached image URL.
+        /// </summary>
+        /// <returns></returns>
+        private string GetCachedImageUrl()
+        {
+            return String.Format(CultureInfo.InvariantCulture, BaseUrl, StorageKey);
         }
 
         /// <summary>
@@ -120,31 +196,21 @@ namespace Hexa.Core.Web.UI.Controls
         }
 
         /// <summary>
-        /// Handles the PreRender event of the DynamicImage control.
+        /// Stores the data.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void DynamicImage_PreRender(object sender, EventArgs e)
+        /// <param name="data">The data.</param>
+        private void StoreData(object data)
         {
-            if (ImageUrl.Length == 0)
-                return;
-
-            // Cache bytes or image
-            if (ImageBytes != null)
-                StoreImageBytes();
-            else if (Image != null)
-                StoreImage();
-
-            return;
-        }
-
-        /// <summary>
-        /// Gets the cached image URL.
-        /// </summary>
-        /// <returns></returns>
-        private string GetCachedImageUrl()
-        {
-            return String.Format(CultureInfo.InvariantCulture, BaseUrl, StorageKey);
+            if (Page.Cache[StorageKey] == null)
+            {
+                Page.Cache.Add(StorageKey,
+                               data,
+                               null,
+                               Cache.NoAbsoluteExpiration,
+                               TimeSpan.FromMinutes(5),
+                               CacheItemPriority.High,
+                               null);
+            }
         }
 
         /// <summary>
@@ -163,22 +229,6 @@ namespace Hexa.Core.Web.UI.Controls
             StoreData(_imageBytes);
         }
 
-        /// <summary>
-        /// Stores the data.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        private void StoreData(object data)
-        {
-            if (Page.Cache[StorageKey] == null)
-            {
-                Page.Cache.Add(StorageKey,
-                               data,
-                               null,
-                               Cache.NoAbsoluteExpiration,
-                               TimeSpan.FromMinutes(5),
-                               CacheItemPriority.High,
-                               null);
-            }
-        }
+        #endregion Methods
     }
 }

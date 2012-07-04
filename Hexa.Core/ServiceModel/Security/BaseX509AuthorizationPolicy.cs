@@ -8,17 +8,24 @@
     using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using System.Security.Principal;
+
     using log4net;
 
     /// <summary>
     ///
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"
-        )]
+                    )]
     public abstract class BaseX509AuthorizationPolicy : BaseAuthorizationPolicy
     {
-        private static readonly ILog _Log =
+        #region Fields
+
+        private static readonly ILog _Log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseX509AuthorizationPolicy"/> class.
@@ -28,23 +35,9 @@
             _Log.DebugFormat("New instance {0} created.", Id);
         }
 
-        /// <summary>
-        /// Get client certificate.
-        /// </summary>
-        /// <param name="evaluationContext">The evaluation context.</param>
-        /// <returns></returns>
-        protected static X509Certificate2 GetClientCertificate(EvaluationContext evaluationContext)
-        {
-            X509CertificateClaimSet claimset = evaluationContext.ClaimSets
-                .Where(cs => cs is X509CertificateClaimSet)
-                .Cast<X509CertificateClaimSet>()
-                .FirstOrDefault();
+        #endregion Constructors
 
-            if (claimset != null)
-                return claimset.X509Certificate;
-
-            return null;
-        }
+        #region Methods
 
         /// <summary>
         /// Evaluates whether a user meets the requirements for this authorization policy.
@@ -73,13 +66,19 @@
             }
 
             if (state == null)
+            {
                 state = 0;
+            }
             else
+            {
                 state = (int) state + 1;
+            }
 
             // Should not evaluate policy twice.
             if ((int) state > 0)
+            {
                 return true;
+            }
 
             X509Certificate2 certificate = GetClientCertificate(evaluationContext);
             if (certificate == null)
@@ -100,6 +99,28 @@
             return true;
         }
 
+        /// <summary>
+        /// Get client certificate.
+        /// </summary>
+        /// <param name="evaluationContext">The evaluation context.</param>
+        /// <returns></returns>
+        protected static X509Certificate2 GetClientCertificate(EvaluationContext evaluationContext)
+        {
+            X509CertificateClaimSet claimset = evaluationContext.ClaimSets
+                                               .Where(cs => cs is X509CertificateClaimSet)
+                                               .Cast<X509CertificateClaimSet>()
+                                               .FirstOrDefault();
+
+            if (claimset != null)
+            {
+                return claimset.X509Certificate;
+            }
+
+            return null;
+        }
+
         protected abstract IPrincipal GetPrincipal(EvaluationContext evaluationContext, X509Certificate2 certificate);
+
+        #endregion Methods
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -26,7 +26,13 @@ namespace Hexa.Core.Domain
 
     public class UnitOfWorkScope
     {
+        #region Fields
+
         private static string _key = "Hexa.Core.Domain.RunningContexts.Key";
+
+        #endregion Fields
+
+        #region Properties
 
         public static IUnitOfWork Current
         {
@@ -38,7 +44,9 @@ namespace Hexa.Core.Domain
                     return unitOfWork;
                 }
                 else
+                {
                     return null;
+                }
             }
             private set
             {
@@ -69,9 +77,9 @@ namespace Hexa.Core.Domain
                     if (containerExtension == null)
                     {
                         containerExtension = new ContainerExtension
-                                                 {
-                                                     Value = new Stack<IUnitOfWork>()
-                                                 };
+                        {
+                            Value = new Stack<IUnitOfWork>()
+                        };
 
                         OperationContext.Current.Extensions.Add(containerExtension);
                     }
@@ -101,31 +109,41 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public static IUnitOfWork Start()
-        {
-            Current = ServiceLocator.GetInstance<IUnitOfWorkFactory>().Create();
-            return Current;
-        }
+        #endregion Properties
+
+        #region Methods
 
         public static void DisposeCurrent()
         {
             Current = null;
         }
 
-        #region Nested
+        public static IUnitOfWork Start()
+        {
+            Current = ServiceLocator.GetInstance<IUnitOfWorkFactory>().Create();
+            return Current;
+        }
+
+        #endregion Methods
+
+        #region Nested Types
 
         /// <summary>
         /// Custom extension for OperationContext scope
         /// </summary>
         private class ContainerExtension : IExtension<OperationContext>
         {
-            #region Members
+            #region Properties
 
-            public object Value { get; set; }
+            public object Value
+            {
+                get;
+                set;
+            }
 
-            #endregion
+            #endregion Properties
 
-            #region IExtension<OperationContext> Members
+            #region Methods
 
             public void Attach(OperationContext owner)
             {
@@ -135,9 +153,9 @@ namespace Hexa.Core.Domain
             {
             }
 
-            #endregion
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Nested Types
     }
 }

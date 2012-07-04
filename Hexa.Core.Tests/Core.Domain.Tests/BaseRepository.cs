@@ -1,4 +1,6 @@
-﻿// ===================================================================================
+﻿#region Header
+
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -9,19 +11,21 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-using SL = Microsoft.Practices.ServiceLocation;
+
+#endregion Header
 
 namespace Hexa.Core.Domain.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Core.Tests;
     using Logging;
     using NUnit.Framework;
     using Rhino.Mocks;
-    using SL;
     using Specification;
+    using SL = Microsoft.Practices.ServiceLocation;
 
     /// <summary>
     ///This is a test class for RepositoryTest and is intended
@@ -30,86 +34,14 @@ namespace Hexa.Core.Domain.Tests
     [TestFixture]
     public class BaseRepositoryTests
     {
-        #region Setup/Teardown
+        #region Fields
 
-        [TearDown]
-        public void TearDown()
-        {
-            UnitOfWorkScope.DisposeCurrent();
-        }
-
-        #endregion
-
-        private DictionaryServicesContainer _dictionaryContainer;
         private IoCContainer _container;
+        private DictionaryServicesContainer _dictionaryContainer;
 
-        [TestFixtureSetUp]
-        public void FixtureSetUp()
-        {
-            _dictionaryContainer = new DictionaryServicesContainer();
+        #endregion Fields
 
-            ServiceLocator.SetLocatorProvider(() => _dictionaryContainer);
-
-            _container = new IoCContainer(
-                (x, y) => _dictionaryContainer.RegisterType(x, y),
-                (x, y) => _dictionaryContainer.RegisterInstance(x, y)
-                );
-        }
-
-        private IUnitOfWork _MockUnitOfWork()
-        {
-            var list = new List<Entity>
-                           {
-                               new Entity {Id = 1, SampleProperty = "Sample 1"},
-                               new Entity {Id = 2, SampleProperty = "Sample 2"},
-                               new Entity
-                                   {
-                                       Id = 3,
-                                       SampleProperty = "Sample 3"
-                                   }
-                           };
-            var set = new MemorySet<Entity>(list);
-
-            var actual = MockRepository.GenerateMock<IUnitOfWork>();
-            actual.Expect(w => w.CreateSet<Entity>())
-                .Return(set);
-
-            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            factory.Expect(f => f.Create()).Return(actual);
-            _dictionaryContainer.OverrideInstance<IUnitOfWorkFactory>(factory);
-
-            return actual;
-        }
-
-        private ILoggerFactory _MockLoggerFactory()
-        {
-            var logger = MockRepository.GenerateMock<ILogger>();
-            var loggerFactory = MockRepository.GenerateMock<ILoggerFactory>();
-            loggerFactory.Expect(l => l.Create(GetType()))
-                .IgnoreArguments()
-                .Return(logger);
-
-            return loggerFactory;
-        }
-
-        /// <summary>
-        ///A test for Container
-        ///</summary>
-        public void unitOfWorkTestHelper<T>()
-            where T : class
-        {
-            IUnitOfWork actual = _MockUnitOfWork();
-            ILoggerFactory loggerFactory = _MockLoggerFactory();
-
-            //Act
-            var target = new BaseRepository<T>(loggerFactory);
-
-            //Assert
-            IUnitOfWork expected;
-            expected = target.UnitOfWork;
-
-            Assert.AreEqual(expected, actual);
-        }
+        #region Methods
 
         /// <summary>
         ///A test for Add
@@ -124,11 +56,10 @@ namespace Hexa.Core.Domain.Tests
             //Act
             var target = new BaseRepository<Entity>(loggerFactory);
             var entity = new Entity
-                             {
-                                 Id = 4,
-                                 SampleProperty = "Sample 4"
-                             };
-
+            {
+                Id = 4,
+                SampleProperty = "Sample 4"
+            };
 
             //Act
             target.Add(entity);
@@ -214,10 +145,10 @@ namespace Hexa.Core.Domain.Tests
             //Act
             var target = new BaseRepository<Entity>(loggerFactory);
             var entity = new Entity
-                             {
-                                 Id = 5,
-                                 SampleProperty = "Sample 5"
-                             };
+            {
+                Id = 5,
+                SampleProperty = "Sample 5"
+            };
 
             //Act
             target.Attach(entity);
@@ -269,6 +200,19 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             target.Remove(entity);
+        }
+
+        [TestFixtureSetUp]
+        public void FixtureSetUp()
+        {
+            _dictionaryContainer = new DictionaryServicesContainer();
+
+            SL.ServiceLocator.SetLocatorProvider(() => _dictionaryContainer);
+
+            _container = new IoCContainer(
+                (x, y) => _dictionaryContainer.RegisterType(x, y),
+                (x, y) => _dictionaryContainer.RegisterInstance(x, y)
+            );
         }
 
         /// <summary>
@@ -345,7 +289,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<Entity> result = target.GetPagedElements<int>(pageIndex, pageCount, null, e => e.Id == 1,
-                                                                        false);
+                                           false);
         }
 
         /// <summary>
@@ -366,7 +310,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<Entity> result = target.GetPagedElements<int>(pageIndex, pageCount, null, e => e.Id == 1,
-                                                                        false);
+                                           false);
         }
 
         /// <summary>
@@ -387,7 +331,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<Entity> result = target.GetPagedElements<int>(pageIndex, pageCount, null, e => e.Id == 1,
-                                                                        false);
+                                           false);
         }
 
         /// <summary>
@@ -539,7 +483,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => e.Id, e => e.Id == 1,
-                                                                   true);
+                                           true);
 
             //Assert
             Assert.IsTrue(result != null);
@@ -563,7 +507,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => e.Id, e => e.Id == 1,
-                                                                   false);
+                                           false);
 
             //Assert
             Assert.IsTrue(result != null);
@@ -673,6 +617,31 @@ namespace Hexa.Core.Domain.Tests
             target.GetPagedElements<int>(pageIndex, pageCount, null, false);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            UnitOfWorkScope.DisposeCurrent();
+        }
+
+        /// <summary>
+        ///A test for Container
+        ///</summary>
+        public void unitOfWorkTestHelper<T>()
+            where T : class
+        {
+            IUnitOfWork actual = _MockUnitOfWork();
+            ILoggerFactory loggerFactory = _MockLoggerFactory();
+
+            //Act
+            var target = new BaseRepository<T>(loggerFactory);
+
+            //Assert
+            IUnitOfWork expected;
+            expected = target.UnitOfWork;
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UoW_Creation_NullLoggerFactoryThrowArgumentNullException_Test()
@@ -685,5 +654,43 @@ namespace Hexa.Core.Domain.Tests
         {
             unitOfWorkTestHelper<Entity>();
         }
+
+        private ILoggerFactory _MockLoggerFactory()
+        {
+            var logger = MockRepository.GenerateMock<ILogger>();
+            var loggerFactory = MockRepository.GenerateMock<ILoggerFactory>();
+            loggerFactory.Expect(l => l.Create(GetType()))
+            .IgnoreArguments()
+            .Return(logger);
+
+            return loggerFactory;
+        }
+
+        private IUnitOfWork _MockUnitOfWork()
+        {
+            var list = new List<Entity>
+            {
+                new Entity {Id = 1, SampleProperty = "Sample 1"},
+                new Entity {Id = 2, SampleProperty = "Sample 2"},
+                new Entity
+                {
+                    Id = 3,
+                    SampleProperty = "Sample 3"
+                }
+            };
+            var set = new MemorySet<Entity>(list);
+
+            var actual = MockRepository.GenerateMock<IUnitOfWork>();
+            actual.Expect(w => w.CreateSet<Entity>())
+            .Return(set);
+
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            factory.Expect(f => f.Create()).Return(actual);
+            _dictionaryContainer.OverrideInstance<IUnitOfWorkFactory>(factory);
+
+            return actual;
+        }
+
+        #endregion Methods
     }
 }

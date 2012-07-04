@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -25,22 +25,25 @@ namespace Hexa.Core.Web.UI
     [Serializable]
     public class RequestLengthException : Exception
     {
+        #region Constructors
+
         //
         // For guidelines regarding the creation of new exception types, see
         //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
         // and
         //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
         //
-
         public RequestLengthException()
         {
         }
 
-        public RequestLengthException(string message) : base(message)
+        public RequestLengthException(string message)
+            : base(message)
         {
         }
 
-        public RequestLengthException(string message, Exception inner) : base(message, inner)
+        public RequestLengthException(string message, Exception inner)
+            : base(message, inner)
         {
         }
 
@@ -50,5 +53,7 @@ namespace Hexa.Core.Web.UI
             : base(info, context)
         {
         }
+
+        #endregion Constructors
     }
 }

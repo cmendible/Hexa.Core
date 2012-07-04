@@ -14,8 +14,11 @@ namespace Hexa.Core.Domain.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+
     using Logging;
+
     using NUnit.Framework;
+
     using Specification;
 
     /// <summary>
@@ -28,23 +31,73 @@ namespace Hexa.Core.Domain.Tests
     public abstract class RepositoryTestsBase<TEntity>
         where TEntity : class
     {
-        #region Virtual and abstract elements for inheritance unit tests
+        #region Properties
 
         /// <summary>
         /// Specification of filter expression for a particular type
         /// </summary>
-        public abstract Expression<Func<TEntity, bool>> FilterExpression { get; }
+        public abstract Expression<Func<TEntity, bool>> FilterExpression
+        {
+            get;
+        }
 
         /// <summary>
         /// Specification of order by expression for a particular type
         /// </summary>
-        public abstract Expression<Func<TEntity, string>> OrderByExpression { get; }
+        public abstract Expression<Func<TEntity, string>> OrderByExpression
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public abstract TEntity CreateEntity();
 
-        #endregion
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public virtual void GenericRepositoryApplyChangesWithNullItemThrowNewArgumentNullException_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
 
-        #region Test Helper for testing purposes
+            //Act
+            var repository = new BaseRepository<TEntity>(traceManager);
+            repository.Modify(null);
+        }
+
+        [Test]
+        public void GenericrRepository_GetPagedElementsAscending_Invoke_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+            int pageIndex = 0;
+            int pageCount = 1;
+
+            //Act
+            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, true);
+
+            //Assert
+            Assert.IsNotNull(entities);
+        }
+
+        [Test]
+        public virtual void GetAllTest()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+
+            //Act
+            IEnumerable<TEntity> entities = repository.GetAll();
+        }
 
         public ILoggerFactory GetLoggerFactory()
         {
@@ -54,50 +107,6 @@ namespace Hexa.Core.Domain.Tests
         public IUnitOfWork GetUnitOfWork()
         {
             return UnitOfWorkScope.Current;
-        }
-
-        #endregion
-
-        #region Test Methods
-
-        [SetUp]
-        public void Setup()
-        {
-            UnitOfWorkScope.Start();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            UnitOfWorkScope.DisposeCurrent();
-        }
-
-        [Test]
-        public virtual void Repository_InvokeConstructor_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            //Act
-            var repository = new BaseRepository<TEntity>(traceManager);
-            IUnitOfWork actual = repository.UnitOfWork;
-
-            //Assret
-            Assert.AreEqual(unitOfWork, actual);
-        }
-
-        [Test]
-        public virtual void Repository_AddValidItem_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            //Act
-            var repository = new BaseRepository<TEntity>(traceManager);
-            TEntity item = CreateEntity();
-            repository.Add(item);
         }
 
         [Test]
@@ -113,7 +122,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        public virtual void Repository_DeleteValidItemTest()
+        public virtual void Repository_AddValidItem_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
@@ -122,20 +131,7 @@ namespace Hexa.Core.Domain.Tests
             //Act
             var repository = new BaseRepository<TEntity>(traceManager);
             TEntity item = CreateEntity();
-            repository.Remove(item);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public virtual void Repository_DeleteNullItemThrowNewArgumentNullException_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            //Act
-            var repository = new BaseRepository<TEntity>(traceManager);
-            repository.Remove(null);
+            repository.Add(item);
         }
 
         [Test]
@@ -153,7 +149,7 @@ namespace Hexa.Core.Domain.Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public virtual void GenericRepositoryApplyChangesWithNullItemThrowNewArgumentNullException_Test()
+        public virtual void Repository_DeleteNullItemThrowNewArgumentNullException_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
@@ -161,36 +157,65 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             var repository = new BaseRepository<TEntity>(traceManager);
-            repository.Modify(null);
+            repository.Remove(null);
         }
 
         [Test]
-        public virtual void GetAllTest()
+        public virtual void Repository_DeleteValidItemTest()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
             ILoggerFactory traceManager = GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
-
             //Act
-            IEnumerable<TEntity> entities = repository.GetAll();
+            var repository = new BaseRepository<TEntity>(traceManager);
+            TEntity item = CreateEntity();
+            repository.Remove(item);
         }
 
         [Test]
-        public virtual void Repository_GetFilteredElements_Invoke_Test()
+        public void Repository_GetBySpecDirectSpec_Invoke_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
             ILoggerFactory traceManager = GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
+            ISpecification<TEntity> specification = new DirectSpecification<TEntity>(FilterExpression);
 
             //Act
-            IEnumerable<TEntity> entities = repository.GetFilteredElements(FilterExpression);
+            IEnumerable<TEntity> result = repository.GetBySpec(specification);
 
             //Assert
-            Assert.IsNotNull(entities);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Repository_GetBySpecWithNullSpecThrowArgumentNullException_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+
+            //Act
+            repository.GetBySpec(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Repository_GetFilteredElementsWithFilterNullAndOrderNotNullThrowNewArgumentNullException_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+
+            //Act
+            IEnumerable<TEntity> entities = repository.GetFilteredElements(null, OrderByExpression, false);
         }
 
         [Test]
@@ -218,7 +243,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(FilterExpression, OrderByExpression,
-                                                                           true);
+                                            true);
 
             //Assert
             Assert.IsNotNull(entities);
@@ -235,7 +260,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(FilterExpression, OrderByExpression,
-                                                                           false);
+                                            false);
 
             //Assert
             Assert.IsNotNull(entities);
@@ -256,20 +281,6 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Repository_GetFilteredElementsWithFilterNullAndOrderNotNullThrowNewArgumentNullException_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            var repository = new BaseRepository<TEntity>(traceManager);
-
-            //Act
-            IEnumerable<TEntity> entities = repository.GetFilteredElements(null, OrderByExpression, false);
-        }
-
-        [Test]
         public void Repository_GetFilteredElementsWithPaggingAscending_Invoke_Test()
         {
             //Arrange
@@ -282,7 +293,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          FilterExpression, true);
+                                              FilterExpression, true);
 
             //Assert
             Assert.IsNotNull(entities);
@@ -301,27 +312,10 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          FilterExpression, false);
+                                              FilterExpression, false);
 
             //Assert
             Assert.IsNotNull(entities);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Repository_GetFilteredElementsWithPaggingInvalidPageIndexThrowNewArgumentException_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            var repository = new BaseRepository<TEntity>(traceManager);
-            int pageIndex = -1;
-            int pageCount = 1;
-
-            //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          FilterExpression, false);
         }
 
         [Test]
@@ -338,24 +332,24 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          FilterExpression, false);
+                                              FilterExpression, false);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Repository_GetFilteredElementsWithPaggingNullOrderExpressionThrowNewArgumentNullException_Test()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Repository_GetFilteredElementsWithPaggingInvalidPageIndexThrowNewArgumentException_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
             ILoggerFactory traceManager = GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
-            int pageIndex = 1;
+            int pageIndex = -1;
             int pageCount = 1;
 
             //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements<int>(pageIndex, pageCount, null,
-                                                                               FilterExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
+                                              FilterExpression, false);
         }
 
         [Test]
@@ -373,46 +367,44 @@ namespace Hexa.Core.Domain.Tests
             //Act
             Expression<Func<TEntity, bool>> filter = null;
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          filter, false);
+                                              filter, false);
         }
 
         [Test]
-        public void GenericrRepository_GetPagedElementsAscending_Invoke_Test()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Repository_GetFilteredElementsWithPaggingNullOrderExpressionThrowNewArgumentNullException_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
             ILoggerFactory traceManager = GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
-            int pageIndex = 0;
+            int pageIndex = 1;
             int pageCount = 1;
 
             //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, true);
+            PagedElements<TEntity> entities = repository.GetPagedElements<int>(pageIndex, pageCount, null,
+                                              FilterExpression, false);
+        }
+
+        [Test]
+        public virtual void Repository_GetFilteredElements_Invoke_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+
+            //Act
+            IEnumerable<TEntity> entities = repository.GetFilteredElements(FilterExpression);
 
             //Assert
             Assert.IsNotNull(entities);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Repository_GetPagedElementsInvalidPageIndexThrowNewArgumentException_Test()
-        {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            var repository = new BaseRepository<TEntity>(traceManager);
-            int pageIndex = -1;
-            int pageCount = 1;
-
-            //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, false);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Repository_GetPagedElementsInvalidPageCount_ThrowNewArgumentException_Test()
+        public void Repository_GetPagedElementsDescending_Invoke_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
@@ -420,10 +412,15 @@ namespace Hexa.Core.Domain.Tests
 
             var repository = new BaseRepository<TEntity>(traceManager);
             int pageIndex = 0;
-            int pageCount = 0;
+            int pageCount = 1;
+            bool ascending = false;
 
             //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
+                                              ascending);
+
+            //Assert
+            Assert.IsNotNull(entities);
         }
 
         [Test]
@@ -443,7 +440,8 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        public void Repository_GetPagedElementsDescending_Invoke_Test()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Repository_GetPagedElementsInvalidPageCount_ThrowNewArgumentException_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
@@ -451,15 +449,26 @@ namespace Hexa.Core.Domain.Tests
 
             var repository = new BaseRepository<TEntity>(traceManager);
             int pageIndex = 0;
-            int pageCount = 1;
-            bool ascending = false;
+            int pageCount = 0;
 
             //Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression,
-                                                                          ascending);
+            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, false);
+        }
 
-            //Assert
-            Assert.IsNotNull(entities);
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Repository_GetPagedElementsInvalidPageIndexThrowNewArgumentException_Test()
+        {
+            //Arrange
+            IUnitOfWork unitOfWork = GetUnitOfWork();
+            ILoggerFactory traceManager = GetLoggerFactory();
+
+            var repository = new BaseRepository<TEntity>(traceManager);
+            int pageIndex = -1;
+            int pageCount = 1;
+
+            //Act
+            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, false);
         }
 
         [Test]
@@ -476,7 +485,7 @@ namespace Hexa.Core.Domain.Tests
             //Act
             ISpecification<TEntity> spec = null;
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, spec,
-                                                                          false);
+                                              false);
         }
 
         [Test]
@@ -494,40 +503,36 @@ namespace Hexa.Core.Domain.Tests
 
             //Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, OrderByExpression, spec,
-                                                                          false);
+                                              false);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Repository_GetBySpecWithNullSpecThrowArgumentNullException_Test()
+        public virtual void Repository_InvokeConstructor_Test()
         {
             //Arrange
             IUnitOfWork unitOfWork = GetUnitOfWork();
             ILoggerFactory traceManager = GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
-
             //Act
-            repository.GetBySpec(null);
+            var repository = new BaseRepository<TEntity>(traceManager);
+            IUnitOfWork actual = repository.UnitOfWork;
+
+            //Assret
+            Assert.AreEqual(unitOfWork, actual);
         }
 
-        [Test]
-        public void Repository_GetBySpecDirectSpec_Invoke_Test()
+        [SetUp]
+        public void Setup()
         {
-            //Arrange
-            IUnitOfWork unitOfWork = GetUnitOfWork();
-            ILoggerFactory traceManager = GetLoggerFactory();
-
-            var repository = new BaseRepository<TEntity>(traceManager);
-            ISpecification<TEntity> specification = new DirectSpecification<TEntity>(FilterExpression);
-
-            //Act
-            IEnumerable<TEntity> result = repository.GetBySpec(specification);
-
-            //Assert
-            Assert.IsNotNull(result);
+            UnitOfWorkScope.Start();
         }
 
-        #endregion
+        [TearDown]
+        public void TearDown()
+        {
+            UnitOfWorkScope.DisposeCurrent();
+        }
+
+        #endregion Methods
     }
 }

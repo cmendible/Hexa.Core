@@ -1,15 +1,19 @@
 namespace Hexa.Core.Mono.Tests
 {
     using Data;
+
     using Domain;
+
     using Logging;
+
     using NUnit.Framework;
+
     using Validation;
 
     [TestFixture]
     public class PostgreSQLTest
     {
-        #region Setup/Teardown
+        #region Methods
 
         [SetUp]
         public void FixtureSetup()
@@ -38,7 +42,9 @@ namespace Hexa.Core.Mono.Tests
             // Services
 
             if (!ctxFactory.DatabaseExists())
+            {
                 ctxFactory.CreateDatabase();
+            }
 
             ctxFactory.ValidateDatabaseSchema();
 
@@ -60,13 +66,13 @@ namespace Hexa.Core.Mono.Tests
             ApplicationContext.Stop();
         }
 
-        #endregion
-
         [Test]
         [Ignore]
         public void SimpleTest()
         {
             Assert.IsTrue(true);
         }
+
+        #endregion Methods
     }
 }

@@ -2,22 +2,42 @@
 {
     using System;
     using System.Data;
+
     using NHibernate;
     using NHibernate.SqlTypes;
     using NHibernate.UserTypes;
 
     public class StringToGuid : IUserType
     {
-        #region Equals member
+        #region Properties
 
-        bool IUserType.Equals(object x, object y)
+        public bool IsMutable
         {
-            return Equals(x, y);
+            get
+            {
+                return true;
+            }
         }
 
-        #endregion
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(string);
+            }
+        }
 
-        #region IUserType Members
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {NHibernateUtil.Guid.SqlType};
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -27,7 +47,9 @@
         public object DeepCopy(object value)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             return value.ToString();
         }
@@ -42,9 +64,9 @@
             return x.GetHashCode();
         }
 
-        public bool IsMutable
+        bool IUserType.Equals(object x, object y)
         {
-            get { return true; }
+            return Equals(x, y);
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
@@ -82,16 +104,6 @@
             return original;
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(string); }
-        }
-
-        public SqlType[] SqlTypes
-        {
-            get { return new[] {NHibernateUtil.Guid.SqlType}; }
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

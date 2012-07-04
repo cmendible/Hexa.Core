@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,12 +15,16 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
     public interface IUnitOfWorkFactory
     {
+        #region Methods
+
         IUnitOfWork Create();
+
+        #endregion Methods
     }
 }

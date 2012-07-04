@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,20 +15,27 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace System
 {
     using Collections;
     using Collections.Generic;
+
     using Hexa.Core.Domain;
+
     using IO;
+
     using Linq;
+
     using Reflection;
+
     using Runtime.Serialization.Formatters.Binary;
 
     public static class ObjectExtensions
     {
+        #region Methods
+
         /// <summary>
         /// Perform a deep Copy of the object.
         /// </summary>
@@ -38,11 +45,15 @@ namespace System
         public static T DeepClone<T>(this T source)
         {
             if (!typeof(T).IsSerializable)
+            {
                 throw new ArgumentException("The type must be serializable.", "source");
+            }
 
             // Don't serialize a null object, simply return the default for that object
             if (ReferenceEquals(source, null))
+            {
                 return default(T);
+            }
 
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
@@ -69,11 +80,11 @@ namespace System
                 }
 
                 IEnumerable<PropertyInfo> collectionInfos = sourceType.GetProperties(BindingFlags.Public |
-                                                                                     BindingFlags.Instance)
-                    .Where(
-                        p =>
-                        p.PropertyType.GetInterface(typeof(IEnumerable).Name, true) != null &&
-                        !_IsPrimitive(p.PropertyType));
+                        BindingFlags.Instance)
+                        .Where(
+                            p =>
+                            p.PropertyType.GetInterface(typeof(IEnumerable).Name, true) != null &&
+                            !_IsPrimitive(p.PropertyType));
 
                 foreach (PropertyInfo collectionInfo in collectionInfos)
                 {
@@ -97,8 +108,8 @@ namespace System
             Type sourceType = typeof(T);
             PropertyInfo entityId = sourceType.GetProperty("EntityId", BindingFlags.Instance | BindingFlags.NonPublic);
             object defaultValue = entityId.PropertyType.IsValueType
-                                      ? Activator.CreateInstance(entityId.PropertyType, true)
-                                      : null;
+                                  ? Activator.CreateInstance(entityId.PropertyType, true)
+                                  : null;
             entityId.SetValue(source, defaultValue, null);
 
             if (sourceType.IsSubclassOfGeneric(typeof(RootEntity<>)))
@@ -125,23 +136,27 @@ namespace System
         private static bool _IsPrimitive(Type t)
         {
             if (t.IsPrimitive)
+            {
                 return true;
+            }
 
             // TODO: put any type here that you consider as primitive as I didn't
             // quite understand what your definition of primitive type is
             return new[]
-                       {
-                           typeof(string),
-                           typeof(ushort),
-                           typeof(short),
-                           typeof(uint),
-                           typeof(int),
-                           typeof(ulong),
-                           typeof(long),
-                           typeof(float),
-                           typeof(decimal),
-                           typeof(DateTime),
-                       }.Contains(t);
+            {
+                typeof(string),
+                typeof(ushort),
+                typeof(short),
+                typeof(uint),
+                typeof(int),
+                typeof(ulong),
+                typeof(long),
+                typeof(float),
+                typeof(decimal),
+                typeof(DateTime),
+            } .Contains(t);
         }
+
+        #endregion Methods
     }
 }

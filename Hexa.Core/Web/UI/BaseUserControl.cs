@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -24,6 +24,7 @@ namespace Hexa.Core.Web.UI
     using System.Globalization;
     using System.Reflection;
     using System.Web.UI;
+
     using GNU.Gettext;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Hexa.Core.Web.UI
     /// </summary>
     public class BaseUserControl : UserControl
     {
-        #region  Globalization
+        #region Methods
 
         /// <summary>
         /// Translates the specified key.
@@ -39,30 +40,34 @@ namespace Hexa.Core.Web.UI
         /// <param name="key">The key.</param>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-            MessageId = "t"),
-         SuppressMessage("Microsoft.Naming",
-             "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
+                         MessageId = "t"),
+        SuppressMessage("Microsoft.Naming",
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t")]
         protected string t(string key)
         {
             Assembly assembly = null;
 
             if (!GetType().FullName.StartsWith("ASP", StringComparison.OrdinalIgnoreCase))
+            {
                 assembly = Assembly.GetCallingAssembly();
+            }
             else
+            {
                 assembly = GetType().BaseType.Assembly;
+            }
 
             return GettextHelper.t(key, assembly);
         }
 
         [SuppressMessage("Microsoft.Naming",
-            "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
-             MessageId = "t")]
+                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
+        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+                         MessageId = "t")]
         protected String t(String key, params object[] args)
         {
             return String.Format(CultureInfo.InvariantCulture, t(key), args);
         }
 
-        #endregion
+        #endregion Methods
     }
 }

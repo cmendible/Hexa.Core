@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Web.UI
 {
@@ -24,6 +24,8 @@ namespace Hexa.Core.Web.UI
 
     public static class ControlExtensions
     {
+        #region Methods
+
         /// <summary>
         /// Finds the control.
         /// </summary>
@@ -89,5 +91,7 @@ namespace Hexa.Core.Web.UI
 
             return IsInNamingContainer(control.NamingContainer);
         }
+
+        #endregion Methods
     }
 }

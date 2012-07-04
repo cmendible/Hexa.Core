@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -23,25 +23,30 @@ namespace Hexa.Core.Domain
 
     public class RavenUnitOfWork : IUnitOfWork
     {
+        #region Fields
+
         private IDocumentSession _session;
+
+        #endregion Fields
+
+        #region Constructors
 
         public RavenUnitOfWork(IDocumentSession session)
         {
             _session = session;
         }
 
-        #region IUnitOfWork Members
+        #endregion Constructors
+
+        #region Methods
 
         public void Commit()
         {
             _session.SaveChanges();
         }
 
-        public void RollbackChanges()
-        {
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
+        public IEntitySet<TEntity> CreateSet<TEntity>()
+            where TEntity : class
         {
             return new RavenObjectSet<TEntity>(_session);
         }
@@ -57,6 +62,10 @@ namespace Hexa.Core.Domain
             }
         }
 
-        #endregion
+        public void RollbackChanges()
+        {
+        }
+
+        #endregion Methods
     }
 }

@@ -25,21 +25,20 @@ namespace Hexa.Core.Domain.Specification
     /// </remarks>
     /// </summary>
     /// <typeparam name="TEntity">Type of item in the criteria</typeparam>
-    public abstract class Specification<TEntity>
-        : ISpecification<TEntity>
+    public abstract class Specification<TEntity> : ISpecification<TEntity>
         where TEntity : class
     {
-        #region ISpecification<TEntity> Members
+        #region Methods
 
         /// <summary>
-        /// IsSatisFied Specification pattern method,
+        /// Not specification
         /// </summary>
-        /// <returns>Expression that satisfy this specification</returns>
-        public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
-
-        #endregion
-
-        #region Override Operators
+        /// <param name="specification">Specification to negate</param>
+        /// <returns>New specification</returns>
+        public static Specification<TEntity> operator !(Specification<TEntity> specification)
+        {
+            return new NotSpecification<TEntity>(specification);
+        }
 
         /// <summary>
         ///  And operator
@@ -51,28 +50,6 @@ namespace Hexa.Core.Domain.Specification
             Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
         {
             return new AndAlsoSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
-        }
-
-        /// <summary>
-        /// Or operator
-        /// </summary>
-        /// <param name="leftSideSpecification">left operand in this OR operation</param>
-        /// <param name="rightSideSpecification">left operand in this OR operation</param>
-        /// <returns>New specification </returns>
-        public static Specification<TEntity> operator |(
-            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
-        {
-            return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
-        }
-
-        /// <summary>
-        /// Not specification
-        /// </summary>
-        /// <param name="specification">Specification to negate</param>
-        /// <returns>New specification</returns>
-        public static Specification<TEntity> operator !(Specification<TEntity> specification)
-        {
-            return new NotSpecification<TEntity>(specification);
         }
 
         /// <summary>
@@ -95,6 +72,24 @@ namespace Hexa.Core.Domain.Specification
             return true;
         }
 
-        #endregion
+        /// <summary>
+        /// Or operator
+        /// </summary>
+        /// <param name="leftSideSpecification">left operand in this OR operation</param>
+        /// <param name="rightSideSpecification">left operand in this OR operation</param>
+        /// <returns>New specification </returns>
+        public static Specification<TEntity> operator |(
+            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
+        {
+            return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
+        }
+
+        /// <summary>
+        /// IsSatisFied Specification pattern method,
+        /// </summary>
+        /// <returns>Expression that satisfy this specification</returns>
+        public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
+
+        #endregion Methods
     }
 }

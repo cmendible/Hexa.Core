@@ -1,4 +1,4 @@
-﻿#region License
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,28 +15,49 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
 
-    public class PagedElements<TEntity> where TEntity : class
+    public class PagedElements<TEntity>
+        where TEntity : class
     {
+        #region Constructors
+
         public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
             this.Elements = elements;
             this.TotalElements = totalElements;
         }
 
-        public IEnumerable<TEntity> Elements { get; private set; }
+        #endregion Constructors
 
-        public int TotalElements { get; private set; }
+        #region Properties
+
+        public IEnumerable<TEntity> Elements
+        {
+            get;
+            private set;
+        }
+
+        public int TotalElements
+        {
+            get;
+            private set;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public int TotalPages(int pageSize)
         {
             return (int)Math.Ceiling(Convert.ToDouble(this.TotalElements) / pageSize);
         }
+
+        #endregion Methods
     }
 }

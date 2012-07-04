@@ -4,12 +4,71 @@ namespace Hexa.Core.Domain
     using System.Data;
     using System.Data.Common;
     using System.Xml;
+
     using NHibernate.SqlTypes;
     using NHibernate.UserTypes;
 
+    public class SqlXmlType : SqlType
+    {
+        #region Constructors
+
+        public SqlXmlType()
+            : base(DbType.Xml)
+        {
+        }
+
+        #endregion Constructors
+    }
+
     public class XmlType : IUserType
     {
-        #region IUserType Members
+        #region Properties
+
+        public bool IsMutable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(XmlDocument);
+            }
+        }
+
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new SqlType[] {new SqlXmlType()};
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public object Assemble(object cached, object owner)
+        {
+            return cached;
+        }
+
+        public object DeepCopy(object value)
+        {
+            var other = (XmlDocument) value;
+            var xdoc = new XmlDocument();
+            xdoc.LoadXml(other.OuterXml);
+            return xdoc;
+        }
+
+        public object Disassemble(object value)
+        {
+            return value;
+        }
 
         public new bool Equals(object x, object y)
         {
@@ -18,10 +77,17 @@ namespace Hexa.Core.Domain
             return xdoc_y.OuterXml == xdoc_x.OuterXml;
         }
 
+        public int GetHashCode(object x)
+        {
+            return x.GetHashCode();
+        }
+
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
             if (names.Length != 1)
+            {
                 throw new InvalidOperationException("names array has more than one element. can't handle this!");
+            }
             var document = new XmlDocument();
             var val = rs[names[0]] as string;
             if (val != null)
@@ -43,56 +109,11 @@ namespace Hexa.Core.Domain
             parameter.Value = ((XmlDocument) value).OuterXml;
         }
 
-        public object Assemble(object cached, object owner)
-        {
-            return cached;
-        }
-
-        public object Disassemble(object value)
-        {
-            return value;
-        }
-
-        public int GetHashCode(object x)
-        {
-            return x.GetHashCode();
-        }
-
         public object Replace(object original, object target, object owner)
         {
             return original;
         }
 
-        public object DeepCopy(object value)
-        {
-            var other = (XmlDocument) value;
-            var xdoc = new XmlDocument();
-            xdoc.LoadXml(other.OuterXml);
-            return xdoc;
-        }
-
-        public SqlType[] SqlTypes
-        {
-            get { return new SqlType[] {new SqlXmlType()}; }
-        }
-
-        public Type ReturnedType
-        {
-            get { return typeof(XmlDocument); }
-        }
-
-        public bool IsMutable
-        {
-            get { return true; }
-        }
-
-        #endregion
-    }
-
-    public class SqlXmlType : SqlType
-    {
-        public SqlXmlType() : base(DbType.Xml)
-        {
-        }
+        #endregion Methods
     }
 }

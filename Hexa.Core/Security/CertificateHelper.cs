@@ -3,10 +3,13 @@ namespace Hexa.Core.Security
     using System;
     using System.IO;
     using System.Security.Cryptography.X509Certificates;
+
     using Resources;
 
     public static class CertificateHelper
     {
+        #region Methods
+
         /// <summary>
         /// Gets a X509 certificate from windows store. Asks the user for the correct certificate.
         /// </summary>
@@ -20,9 +23,9 @@ namespace Hexa.Core.Security
             {
                 X509Certificate2Collection col = st.Certificates;
                 X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates",
-                                                                                         "Select one to sign",
-                                                                                         X509SelectionFlag.
-                                                                                             SingleSelection);
+                                                 "Select one to sign",
+                                                 X509SelectionFlag.
+                                                 SingleSelection);
                 if (sel.Count > 0)
                 {
                     X509Certificate2Enumerator en = sel.GetEnumerator();
@@ -60,18 +63,22 @@ namespace Hexa.Core.Security
             try
             {
                 X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName,
-                                                                           false);
+                                                   false);
                 if (certs.Count == 1)
                 {
                     cert = certs[0];
                 }
                 else
+                {
                     cert = null;
+                }
             }
             finally
             {
                 if (store != null)
+                {
                     store.Close();
+                }
             }
             return cert;
         }
@@ -87,20 +94,28 @@ namespace Hexa.Core.Security
         public static X509Certificate2 LoadFromFile(string file)
         {
             if (file != null)
+            {
                 file = file.Trim();
+            }
 
             if (string.IsNullOrEmpty(file))
+            {
                 return null;
+            }
 
             string[] parts = file.Split('|');
             if (parts.Length > 2)
+            {
                 throw new ArgumentException(Resource.CertificateFileNameFormatNotValidFilePassword);
+            }
 
             string fullPath = LocateServerPath(parts[0].Trim());
 
             string password = string.Empty;
             if (parts.Length == 2)
+            {
                 password = parts[1];
+            }
 
             return new X509Certificate2(fullPath, password);
         }
@@ -108,9 +123,13 @@ namespace Hexa.Core.Security
         private static string LocateServerPath(string path)
         {
             if (Path.IsPathRooted(path) == false)
+            {
                 path = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, path);
+            }
 
             return path;
         }
+
+        #endregion Methods
     }
 }

@@ -14,13 +14,19 @@
     public interface IOrderBySpecification<TEntity>
         where TEntity : class
     {
+        #region Methods
+
         IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query);
+
+        #endregion Methods
     }
 
     public static class OrderBySpecificationExtensions
     {
+        #region Methods
+
         public static IOrderedQueryable<TEntity> OrderBySpecification<TEntity>(this IQueryable<TEntity> query,
-                                                                               IOrderBySpecification<TEntity> orderBy)
+            IOrderBySpecification<TEntity> orderBy)
             where TEntity : class
         {
             Guard.Against<ArgumentNullException>(query == null, "query");
@@ -28,5 +34,7 @@
 
             return orderBy.ApplyOrderBy(query);
         }
+
+        #endregion Methods
     }
 }

@@ -20,17 +20,16 @@ namespace Hexa.Core.Domain.Specification
     /// specification with NOT logic operator
     /// </summary>
     /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
-    public class NotSpecification<TEntity>
-        : Specification<TEntity>
+    public class NotSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Members
+        #region Fields
 
         private readonly Expression<Func<TEntity, bool>> _OriginalCriteria;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Constructor for NotSpecificaiton
@@ -39,7 +38,9 @@ namespace Hexa.Core.Domain.Specification
         public NotSpecification(ISpecification<TEntity> originalSpecification)
         {
             if (originalSpecification == null)
+            {
                 throw new ArgumentNullException("originalSpecification");
+            }
 
             _OriginalCriteria = originalSpecification.SatisfiedBy();
         }
@@ -51,14 +52,16 @@ namespace Hexa.Core.Domain.Specification
         public NotSpecification(Expression<Func<TEntity, bool>> originalSpecification)
         {
             if (originalSpecification == null)
+            {
                 throw new ArgumentNullException("originalSpecification");
+            }
 
             _OriginalCriteria = originalSpecification;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Override Specification methods
+        #region Methods
 
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/>
@@ -67,9 +70,9 @@ namespace Hexa.Core.Domain.Specification
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
             return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(_OriginalCriteria.Body),
-                                                          _OriginalCriteria.Parameters.Single());
+                    _OriginalCriteria.Parameters.Single());
         }
 
-        #endregion
+        #endregion Methods
     }
 }

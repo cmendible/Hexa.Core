@@ -18,11 +18,10 @@ namespace Hexa.Core.Domain.Specification
     /// True specification
     /// </summary>
     /// <typeparam name="TEntity">Type of entity in this specification</typeparam>
-    public class TrueSpecification<TEntity>
-        : Specification<TEntity>
+    public class TrueSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Specification overrides
+        #region Methods
 
         /// <summary>
         /// <see cref=" Hexa.Core.Domain.Specification.Specification{TEntity}"/>
@@ -34,6 +33,6 @@ namespace Hexa.Core.Domain.Specification
             return trueExpression;
         }
 
-        #endregion
+        #endregion Methods
     }
 }
