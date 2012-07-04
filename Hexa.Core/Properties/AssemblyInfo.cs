@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Hexa.Core")]
 [assembly: AssemblyProduct("Hexa.Core")]
 [assembly: AssemblyCompany("Hexasystems Corporation")]
-[assembly: AssemblyCopyright("Copyright © Hexasystems Corporation 2010")]
+[assembly: AssemblyCopyright("Copyright ï¿½ Hexasystems Corporation 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]

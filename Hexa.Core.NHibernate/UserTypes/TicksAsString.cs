@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain
+namespace Hexa.Core.Domain
 {
     using System;
     using System.Data;
@@ -45,7 +45,7 @@
 
         public object Assemble(object cached, object owner)
         {
-            return DeepCopy(cached);
+            return this.DeepCopy(cached);
         }
 
         public int Compare(object x, object y)
@@ -60,7 +60,7 @@
 
         public object Disassemble(object value)
         {
-            return DeepCopy(value);
+            return this.DeepCopy(value);
         }
 
         public int GetHashCode(object x)
@@ -75,7 +75,7 @@
 
         public object Next(object current, ISessionImplementor session)
         {
-            return Seed(session);
+            return this.Seed(session);
         }
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)

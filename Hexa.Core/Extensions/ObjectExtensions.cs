@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -60,7 +60,7 @@ namespace System
             {
                 formatter.Serialize(stream, source);
                 stream.Seek(0, SeekOrigin.Begin);
-                return (T) formatter.Deserialize(stream);
+                return (T)formatter.Deserialize(stream);
             }
         }
 

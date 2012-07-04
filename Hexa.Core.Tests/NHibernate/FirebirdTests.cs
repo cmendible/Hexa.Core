@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Sql
+namespace Hexa.Core.Tests.Sql
 {
     using System.Configuration;
 

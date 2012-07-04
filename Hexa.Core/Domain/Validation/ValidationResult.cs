@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Validation
+namespace Hexa.Core.Validation
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -30,7 +30,7 @@
         public ValidationResult(IEnumerable<ValidationError> errors)
             : this()
         {
-            _errors.AddRange(errors);
+            this._errors.AddRange(errors);
         }
 
         #endregion Constructors
@@ -46,7 +46,7 @@
         {
             get
             {
-                foreach (ValidationError error in _errors)
+                foreach (ValidationError error in this._errors)
                 {
                     yield return error;
                 }
@@ -60,7 +60,7 @@
         {
             get
             {
-                return _errors.Count == 0;
+                return this._errors.Count == 0;
             }
         }
 
@@ -74,7 +74,7 @@
         /// <param name="error"></param>
         public void AddError(ValidationError error)
         {
-            _errors.Add(error);
+            this._errors.Add(error);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Errors.GetEnumerator();
+            return this.Errors.GetEnumerator();
         }
 
         /// <summary>
@@ -96,7 +96,7 @@
         /// </returns>
         IEnumerator<ValidationError> IEnumerable<ValidationError>.GetEnumerator()
         {
-            return Errors.GetEnumerator();
+            return this.Errors.GetEnumerator();
         }
 
         /// <summary>
@@ -105,9 +105,9 @@
         /// <param name="error"></param>
         public void RemoveError(ValidationError error)
         {
-            if (_errors.Contains(error))
+            if (this._errors.Contains(error))
             {
-                _errors.Remove(error);
+                this._errors.Remove(error);
             }
         }
 

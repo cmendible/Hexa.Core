@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Data
+namespace Hexa.Core.Tests.Data
 {
     using Core.Domain;
 

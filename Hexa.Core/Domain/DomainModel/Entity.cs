@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain
+namespace Hexa.Core.Domain
 {
     /// <summary>
     /// Base Aggregated Entity class.

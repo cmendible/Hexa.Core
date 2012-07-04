@@ -111,8 +111,8 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         public WebValidationHelper(Control control)
         {
-            _Control = control;
-            EnsureConvertersAreCreated();
+            this._Control = control;
+            this.EnsureConvertersAreCreated();
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Hexa.Core.Web.UI.Controls
         public WebValidationHelper(Control control, string validationGroup)
             : this(control)
         {
-            _ValidationGroup = validationGroup;
+            this._ValidationGroup = validationGroup;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Hexa.Core.Web.UI.Controls
             string validatorText)
             : this(control, validationGroup, validatorDisplay)
         {
-            _ValidatorText = validatorText;
+            this._ValidatorText = validatorText;
         }
 
         #endregion Constructors
@@ -175,11 +175,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return _ValidationGroup;
+                return this._ValidationGroup;
             }
             set
             {
-                _ValidationGroup = value;
+                this._ValidationGroup = value;
             }
         }
 
@@ -190,11 +190,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return _ValidatorDisplay;
+                return this._ValidatorDisplay;
             }
             set
             {
-                _ValidatorDisplay = value;
+                this._ValidatorDisplay = value;
             }
         }
 
@@ -205,11 +205,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return _ValidatorText;
+                return this._ValidatorText;
             }
             set
             {
-                _ValidatorText = value;
+                this._ValidatorText = value;
             }
         }
 
@@ -217,7 +217,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return _Control;
+                return this._Control;
             }
         }
 
@@ -225,7 +225,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return _converters;
+                return this._converters;
             }
         }
 
@@ -245,7 +245,7 @@ namespace Hexa.Core.Web.UI.Controls
         SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public List<BaseValidator> AddValidators<T>()
         {
-            return CreateValidators<T>(true);
+            return this.CreateValidators<T>(true);
         }
 
         [SuppressMessage("Microsoft.Naming",
@@ -256,9 +256,9 @@ namespace Hexa.Core.Web.UI.Controls
             bool ignoreValidationInfo = false;
             IList<IValidationInfo> validationInfos = new List<IValidationInfo>();
 
-            if (RetrieveValidatorInfos != null)
+            if (this.RetrieveValidatorInfos != null)
             {
-                RetrieveValidatorInfos(this, new RetrieveValidatorInfosEventArgs(validationInfos));
+                this.RetrieveValidatorInfos(this, new RetrieveValidatorInfosEventArgs(validationInfos));
             }
             else
             {
@@ -273,10 +273,10 @@ namespace Hexa.Core.Web.UI.Controls
 
             foreach (IValidationInfo validationInfo in validationInfos)
             {
-                if (BeforeValidatorCreation != null)
+                if (this.BeforeValidatorCreation != null)
                 {
                     var args = new BeforeValidatorCreationEventArgs(validationInfo);
-                    BeforeValidatorCreation(this, args);
+                    this.BeforeValidatorCreation(this, args);
                     ignoreValidationInfo = args.Ignore;
                 }
                 else
@@ -287,7 +287,7 @@ namespace Hexa.Core.Web.UI.Controls
                 if (!ignoreValidationInfo)
                 {
                     // Extend here with another event.
-                    BaseValidator v = CreateValidator(validationInfo, addToControl);
+                    BaseValidator v = this.CreateValidator(validationInfo, addToControl);
 
                     if (v != null)
                     {
@@ -327,12 +327,12 @@ namespace Hexa.Core.Web.UI.Controls
         {
             if (!_UsedControlIdValues.Contains(proposedID))
             {
-                _UsedControlIdValues.Add(proposedID);
+                this._UsedControlIdValues.Add(proposedID);
                 return "v" + proposedID;
             }
             else
             {
-                return CreateControlId(proposedID + "_1");
+                return this.CreateControlId(proposedID + "_1");
             }
         }
 
@@ -353,7 +353,7 @@ namespace Hexa.Core.Web.UI.Controls
             }
             else
             {
-                v = GetValidator(validationInfo, controlToValidate);
+                v = this.GetValidator(validationInfo, controlToValidate);
             }
 
             if (v == null)
@@ -365,14 +365,14 @@ namespace Hexa.Core.Web.UI.Controls
 
             int indexOf = parentControl.Controls.IndexOf(controlToValidate) + 1;
 
-            v.ID = CreateControlId(indexOf.ToString(CultureInfo.InvariantCulture));
+            v.ID = this.CreateControlId(indexOf.ToString(CultureInfo.InvariantCulture));
 
             v.EnableViewState = false;
             v.ControlToValidate = controlToValidate.ID;
             v.ErrorMessage = validationInfo.ErrorMessage;
-            v.Text = _ValidatorText;
-            v.Display = _ValidatorDisplay;
-            v.ValidationGroup = _ValidationGroup;
+            v.Text = this._ValidatorText;
+            v.Display = this._ValidatorDisplay;
+            v.ValidationGroup = this._ValidationGroup;
 
             if (!addToControl)
             {
@@ -386,20 +386,20 @@ namespace Hexa.Core.Web.UI.Controls
 
         private List<BaseValidator> CreateValidators<T>(bool addToControl)
         {
-            return CreateValidators(addToControl, typeof(T));
+            return this.CreateValidators(addToControl, typeof(T));
         }
 
         private void EnsureConvertersAreCreated()
         {
-            if (Converters.Count > 0)
+            if (this.Converters.Count > 0)
             {
                 return;
             }
 
-            Converters.Add(typeof(IRequiredValidationInfo), new RequiredConverter());
-            Converters.Add(typeof(IRegexValidationInfo), new RegularExpressionConverter());
-            Converters.Add(typeof(IEmailValidationInfo), new EmailConverter());
-            Converters.Add(typeof(IRangeValidationInfo), new RangeConverter());
+            this.Converters.Add(typeof(IRequiredValidationInfo), new RequiredConverter());
+            this.Converters.Add(typeof(IRegexValidationInfo), new RegularExpressionConverter());
+            this.Converters.Add(typeof(IEmailValidationInfo), new EmailConverter());
+            this.Converters.Add(typeof(IRangeValidationInfo), new RangeConverter());
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters",
@@ -407,7 +407,7 @@ namespace Hexa.Core.Web.UI.Controls
         private BaseValidator GetValidator(IValidationInfo validationInfo, Control controlToValidate)
         {
             KeyValuePair<Type, BaseConverter> converter =
-                Converters.Where(c => validationInfo.GetType().GetInterface(c.Key.Name) != null).SingleOrDefault();
+                this.Converters.Where(c => validationInfo.GetType().GetInterface(c.Key.Name) != null).SingleOrDefault();
 
             if (converter.Value == null)
             {

@@ -1,4 +1,4 @@
-﻿/* GNU gettext for C#
+/* GNU gettext for C#
  * Copyright (C) 2003, 2005 Free Software Foundation, Inc.
  * Written by Bruno Haible <bruno@clisp.org>, 2003.
  *
@@ -88,7 +88,7 @@ namespace GNU.Gettext
         /// </summary>
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
-        public GettextResourceManager(String baseName)
+        public GettextResourceManager(string baseName)
             : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
         {
         }
@@ -98,7 +98,7 @@ namespace GNU.Gettext
         /// </summary>
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
-        public GettextResourceManager(String baseName, Assembly assembly)
+        public GettextResourceManager(string baseName, Assembly assembly)
             : base(baseName, assembly, typeof(GettextResourceSet))
         {
         }
@@ -123,11 +123,11 @@ namespace GNU.Gettext
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n, CultureInfo culture)
+        public virtual string GetPluralString(string msgid, string msgidPlural, long n, CultureInfo culture)
         {
             foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
             {
-                String translation = rs.GetPluralString(msgid, msgidPlural, n);
+                string translation = rs.GetPluralstring(msgid, msgidPlural, n);
                 if (translation != null)
                 {
                     return translation;
@@ -153,7 +153,7 @@ namespace GNU.Gettext
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
+        public virtual string GetPluralString(string msgid, string msgidPlural, long n)
         {
             return GetPluralString(msgid, msgidPlural, n, CultureInfo.CurrentUICulture);
         }
@@ -167,11 +167,11 @@ namespace GNU.Gettext
         ///          <paramref name="msgid"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
-        public override String GetString(String msgid, CultureInfo culture)
+        public override string GetString(string msgid, CultureInfo culture)
         {
             foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
             {
-                String translation = rs.GetString(msgid);
+                string translation = rs.GetString(msgid);
                 if (translation != null)
                 {
                     return translation;
@@ -192,7 +192,7 @@ namespace GNU.Gettext
         ///          <paramref name="msgid"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
-        public override String GetString(String msgid)
+        public override string GetString(string msgid)
         {
             return GetString(msgid, CultureInfo.CurrentUICulture);
         }
@@ -202,7 +202,7 @@ namespace GNU.Gettext
         /// </summary>
         /// <returns>a nonempty string consisting of alphanumerics and underscores
         ///          and starting with a letter or underscore</returns>
-        private static String ConstructClassName(String resourceName)
+        private static string ConstructClassName(string resourceName)
         {
             // We could just return an arbitrary fixed class name, like "Messages",
             // assuming that every assembly will only ever contain one
@@ -225,7 +225,7 @@ namespace GNU.Gettext
             else
             {
                 // Use hexadecimal escapes, using the underscore as escape character.
-                String hexdigit = "0123456789abcdef";
+                string hexdigit = "0123456789abcdef";
                 var b = new StringBuilder();
                 b.Append("__UESCAPED__");
                 for (int i = 0; i < resourceName.Length; i++)
@@ -279,7 +279,7 @@ namespace GNU.Gettext
         // mono-0.28.
         [SuppressMessage("Microsoft.Reliability",
                          "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile")]
-        private static Assembly GetSatelliteAssembly(Assembly assembly, String resourceName, CultureInfo culture)
+        private static Assembly GetSatelliteAssembly(Assembly assembly, string resourceName, CultureInfo culture)
         {
             string culturePath = Path.DirectorySeparatorChar + culture.Name;
 
@@ -313,7 +313,7 @@ namespace GNU.Gettext
         /// <exception cref="NullReferenceException">
         ///   The type has no no-arguments constructor.
         /// </exception>
-        private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, String resourceName,
+        private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, string resourceName,
             CultureInfo culture)
         {
             // We expect a class with a culture dependent class name.
@@ -321,7 +321,7 @@ namespace GNU.Gettext
                 satelliteAssembly.GetType(ConstructClassName(resourceName) + "_" + culture.Name.Replace('-', '_'));
             // We expect it has a no-argument constructor, and invoke it.
             ConstructorInfo constructor = clazz.GetConstructor(Type.EmptyTypes);
-            return (GettextResourceSet) constructor.Invoke(null);
+            return (GettextResourceSet)constructor.Invoke(null);
         }
 
         /// <summary>
@@ -474,7 +474,7 @@ namespace GNU.Gettext
         /// be in the format of a <c>.resources</c> file. The message catalog will
         /// not support plural forms.
         /// </summary>
-        public GettextResourceSet(String fileName)
+        public GettextResourceSet(string fileName)
             : base(fileName)
         {
         }
@@ -527,16 +527,16 @@ namespace GNU.Gettext
         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"),
         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public virtual String GetPluralString(String msgid, String msgidPlural, long n)
+        public virtual string GetPluralstring(string msgid, string msgidPlural, long n)
         {
-            Object value = GetObject(msgid);
-            if (value == null || value is String)
+            object value = GetObject(msgid);
+            if (value == null || value is string)
             {
-                return (String) value;
+                return (string)value;
             }
-            else if (value is String[])
+            else if (value is string[])
             {
-                var choices = (String[]) value;
+                var choices = (string[]) value;
                 long index = PluralEval(n);
                 return choices[index >= 0 && index < choices.Length ? index : 0];
             }
@@ -557,18 +557,18 @@ namespace GNU.Gettext
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public override String GetString(String msgid)
+        public override string GetString(string msgid)
         {
-            Object value = GetObject(msgid);
-            if (value == null || value is String)
+            object value = GetObject(msgid);
+            if (value == null || value is string)
             {
-                return (String) value;
+                return (string)value;
             }
-            else if (value is String[])
+            else if (value is string[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
             {
-                return ((String[]) value)[0];
+                return ((string[]) value)[0];
             }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
@@ -588,18 +588,18 @@ namespace GNU.Gettext
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
         SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public override String GetString(String msgid, bool ignoreCase)
+        public override string GetString(string msgid, bool ignoreCase)
         {
-            Object value = GetObject(msgid, ignoreCase);
-            if (value == null || value is String)
+            object value = GetObject(msgid, ignoreCase);
+            if (value == null || value is string)
             {
-                return (String) value;
+                return (string)value;
             }
-            else if (value is String[])
+            else if (value is string[])
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
             {
-                return ((String[]) value)[0];
+                return ((string[]) value)[0];
             }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +

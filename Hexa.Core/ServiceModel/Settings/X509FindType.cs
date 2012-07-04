@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel
+namespace Hexa.Core.ServiceModel
 {
     #region Enumerations
 

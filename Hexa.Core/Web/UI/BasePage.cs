@@ -75,7 +75,7 @@ namespace Hexa.Core.Web.UI
 
             if (exception is ValidationException)
             {
-                AddInvalidValidator(((ValidationException) exception).ValidationErrors.Select(e => e.Message));
+                AddInvalidValidator(((ValidationException)exception).ValidationErrors.Select(e => e.Message));
             }
             else
                 AddInvalidValidator(new[] {exception.Message});
@@ -113,7 +113,7 @@ namespace Hexa.Core.Web.UI
                 return default(T);
             }
 
-            return (T) ViewState[propertyName];
+            return (T)ViewState[propertyName];
         }
 
         /// <summary>
@@ -156,9 +156,9 @@ namespace Hexa.Core.Web.UI
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
                          MessageId = "t")]
-        protected String t(String key, params object[] args)
+        protected string t(string key, params object[] args)
         {
-            return String.Format(CultureInfo.InvariantCulture, t(key), args);
+            return string.Format(CultureInfo.InvariantCulture, t(key), args);
         }
 
         #endregion Methods

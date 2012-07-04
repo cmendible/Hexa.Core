@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel.Security
+namespace Hexa.Core.ServiceModel.Security
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -71,11 +71,11 @@
             }
             else
             {
-                state = (int) state + 1;
+                state = (int)state + 1;
             }
 
             // Should not evaluate policy twice.
-            if ((int) state > 0)
+            if ((int)state > 0)
             {
                 return true;
             }

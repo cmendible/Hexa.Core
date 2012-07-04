@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -46,7 +46,7 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public IList<IValidationInfo> GetValidationInfo(string propertyName)
         {
-            return GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
+            return this.GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
         }
 
         #endregion Methods

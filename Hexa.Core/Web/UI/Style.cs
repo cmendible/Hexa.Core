@@ -1,4 +1,4 @@
-﻿// Credits should go to Egil Hansen.
+// Credits should go to Egil Hansen.
 // see: http://stackoverflow.com/questions/328763/how-to-take-control-of-style-sheets-in-asp-net-themes-with-the-styleplaceholder-a
 //<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
 //<cc2:Styles runat="server">
@@ -28,7 +28,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return String.Format("{0}/App_Themes/{1}",
+                return string.Format("{0}/App_Themes/{1}",
                                      Page.Request.ApplicationPath,
                                      Page.Theme).Replace("//", "/");
             }
@@ -43,7 +43,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                var s = (String) ViewState["ThemeVariableName"];
+                var s = (string)ViewState["ThemeVariableName"];
                 return ((s == null) ? "%Theme" : s);
             }
 
@@ -69,7 +69,7 @@ namespace Hexa.Core.Web.UI.Controls
                 // Hide any server side css
                 foreach (Control c in Page.Header.Controls)
                 {
-                    if (c is HtmlControl && ((HtmlControl) c).TagName.Equals("link",
+                    if (c is HtmlControl && ((HtmlControl)c).TagName.Equals("link",
                             StringComparison.OrdinalIgnoreCase))
                     {
                         c.Visible = false;
@@ -84,7 +84,7 @@ namespace Hexa.Core.Web.UI.Controls
                 {
                     if (c is LiteralControl)
                     {
-                        var l = (LiteralControl) c;
+                        var l = (LiteralControl)c;
                         l.Text = reg.Replace(l.Text, ThemePath);
                     }
                 }

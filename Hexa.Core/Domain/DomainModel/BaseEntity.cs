@@ -1,4 +1,4 @@
-﻿//Copyright (c) 2009, Codai, Inc.
+//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
 namespace Hexa.Core.Domain
 {

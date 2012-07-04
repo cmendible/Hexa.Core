@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -46,8 +46,8 @@ namespace Hexa.Core.ServiceModel.Security
         /// </summary>
         protected BaseAuthorizationPolicy()
         {
-            Id = Guid.NewGuid().ToString();
-            _Log.DebugFormat("New instance {0} created.", Id);
+            this.Id = Guid.NewGuid().ToString();
+            _Log.DebugFormat("New instance {0} created.", this.Id);
         }
 
         #endregion Constructors

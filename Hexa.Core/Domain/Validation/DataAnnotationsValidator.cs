@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -32,7 +32,7 @@ namespace Hexa.Core.Validation
 
         public void AssertValidation(object instance)
         {
-            ValidationResult result = Validate(instance);
+            ValidationResult result = this.Validate(instance);
             if (!result.IsValid)
             {
                 throw new ValidationException(instance.GetType(), result.Errors);
@@ -41,7 +41,7 @@ namespace Hexa.Core.Validation
 
         public bool IsValid(object instance)
         {
-            return Validate(instance).IsValid;
+            return this.Validate(instance).IsValid;
         }
 
         public ValidationResult Validate(object instance)

@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -33,7 +33,7 @@ namespace Hexa.Core.Domain
 
         public RavenUnitOfWork(IDocumentSession session)
         {
-            _session = session;
+            this._session = session;
         }
 
         #endregion Constructors
@@ -42,23 +42,23 @@ namespace Hexa.Core.Domain
 
         public void Commit()
         {
-            _session.SaveChanges();
+            this._session.SaveChanges();
         }
 
         public IEntitySet<TEntity> CreateSet<TEntity>()
             where TEntity : class
         {
-            return new RavenObjectSet<TEntity>(_session);
+            return new RavenObjectSet<TEntity>(this._session);
         }
 
         public void Dispose()
         {
             UnitOfWorkScope.DisposeCurrent();
-            if (_session != null)
+            if (this._session != null)
             {
-                _session.Dispose();
+                this._session.Dispose();
 
-                _session = null;
+                this._session = null;
             }
         }
 

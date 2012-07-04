@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Validation
+namespace Hexa.Core.Validation
 {
     using System;
     using System.Collections.Generic;

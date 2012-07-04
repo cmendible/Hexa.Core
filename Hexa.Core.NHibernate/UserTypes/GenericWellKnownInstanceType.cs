@@ -1,4 +1,4 @@
-﻿namespace uNhAddIns.UserTypes
+namespace uNhAddIns.UserTypes
 {
     using System;
     using System.Collections.Generic;
@@ -116,7 +116,7 @@
             }
 
             var value = (TId) rs.GetValue(index0);
-            return repository.FirstOrDefault(x => findPredicate(x, value));
+            return this.repository.FirstOrDefault(x => this.findPredicate(x, value));
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
@@ -127,7 +127,7 @@
             }
             else
             {
-                ((IDbDataParameter) cmd.Parameters[index]).Value = idGetter((T) value);
+                ((IDbDataParameter) cmd.Parameters[index]).Value = this.idGetter((T) value);
             }
         }
 

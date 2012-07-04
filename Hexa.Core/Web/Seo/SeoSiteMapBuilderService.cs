@@ -1,4 +1,4 @@
-﻿// ===================================================================================
+// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -87,7 +87,7 @@ namespace Hexa.Core.Web.Seo
         public void AddUrl(SeoUrlInfo url, int preferredDisplayOrder)
         {
             this.SafeAddurl(url);
-            this.AddurlWithOrder(RootUrl.Key, url, preferredDisplayOrder);
+            this.AddurlWithOrder(this.RootUrl.Key, url, preferredDisplayOrder);
         }
 
         /// <summary>
@@ -146,8 +146,8 @@ namespace Hexa.Core.Web.Seo
             writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             writer.WriteAttributeString("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
 
-            SeoUrlInfo rooturl = RootUrl;
-            this.AddChildurls(writer, rooturl, GetChildren(rooturl.Key));
+            SeoUrlInfo rooturl = this.RootUrl;
+            this.AddChildurls(writer, rooturl, this.GetChildren(rooturl.Key));
 
             //write the footer and close.
             writer.WriteEndElement();
@@ -194,7 +194,7 @@ namespace Hexa.Core.Web.Seo
                 foreach (SeoUrlInfo info in children)
                 {
                     WriteSiteMapurlEntry(writer, info);
-                    this.AddChildurls(writer, info, GetChildren(info.Key));
+                    this.AddChildurls(writer, info, this.GetChildren(info.Key));
                 }
             }
         }

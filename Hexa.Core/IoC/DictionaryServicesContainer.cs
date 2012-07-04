@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -207,7 +207,7 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public I Resolve<I>()
         {
-            return (I) Resolve(typeof(I));
+            return (I)Resolve(typeof(I));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]

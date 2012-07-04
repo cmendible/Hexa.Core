@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -70,7 +70,7 @@ namespace Hexa.Core.Domain
         {
             if (!isInitialized && (cfg != null))
             {
-                isInitialized = true;
+                this.isInitialized = true;
             }
         }
 

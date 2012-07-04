@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -90,14 +90,14 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
         {
-            _rows = new List<jqGridItem>();
-            _totalRecords = totalRecords;
-            _pageIndex = pageIndex;
-            _pageSize = pageSize;
+            this._rows = new List<jqGridItem>();
+            this._totalRecords = totalRecords;
+            this._pageIndex = pageIndex;
+            this._pageSize = pageSize;
 
             foreach (var row in rows)
             {
-                _rows.Add(new jqGridItem(row.Key, row.Value));
+                this._rows.Add(new jqGridItem(row.Key, row.Value));
             }
         }
 
@@ -109,7 +109,7 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return _pageIndex;
+                return this._pageIndex;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return _totalRecords;
+                return this._totalRecords;
             }
         }
 
@@ -125,7 +125,7 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return _rows;
+                return this._rows;
             }
         }
 
@@ -133,7 +133,7 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return (int) Math.Ceiling(_totalRecords/(decimal) _pageSize);
+                return (int)Math.Ceiling(this._totalRecords/(decimal)_pageSize);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Hexa.Core.Web.UI.Ajax
 
         private jqGridHelper(string gridName)
         {
-            _gridName = gridName;
+            this._gridName = gridName;
         }
 
         #endregion Constructors
@@ -183,73 +183,73 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public jqGridHelper Caption(string caption)
         {
-            _caption = caption;
+            this._caption = caption;
             return this;
         }
 
         public jqGridHelper Cols(string cols)
         {
-            _cols = cols;
+            this._cols = cols;
             return this;
         }
 
         public jqGridHelper DataType(string dataType)
         {
-            _dataType = dataType;
+            this._dataType = dataType;
             return this;
         }
 
         public jqGridHelper FirstSortOrder(string firstSortOrder)
         {
-            _firstSortOrder = firstSortOrder;
+            this._firstSortOrder = firstSortOrder;
             return this;
         }
 
         public jqGridHelper Height(string height)
         {
-            _height = height;
+            this._height = height;
             return this;
         }
 
         public jqGridHelper MultiSearch(bool multiSearch)
         {
-            _multiSearch = multiSearch.ToString().ToLower();
+            this._multiSearch = multiSearch.ToString().ToLower();
             return this;
         }
 
         public jqGridHelper MultiSelect(bool multiSelect)
         {
-            _multiSelect = multiSelect.ToString().ToLower();
+            this._multiSelect = multiSelect.ToString().ToLower();
             return this;
         }
 
         public jqGridHelper OnComplete(string onComplete)
         {
-            _onComplete = onComplete;
+            this._onComplete = onComplete;
             return this;
         }
 
         public jqGridHelper OnSelect(string onSelect)
         {
-            _onSelect = onSelect;
+            this._onSelect = onSelect;
             return this;
         }
 
         public jqGridHelper Pager(string pager)
         {
-            _pager = pager;
+            this._pager = pager;
             return this;
         }
 
         public jqGridHelper SortColumn(string sortColumn)
         {
-            _sortColumn = sortColumn;
+            this._sortColumn = sortColumn;
             return this;
         }
 
         public jqGridHelper SortOrder(string sortOrder)
         {
-            _sortOrder = sortOrder;
+            this._sortOrder = sortOrder;
             return this;
         }
 
@@ -269,11 +269,11 @@ namespace Hexa.Core.Web.UI.Ajax
 
             #region script
 
-            string script = string.Format("$(\"{0}\").jqGrid(", _gridName) + "\r\n";
+            string script = string.Format("$(\"{0}\").jqGrid(", this._gridName) + "\r\n";
             script += "{" + "\r\n";
-            script += string.Format("datatype: {0},", _dataType) + "\r\n";
-            script += string.Format("colModel: {0},", _cols) + "\r\n";
-            script += string.Format("pager: \"{0}\", ", _pager) + "\r\n";
+            script += string.Format("datatype: {0},", this._dataType) + "\r\n";
+            script += string.Format("colModel: {0},", this._cols) + "\r\n";
+            script += string.Format("pager: \"{0}\", ", this._pager) + "\r\n";
             //script += string.Format("loadtext: '{0}',", loadtext) + "\r\n";
             //script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
             //script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
@@ -281,21 +281,21 @@ namespace Hexa.Core.Web.UI.Ajax
             script += string.Format("rowNum: \"{0}\",", rowNum) + "\r\n";
             //script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
-            script += string.Format("multiselect: {0}, ", _multiSelect) + "\r\n";
+            script += string.Format("multiselect: {0}, ", this._multiSelect) + "\r\n";
 
-            if (!string.IsNullOrEmpty(_onSelect))
+            if (!string.IsNullOrEmpty(this._onSelect))
             {
-                script += string.Format("onSelectRow: {0}, ", _onSelect) + "\r\n";
+                script += string.Format("onSelectRow: {0}, ", this._onSelect) + "\r\n";
             }
 
-            if (!string.IsNullOrEmpty(_onComplete))
+            if (!string.IsNullOrEmpty(this._onComplete))
             {
-                script += string.Format("gridComplete: {0}, ", _onComplete) + "\r\n";
+                script += string.Format("gridComplete: {0}, ", this._onComplete) + "\r\n";
             }
 
-            if (!string.IsNullOrEmpty(_width))
+            if (!string.IsNullOrEmpty(this._width))
             {
-                script += string.Format("width: \"{0}\",", _width) + "\r\n";
+                script += string.Format("width: \"{0}\",", this._width) + "\r\n";
             }
             else
             {
@@ -309,29 +309,29 @@ namespace Hexa.Core.Web.UI.Ajax
 
             string searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
                                                    closeOnEscape.ToString().ToLower(),
-                                                   _multiSearch,
+                                                   this._multiSearch,
                                                    closeAfterSearch.ToString().ToLower());
 
-            if (!string.IsNullOrEmpty(_sortColumn))
+            if (!string.IsNullOrEmpty(this._sortColumn))
             {
-                script += string.Format("sortname: \"{0}\",", _sortColumn) + "\r\n";
+                script += string.Format("sortname: \"{0}\",", this._sortColumn) + "\r\n";
 
-                if (!string.IsNullOrEmpty(_sortOrder))
+                if (!string.IsNullOrEmpty(this._sortOrder))
                 {
-                    script += string.Format("sortorder: \"{0}\",", _sortOrder) + "\r\n";
+                    script += string.Format("sortorder: \"{0}\",", this._sortOrder) + "\r\n";
                 }
             }
 
-            if (!string.IsNullOrEmpty(_firstSortOrder))
+            if (!string.IsNullOrEmpty(this._firstSortOrder))
             {
-                script += string.Format("firstsortorder: \"{0}\",", _firstSortOrder) + "\r\n";
+                script += string.Format("firstsortorder: \"{0}\",", this._firstSortOrder) + "\r\n";
             }
 
-            script += string.Format("height: \"{0}\",", _height) + "\r\n";
-            script += string.Format("caption: \"{0}\"", _caption) + "\r\n";
+            script += string.Format("height: \"{0}\",", this._height) + "\r\n";
+            script += string.Format("caption: \"{0}\"", this._caption) + "\r\n";
 
             script += "})" + "\r\n";
-            script += string.Format(".navGrid(\"{0}\",", _pager);
+            script += string.Format(".navGrid(\"{0}\",", this._pager);
             script += "{edit:false, add:false, search:true, del:false}, {}, {}, {}, {" + searhBoxOptions + "}, {});";
 
             #endregion
@@ -341,7 +341,7 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public jqGridHelper Width(string width)
         {
-            _width = width;
+            this._width = width;
             return this;
         }
 
@@ -358,7 +358,7 @@ namespace Hexa.Core.Web.UI.Ajax
         public jqGridItem(string id, IList<string> values)
         {
             this.id = id;
-            cell = values;
+            this.cell = values;
         }
 
         #endregion Constructors
@@ -528,21 +528,21 @@ namespace Hexa.Core.Web.UI.Ajax
                 //string.Contains()
             case "cn":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("Contains"),
+                                            typeof(string).GetMethod("Contains"),
                                             Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bw":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("StartsWith", new[] {typeof(string)}),
+                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
                                             Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bn":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("StartsWith", new[] {typeof(string)}),
+                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
                                             Expression.Constant(value));
 
                 condition = Expression.Not(condition);
@@ -551,14 +551,14 @@ namespace Hexa.Core.Web.UI.Ajax
                 break;
             case "ew":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("EndsWith", new[] {typeof(string)}),
+                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
                                             Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "en":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("EndsWith", new[] {typeof(string)}),
+                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
                                             Expression.Constant(value));
 
                 condition = Expression.Not(condition);
@@ -587,7 +587,7 @@ namespace Hexa.Core.Web.UI.Ajax
                 break;
             case "nc":
                 condition = Expression.Call(memberAccess,
-                                            typeof(String).GetMethod("Contains"),
+                                            typeof(string).GetMethod("Contains"),
                                             Expression.Constant(value));
 
                 condition = Expression.Not(condition);

@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -63,9 +63,9 @@ namespace Hexa.Core.Web.UI
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
                          MessageId = "t")]
-        protected String t(String key, params object[] args)
+        protected string t(string key, params object[] args)
         {
-            return String.Format(CultureInfo.InvariantCulture, t(key), args);
+            return string.Format(CultureInfo.InvariantCulture, t(key), args);
         }
 
         #endregion Methods

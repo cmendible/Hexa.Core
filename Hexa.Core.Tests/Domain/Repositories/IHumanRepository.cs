@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Domain
+namespace Hexa.Core.Tests.Domain
 {
     using Core.Domain;
 

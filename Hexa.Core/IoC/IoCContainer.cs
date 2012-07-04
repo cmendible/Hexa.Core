@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -39,8 +39,8 @@ namespace Hexa.Core
         /// <param name="registerCallback">The register callback.</param>
         public IoCContainer(Action<Type, Type> registerTypeCallback, Action<Type, object> registerInstanceCallback)
         {
-            _registerTypeCallback = registerTypeCallback;
-            _registerInstanceCallback = registerInstanceCallback;
+            this._registerTypeCallback = registerTypeCallback;
+            this._registerInstanceCallback = registerInstanceCallback;
         }
 
         #endregion Constructors
@@ -60,9 +60,9 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void RegisterInstance<I>(object instance)
         {
-            if (_registerInstanceCallback != null)
+            if (this._registerInstanceCallback != null)
             {
-                _registerInstanceCallback(typeof(I), instance);
+                this._registerInstanceCallback(typeof(I), instance);
             }
         }
 
@@ -73,9 +73,9 @@ namespace Hexa.Core
         /// <param name="instance">The instance.</param>
         public void RegisterInstance(Type @type, object instance)
         {
-            if (_registerInstanceCallback != null)
+            if (this._registerInstanceCallback != null)
             {
-                _registerInstanceCallback(@type, instance);
+                this._registerInstanceCallback(@type, instance);
             }
         }
 
@@ -93,9 +93,9 @@ namespace Hexa.Core
         public void RegisterType<I, T>()
             where T : I
         {
-            if (_registerTypeCallback != null)
+            if (this._registerTypeCallback != null)
             {
-                _registerTypeCallback(typeof(I), typeof(T));
+                this._registerTypeCallback(typeof(I), typeof(T));
             }
         }
 
@@ -106,9 +106,9 @@ namespace Hexa.Core
         /// <param name="type">The type.</param>
         public void RegisterType(Type @interface, Type @type)
         {
-            if (_registerTypeCallback != null)
+            if (this._registerTypeCallback != null)
             {
-                _registerTypeCallback(@interface, @type);
+                this._registerTypeCallback(@interface, @type);
             }
         }
 

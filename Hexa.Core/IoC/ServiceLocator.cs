@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -40,7 +40,7 @@ namespace Hexa.Core
         /// <returns></returns>
         public static TDependency GetInstance<TDependency>()
         {
-            return (TDependency) GetInstance(typeof(TDependency));
+            return (TDependency)GetInstance(typeof(TDependency));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Hexa.Core
                     Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
                 if (services != null)
-                    return (TDependency) services.FirstOrDefault();
+                    return (TDependency)services.FirstOrDefault();
             }
             catch (NullReferenceException)
             {

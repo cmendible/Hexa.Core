@@ -126,7 +126,7 @@ namespace Hexa.Core.Validation
             {
                 return false;
             }
-            return Equals((ValidationError) obj);
+            return Equals((ValidationError)obj);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // Copyright 2010 Ritesh Rao
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -305,8 +305,8 @@ namespace Hexa.Core.Domain
 
             public Rule(string pattern, string replacement)
             {
-                _regex = new Regex(pattern, RegexOptions.IgnoreCase);
-                _replacement = replacement;
+                this._regex = new Regex(pattern, RegexOptions.IgnoreCase);
+                this._replacement = replacement;
             }
 
             #endregion Constructors
@@ -320,7 +320,7 @@ namespace Hexa.Core.Domain
                     return null;
                 }
 
-                return _regex.Replace(word, _replacement);
+                return this._regex.Replace(word, this._replacement);
             }
 
             #endregion Methods

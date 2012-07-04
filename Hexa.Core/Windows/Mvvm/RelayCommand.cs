@@ -1,4 +1,4 @@
-﻿//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
+//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
 namespace Hexa.Core.Windows.Mvvm
 {
     using System;
@@ -39,8 +39,8 @@ namespace Hexa.Core.Windows.Mvvm
             {
                 throw new ArgumentNullException("execute");
             }
-            _execute = execute;
-            _canExecute = canExecute;
+            this._execute = execute;
+            this._canExecute = canExecute;
         }
 
         #endregion Constructors
@@ -51,14 +51,14 @@ namespace Hexa.Core.Windows.Mvvm
         {
             add
             {
-                if (_canExecute != null)
+                if (this._canExecute != null)
                 {
                     CommandManager.RequerySuggested += value;
                 }
             }
             remove
             {
-                if (_canExecute != null)
+                if (this._canExecute != null)
                 {
                     CommandManager.RequerySuggested -= value;
                 }
@@ -70,14 +70,14 @@ namespace Hexa.Core.Windows.Mvvm
         #region Methods
 
         [DebuggerStepThrough]
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T) parameter);
+            return this._canExecute == null ? true : this._canExecute((T)parameter);
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
-            _execute((T) parameter);
+            this._execute((T)parameter);
         }
 
         #endregion Methods
@@ -90,7 +90,7 @@ namespace Hexa.Core.Windows.Mvvm
     {
         #region Fields
 
-        private readonly Func<Boolean> _canExecute;
+        private readonly Func<bool> _canExecute;
         private readonly Action _execute;
 
         #endregion Fields
@@ -111,14 +111,14 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action execute, Func<Boolean> canExecute)
+        public RelayCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
             {
                 throw new ArgumentNullException("execute");
             }
-            _execute = execute;
-            _canExecute = canExecute;
+            this._execute = execute;
+            this._canExecute = canExecute;
         }
 
         #endregion Constructors
@@ -129,14 +129,14 @@ namespace Hexa.Core.Windows.Mvvm
         {
             add
             {
-                if (_canExecute != null)
+                if (this._canExecute != null)
                 {
                     CommandManager.RequerySuggested += value;
                 }
             }
             remove
             {
-                if (_canExecute != null)
+                if (this._canExecute != null)
                 {
                     CommandManager.RequerySuggested -= value;
                 }
@@ -148,14 +148,14 @@ namespace Hexa.Core.Windows.Mvvm
         #region Methods
 
         [DebuggerStepThrough]
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return this._canExecute == null ? true : this._canExecute();
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
-            _execute();
+            this._execute();
         }
 
         #endregion Methods

@@ -1,4 +1,4 @@
-﻿// ===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -165,7 +165,7 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="System.Collections.IEnumerable.GetEnumerator"/></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Hexa.Core.Domain
         /// <returns>IObjectSet with include path</returns>
         public MemorySet<TEntity> Include(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentNullException("path");
             }

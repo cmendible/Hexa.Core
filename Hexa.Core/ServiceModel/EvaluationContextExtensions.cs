@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel
+namespace Hexa.Core.ServiceModel
 {
     using System.Collections.Generic;
     using System.IdentityModel.Policy;

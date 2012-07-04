@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Validation
+namespace Hexa.Core.Validation
 {
     /// <summary>
     /// Interface implemented by different flavors of validators that provide validation

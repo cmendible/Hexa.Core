@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel
+namespace Hexa.Core.ServiceModel
 {
     using System;
     using System.Collections.ObjectModel;
@@ -53,7 +53,7 @@
 
             try
             {
-                errorHandler = (IErrorHandler) Activator.CreateInstance(errorHandlerType);
+                errorHandler = (IErrorHandler)Activator.CreateInstance(errorHandlerType);
             }
             catch (MissingMethodException e)
             {

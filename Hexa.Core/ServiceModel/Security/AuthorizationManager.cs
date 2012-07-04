@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -78,7 +78,7 @@ namespace Hexa.Core.ServiceModel.Security
             if (operationContext.ServiceSecurityContext.AuthorizationContext.Properties.ContainsKey("Principal"))
             {
                 Thread.CurrentPrincipal =
-                    (IPrincipal) operationContext.ServiceSecurityContext.AuthorizationContext.Properties["Principal"];
+                    (IPrincipal)operationContext.ServiceSecurityContext.AuthorizationContext.Properties["Principal"];
 
                 return base.CheckAccessCore(operationContext);
             }

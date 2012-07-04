@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Data
+namespace Hexa.Core.Data
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;

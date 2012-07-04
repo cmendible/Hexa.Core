@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain
+namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -25,12 +25,12 @@
         {
             get
             {
-                if (_validator == null)
+                if (this._validator == null)
                 {
-                    _validator = ServiceLocator.GetInstance<IValidator>();
+                    this._validator = ServiceLocator.GetInstance<IValidator>();
                 }
 
-                return _validator;
+                return this._validator;
             }
         }
 
@@ -46,7 +46,7 @@
         {
             if (!Validator.IsValid(this))
             {
-                throw new ValidationException(GetType(), Validator.Validate(this));
+                throw new ValidationException(GetType(), this.Validator.Validate(this));
             }
         }
 
@@ -58,7 +58,7 @@
         /// </returns>
         public virtual bool IsValid()
         {
-            return Validator.IsValid(this);
+            return this.Validator.IsValid(this);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@
         /// <returns>A list containing error details, or null</returns>
         public virtual IEnumerable<ValidationError> Validate()
         {
-            return Validator.Validate(this);
+            return this.Validator.Validate(this);
         }
 
         #endregion Methods

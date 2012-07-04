@@ -1,4 +1,4 @@
-﻿namespace System
+namespace System
 {
     /// <summary>
     /// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
@@ -79,7 +79,7 @@
             // Convert to a byte array
             // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333
             byte[] daysArray = BitConverter.GetBytes(days.Days);
-            byte[] msecsArray = BitConverter.GetBytes((long) (msecs.TotalMilliseconds/3.333333));
+            byte[] msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds/3.333333));
 
             // Reverse the bytes to match SQL Servers ordering
             Array.Reverse(daysArray);
@@ -137,7 +137,7 @@
             // witch 10000/1 times a second. But you should not assume this value
             // but instead you should use TimeSpan.TicksPerMillisecond constant
             // to operate with ticks vs msecs.
-            var msecs = new TimeSpan(((long) tmp)*TimeSpan.TicksPerMillisecond);
+            var msecs = new TimeSpan(((long)tmp)*TimeSpan.TicksPerMillisecond);
 
             // Now we can obtain the final date
             date = new DateTime(date.Ticks + msecs.Ticks);

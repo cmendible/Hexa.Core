@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel
+namespace Hexa.Core.ServiceModel
 {
     using System.Configuration;
     using System.Security.Cryptography.X509Certificates;
@@ -13,7 +13,7 @@
         {
             get
             {
-                return (string) base["findValue"];
+                return (string)base["findValue"];
             }
             set
             {
@@ -30,7 +30,7 @@
         {
             get
             {
-                return (StoreLocation) base["storeLocation"];
+                return (StoreLocation)base["storeLocation"];
             }
             set
             {
@@ -43,7 +43,7 @@
         {
             get
             {
-                return (StoreName) base["storeName"];
+                return (StoreName)base["storeName"];
             }
             set
             {
@@ -56,7 +56,7 @@
         {
             get
             {
-                return (X509FindType) base["x509FindType"];
+                return (X509FindType)base["x509FindType"];
             }
             set
             {

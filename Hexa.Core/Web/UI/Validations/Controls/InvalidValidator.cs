@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -34,7 +34,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <param name="message">The message.</param>
         public InvalidValidator(string message)
         {
-            ErrorMessage = message;
+            this.ErrorMessage = message;
         }
 
         #endregion Constructors

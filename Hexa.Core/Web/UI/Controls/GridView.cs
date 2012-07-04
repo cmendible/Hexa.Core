@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -244,7 +244,7 @@ namespace Hexa.Core.Web.UI.Controls
             if (AllowRowSelection && e.Row.RowType == DataControlRowType.DataRow)
             {
                 e.Row.Attributes.Add("onclick",
-                                     String.Format("MSDatagridSelectRow('{0}', {1});", ClientID, e.Row.RowIndex));
+                                     string.Format("MSDatagridSelectRow('{0}', {1});", ClientID, e.Row.RowIndex));
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain
+namespace Hexa.Core.Domain
 {
     using NHibernate;
 
@@ -8,7 +8,7 @@
 
         public TransactionWrapper(ITransaction transaction)
         {
-            Transaction = transaction;
+            this.Transaction = transaction;
         }
 
         #endregion Constructors
@@ -27,17 +27,17 @@
 
         public virtual void Commit()
         {
-            Transaction.Commit();
+            this.Transaction.Commit();
         }
 
         public void Rollback()
         {
-            if (Transaction.WasRolledBack)
+            if (this.Transaction.WasRolledBack)
             {
                 return;
             }
 
-            Transaction.Rollback();
+            this.Transaction.Rollback();
         }
 
         #endregion Methods

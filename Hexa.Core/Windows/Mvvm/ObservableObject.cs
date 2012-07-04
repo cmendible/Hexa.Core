@@ -1,4 +1,4 @@
-﻿//Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
+//Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
 namespace Hexa.Core.Windows.Mvvm
 {
     using System;
@@ -24,7 +24,7 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         [Conditional("DEBUG")]
         [DebuggerStepThrough]
-        public void VerifyPropertyName(String propertyName)
+        public void VerifyPropertyName(string propertyName)
         {
             // verify that the property name matches a real,
             // public, instance property on this Object.
@@ -36,7 +36,7 @@ namespace Hexa.Core.Windows.Mvvm
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedEventHandler handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, e);
@@ -46,13 +46,13 @@ namespace Hexa.Core.Windows.Mvvm
         protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpresssion)
         {
             string propertyName = PropertySupport.ExtractPropertyName(propertyExpresssion);
-            RaisePropertyChanged(propertyName);
+            this.RaisePropertyChanged(propertyName);
         }
 
-        protected void RaisePropertyChanged(String propertyName)
+        protected void RaisePropertyChanged(string propertyName)
         {
-            VerifyPropertyName(propertyName);
-            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+            this.VerifyPropertyName(propertyName);
+            this.OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion Methods

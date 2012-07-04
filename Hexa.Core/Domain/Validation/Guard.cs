@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -44,7 +44,7 @@ namespace Hexa.Core
         {
             if (assertion)
             {
-                throw (TException) Activator.CreateInstance(typeof(TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Hexa.Core
             if (assertion)
             {
                 string msg = string.Format(CultureInfo.InvariantCulture, message, args);
-                throw (TException) Activator.CreateInstance(typeof(TException), msg);
+                throw (TException)Activator.CreateInstance(typeof(TException), msg);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Hexa.Core
             //Execute the lambda and if it evaluates to true then throw the exception.
             if (assertion())
             {
-                throw (TException) Activator.CreateInstance(typeof(TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Hexa.Core
         {
             if (compare != instance)
             {
-                throw (TException) Activator.CreateInstance(typeof(TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
             }
         }
 

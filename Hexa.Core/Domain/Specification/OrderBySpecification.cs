@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain.Specification
+namespace Hexa.Core.Domain.Specification
 {
     using System;
     using System.Linq;

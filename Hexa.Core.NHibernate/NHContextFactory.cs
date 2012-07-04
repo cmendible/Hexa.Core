@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -85,7 +85,7 @@ namespace Hexa.Core.Domain
                                                     .Raw("format_sql", "true")
                                                     .ConnectionString(this._connectionString));
 
-                _InMemoryDatabase = this._connectionString.ToUpperInvariant().Contains(":MEMORY:");
+                this._InMemoryDatabase = this._connectionString.ToUpperInvariant().Contains(":MEMORY:");
 
                 break;
             }
@@ -203,7 +203,7 @@ namespace Hexa.Core.Domain
                 dbManager.CreateDatabase();
                 new SchemaExport(this._builtConfiguration).Create(false, true);
 
-                if (_DbProvider == DbProvider.MsSqlProvider)
+                if (this._DbProvider == DbProvider.MsSqlProvider)
                 {
                     using (var conn = new SqlConnection(this._connectionString))
                     {

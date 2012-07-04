@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Domain
+namespace Hexa.Core.Domain
 {
     using System;
     using System.ComponentModel;
@@ -77,7 +77,7 @@
             {
                 if (invocation.Method.DeclaringType == typeof(IMarkerInterface))
                 {
-                    invocation.ReturnValue = typeName;
+                    invocation.ReturnValue = this.typeName;
                     return;
                 }
                 if (invocation.Method.DeclaringType == typeof(INotifyPropertyChanged))
@@ -85,11 +85,11 @@
                     var propertyChangedEventHandler = (PropertyChangedEventHandler) invocation.Arguments[0];
                     if (invocation.Method.Name.StartsWith("add_"))
                     {
-                        subscribers += propertyChangedEventHandler;
+                        this.subscribers += propertyChangedEventHandler;
                     }
                     else
                     {
-                        subscribers -= propertyChangedEventHandler;
+                        this.subscribers -= propertyChangedEventHandler;
                     }
                     return;
                 }
@@ -99,7 +99,7 @@
                 if (invocation.Method.Name.StartsWith("set_"))
                 {
                     string propertyName = invocation.Method.Name.Substring(4);
-                    subscribers(invocation.InvocationTarget, new PropertyChangedEventArgs(propertyName));
+                    this.subscribers(invocation.InvocationTarget, new PropertyChangedEventArgs(propertyName));
                 }
             }
 

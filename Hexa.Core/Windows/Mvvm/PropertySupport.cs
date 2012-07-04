@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Windows.Mvvm
+namespace Hexa.Core.Windows.Mvvm
 {
     using System;
     using System.Linq.Expressions;
@@ -8,7 +8,7 @@
     {
         #region Methods
 
-        public static String ExtractPropertyName<T>(Expression<Func<T>> propertyExpresssion)
+        public static string ExtractPropertyName<T>(Expression<Func<T>> propertyExpresssion)
         {
             if (propertyExpresssion == null)
             {

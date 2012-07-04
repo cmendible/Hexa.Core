@@ -1,4 +1,4 @@
-﻿// ===================================================================================
+// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,10 +66,10 @@ namespace Hexa.Core.Web.Seo
             Guard.IsNotNull(key, "key");
             Guard.IsNotNull(url, "url");
 
-            Key = key;
-            Url = url;
-            ChangeFrequency = changeFrequency;
-            Priority = ((double) priorityPercentage/100).ToString();
+            this.Key = key;
+            this.Url = url;
+            this.ChangeFrequency = changeFrequency;
+            this.Priority = ((double)priorityPercentage/100).ToString();
         }
 
         #endregion Constructors

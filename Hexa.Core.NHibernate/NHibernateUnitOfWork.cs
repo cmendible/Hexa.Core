@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -46,13 +46,13 @@ namespace Hexa.Core.Domain
                 RunningSession = sessionFactory.OpenSession();
             }
 
-            _transactionWrapper = _BeginTransaction(RunningSession);
+            this._transactionWrapper = _BeginTransaction(RunningSession);
         }
 
         internal NHibernateUnitOfWork(ISession session)
         {
             RunningSession = session;
-            _transactionWrapper = _BeginTransaction(RunningSession);
+            this._transactionWrapper = _BeginTransaction(RunningSession);
         }
 
         #endregion Constructors
@@ -123,7 +123,7 @@ namespace Hexa.Core.Domain
         {
             try
             {
-                _transactionWrapper.Commit();
+                this._transactionWrapper.Commit();
             }
             catch (StaleObjectStateException ex)
             {
@@ -139,13 +139,13 @@ namespace Hexa.Core.Domain
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         public void RollbackChanges()
         {
-            _transactionWrapper.Rollback();
+            this._transactionWrapper.Rollback();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -163,7 +163,7 @@ namespace Hexa.Core.Domain
                             {
                                 if (Transaction.Current == null)
                                 {
-                                    _transactionWrapper.Rollback();
+                                    this._transactionWrapper.Rollback();
                                 }
                             }
 

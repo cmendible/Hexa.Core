@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Sql
+namespace Hexa.Core.Tests.Sql
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@
         [Test]
         public void Add_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             Assert.IsNotNull(human);
             Assert.IsNotNull(human.Version);
@@ -38,7 +38,7 @@
         [Test]
         public void Delete_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (IUnitOfWork ctx = repo.UnitOfWork)
@@ -63,7 +63,7 @@
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            ApplicationContext.Start(ConnectionString());
+            ApplicationContext.Start(this.ConnectionString());
 
             // Validator and TraceManager
             IoCContainer container = ApplicationContext.Container;
@@ -71,7 +71,7 @@
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            NHContextFactory ctxFactory = CreateNHContextFactory();
+            NHContextFactory ctxFactory = this.CreateNHContextFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -111,7 +111,7 @@
         [Test]
         public void Query_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (IUnitOfWork ctx = repo.UnitOfWork)
@@ -127,7 +127,7 @@
         [Test]
         public void Update_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             Thread.Sleep(1000);
 
@@ -156,7 +156,7 @@
         [Test]
         public void Update_Human_From_Another_Session()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             Thread.Sleep(1000);
 

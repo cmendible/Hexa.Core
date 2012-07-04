@@ -1,4 +1,4 @@
-﻿//Copyright (c) 2009, Codai, Inc.
+//Copyright (c) 2009, Codai, Inc.
 //All rights reserved.
 namespace Hexa.Core.Domain
 {
@@ -182,7 +182,7 @@ namespace Hexa.Core.Domain
                 return false;
             }
 
-            foreach (FieldInfo field in GetFields(this))
+            foreach (FieldInfo field in this.GetFields(this))
             {
                 object value1 = field.GetValue(other);
                 object value2 = field.GetValue(this);
@@ -241,7 +241,7 @@ namespace Hexa.Core.Domain
             // so we include the object's type in the hash calculation
             int hashCode = GetType().GetHashCode();
 
-            foreach (FieldInfo field in GetFields(this))
+            foreach (FieldInfo field in this.GetFields(this))
             {
                 object value = field.GetValue(this);
 

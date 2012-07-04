@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -44,8 +44,8 @@ namespace Hexa.Core.Domain
 
         public NHibernateObjectSet(ISession session)
         {
-            _session = session;
-            _set = _session.Query<TEntity>();
+            this._session = session;
+            this._set = this._session.Query<TEntity>();
         }
 
         #endregion Constructors
@@ -64,7 +64,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return _set.Expression;
+                return this._set.Expression;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return _set.Provider;
+                return this._set.Provider;
             }
         }
 
@@ -82,41 +82,41 @@ namespace Hexa.Core.Domain
 
         public void AddObject(TEntity entity)
         {
-            _session.Save(entity);
+            this._session.Save(entity);
         }
 
         public void Attach(TEntity entity)
         {
-            _session.Lock(entity, LockMode.None);
+            this._session.Lock(entity, LockMode.None);
         }
 
         public IEntitySet<TEntity> Cacheable()
         {
-            _set = _set.Cacheable();
+            this._set = this._set.Cacheable();
             return this;
         }
 
         public IEntitySet<TEntity> Cacheable(string cacheRegion)
         {
-            _set = _set.Cacheable().CacheRegion(cacheRegion);
+            this._set = this._set.Cacheable().CacheRegion(cacheRegion);
             return this;
         }
 
         public void DeleteObject(TEntity entity)
         {
-            _session.Delete(entity);
+            this._session.Delete(entity);
         }
 
         public void Detach(TEntity entity)
         {
-            _session.Evict(entity);
+            this._session.Evict(entity);
         }
 
         [SuppressMessage("Microsoft.Design",
                          "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
-            IQuery query = _session.GetNamedQuery(queryName);
+            IQuery query = this._session.GetNamedQuery(queryName);
             foreach (var param in parameters)
             {
                 query = query.SetParameter(param.Key, param.Value);
@@ -129,7 +129,7 @@ namespace Hexa.Core.Domain
                          "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
-            IQuery query = _session.GetNamedQuery(queryName);
+            IQuery query = this._session.GetNamedQuery(queryName);
             foreach (var param in parameters)
             {
                 query = query.SetParameter(param.Key, param.Value);
@@ -140,19 +140,19 @@ namespace Hexa.Core.Domain
 
         public IEnumerator<TEntity> GetEnumerator()
         {
-            return _set.GetEnumerator();
+            return this._set.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _set.GetEnumerator();
+            return this._set.GetEnumerator();
         }
 
         [SuppressMessage("Microsoft.Design",
                          "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
         {
-            _set = _set.Fetch(path);
+            this._set = this._set.Fetch(path);
             return this;
         }
 
@@ -161,7 +161,7 @@ namespace Hexa.Core.Domain
         public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
             Expression<Func<TEntity, bool>> filter)
         {
-            _set = _set.Where(filter).Fetch(path);
+            this._set = this._set.Where(filter).Fetch(path);
             return this;
         }
 
@@ -171,7 +171,7 @@ namespace Hexa.Core.Domain
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression)
         {
-            _set = _set.Where(filter).OrderByDescending(orderByExpression).Fetch(path);
+            this._set = this._set.Where(filter).OrderByDescending(orderByExpression).Fetch(path);
             return this;
         }
 
@@ -179,7 +179,7 @@ namespace Hexa.Core.Domain
         {
             if (!_session.Contains(entity))
             {
-                _session.Update(entity);
+                this._session.Update(entity);
             }
         }
 

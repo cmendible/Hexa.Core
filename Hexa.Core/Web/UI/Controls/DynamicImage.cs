@@ -161,7 +161,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <returns></returns>
         private string GetCachedImageUrl()
         {
-            return String.Format(CultureInfo.InvariantCulture, BaseUrl, StorageKey);
+            return string.Format(CultureInfo.InvariantCulture, BaseUrl, StorageKey);
         }
 
         /// <summary>

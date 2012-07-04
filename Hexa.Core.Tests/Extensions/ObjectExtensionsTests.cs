@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Extensions
+namespace Hexa.Core.Tests.Extensions
 {
     using System;
 

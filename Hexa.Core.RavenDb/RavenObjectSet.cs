@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -42,8 +42,8 @@ namespace Hexa.Core.Domain
 
         public RavenObjectSet(IDocumentSession session)
         {
-            _session = session;
-            _set = _session.Query<TEntity>()
+            this._session = session;
+            this._set = this._session.Query<TEntity>()
                    .Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }
 
@@ -63,7 +63,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return _set.Expression;
+                return this._set.Expression;
             }
         }
 
@@ -71,7 +71,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return _set.Provider;
+                return this._set.Provider;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Hexa.Core.Domain
 
         public void AddObject(TEntity entity)
         {
-            _session.Store(entity);
+            this._session.Store(entity);
         }
 
         public void Attach(TEntity entity)
@@ -100,7 +100,7 @@ namespace Hexa.Core.Domain
 
         public void DeleteObject(TEntity entity)
         {
-            _session.Delete(entity);
+            this._session.Delete(entity);
         }
 
         public void Detach(TEntity entity)
@@ -123,12 +123,12 @@ namespace Hexa.Core.Domain
 
         public IEnumerator<TEntity> GetEnumerator()
         {
-            return _set.GetEnumerator();
+            return this._set.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _set.GetEnumerator();
+            return this._set.GetEnumerator();
         }
 
         [SuppressMessage("Microsoft.Design",

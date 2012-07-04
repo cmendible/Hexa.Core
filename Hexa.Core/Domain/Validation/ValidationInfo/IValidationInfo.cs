@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -63,8 +63,8 @@ namespace Hexa.Core.Validation
         /// <param name="error">The error.</param>
         protected BaseValidationInfo(string propertyName, string error)
         {
-            _ErrorMessage = error;
-            _PropertyInfo = typeof(TEntity).GetProperty(propertyName);
+            this._ErrorMessage = error;
+            this._PropertyInfo = typeof(TEntity).GetProperty(propertyName);
         }
 
         #endregion Constructors
@@ -79,7 +79,7 @@ namespace Hexa.Core.Validation
         {
             get
             {
-                return _ErrorMessage;
+                return this._ErrorMessage;
             }
         }
 
@@ -91,7 +91,7 @@ namespace Hexa.Core.Validation
         {
             get
             {
-                return _PropertyInfo;
+                return this._PropertyInfo;
             }
         }
 

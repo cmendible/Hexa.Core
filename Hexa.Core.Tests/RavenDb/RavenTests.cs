@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests.Raven
+namespace Hexa.Core.Tests.Raven
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +26,7 @@
         [Test]
         public void Add_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             Assert.IsNotNull(human);
             //Assert.IsNotNull(human.Version);
@@ -39,7 +39,7 @@
         [Test]
         public void Delete_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (IUnitOfWork ctx = repo.UnitOfWork)
@@ -104,7 +104,7 @@
         [Test]
         public void Query_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (IUnitOfWork ctx = repo.UnitOfWork)
@@ -120,7 +120,7 @@
         [Test]
         public void Update_Human()
         {
-            Human human = _Add_Human();
+            Human human = this._Add_Human();
 
             var repo = ServiceLocator.GetInstance<IHumanRepository>();
             using (IUnitOfWork ctx = repo.UnitOfWork)

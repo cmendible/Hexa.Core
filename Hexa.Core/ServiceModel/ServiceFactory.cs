@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -143,7 +143,7 @@ namespace Hexa.Core.ServiceModel
             foreach (Type iface in serviceType.GetInterfaces())
             {
                 var attr =
-                    (ServiceContractAttribute) Attribute.GetCustomAttribute(iface, typeof(ServiceContractAttribute));
+                    (ServiceContractAttribute)Attribute.GetCustomAttribute(iface, typeof(ServiceContractAttribute));
 
                 if (attr != null)
                 {
@@ -240,13 +240,13 @@ namespace Hexa.Core.ServiceModel
             if (!host.Description.Behaviors.Contains(typeof(ServiceDebugBehavior)))
             {
                 behavior = new ServiceDebugBehavior();
-                ((ServiceDebugBehavior) behavior).IncludeExceptionDetailInFaults = _Configuration.Debug;
+                ((ServiceDebugBehavior)behavior).IncludeExceptionDetailInFaults = _Configuration.Debug;
                 host.Description.Behaviors.Add(behavior);
             }
             else
             {
                 behavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-                ((ServiceDebugBehavior) behavior).IncludeExceptionDetailInFaults = _Configuration.Debug;
+                ((ServiceDebugBehavior)behavior).IncludeExceptionDetailInFaults = _Configuration.Debug;
             }
         }
 

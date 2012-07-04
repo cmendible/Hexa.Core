@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -146,12 +146,12 @@ namespace Hexa.Core
         /// <returns>true if hex digit, false if not</returns>
         [SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo",
                          MessageId = "System.Char.ToUpper(System.Char)")]
-        private static bool IsHexDigit(Char c)
+        private static bool IsHexDigit(char c)
         {
             int numChar;
             int numA = Convert.ToInt32('A');
             int num1 = Convert.ToInt32('0');
-            c = Char.ToUpper(c);
+            c = char.ToUpper(c);
             numChar = Convert.ToInt32(c);
             if (numChar >= numA && numChar < (numA + 6))
             {

@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.ServiceModel
+namespace Hexa.Core.ServiceModel
 {
     using System;
     using System.ComponentModel;
@@ -53,7 +53,7 @@
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((Url) element).Name;
+            return ((Url)element).Name;
         }
 
         #endregion Methods
@@ -75,7 +75,7 @@
         {
             get
             {
-                return (bool) this["Debug"];
+                return (bool)this["Debug"];
             }
         }
 
@@ -97,12 +97,12 @@
         {
             get
             {
-                if (String.IsNullOrEmpty(this["SecurityMode"] as string))
+                if (string.IsNullOrEmpty(this["SecurityMode"] as string))
                 {
                     return SecurityMode.Message;
                 }
 
-                return (SecurityMode) Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
+                return (SecurityMode)Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
             }
         }
 
