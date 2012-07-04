@@ -1,3 +1,4 @@
+#if !MONO 
 namespace Hexa.Core.Tests.Raven
 {
     using System;
@@ -165,3 +166,4 @@ namespace Hexa.Core.Tests.Raven
         #endregion Methods
     }
 }
+#endif

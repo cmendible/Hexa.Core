@@ -1,3 +1,4 @@
+#if !MONO 
 namespace Hexa.Core.Tests.Sql
 {
     using System.Configuration;
@@ -26,3 +27,4 @@ namespace Hexa.Core.Tests.Sql
         #endregion Methods
     }
 }
+#endif

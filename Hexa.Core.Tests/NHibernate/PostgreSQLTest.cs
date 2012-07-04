@@ -1,3 +1,4 @@
+#if MONO 
 namespace Hexa.Core.Mono.Tests
 {
     using Data;
@@ -67,7 +68,6 @@ namespace Hexa.Core.Mono.Tests
         }
 
         [Test]
-        [Ignore]
         public void SimpleTest()
         {
             Assert.IsTrue(true);
@@ -76,3 +76,4 @@ namespace Hexa.Core.Mono.Tests
         #endregion Methods
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !MONO 
 namespace Hexa.Core.Windows.Mvvm
 {
     using System;
@@ -40,3 +41,4 @@ namespace Hexa.Core.Windows.Mvvm
         #endregion Methods
     }
 }
+#endif
