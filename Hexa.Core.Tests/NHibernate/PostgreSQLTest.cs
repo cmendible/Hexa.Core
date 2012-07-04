@@ -26,7 +26,7 @@ namespace Hexa.Core.Mono.Tests
 
             // Context Factory
             var ctxFactory = new NHContextFactory(DbProvider.PostgreSQLProvider,
-                                                  cnnString, string.Empty, typeof (PostgreSQLTest).Assembly,
+                                                  cnnString, string.Empty, typeof(PostgreSQLTest).Assembly,
                                                   ApplicationContext.Container);
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);

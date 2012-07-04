@@ -144,7 +144,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for Add
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Add_NullItemThrowArgumentNullException_Test()
         {
             //Arrange
@@ -160,7 +160,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ApplyChanges_NullEntityThrowNewArgumentNullException_Test()
         {
             //Arrange
@@ -190,7 +190,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Attach_NullItem_Test()
         {
             //Arrange
@@ -256,7 +256,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for Delete
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Delete_NullItem_Test()
         {
             //Arrange
@@ -293,7 +293,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetBySpec_NullSpecThrowArgumentNullException_Test()
         {
             //Arrange
@@ -331,7 +331,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilteredAndOrderedAndPagedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
         {
             //Arrange
@@ -352,7 +352,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetFilteredAndOrderedAndPagedElements_InvalidPageCountThrowArgumentException_Test()
         {
             //Arrange
@@ -373,7 +373,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetFilteredAndOrderedAndPagedElements_InvalidPageIndexThrowArgumentException_Test()
         {
             //Arrange
@@ -394,7 +394,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilteredAndOrderedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
         {
             //Arrange
@@ -438,7 +438,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilteredElements_FilterNullThrowArgumentNullException_Test()
         {
             //Arrange
@@ -456,7 +456,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilteredElements_SpecificKOrder_AscendingOrderAndFilterNullThrowArgumentNullException_Test()
         {
             //Arrange
@@ -491,7 +491,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetFilteredElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFilteredElements_SpecificKOrder_DescendingOrderAndFilterNullThrowArgumentNullException_Test()
         {
             //Arrange
@@ -620,7 +620,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetPagedElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetPagedElements_InvalidOrderExpressionThrowArgumentNullException_Test()
         {
             //Arrange
@@ -639,7 +639,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetPagedElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetPagedElements_InvalidPageCountThrowArgumentException_Test()
         {
             //Arrange
@@ -658,7 +658,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for GetPagedElements
         ///</summary>
         [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetPagedElements_InvalidPageIndexThrowArgumentException_Test()
         {
             //Arrange
@@ -674,7 +674,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void UoW_Creation_NullLoggerFactoryThrowArgumentNullException_Test()
         {
             var repository = new BaseRepository<Entity>(null);

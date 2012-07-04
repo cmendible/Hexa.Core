@@ -25,14 +25,14 @@
 
         public OrderDirection Direction
         {
-            get { return _descending ? OrderDirection.Descending : OrderDirection.Ascending; }
-            set { _descending = (value == OrderDirection.Descending) ? true : false; }
+            get { return this._descending ? OrderDirection.Descending : OrderDirection.Ascending; }
+            set { this._descending = (value == OrderDirection.Descending) ? true : false; }
         }
 
         public OrderDirection ThenByDirection
         {
-            get { return _descending2 ? OrderDirection.Descending : OrderDirection.Ascending; }
-            set { _descending2 = (value == OrderDirection.Descending) ? true : false; }
+            get { return this._descending2 ? OrderDirection.Descending : OrderDirection.Ascending; }
+            set { this._descending2 = (value == OrderDirection.Descending) ? true : false; }
         }
 
         #endregion
@@ -54,10 +54,10 @@
         {
             Guard.Against<ArgumentNullException>(orderBy == null,
                                                  "Expected a non null expression as a predicate for the specification.");
-            _predicate = orderBy;
-            _descending = descending;
-            _predicate2 = thenBy;
-            _descending2 = thenByDescending;
+            this._predicate = orderBy;
+            this._descending = descending;
+            this._predicate2 = thenBy;
+            this._descending2 = thenByDescending;
         }
 
         /// <summary>
@@ -118,12 +118,12 @@
 
         public IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query)
         {
-            IOrderedQueryable<TEntity> ret = _descending
-                                                 ? query.OrderByDescending(_predicate)
-                                                 : query.OrderBy(_predicate);
+            IOrderedQueryable<TEntity> ret = this._descending
+                                                 ? query.OrderByDescending(this._predicate)
+                                                 : query.OrderBy(this._predicate);
 
-            if (_predicate2 != null)
-                ret = _descending2 ? ret.ThenByDescending(_predicate2) : ret.ThenBy(_predicate2);
+            if (this._predicate2 != null)
+                ret = this._descending2 ? ret.ThenByDescending(this._predicate2) : ret.ThenBy(this._predicate2);
 
             return ret;
         }

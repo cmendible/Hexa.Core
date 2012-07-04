@@ -40,7 +40,7 @@ namespace Hexa.Core
         public static void Against<TException>(bool assertion, string message) where TException : Exception
         {
             if (assertion)
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException) Activator.CreateInstance(typeof(TException), message);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Hexa.Core
             if (assertion)
             {
                 string msg = string.Format(CultureInfo.InvariantCulture, message, args);
-                throw (TException) Activator.CreateInstance(typeof (TException), msg);
+                throw (TException) Activator.CreateInstance(typeof(TException), msg);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Hexa.Core
         {
             //Execute the lambda and if it evaluates to true then throw the exception.
             if (assertion())
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException) Activator.CreateInstance(typeof(TException), message);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Hexa.Core
             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void InheritsFrom<TBase>(Type type, string message)
         {
-            if (type.BaseType != typeof (TBase))
+            if (type.BaseType != typeof(TBase))
                 throw new InvalidOperationException(message);
         }
 
@@ -132,7 +132,7 @@ namespace Hexa.Core
             "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Implements<TInterface>(Type type, string message)
         {
-            if (!typeof (TInterface).IsAssignableFrom(type))
+            if (!typeof(TInterface).IsAssignableFrom(type))
                 throw new InvalidOperationException(message);
         }
 
@@ -164,7 +164,7 @@ namespace Hexa.Core
             where TException : Exception
         {
             if (compare != instance)
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException) Activator.CreateInstance(typeof(TException), message);
         }
 
         /// <summary>

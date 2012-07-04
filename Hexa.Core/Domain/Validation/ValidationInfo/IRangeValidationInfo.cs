@@ -154,7 +154,7 @@ namespace Hexa.Core.Validation
         {
             if (string.IsNullOrEmpty(error))
                 return string.Format(Resource.ValueMustBeBetween1And2,
-                                     DataAnnotationHelper.ParseDisplayName(typeof (TEntity), propertyName), minimum,
+                                     DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName), minimum,
                                      maximum);
             else
                 return error;

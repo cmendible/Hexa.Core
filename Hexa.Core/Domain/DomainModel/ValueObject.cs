@@ -49,14 +49,14 @@ namespace Hexa.Core.Domain
             // so we include the object's type in the hash calculation
             int hashCode = GetType().GetHashCode();
 
-            foreach (FieldInfo field in GetType().GetFields(RelfectingFlags))
+            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
             {
                 object value = field.GetValue(this);
 
                 if (value != null)
                     unchecked
                     {
-                        hashCode = hashCode*HASH_MULTIPLIER + value.GetHashCode();
+                        hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
                     }
             }
 
@@ -73,13 +73,17 @@ namespace Hexa.Core.Domain
         public override bool Equals(object other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
             // Type comparison
             if (GetType() != other.GetType())
+            {
                 return false;
+            }
 
-            foreach (FieldInfo field in GetType().GetFields(RelfectingFlags))
+            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
             {
                 object value1 = field.GetValue(other);
                 object value2 = field.GetValue(this);
@@ -87,10 +91,14 @@ namespace Hexa.Core.Domain
                 if (value1 == null)
                 {
                     if (value2 != null)
+                    {
                         return false;
+                    }
                 }
                 else if (!value1.Equals(value2))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -127,7 +135,7 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Flags used to reflect over Generic Equeatable
         /// </summary>
-        protected BindingFlags RelfectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        protected BindingFlags ReflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         #region IEquatable<T> Members
 
@@ -141,13 +149,17 @@ namespace Hexa.Core.Domain
         public virtual bool Equals(T other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
             Type t = GetType();
             Type otherType = other.GetType();
 
             if (t != otherType)
+            {
                 return false;
+            }
 
             foreach (FieldInfo field in GetFields(this))
             {
@@ -157,10 +169,14 @@ namespace Hexa.Core.Domain
                 if (value1 == null)
                 {
                     if (value2 != null)
+                    {
                         return false;
+                    }
                 }
                 else if (!value1.Equals(value2))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -191,7 +207,7 @@ namespace Hexa.Core.Domain
                 if (value != null)
                     unchecked
                     {
-                        hashCode = hashCode*HASH_MULTIPLIER + value.GetHashCode();
+                        hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
                     }
             }
 
@@ -223,9 +239,9 @@ namespace Hexa.Core.Domain
             Type t = obj.GetType();
             var fields = new List<FieldInfo>();
 
-            while (t != typeof (object))
+            while (t != typeof(object))
             {
-                FieldInfo[] tmp = t.GetFields(RelfectingFlags);
+                FieldInfo[] tmp = t.GetFields(this.ReflectingFlags);
                 fields.AddRange(tmp);
                 t = t.BaseType;
             }

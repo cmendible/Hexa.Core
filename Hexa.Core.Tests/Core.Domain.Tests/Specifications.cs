@@ -26,7 +26,7 @@ namespace Hexa.Core.Domain.Tests
     public class SpecificationTests
     {
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void AndAlsoSpecification_Creation_NullLeftSpecThrowArgumentNullException_Test()
         {
             //Arrange
@@ -44,7 +44,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void AndAlsoSpecification_Creation_NullRightSpecThrowArgumentNullException_Test()
         {
             //Arrange
@@ -85,7 +85,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void DirectSpecification_Constructor_NullSpecThrowArgumentNullException_Test()
         {
             //Arrange
@@ -131,7 +131,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void NotSpecification_Creation_NullCriteriaThrowArgumentNullException_Test()
         {
             //Arrange
@@ -142,7 +142,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void NotSpecification_Creation_NullSpecificationThrowArgumentNullException_Test()
         {
             //Arrange
@@ -212,7 +212,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void OrSpecification_Creation_NullLeftSpecThrowArgumentNullException_Test()
         {
             //Arrange
@@ -230,7 +230,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void OrSpecification_Creation_NullRightSpecThrowArgumentNullException_Test()
         {
             //Arrange

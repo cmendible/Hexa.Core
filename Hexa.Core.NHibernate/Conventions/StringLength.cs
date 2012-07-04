@@ -31,7 +31,7 @@ namespace Hexa.Core.Domain
         public void Apply(IPropertyInstance target)
         {
             var attribute =
-                Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof (StringLengthAttribute)) as
+                Attribute.GetCustomAttribute(target.Property.MemberInfo, typeof(StringLengthAttribute)) as
                 StringLengthAttribute;
 
             if (attribute != null)

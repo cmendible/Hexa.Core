@@ -26,8 +26,8 @@ namespace Hexa.Core.Domain
     {
         public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
-            Elements = elements;
-            TotalElements = totalElements;
+            this.Elements = elements;
+            this.TotalElements = totalElements;
         }
 
         public IEnumerable<TEntity> Elements { get; private set; }
@@ -36,7 +36,7 @@ namespace Hexa.Core.Domain
 
         public int TotalPages(int pageSize)
         {
-            return (int) Math.Ceiling(Convert.ToDouble(TotalElements)/pageSize);
+            return (int)Math.Ceiling(Convert.ToDouble(this.TotalElements) / pageSize);
         }
     }
 }

@@ -9,3 +9,4 @@ TestResults.xml
 /Reports/CodeMetricsReport.xml
 /Reports/FxCop.xml
 /Reports/StyleCop.xml
+/Reports/Simian.xml

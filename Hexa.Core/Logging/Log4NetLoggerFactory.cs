@@ -29,7 +29,7 @@ namespace Hexa.Core.Logging
 
     public class Log4NetLoggerFactory : ILoggerFactory
     {
-        private static bool _initialized;
+        private static bool initialized;
 
         public Log4NetLoggerFactory()
             : this(null)
@@ -38,7 +38,7 @@ namespace Hexa.Core.Logging
 
         public Log4NetLoggerFactory(FileInfo configFile)
         {
-            if (!_initialized)
+            if (!initialized)
             {
                 if (configFile != null)
                     XmlConfigurator.ConfigureAndWatch(configFile);
@@ -53,7 +53,7 @@ namespace Hexa.Core.Logging
                     GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
                 }
 
-                _initialized = true;
+                initialized = true;
             }
         }
 

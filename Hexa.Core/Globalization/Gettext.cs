@@ -87,7 +87,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
         public GettextResourceManager(String baseName)
-            : base(baseName, Assembly.GetCallingAssembly(), typeof (GettextResourceSet))
+            : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
         {
         }
 
@@ -97,7 +97,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         ///                        name</param>
         public GettextResourceManager(String baseName, Assembly assembly)
-            : base(baseName, assembly, typeof (GettextResourceSet))
+            : base(baseName, assembly, typeof(GettextResourceSet))
         {
         }
 

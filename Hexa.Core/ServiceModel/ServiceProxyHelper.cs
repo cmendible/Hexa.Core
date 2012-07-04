@@ -43,7 +43,7 @@ namespace Hexa.Core.ServiceModel
         /// </summary>
         public ServiceProxyHelper(TProxy proxy)
         {
-            _proxy = proxy;
+            this._proxy = proxy;
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Hexa.Core.ServiceModel
         {
             get
             {
-                if (_proxy != null)
-                    return _proxy;
+                if (this._proxy != null)
+                    return this._proxy;
                 else
                     throw new ObjectDisposedException("ServiceProxyHelper");
             }
@@ -71,34 +71,34 @@ namespace Hexa.Core.ServiceModel
         {
             try
             {
-                if (_proxy != null)
+                if (this._proxy != null)
                 {
-                    if (_proxy.State != CommunicationState.Faulted)
+                    if (this._proxy.State != CommunicationState.Faulted)
                     {
-                        _proxy.Close();
+                        this._proxy.Close();
                     }
                     else
                     {
-                        _proxy.Abort();
+                        this._proxy.Abort();
                     }
                 }
             }
             catch (CommunicationException)
             {
-                _proxy.Abort();
+                this._proxy.Abort();
             }
             catch (TimeoutException)
             {
-                _proxy.Abort();
+                this._proxy.Abort();
             }
             catch (Exception)
             {
-                _proxy.Abort();
+                this._proxy.Abort();
                 throw;
             }
             finally
             {
-                _proxy = null;
+                this._proxy = null;
             }
         }
 

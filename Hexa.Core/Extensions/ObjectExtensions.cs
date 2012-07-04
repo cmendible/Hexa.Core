@@ -37,7 +37,7 @@ namespace System
         /// <returns>The copied object.</returns>
         public static T DeepClone<T>(this T source)
         {
-            if (!typeof (T).IsSerializable)
+            if (!typeof(T).IsSerializable)
                 throw new ArgumentException("The type must be serializable.", "source");
 
             // Don't serialize a null object, simply return the default for that object
@@ -55,8 +55,8 @@ namespace System
 
         public static T MakeTransient<T>(this T source)
         {
-            Type sourceType = typeof (T);
-            Type baseEntityType = typeof (BaseEntity<>);
+            Type sourceType = typeof(T);
+            Type baseEntityType = typeof(BaseEntity<>);
 
             if (sourceType.IsSubclassOfGeneric(baseEntityType))
             {
@@ -72,7 +72,7 @@ namespace System
                                                                                      BindingFlags.Instance)
                     .Where(
                         p =>
-                        p.PropertyType.GetInterface(typeof (IEnumerable).Name, true) != null &&
+                        p.PropertyType.GetInterface(typeof(IEnumerable).Name, true) != null &&
                         !_IsPrimitive(p.PropertyType));
 
                 foreach (PropertyInfo collectionInfo in collectionInfos)
@@ -94,20 +94,20 @@ namespace System
 
         private static void _InternalMakeTransient<T>(T source)
         {
-            Type sourceType = typeof (T);
+            Type sourceType = typeof(T);
             PropertyInfo entityId = sourceType.GetProperty("EntityId", BindingFlags.Instance | BindingFlags.NonPublic);
             object defaultValue = entityId.PropertyType.IsValueType
                                       ? Activator.CreateInstance(entityId.PropertyType, true)
                                       : null;
             entityId.SetValue(source, defaultValue, null);
 
-            if (sourceType.IsSubclassOfGeneric(typeof (RootEntity<>)))
+            if (sourceType.IsSubclassOfGeneric(typeof(RootEntity<>)))
             {
                 PropertyInfo version = sourceType.GetProperty("Version", BindingFlags.Instance | BindingFlags.Public);
                 version.SetValue(source, null, null);
             }
 
-            Type auditableInfo = sourceType.GetInterface(typeof (IAuditableEntity).Name, true);
+            Type auditableInfo = sourceType.GetInterface(typeof(IAuditableEntity).Name, true);
             if (auditableInfo != null)
             {
                 var auditable = source as IAuditableEntity;
@@ -131,16 +131,16 @@ namespace System
             // quite understand what your definition of primitive type is
             return new[]
                        {
-                           typeof (string),
-                           typeof (ushort),
-                           typeof (short),
-                           typeof (uint),
-                           typeof (int),
-                           typeof (ulong),
-                           typeof (long),
-                           typeof (float),
-                           typeof (decimal),
-                           typeof (DateTime),
+                           typeof(string),
+                           typeof(ushort),
+                           typeof(short),
+                           typeof(uint),
+                           typeof(int),
+                           typeof(ulong),
+                           typeof(long),
+                           typeof(float),
+                           typeof(decimal),
+                           typeof(DateTime),
                        }.Contains(t);
         }
     }

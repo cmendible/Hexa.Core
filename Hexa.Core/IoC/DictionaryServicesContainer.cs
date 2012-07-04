@@ -72,7 +72,7 @@ namespace Hexa.Core
         public void RegisterType<I, T>()
             where T : I
         {
-            RegisterType(typeof (I), typeof (T));
+            RegisterType(typeof(I), typeof(T));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
@@ -86,7 +86,7 @@ namespace Hexa.Core
         {
             lock (_Instances)
             {
-                _Instances.Add(typeof (I), instance);
+                _Instances.Add(typeof(I), instance);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Hexa.Core
              "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public I Resolve<I>()
         {
-            return (I) Resolve(typeof (I));
+            return (I) Resolve(typeof(I));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
@@ -185,7 +185,7 @@ namespace Hexa.Core
         public void OverrideType<I, T>()
             where T : I
         {
-            OverrideType(typeof (I), typeof (T));
+            OverrideType(typeof(I), typeof(T));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
@@ -199,8 +199,8 @@ namespace Hexa.Core
         {
             lock (_Instances)
             {
-                if (_Instances.ContainsKey(typeof (I)))
-                    _Instances.Remove(typeof (I));
+                if (_Instances.ContainsKey(typeof(I)))
+                    _Instances.Remove(typeof(I));
             }
 
             RegisterInstance<I>(instance);

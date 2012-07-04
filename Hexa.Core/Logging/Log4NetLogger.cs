@@ -25,118 +25,118 @@ namespace Hexa.Core.Logging
 
     internal class Log4NetLogger : ILogger
     {
-        private readonly ILog _Log;
+        private readonly ILog log;
 
         public Log4NetLogger(Type type)
         {
-            _Log = LogManager.GetLogger(type.FullName);
+            this.log = LogManager.GetLogger(type.FullName);
         }
 
         public Log4NetLogger(string typeName)
         {
-            _Log = LogManager.GetLogger(typeName);
+            this.log = LogManager.GetLogger(typeName);
         }
 
         #region ILogger Members
 
         public void Debug(object message)
         {
-            _Log.Debug(message);
+            this.log.Debug(message);
         }
 
         public void Debug(object message, Exception exception)
         {
-            _Log.Debug(message, exception);
+            this.log.Debug(message, exception);
         }
 
         public void DebugFormat(string format, params object[] args)
         {
-            _Log.DebugFormat(CultureInfo.InvariantCulture, format, args);
+            this.log.DebugFormat(CultureInfo.InvariantCulture, format, args);
         }
 
         public void DebugFormat(IFormatProvider provider, string format, params object[] args)
         {
-            _Log.DebugFormat(provider, format, args);
+            this.log.DebugFormat(provider, format, args);
         }
 
         public void Error(object message)
         {
-            _Log.Error(message);
+            this.log.Error(message);
         }
 
         public void Error(object message, Exception exception)
         {
-            _Log.Error(message, exception);
+            this.log.Error(message, exception);
         }
 
         public void ErrorFormat(string format, params object[] args)
         {
-            _Log.ErrorFormat(CultureInfo.InvariantCulture, format, args);
+            this.log.ErrorFormat(CultureInfo.InvariantCulture, format, args);
         }
 
         public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            _Log.ErrorFormat(provider, format, args);
+            this.log.ErrorFormat(provider, format, args);
         }
 
         public void Fatal(object message)
         {
-            _Log.Fatal(message);
+            this.log.Fatal(message);
         }
 
         public void Fatal(object message, Exception exception)
         {
-            _Log.Fatal(message, exception);
+            this.log.Fatal(message, exception);
         }
 
         public void FatalFormat(string format, params object[] args)
         {
-            _Log.FatalFormat(CultureInfo.InvariantCulture, format, args);
+            this.log.FatalFormat(CultureInfo.InvariantCulture, format, args);
         }
 
         public void FatalFormat(IFormatProvider provider, string format, params object[] args)
         {
-            _Log.FatalFormat(provider, format, args);
+            this.log.FatalFormat(provider, format, args);
         }
 
         public void Info(object message)
         {
-            _Log.Info(message);
+            this.log.Info(message);
         }
 
         public void Info(object message, Exception exception)
         {
-            _Log.Info(message, exception);
+            this.log.Info(message, exception);
         }
 
         public void InfoFormat(string format, params object[] args)
         {
-            _Log.InfoFormat(CultureInfo.InvariantCulture, format, args);
+            this.log.InfoFormat(CultureInfo.InvariantCulture, format, args);
         }
 
         public void InfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            _Log.InfoFormat(provider, format, args);
+            this.log.InfoFormat(provider, format, args);
         }
 
         public void Warn(object message)
         {
-            _Log.Warn(message);
+            this.log.Warn(message);
         }
 
         public void Warn(object message, Exception exception)
         {
-            _Log.Warn(message, exception);
+            this.log.Warn(message, exception);
         }
 
         public void WarnFormat(string format, params object[] args)
         {
-            _Log.WarnFormat(CultureInfo.InvariantCulture, format, args);
+            this.log.WarnFormat(CultureInfo.InvariantCulture, format, args);
         }
 
         public void WarnFormat(IFormatProvider provider, string format, params object[] args)
         {
-            _Log.WarnFormat(provider, format, args);
+            this.log.WarnFormat(provider, format, args);
         }
 
         #endregion

@@ -10,7 +10,7 @@
     {
         protected override NHContextFactory CreateNHContextFactory()
         {
-            return new NHContextFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof (Entity).Assembly,
+            return new NHContextFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
                                         ApplicationContext.Container);
         }
 

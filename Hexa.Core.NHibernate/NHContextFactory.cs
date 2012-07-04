@@ -62,7 +62,7 @@ namespace Hexa.Core.Domain
                             .ExposeConfiguration(
                                 c =>
                                 c.Properties.Add(Environment.SqlExceptionConverter,
-                                                 typeof (SqlExceptionHandler).AssemblyQualifiedName))
+                                                 typeof(SqlExceptionHandler).AssemblyQualifiedName))
                             .ExposeConfiguration(c => c.Properties.Add(Environment.DefaultSchema, "dbo"));
 
                         break;
@@ -85,7 +85,7 @@ namespace Hexa.Core.Domain
                             .ExposeConfiguration(
                                 c =>
                                 c.Properties.Add(Environment.SqlExceptionConverter,
-                                                 typeof (SqlExceptionHandler).AssemblyQualifiedName));
+                                                 typeof(SqlExceptionHandler).AssemblyQualifiedName));
 
                         this._validationSupported = false;
 
@@ -115,17 +115,17 @@ namespace Hexa.Core.Domain
                             string.Format("Db provider {0} is currently not supported.",
                                           EnumExtensions.GetEnumMemberValue(this._DbProvider)));
 
-            PropertyInfo pinfo = typeof (FluentConfiguration)
+            PropertyInfo pinfo = typeof(FluentConfiguration)
                 .GetProperty("Configuration",
                              BindingFlags.Instance | BindingFlags.NonPublic);
 
             object nhConfiguration = pinfo.GetValue(cfg, null);
             container.RegisterInstance<Configuration>(nhConfiguration);
 
-            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof (NHContextFactory).Assembly))
+            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
                 .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
                 .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
-                .Mappings(m => m.HbmMappings.AddFromAssembly(typeof (NHContextFactory).Assembly))
+                .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
                 .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
                 .ExposeConfiguration(c => c.Properties.Add(Environment.BatchSize, "100"))
                 .ExposeConfiguration(c => c.Properties.Add(Environment.UseProxyValidator, "true"));
@@ -140,7 +140,7 @@ namespace Hexa.Core.Domain
 
             this._builtConfiguration = cfg.BuildConfiguration();
             this._builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
-                                            typeof (ProxyFactoryFactory).
+                                            typeof(ProxyFactoryFactory).
                                                 AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....

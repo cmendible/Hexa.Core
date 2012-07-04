@@ -52,7 +52,7 @@ namespace Hexa.Core
             where T : I
         {
             if (_registerTypeCallback != null)
-                _registerTypeCallback(typeof (I), typeof (T));
+                _registerTypeCallback(typeof(I), typeof(T));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Hexa.Core
         public void RegisterInstance<I>(object instance)
         {
             if (_registerInstanceCallback != null)
-                _registerInstanceCallback(typeof (I), instance);
+                _registerInstanceCallback(typeof(I), instance);
         }
 
         /// <summary>

@@ -37,20 +37,20 @@ namespace Hexa.Core.Domain
             Map(x => x.UpdatedAt)
                 .Not.Nullable();
 
-            Type keyType = typeof (TKey);
-            if (keyType.Equals(typeof (string)))
+            Type keyType = typeof(TKey);
+            if (keyType.Equals(typeof(string)))
             {
                 Map(x => x.CreatedBy);
                 Map(x => x.UpdatedBy);
             }
-            else if (keyType.Equals(typeof (Guid)))
+            else if (keyType.Equals(typeof(Guid)))
             {
                 Map(x => x.CreatedBy)
                     .CustomType<StringToGuid>();
                 Map(x => x.UpdatedBy)
                     .CustomType<StringToGuid>();
             }
-            else if (keyType.Equals(typeof (int)))
+            else if (keyType.Equals(typeof(int)))
             {
                 Map(x => x.CreatedBy)
                     .CustomType<StringToInt>();

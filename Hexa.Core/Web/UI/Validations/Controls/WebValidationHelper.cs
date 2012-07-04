@@ -167,10 +167,10 @@ namespace Hexa.Core.Web.UI.Controls
         {
             if (Converters.Count > 0) return;
 
-            Converters.Add(typeof (IRequiredValidationInfo), new RequiredConverter());
-            Converters.Add(typeof (IRegexValidationInfo), new RegularExpressionConverter());
-            Converters.Add(typeof (IEmailValidationInfo), new EmailConverter());
-            Converters.Add(typeof (IRangeValidationInfo), new RangeConverter());
+            Converters.Add(typeof(IRequiredValidationInfo), new RequiredConverter());
+            Converters.Add(typeof(IRegexValidationInfo), new RegularExpressionConverter());
+            Converters.Add(typeof(IEmailValidationInfo), new EmailConverter());
+            Converters.Add(typeof(IRangeValidationInfo), new RangeConverter());
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Hexa.Core.Web.UI.Controls
                 RetrieveValidatorInfos(this, new RetrieveValidatorInfosEventArgs(validationInfos));
             else
             {
-                Type providerType = typeof (IValidationInfoProvider<>).MakeGenericType(new[] {entityType});
+                Type providerType = typeof(IValidationInfoProvider<>).MakeGenericType(new[] {entityType});
 
                 var provider = ServiceLocator.GetInstance(providerType) as IValidationInfoProvider;
 
@@ -237,7 +237,7 @@ namespace Hexa.Core.Web.UI.Controls
 
         private List<BaseValidator> CreateValidators<T>(bool addToControl)
         {
-            return CreateValidators(addToControl, typeof (T));
+            return CreateValidators(addToControl, typeof(T));
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters",
@@ -257,15 +257,15 @@ namespace Hexa.Core.Web.UI.Controls
         {
             var validator = new ExtendedRegularExpressionValidator();
 
-            if (pi.PropertyType == typeof (int))
+            if (pi.PropertyType == typeof(int))
             {
                 validator.ValidationExpression = @"[0-9]*";
             }
-            else if (pi.PropertyType == typeof (decimal))
+            else if (pi.PropertyType == typeof(decimal))
             {
                 validator.ValidationExpression = @"[0-9]+[\.\,]?[0-9]+";
             }
-            else if (pi.PropertyType == typeof (float))
+            else if (pi.PropertyType == typeof(float))
             {
                 validator.ValidationExpression = @"[0-9]*";
             }

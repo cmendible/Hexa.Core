@@ -86,7 +86,7 @@
 
         public Type ReturnedType
         {
-            get { return typeof (IPAddress); }
+            get { return typeof(IPAddress); }
         }
 
         public SqlType[] SqlTypes

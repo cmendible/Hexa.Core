@@ -58,7 +58,7 @@ namespace Hexa.Core.Tests
             ExpirableEntity obj = this._Pool.Acquire();
 
             Assert.IsNotNull(obj);
-            Assert.AreEqual(typeof (ExpirableEntity), obj.GetType());
+            Assert.AreEqual(typeof(ExpirableEntity), obj.GetType());
 
             this._objectFromPool = obj;
         }

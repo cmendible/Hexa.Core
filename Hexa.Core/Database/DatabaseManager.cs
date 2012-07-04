@@ -92,7 +92,9 @@ namespace Hexa.Core.Data
                 Match match = Regex.Match(connStr, @"SERVICE_NAME=([^\)]+)");
 
                 if (match.Success)
+                {
                     dbname = match.Groups[1].Value;
+                }
 
                 // Try EZ-Connect method..
                 if (string.IsNullOrEmpty(dbname))
@@ -100,7 +102,9 @@ namespace Hexa.Core.Data
                     match = Regex.Match(connStr, ".*/([^$]*)$");
 
                     if (match.Success)
+                    {
                         dbname = match.Groups[1].Value;
+                    }
                 }
             }
 
@@ -110,7 +114,9 @@ namespace Hexa.Core.Data
 
             // If not catalog nor database name passed, try to obtain it from db file path.
             if (string.IsNullOrEmpty(dbname))
+            {
                 dbname = dbfile;
+            }
             //	dbname = Path.GetFileNameWithoutExtension(dbfile);
 
             // Save return values..
@@ -133,7 +139,9 @@ namespace Hexa.Core.Data
         private static void _ClearAllPools(string providerName)
         {
             if (providerName == MsSqlProvider)
+            {
                 SqlConnection.ClearAllPools();
+            }
 
             if (providerName == PostgreSQLProvider)
             {
@@ -166,13 +174,19 @@ namespace Hexa.Core.Data
                 if (providerName == SQLiteProvider)
                 {
                     if (dbName.ToUpperInvariant() == ":MEMORY:")
+                    {
                         return false;
+                    }
                     else
+                    {
                         return File.Exists(dbName);
+                    }
                 }
 
                 if (providerName == SqlCe || providerName == Firebird)
+                {
                     return File.Exists(dbName);
+                }
 
                 switch (providerName)
                 {
@@ -202,7 +216,9 @@ namespace Hexa.Core.Data
                 int count = ret == null ? 0 : Convert.ToInt32(ret, CultureInfo.InvariantCulture);
 
                 if (count > 0)
+                {
                     return true;
+                }
             }
             catch (NotSupportedException)
             {
@@ -231,7 +247,9 @@ namespace Hexa.Core.Data
             if (providerName == SqlCe)
             {
                 if (File.Exists(dbName))
+                {
                     File.Delete(dbName);
+                }
 
                 Type type = Type.GetType("System.Data.SqlServerCe.SqlCeEngine, System.Data.SqlServerCe");
                 PropertyInfo localConnectionString = type.GetProperty("LocalConnectionString");
@@ -247,7 +265,9 @@ namespace Hexa.Core.Data
             if (providerName == Firebird)
             {
                 if (File.Exists(dbName))
+                {
                     File.Delete(dbName);
+                }
 
                 Type type = Type.GetType("FirebirdSql.Data.FirebirdClient.FbConnection, FirebirdSql.Data.FirebirdClient");
                 MethodInfo createDatabase = type.GetMethod("CreateDatabase",
@@ -381,7 +401,7 @@ namespace Hexa.Core.Data
         /// </summary>
         public void DropDatabase()
         {
-            _DropDatabase(this._connectionProvider, this._connectionString, this._providerName);
+            this._DropDatabase(this._connectionProvider, this._connectionString, this._providerName);
         }
     }
 }

@@ -44,9 +44,9 @@ namespace Hexa.Core.Validation
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
                                                  "Please provide a valid non null string as the validation property name");
 
-            EntityType = typeof (void); // Avoid make this.EntityType == null as to not breaking existing code.
-            Message = message;
-            PropertyName = property;
+            this.EntityType = typeof(void); // Avoid make this.EntityType == null as to not breaking existing code.
+            this.Message = message;
+            this.PropertyName = property;
         }
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace Hexa.Core.Validation
                                                  "Please provide a valid non null string as the validation error message");
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("property"),
                                                  "Please provide a valid non null string as the validation property name");
-            EntityType = entityType;
-            Message = message;
-            PropertyName = property;
+            this.EntityType = entityType;
+            this.Message = message;
+            this.PropertyName = property;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("({0}::{1}) - {2}", EntityType, PropertyName, Message);
+            return string.Format("({0}::{1}) - {2}", this.EntityType, this.PropertyName, this.Message);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof (ValidationError)) return false;
+            if (obj.GetType() != typeof(ValidationError)) return false;
             return Equals((ValidationError) obj);
         }
 
@@ -109,9 +109,9 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public bool Equals(ValidationError obj)
         {
-            return Equals(obj.EntityType, EntityType)
-                   && Equals(obj.PropertyName, PropertyName)
-                   && Equals(obj.Message, Message);
+            return Equals(obj.EntityType, this.EntityType)
+                   && Equals(obj.PropertyName, this.PropertyName)
+                   && Equals(obj.Message, this.Message);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Hexa.Core.Validation
         {
             unchecked
             {
-                return (Message.GetHashCode()*397) ^ PropertyName.GetHashCode();
+                return (this.Message.GetHashCode() * 397) ^ this.PropertyName.GetHashCode();
             }
         }
 

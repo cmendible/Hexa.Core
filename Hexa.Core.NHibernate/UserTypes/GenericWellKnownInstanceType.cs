@@ -37,7 +37,7 @@
 
         public Type ReturnedType
         {
-            get { return typeof (T); }
+            get { return typeof(T); }
         }
 
         public bool IsMutable

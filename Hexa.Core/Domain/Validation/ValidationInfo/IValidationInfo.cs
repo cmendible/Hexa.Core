@@ -47,7 +47,7 @@ namespace Hexa.Core.Validation
         protected BaseValidationInfo(string propertyName, string error)
         {
             _ErrorMessage = error;
-            _PropertyInfo = typeof (TEntity).GetProperty(propertyName);
+            _PropertyInfo = typeof(TEntity).GetProperty(propertyName);
         }
 
         #region IValidationInfo Members

@@ -211,7 +211,7 @@ namespace Hexa.Core.Web.UI.Controls
                     sb.Append("grd.rows.item(actualidx).className = '").Append(SelectedRowStyle.CssClass).Append(
                         "';").Append("\r\n");
                     sb.Append("}}</script>");
-                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SelectMSGridRow", sb.ToString());
+                    Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SelectMSGridRow", sb.ToString());
                 }
             }
         }

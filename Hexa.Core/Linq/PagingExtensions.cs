@@ -28,14 +28,14 @@ namespace System.Linq
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip(((pageNumber - 1)*pageSize)).Take(pageSize);
+            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
         }
 
         public static IEnumerable<T> Page<T>(this IEnumerable<T> query, int pageNumber, int pageSize)
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip(((pageNumber - 1)*pageSize)).Take(pageSize);
+            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
         }
     }
 }

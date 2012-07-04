@@ -78,7 +78,7 @@ namespace Hexa.Core.Pooling
                 return;
             }
             this._isDisposed = true;
-            if (typeof (IDisposable).IsAssignableFrom(typeof (T)))
+            if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
             {
                 lock (this._queue)
                 {

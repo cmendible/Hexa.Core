@@ -38,7 +38,7 @@ namespace Hexa.Core.Web.UI
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IList<T> LinqCache<T>(this Table<T> query) where T : class
         {
-            string tableName = query.Context.Mapping.GetTable(typeof (T)).TableName;
+            string tableName = query.Context.Mapping.GetTable(typeof(T)).TableName;
             IList<T> result = HttpContext.Current.Cache[tableName] as List<T>;
 
             if (result == null)

@@ -45,10 +45,14 @@ namespace Hexa.Core.Domain
                 if (value == null)
                 {
                     if (RunningScopes.Count > 0)
+                    {
                         RunningScopes.Pop();
+                    }
                 }
                 else
+                {
                     RunningScopes.Push(value);
+                }
             }
         }
 
@@ -78,14 +82,18 @@ namespace Hexa.Core.Domain
                 {
                     //HttpContext avaiable ( ASP.NET ..)
                     if (HttpContext.Current.Items[_key] == null)
+                    {
                         HttpContext.Current.Items[_key] = new Stack<IUnitOfWork>();
+                    }
 
                     return HttpContext.Current.Items[_key] as Stack<IUnitOfWork>;
                 }
                 else
                 {
                     if (CallContext.GetData(_key) == null)
+                    {
                         CallContext.SetData(_key, new Stack<IUnitOfWork>());
+                    }
 
                     //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
                     return CallContext.GetData(_key) as Stack<IUnitOfWork>;

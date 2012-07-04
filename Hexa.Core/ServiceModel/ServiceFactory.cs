@@ -195,7 +195,7 @@ namespace Hexa.Core.ServiceModel
             else
             {
                 var type = (System.Security.Cryptography.X509Certificates.X509FindType) Enum.Parse(
-                    typeof (System.Security.Cryptography.X509Certificates.X509FindType),
+                    typeof(System.Security.Cryptography.X509Certificates.X509FindType),
                     cfg.X509FindType.ToString()
                                                                                             );
                 behavior.ServiceCertificate.SetCertificate(
@@ -220,7 +220,7 @@ namespace Hexa.Core.ServiceModel
             IServiceBehavior behavior = null;
 
             // Add behaviors..
-            if (!host.Description.Behaviors.Contains(typeof (ServiceDebugBehavior)))
+            if (!host.Description.Behaviors.Contains(typeof(ServiceDebugBehavior)))
             {
                 behavior = new ServiceDebugBehavior();
                 ((ServiceDebugBehavior) behavior).IncludeExceptionDetailInFaults = _Configuration.Debug;
@@ -277,7 +277,7 @@ namespace Hexa.Core.ServiceModel
             foreach (Type iface in serviceType.GetInterfaces())
             {
                 var attr =
-                    (ServiceContractAttribute) Attribute.GetCustomAttribute(iface, typeof (ServiceContractAttribute));
+                    (ServiceContractAttribute) Attribute.GetCustomAttribute(iface, typeof(ServiceContractAttribute));
 
                 if (attr != null)
                 {
@@ -313,7 +313,7 @@ namespace Hexa.Core.ServiceModel
             if (!host.Description.Behaviors.Contains(metadataBehavior))
             {
                 host.Description.Behaviors.Add(metadataBehavior);
-                host.AddServiceEndpoint(typeof (IMetadataExchange), mexbinding, "mex");
+                host.AddServiceEndpoint(typeof(IMetadataExchange), mexbinding, "mex");
             }
 
             return host;

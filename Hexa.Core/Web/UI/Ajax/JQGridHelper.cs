@@ -292,7 +292,7 @@ namespace Hexa.Core.Web.UI.Ajax
             try
             {
                 var serializer =
-                    new DataContractJsonSerializer(typeof (jqFilter));
+                    new DataContractJsonSerializer(typeof(jqFilter));
                 var reader =
                     new StringReader(jsonData);
                 var ms =
@@ -393,11 +393,11 @@ namespace Hexa.Core.Web.UI.Ajax
         public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
             where T : class
         {
-            ParameterExpression parameter = Expression.Parameter(typeof (T), "p");
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
             MemberExpression memberAccess = _GetMemberAccess(column, parameter);
 
-            if (memberAccess.Type == typeof (DateTime))
+            if (memberAccess.Type == typeof(DateTime))
             {
                 column += ".Date";
                 memberAccess = _GetMemberAccess(column, parameter);
@@ -428,21 +428,21 @@ namespace Hexa.Core.Web.UI.Ajax
                     //string.Contains()
                 case "cn":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("Contains"),
+                                                typeof(String).GetMethod("Contains"),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "bw":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("StartsWith", new[] {typeof (string)}),
+                                                typeof(String).GetMethod("StartsWith", new[] {typeof(string)}),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "bn":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("StartsWith", new[] {typeof (string)}),
+                                                typeof(String).GetMethod("StartsWith", new[] {typeof(string)}),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);
@@ -451,14 +451,14 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 case "ew":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("EndsWith", new[] {typeof (string)}),
+                                                typeof(String).GetMethod("EndsWith", new[] {typeof(string)}),
                                                 Expression.Constant(value));
 
                     lambda = Expression.Lambda(condition, parameter);
                     break;
                 case "en":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("EndsWith", new[] {typeof (string)}),
+                                                typeof(String).GetMethod("EndsWith", new[] {typeof(string)}),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);
@@ -487,7 +487,7 @@ namespace Hexa.Core.Web.UI.Ajax
                     break;
                 case "nc":
                     condition = Expression.Call(memberAccess,
-                                                typeof (String).GetMethod("Contains"),
+                                                typeof(String).GetMethod("Contains"),
                                                 Expression.Constant(value));
 
                     condition = Expression.Not(condition);

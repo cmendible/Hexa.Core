@@ -40,7 +40,7 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
         {
-            return (from prop in TypeDescriptor.GetProperties(typeof (TEntity)).Cast<PropertyDescriptor>()
+            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
                     from attribute in prop.Attributes.OfType<ValidationAttribute>()
                     select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
         }
@@ -53,7 +53,7 @@ namespace Hexa.Core.Validation
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static IList<KeyValuePair<string, ValidationAttribute>> GetDataAnnotationsList<TEntity>()
         {
-            return (from prop in TypeDescriptor.GetProperties(typeof (TEntity)).Cast<PropertyDescriptor>()
+            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
                     from attribute in prop.Attributes.OfType<ValidationAttribute>()
                     select new KeyValuePair<string, ValidationAttribute>(prop.Name, attribute)).ToList();
         }
@@ -67,23 +67,23 @@ namespace Hexa.Core.Validation
         /// <returns></returns>
         private static IValidationInfo ConvertDataAnnotation<TEntity>(ValidationAttribute att, PropertyDescriptor prop)
         {
-            if (att.GetType() == typeof (RequiredAttribute))
+            if (att.GetType() == typeof(RequiredAttribute))
             {
                 var reqAtt = att as RequiredAttribute;
                 return new RequiredValidationInfo<TEntity>(prop.Name, reqAtt.ErrorMessage);
             }
-            else if (att.GetType() == typeof (RegularExpressionAttribute))
+            else if (att.GetType() == typeof(RegularExpressionAttribute))
             {
                 var regAtt = att as RegularExpressionAttribute;
                 return new RegexValidationInfo<TEntity>(prop.Name, regAtt.ErrorMessage, regAtt.Pattern);
             }
-            if (att.GetType() == typeof (RangeAttribute))
+            if (att.GetType() == typeof(RangeAttribute))
             {
                 var rangeAtt = att as RangeAttribute;
                 return new RangeValidationInfo<TEntity>(prop.Name, rangeAtt.ErrorMessage, rangeAtt.Minimum,
                                                         rangeAtt.Maximum);
             }
-            if (att.GetType() == typeof (StringLengthAttribute))
+            if (att.GetType() == typeof(StringLengthAttribute))
             {
                 var lengthAtt = att as StringLengthAttribute;
                 return new RegexValidationInfo<TEntity>(prop.Name, lengthAtt.ErrorMessage,

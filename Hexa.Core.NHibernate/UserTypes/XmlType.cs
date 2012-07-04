@@ -78,7 +78,7 @@ namespace Hexa.Core.Domain
 
         public Type ReturnedType
         {
-            get { return typeof (XmlDocument); }
+            get { return typeof(XmlDocument); }
         }
 
         public bool IsMutable

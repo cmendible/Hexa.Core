@@ -43,10 +43,10 @@ namespace Hexa.Core.Domain
 
             DateTime createdAt = DateTime.Now;
 
-            _Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
-            _Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
-            _Set(@event.Persister, @event.State, "CreatedAt", createdAt);
-            _Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
+            this._Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "CreatedAt", createdAt);
+            this._Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
 
             auditable.CreatedBy = userUniqueId;
             auditable.UpdatedBy = userUniqueId;
@@ -93,8 +93,8 @@ namespace Hexa.Core.Domain
                 }
             }
 
-            _Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
-            _Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
+            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
             auditable.UpdatedBy = userUniqueId;
             auditable.UpdatedAt = updatedAt;
 

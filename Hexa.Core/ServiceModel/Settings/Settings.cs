@@ -29,7 +29,7 @@
                 if (String.IsNullOrEmpty(this["SecurityMode"] as string))
                     return SecurityMode.Message;
 
-                return (SecurityMode) Enum.Parse(typeof (SecurityMode), this["SecurityMode"] as string);
+                return (SecurityMode) Enum.Parse(typeof(SecurityMode), this["SecurityMode"] as string);
             }
         }
 
@@ -105,7 +105,7 @@
         }
     }
 
-    [TypeConverter(typeof (Url))]
+    [TypeConverter(typeof(Url))]
     public class Url : ConfigurationElement
     {
         [ConfigurationProperty("Name")]

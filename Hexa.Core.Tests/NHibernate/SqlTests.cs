@@ -11,7 +11,7 @@
         protected override NHContextFactory CreateNHContextFactory()
         {
             return new NHContextFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty,
-                                        typeof (Entity).Assembly, ApplicationContext.Container);
+                                        typeof(Entity).Assembly, ApplicationContext.Container);
         }
 
         protected override string ConnectionString()

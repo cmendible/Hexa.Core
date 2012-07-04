@@ -71,7 +71,7 @@ namespace Hexa.Core.Domain
 
         public Type ElementType
         {
-            get { return typeof (TEntity); }
+            get { return typeof(TEntity); }
         }
 
         public Expression Expression

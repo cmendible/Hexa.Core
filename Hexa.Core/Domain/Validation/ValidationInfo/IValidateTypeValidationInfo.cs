@@ -64,7 +64,7 @@ namespace Hexa.Core.Validation
         {
             if (string.IsNullOrEmpty(error))
                 return string.Format(Resource.ValueIsNotOfTheCorrectType,
-                                     DataAnnotationHelper.ParseDisplayName(typeof (TEntity), propertyName));
+                                     DataAnnotationHelper.ParseDisplayName(typeof(TEntity), propertyName));
             else
                 return error;
         }

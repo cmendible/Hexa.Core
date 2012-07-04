@@ -40,7 +40,7 @@ namespace Hexa.Core
         /// <returns></returns>
         public static TDependency GetInstance<TDependency>()
         {
-            return (TDependency) GetInstance(typeof (TDependency));
+            return (TDependency) GetInstance(typeof(TDependency));
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Hexa.Core
             try
             {
                 IEnumerable<object> services =
-                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof (TDependency));
+                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
                 if (services != null)
                     return (TDependency) services.FirstOrDefault();
@@ -89,7 +89,7 @@ namespace Hexa.Core
             catch (NullReferenceException)
             {
                 throw new InternalException("ServiceLocator has not been initialized; " +
-                                            "I was trying to retrieve " + typeof (TDependency));
+                                            "I was trying to retrieve " + typeof(TDependency));
             }
 
             return default(TDependency);
@@ -102,7 +102,7 @@ namespace Hexa.Core
             try
             {
                 IEnumerable<object> services =
-                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof (TDependency));
+                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
                 if (services != null)
                     return services.Cast<TDependency>().ToArray();
@@ -110,7 +110,7 @@ namespace Hexa.Core
             catch (NullReferenceException)
             {
                 throw new InternalException("ServiceLocator has not been initialized; " +
-                                            "I was trying to retrieve " + typeof (TDependency));
+                                            "I was trying to retrieve " + typeof(TDependency));
             }
 
             return default(TDependency[]);

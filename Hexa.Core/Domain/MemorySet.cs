@@ -42,10 +42,12 @@ namespace Hexa.Core.Domain
         public MemorySet(List<TEntity> innerList)
         {
             if (innerList == null)
+            {
                 throw new ArgumentNullException("innerList");
+            }
 
-            _InnerList = innerList;
-            _IncludePaths = new List<string>();
+            this._InnerList = innerList;
+            this._IncludePaths = new List<string>();
         }
 
         #endregion
@@ -60,9 +62,11 @@ namespace Hexa.Core.Domain
         public MemorySet<TEntity> Include(string path)
         {
             if (String.IsNullOrEmpty(path))
+            {
                 throw new ArgumentNullException("path");
+            }
 
-            _IncludePaths.Add(path);
+            this._IncludePaths.Add(path);
 
             return this;
         }
@@ -74,23 +78,25 @@ namespace Hexa.Core.Domain
         public void AddObject(TEntity entity)
         {
             if (entity != null)
-                _InnerList.Add(entity);
+            {
+                this._InnerList.Add(entity);
+            }
         }
 
         public void Attach(TEntity entity)
         {
-            if (entity != null
-                &&
-                !_InnerList.Contains(entity))
+            if (entity != null && !this._InnerList.Contains(entity))
             {
-                _InnerList.Add(entity);
+                this._InnerList.Add(entity);
             }
         }
 
         public void DeleteObject(TEntity entity)
         {
             if (entity != null)
-                _InnerList.Remove(entity);
+            {
+                this._InnerList.Remove(entity);
+            }
         }
 
         public void ModifyObject(TEntity entity)
@@ -103,8 +109,10 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="System.Collections.IEnumerable.GetEnumerator"/></returns>
         public IEnumerator<TEntity> GetEnumerator()
         {
-            foreach (TEntity item in _InnerList)
+            foreach (TEntity item in this._InnerList)
+            {
                 yield return item;
+            }
         }
 
         /// <summary>
@@ -121,7 +129,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public Type ElementType
         {
-            get { return typeof (TEntity); }
+            get { return typeof(TEntity); }
         }
 
         /// <summary>
@@ -129,7 +137,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public Expression Expression
         {
-            get { return _InnerList.AsQueryable().Expression; }
+            get { return this._InnerList.AsQueryable().Expression; }
         }
 
         /// <summary>
@@ -137,7 +145,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public IQueryProvider Provider
         {
-            get { return _InnerList.AsQueryable().Provider; }
+            get { return this._InnerList.AsQueryable().Provider; }
         }
 
         [SuppressMessage("Microsoft.Design",
@@ -193,7 +201,9 @@ namespace Hexa.Core.Domain
         public void Detach(TEntity entity)
         {
             if (entity != null)
-                _InnerList.Remove(entity);
+            {
+                this._InnerList.Remove(entity);
+            }
         }
     }
 }

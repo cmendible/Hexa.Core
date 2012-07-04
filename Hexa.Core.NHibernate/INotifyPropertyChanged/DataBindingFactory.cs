@@ -10,7 +10,7 @@
 
         public static T Create<T>()
         {
-            return (T) Create(typeof (T));
+            return (T) Create(typeof(T));
         }
 
         public static object Create(Type type)
@@ -19,8 +19,8 @@
                 type,
                 new[]
                     {
-                        typeof (INotifyPropertyChanged),
-                        typeof (IMarkerInterface)
+                        typeof(INotifyPropertyChanged),
+                        typeof(IMarkerInterface)
                     },
                 new NotifyPropertyChangedInterceptor(type.FullName));
         }
@@ -50,12 +50,12 @@
 
             public void Intercept(IInvocation invocation)
             {
-                if (invocation.Method.DeclaringType == typeof (IMarkerInterface))
+                if (invocation.Method.DeclaringType == typeof(IMarkerInterface))
                 {
                     invocation.ReturnValue = typeName;
                     return;
                 }
-                if (invocation.Method.DeclaringType == typeof (INotifyPropertyChanged))
+                if (invocation.Method.DeclaringType == typeof(INotifyPropertyChanged))
                 {
                     var propertyChangedEventHandler = (PropertyChangedEventHandler) invocation.Arguments[0];
                     if (invocation.Method.Name.StartsWith("add_"))

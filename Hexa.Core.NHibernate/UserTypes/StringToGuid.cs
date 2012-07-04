@@ -84,7 +84,7 @@
 
         public Type ReturnedType
         {
-            get { return typeof (string); }
+            get { return typeof(string); }
         }
 
         public SqlType[] SqlTypes
