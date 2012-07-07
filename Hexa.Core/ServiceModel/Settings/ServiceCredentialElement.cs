@@ -1,16 +1,14 @@
-﻿using System.Configuration;
-using System.Security.Cryptography.X509Certificates;
-
 namespace Hexa.Core.ServiceModel
 {
+    using System.Configuration;
+    using System.Security.Cryptography.X509Certificates;
 
     public sealed class ServiceCredentialsElement : ConfigurationElement
     {
-        public ServiceCredentialsElement()
-        {
-        }
+        #region Properties
 
-        [ConfigurationProperty("findValue", DefaultValue = ""), StringValidator(MinLength = 0)]
+        [ConfigurationProperty("findValue", DefaultValue = ""),
+        StringValidator(MinLength = 0)]
         public string FindValue
         {
             get
@@ -28,11 +26,11 @@ namespace Hexa.Core.ServiceModel
         }
 
         [ConfigurationProperty("storeLocation", DefaultValue = StoreLocation.LocalMachine)]
-        public System.Security.Cryptography.X509Certificates.StoreLocation StoreLocation
+        public StoreLocation StoreLocation
         {
             get
             {
-                return (System.Security.Cryptography.X509Certificates.StoreLocation)base["storeLocation"];
+                return (StoreLocation)base["storeLocation"];
             }
             set
             {
@@ -41,11 +39,11 @@ namespace Hexa.Core.ServiceModel
         }
 
         [ConfigurationProperty("storeName", DefaultValue = StoreName.My)]
-        public System.Security.Cryptography.X509Certificates.StoreName StoreName
+        public StoreName StoreName
         {
             get
             {
-                return (System.Security.Cryptography.X509Certificates.StoreName)base["storeName"];
+                return (StoreName)base["storeName"];
             }
             set
             {
@@ -65,5 +63,7 @@ namespace Hexa.Core.ServiceModel
                 base["x509FindType"] = value;
             }
         }
+
+        #endregion Properties
     }
 }

@@ -1,98 +1,111 @@
-﻿using System;
-using System.Net;
-using NHibernate;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
 namespace Hexa.Core.Domain
 {
-	public class IPAddressType : IUserType
-	{
-		#region Equals member
+    using System;
+    using System.Data;
+    using System.Net;
 
-		bool IUserType.Equals(object x, object y)
-		{
-			return object.Equals(x, y);
-		}
+    using NHibernate;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
 
-		#endregion
+    public class IPAddressType : IUserType
+    {
+        #region Properties
 
-		#region IUserType Members
+        public bool IsMutable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
-		public object Assemble(object cached, object owner)
-		{
-			return cached;
-		}
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(IPAddress);
+            }
+        }
 
-		public object DeepCopy(object value)
-		{
-			if (value == null)
-				return null;
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {NHibernateUtil.String.SqlType};
+            }
+        }
 
-			return new IPAddress(((IPAddress)value).GetAddressBytes());
-		}
+        #endregion Properties
 
-		public object Disassemble(object value)
-		{
-			return value;
-		}
+        #region Methods
 
-		public int GetHashCode(object x)
-		{
-			return x.GetHashCode();
-		}
+        public object Assemble(object cached, object owner)
+        {
+            return cached;
+        }
 
-		public bool IsMutable
-		{
-			get { return true; }
-		}
+        public object DeepCopy(object value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
 
-		public object NullSafeGet(System.Data.IDataReader rs, string[] names, object owner)
-		{
-			Int32 index = rs.GetOrdinal(names[0]);
-			if (rs.IsDBNull(index))
-			{
-				return null;
-			}
+            return new IPAddress(((IPAddress) value).GetAddressBytes());
+        }
 
-			try
-			{
-				return IPAddress.Parse(rs[index].ToString());
-			}
-			catch (FormatException)
-			{
-				//The uri is malformed, maybe it is worth to doing something else.
-				return null;
-			}
-		}
+        public object Disassemble(object value)
+        {
+            return value;
+        }
 
-		public void NullSafeSet(System.Data.IDbCommand cmd, object value, int index)
-		{
-			if (value == null || value == DBNull.Value)
-			{
-				NHibernateUtil.String.NullSafeSet(cmd, null, index);
-				return;
-			}
+        public int GetHashCode(object x)
+        {
+            return x.GetHashCode();
+        }
 
-			var obj = (IPAddress)value;
-			NHibernateUtil.String.Set(cmd, obj.ToString(), index);
-		}
+        bool IUserType.Equals(object x, object y)
+        {
+            return Equals(x, y);
+        }
 
-		public object Replace(object original, object target, object owner)
-		{
-			return original;
-		}
+        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        {
+            Int32 index = rs.GetOrdinal(names[0]);
+            if (rs.IsDBNull(index))
+            {
+                return null;
+            }
 
-		public Type ReturnedType
-		{
-			get { return typeof(IPAddress); }
-		}
+            try
+            {
+                return IPAddress.Parse(rs[index].ToString());
+            }
+            catch (FormatException)
+            {
+                //The uri is malformed, maybe it is worth to doing something else.
+                return null;
+            }
+        }
 
-		public NHibernate.SqlTypes.SqlType[] SqlTypes
-		{
-			get { return new SqlType[] { NHibernateUtil.String.SqlType }; }
-		}
+        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        {
+            if (value == null || value == DBNull.Value)
+            {
+                NHibernateUtil.String.NullSafeSet(cmd, null, index);
+                return;
+            }
 
-		#endregion
-	}
+            var obj = (IPAddress) value;
+            NHibernateUtil.String.Set(cmd, obj.ToString(), index);
+        }
+
+        public object Replace(object original, object target, object owner)
+        {
+            return original;
+        }
+
+        #endregion Methods
+    }
 }

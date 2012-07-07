@@ -1,27 +1,33 @@
-﻿//===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
+// ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
+// ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
     /// <summary>
-    /// Helper for rebinder parameters without use Invoke method in expressions 
-    /// ( this methods is not supported in all linq query providers, 
+    /// Helper for rebinder parameters without use Invoke method in expressions
+    /// ( this methods is not supported in all linq query providers,
     /// for example in Linq2Entities is not supported)
     /// </summary>
     public class ParameterRebinder : ExpressionVisitor
     {
+        #region Fields
+
         private readonly Dictionary<ParameterExpression, ParameterExpression> map;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Default construcotr
@@ -31,16 +37,23 @@ namespace Hexa.Core.Domain.Specification
         {
             this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
         }
+
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
         /// Replate parameters in expression with a Map information
         /// </summary>
         /// <param name="map">Map information</param>
         /// <param name="exp">Expression to replace parameters</param>
         /// <returns>Expression with parameters replaced</returns>
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
+        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map,
+            Expression exp)
         {
             return new ParameterRebinder(map).Visit(exp);
         }
+
         /// <summary>
         /// Visit pattern method
         /// </summary>
@@ -57,6 +70,6 @@ namespace Hexa.Core.Domain.Specification
             return base.VisitParameter(p);
         }
 
+        #endregion Methods
     }
-
 }

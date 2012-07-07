@@ -1,45 +1,65 @@
-#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 // Inspired on Pool<T> From http://pastebin.com/he1fYC29
 
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Threading;
+#endregion Header
 
 namespace Hexa.Core.Pooling
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+
     public interface IObjectWithExpiration<T> : IDisposable
     {
-        DateTime TimeOut { get; set; }
-        bool IsExpired { get; }
+        #region Properties
+
+        bool IsExpired
+        {
+            get;
+        }
+
+        DateTime TimeOut
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 
     public class Pool<T> : IDisposable
     {
-        private bool _isDisposed;
-        private Func<Pool<T>, T> _factory;
-        private Queue<T> _queue;
-        private Semaphore _sync;
-        private bool _usingExpirableObjects;
-        private bool _eagerLoad;
+        #region Fields
 
-        public Pool(int size, Func<Pool<T>, T> factory) : this(size, factory, false)
+        private readonly bool _eagerLoad;
+        private readonly Func<Pool<T>, T> _factory;
+        private readonly Queue<T> _queue;
+        private readonly Semaphore _sync;
+        private readonly bool _usingExpirableObjects;
+
+        private bool _isDisposed;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public Pool(int size, Func<Pool<T>, T> factory)
+            : this(size, factory, false)
         {
         }
 
@@ -47,42 +67,64 @@ namespace Hexa.Core.Pooling
         {
             if (size <= 0)
                 throw new ArgumentOutOfRangeException("size", size,
-                    "Argument 'size' must be greater than zero.");
+                                                      "Argument 'size' must be greater than zero.");
             if (factory == null)
-                throw new ArgumentNullException("factory");
-
-            _factory = factory;
-            _sync = new Semaphore(size, size);
-            _queue = new Queue<T>(size);
-            _eagerLoad = eagerLoad;
-
-            if (_eagerLoad)
             {
-                _PreloadItems(size);
+                throw new ArgumentNullException("factory");
             }
 
-            _usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
+            this._factory = factory;
+            this._sync = new Semaphore(size, size);
+            this._queue = new Queue<T>(size);
+            this._eagerLoad = eagerLoad;
+
+            if (this._eagerLoad)
+            {
+                this._PreloadItems(size);
+            }
+
+            this._usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public bool IsDisposed
+        {
+            get
+            {
+                return this._isDisposed;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public T Acquire()
         {
-            _sync.WaitOne();
-            lock (_queue)
+            this._sync.WaitOne();
+            lock (this._queue)
             {
-                var item = default(T);
-                if (!_eagerLoad)
+                T item = default(T);
+                if (!this._eagerLoad)
                 {
-                    if (_queue.Count > 0)
-                        item = _queue.Dequeue();
+                    if (this._queue.Count > 0)
+                    {
+                        item = this._queue.Dequeue();
+                    }
                     else
-                        item  = _factory(this);
+                    {
+                        item = this._factory(this);
+                    }
                 }
                 else
                 {
-                    item = _queue.Dequeue();
+                    item = this._queue.Dequeue();
                 }
 
-                if (_usingExpirableObjects)
+                if (this._usingExpirableObjects)
                 {
                     var expirableObject = item as IObjectWithExpiration<T>;
                     if (expirableObject.IsExpired)
@@ -93,7 +135,7 @@ namespace Hexa.Core.Pooling
                         }
                         finally
                         {
-                            item = _factory(this);
+                            item = this._factory(this);
                         }
                     }
                 }
@@ -101,49 +143,45 @@ namespace Hexa.Core.Pooling
             }
         }
 
-        public void Release(T item)
-        {
-            lock (_queue)
-            {
-                _queue.Enqueue(item);
-            }
-            _sync.Release();
-        }
-
         public void Dispose()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 return;
             }
-            _isDisposed = true;
+            this._isDisposed = true;
             if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
             {
-                lock (_queue)
+                lock (this._queue)
                 {
-                    while (_queue.Count > 0)
+                    while (this._queue.Count > 0)
                     {
-                        IDisposable disposable = (IDisposable)_queue.Dequeue();
+                        var disposable = (IDisposable)this._queue.Dequeue();
                         disposable.Dispose();
                     }
                 }
             }
-            _sync.Close();
+            this._sync.Close();
         }
 
-        public bool IsDisposed
+        public void Release(T item)
         {
-            get { return _isDisposed; }
+            lock (this._queue)
+            {
+                this._queue.Enqueue(item);
+            }
+            this._sync.Release();
         }
 
         private void _PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
             {
-                T item = _factory(this);
-                _queue.Enqueue(item);
+                T item = this._factory(this);
+                this._queue.Enqueue(item);
             }
         }
-    }
 
+        #endregion Methods
+    }
 }

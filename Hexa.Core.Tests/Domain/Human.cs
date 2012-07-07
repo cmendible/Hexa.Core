@@ -1,16 +1,29 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Hexa.Core.Domain;
-
 namespace Hexa.Core.Tests.Domain
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using Core.Domain;
+
     [Serializable]
     public class Human : AuditableRootEntity<Human>
     {
-        [Required]
-        public virtual string Name { get; set; }
+        #region Properties
 
         [Required]
-        public virtual bool isMale { get; set; }
+        public virtual bool isMale
+        {
+            get;
+            set;
+        }
+
+        [Required]
+        public virtual string Name
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

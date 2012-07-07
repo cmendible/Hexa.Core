@@ -1,11 +1,14 @@
-﻿
 namespace Hexa.Core.ServiceModel.Security
 {
-    public enum SecurityMode 
+    #region Enumerations
+
+    public enum SecurityMode
     {
         None,
         Message,
         Transport,
         TransportWithMessage
     }
+
+    #endregion Enumerations
 }

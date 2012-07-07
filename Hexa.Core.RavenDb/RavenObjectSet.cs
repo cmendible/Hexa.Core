@@ -1,109 +1,91 @@
-﻿#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-using Raven.Client;
-using Raven.Client.Indexes;
-using Raven.Client.Linq;
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
-    public class RavenObjectSet<TEntity> : IEntitySet<TEntity> where TEntity : class
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+
+    using Raven.Client;
+
+    public class RavenObjectSet<TEntity> : IEntitySet<TEntity>
+        where TEntity : class
     {
-        IQueryable<TEntity> _set;
-        IDocumentSession _session;
+        #region Fields
+
+        private readonly IDocumentSession _session;
+        private readonly IQueryable<TEntity> _set;
+
+        #endregion Fields
+
+        #region Constructors
 
         public RavenObjectSet(IDocumentSession session)
         {
-            _session = session;
-            _set = _session.Query<TEntity>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow());    
+            this._session = session;
+            this._set = this._session.Query<TEntity>()
+                   .Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }
 
-        public void AddObject(TEntity entity)
-        {
-            _session.Store(entity);
-        }
+        #endregion Constructors
 
-        public void Attach(TEntity entity)
-        {
-        }
-
-        public void DeleteObject(TEntity entity)
-        {
-            _session.Delete(entity);
-        }
-
-        public void ModifyObject(TEntity entity)
-        {
-        }
-
-        public void Detach(TEntity entity)
-        {
-
-        }
-
-        public IEnumerator<TEntity> GetEnumerator()
-        {
-            return _set.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _set.GetEnumerator();
-        }
+        #region Properties
 
         public Type ElementType
         {
-            get { return typeof(TEntity); }
+            get
+            {
+                return typeof(TEntity);
+            }
         }
 
-        public System.Linq.Expressions.Expression Expression
+        public Expression Expression
         {
-            get { return _set.Expression; }
+            get
+            {
+                return this._set.Expression;
+            }
         }
 
         public IQueryProvider Provider
         {
-            get { return _set.Provider; }
+            get
+            {
+                return this._set.Provider;
+            }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
+        #endregion Properties
+
+        #region Methods
+
+        public void AddObject(TEntity entity)
         {
-            throw new NotImplementedException();
+            this._session.Store(entity);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter)
+        public void Attach(TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
-        {
-            throw new NotImplementedException();
         }
 
         public IEntitySet<TEntity> Cacheable()
@@ -116,16 +98,67 @@ namespace Hexa.Core.Domain
             return this;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public void DeleteObject(TEntity entity)
+        {
+            this._session.Delete(entity);
+        }
+
+        public void Detach(TEntity entity)
+        {
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerator<TEntity> GetEnumerator()
+        {
+            return this._set.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this._set.GetEnumerator();
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
+        {
+            throw new NotImplementedException();
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+            Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        [SuppressMessage("Microsoft.Design",
+                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, S>> orderByExpression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ModifyObject(TEntity entity)
+        {
+        }
+
+        #endregion Methods
     }
 }

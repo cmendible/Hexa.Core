@@ -1,19 +1,19 @@
-﻿//===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
+// ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-using System;
-using System.Linq.Expressions;
-
+// ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Base contract for Specification pattern, for more information
     /// about this pattern see http://martinfowler.com/apsupp/spec.pdf
@@ -25,11 +25,15 @@ namespace Hexa.Core.Domain.Specification
     public interface ISpecification<TEntity>
         where TEntity : class
     {
+        #region Methods
+
         /// <summary>
-        /// Check if this specification is satisfied by a 
+        /// Check if this specification is satisfied by a
         /// specific expression lambda
         /// </summary>
         /// <returns></returns>
         Expression<Func<TEntity, bool>> SatisfiedBy();
+
+        #endregion Methods
     }
 }

@@ -1,20 +1,22 @@
-using System.Data.Common;
-
 namespace Hexa.Core.Data
 {
+    using System.Data.Common;
+
     public static class DbProviderExtensions
     {
+        #region Methods
+
         public static void ExecuteNonQuery(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
-            using (var conn = provider.CreateConnection())
+            using (DbConnection conn = provider.CreateConnection())
             {
                 conn.ConnectionString = connectionString;
 
                 try
                 {
                     conn.Open();
-                    using (var cmd = conn.CreateCommand())
+                    using (DbCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = command;
                         cmd.ExecuteNonQuery();
@@ -30,17 +32,17 @@ namespace Hexa.Core.Data
         public static object ExecuteScalar(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
-            using (var conn = provider.CreateConnection())
+            using (DbConnection conn = provider.CreateConnection())
             {
                 conn.ConnectionString = connectionString;
 
                 try
                 {
                     conn.Open();
-                    using (var cmd = conn.CreateCommand())
+                    using (DbCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = command;
-                        var ret = cmd.ExecuteScalar();
+                        object ret = cmd.ExecuteScalar();
                         return ret;
                     }
                 }
@@ -50,5 +52,7 @@ namespace Hexa.Core.Data
                 }
             }
         }
+
+        #endregion Methods
     }
 }

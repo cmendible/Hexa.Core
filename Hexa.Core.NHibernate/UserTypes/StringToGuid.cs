@@ -1,23 +1,43 @@
-﻿using System;
-using System.Net;
-using NHibernate;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Data;
+
+    using NHibernate;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
+
     public class StringToGuid : IUserType
     {
-        #region Equals member
+        #region Properties
 
-        bool IUserType.Equals(object x, object y)
+        public bool IsMutable
         {
-            return object.Equals(x, y);
+            get
+            {
+                return true;
+            }
         }
 
-        #endregion
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(string);
+            }
+        }
 
-        #region IUserType Members
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {NHibernateUtil.Guid.SqlType};
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -27,7 +47,9 @@ namespace Hexa.Core.Domain
         public object DeepCopy(object value)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             return value.ToString();
         }
@@ -42,12 +64,12 @@ namespace Hexa.Core.Domain
             return x.GetHashCode();
         }
 
-        public bool IsMutable
+        bool IUserType.Equals(object x, object y)
         {
-            get { return true; }
+            return Equals(x, y);
         }
 
-        public object NullSafeGet(System.Data.IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
             Int32 index = rs.GetOrdinal(names[0]);
             if (rs.IsDBNull(index))
@@ -65,7 +87,7 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public void NullSafeSet(System.Data.IDbCommand cmd, object value, int index)
+        public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
             if (value == null || value == DBNull.Value)
             {
@@ -73,7 +95,7 @@ namespace Hexa.Core.Domain
                 return;
             }
 
-            var obj = Guid.Parse(value.ToString());
+            Guid obj = Guid.Parse(value.ToString());
             NHibernateUtil.String.Set(cmd, obj, index);
         }
 
@@ -82,16 +104,6 @@ namespace Hexa.Core.Domain
             return original;
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(string); }
-        }
-
-        public NHibernate.SqlTypes.SqlType[] SqlTypes
-        {
-            get { return new SqlType[] { NHibernateUtil.Guid.SqlType }; }
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

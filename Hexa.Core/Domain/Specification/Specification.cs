@@ -1,19 +1,19 @@
-﻿//===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
+// ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-using System;
-using System.Linq.Expressions;
-
+// ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Represent a Expression Specification
     /// <remarks>
@@ -25,43 +25,10 @@ namespace Hexa.Core.Domain.Specification
     /// </remarks>
     /// </summary>
     /// <typeparam name="TEntity">Type of item in the criteria</typeparam>
-    public abstract class Specification<TEntity>
-         : ISpecification<TEntity>
-         where TEntity : class
+    public abstract class Specification<TEntity> : ISpecification<TEntity>
+        where TEntity : class
     {
-        #region ISpecification<TEntity> Members
-
-        /// <summary>
-        /// IsSatisFied Specification pattern method,
-        /// </summary>
-        /// <returns>Expression that satisfy this specification</returns>
-        public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
-
-        #endregion
-
-        #region Override Operators
-
-        /// <summary>
-        ///  And operator
-        /// </summary>
-        /// <param name="leftSideSpecification">left operand in this AND operation</param>
-        /// <param name="rightSideSpecification">right operand in this AND operation</param>
-        /// <returns>New specification</returns>
-        public static Specification<TEntity> operator &(Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
-        {
-            return new AndAlsoSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
-        }
-
-        /// <summary>
-        /// Or operator
-        /// </summary>
-        /// <param name="leftSideSpecification">left operand in this OR operation</param>
-        /// <param name="rightSideSpecification">left operand in this OR operation</param>
-        /// <returns>New specification </returns>
-        public static Specification<TEntity> operator |(Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
-        {
-            return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
-        }
+        #region Methods
 
         /// <summary>
         /// Not specification
@@ -72,7 +39,19 @@ namespace Hexa.Core.Domain.Specification
         {
             return new NotSpecification<TEntity>(specification);
         }
-      
+
+        /// <summary>
+        ///  And operator
+        /// </summary>
+        /// <param name="leftSideSpecification">left operand in this AND operation</param>
+        /// <param name="rightSideSpecification">right operand in this AND operation</param>
+        /// <returns>New specification</returns>
+        public static Specification<TEntity> operator &(
+            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
+        {
+            return new AndAlsoSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
+        }
+
         /// <summary>
         /// Override operator false, only for support AND OR operators
         /// </summary>
@@ -92,8 +71,25 @@ namespace Hexa.Core.Domain.Specification
         {
             return true;
         }
-        #endregion
-    }
-    
-}
 
+        /// <summary>
+        /// Or operator
+        /// </summary>
+        /// <param name="leftSideSpecification">left operand in this OR operation</param>
+        /// <param name="rightSideSpecification">left operand in this OR operation</param>
+        /// <returns>New specification </returns>
+        public static Specification<TEntity> operator |(
+            Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
+        {
+            return new OrElseSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
+        }
+
+        /// <summary>
+        /// IsSatisFied Specification pattern method,
+        /// </summary>
+        /// <returns>Expression that satisfy this specification</returns>
+        public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
+
+        #endregion Methods
+    }
+}

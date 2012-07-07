@@ -19,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		BuildAndTest.bat = BuildAndTest.bat
 		BuildAndTest.msbuild = BuildAndTest.msbuild
 		BuildAndTest.With.Metrics.bat = BuildAndTest.With.Metrics.bat
-		BuildAndTest.With.Metrics.msbuild = BuildAndTest.With.Metrics.msbuild
 		CopyFirebird.targets = CopyFirebird.targets
 		Doxyfile = Doxyfile
 		Hexa.Core.snk = Hexa.Core.snk
@@ -91,9 +90,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Cfm.Core.Web
-		IsWCSFSolutionWAP = True
 		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Cfm.Core.Web
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj

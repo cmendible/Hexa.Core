@@ -1,105 +1,110 @@
-﻿using System;
-using System.Data;
-using NHibernate;
-using NHibernate.Engine;
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
 namespace Hexa.Core.Domain
 {
-	/// <summary />
-	/// Implements a IUserVersionType based on TicksType, but returned as String instead of DateTime.
-	/// </summary />
-	public class TicksAsString : IUserVersionType
-	{
-		#region IUserVersionType Members
+    using System;
+    using System.Data;
 
-		public object Next(object current, ISessionImplementor session)
-		{
-			return this.Seed(session);
-		}
+    using NHibernate;
+    using NHibernate.Engine;
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
 
-		public object Seed(ISessionImplementor session)
-		{
-			return DateTime.UtcNow.Ticks.ToString();
-		}
+    /// <summary />
+    /// Implements a IUserVersionType based on TicksType, but returned as String instead of DateTime.
+    /// </summary />
+    public class TicksAsString : IUserVersionType
+    {
+        #region Properties
 
-		#endregion
+        public bool IsMutable
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-		#region IUserType Members
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(string);
+            }
+        }
 
-		public object Assemble(object cached, object owner)
-		{
-			return DeepCopy(cached);
-		}
+        public SqlType[] SqlTypes
+        {
+            get
+            {
+                return new[] {new SqlType(DbType.Int64)};
+            }
+        }
 
-		public object DeepCopy(object value)
-		{
-			return value;
-		}
+        #endregion Properties
 
-		public object Disassemble(object value)
-		{
-			return DeepCopy(value);
-		}
+        #region Methods
 
-		public int GetHashCode(object x)
-		{
-			return x.GetHashCode();
-		}
+        public object Assemble(object cached, object owner)
+        {
+            return this.DeepCopy(cached);
+        }
 
-		public bool IsMutable
-		{
-			get { return false; }
-		}
+        public int Compare(object x, object y)
+        {
+            return ((IComparable) x).CompareTo(y);
+        }
 
-		public object NullSafeGet(IDataReader rs, string[] names, object owner)
-		{
-			var ret = rs.GetValue(rs.GetOrdinal(names[0]));
+        public object DeepCopy(object value)
+        {
+            return value;
+        }
 
-			if (ret == null)
-				return null;
+        public object Disassemble(object value)
+        {
+            return this.DeepCopy(value);
+        }
 
-			return ret.ToString();
-		}
+        public int GetHashCode(object x)
+        {
+            return x.GetHashCode();
+        }
 
-		public void NullSafeSet(IDbCommand cmd, object value, int index)
-		{
-			NHibernateUtil.Int64.NullSafeSet(cmd, value, index);
-		}
+        bool IUserType.Equals(object x, object y)
+        {
+            return (x == y);
+        }
 
-		public object Replace(object original, object target, object owner)
-		{
-			return original;
-		}
+        public object Next(object current, ISessionImplementor session)
+        {
+            return this.Seed(session);
+        }
 
-		public Type ReturnedType
-		{
-			get { return typeof(string); }
-		}
+        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        {
+            object ret = rs.GetValue(rs.GetOrdinal(names[0]));
 
-		public SqlType[] SqlTypes
-		{
-			get
-			{
-				return new[] { new SqlType(DbType.Int64) };
-			}
-		}
+            if (ret == null)
+            {
+                return null;
+            }
 
-		#endregion
+            return ret.ToString();
+        }
 
-		#region IComparer Members
+        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        {
+            NHibernateUtil.Int64.NullSafeSet(cmd, value, index);
+        }
 
-		public int Compare(object x, object y)
-		{
-			return ((IComparable)x).CompareTo(y);
-		}
+        public object Replace(object original, object target, object owner)
+        {
+            return original;
+        }
 
-		bool IUserType.Equals(object x, object y)
-		{
-			return (x == y);
-		}
+        public object Seed(ISessionImplementor session)
+        {
+            return DateTime.UtcNow.Ticks.ToString();
+        }
 
-		#endregion
-	}
+        #endregion Methods
+    }
 }

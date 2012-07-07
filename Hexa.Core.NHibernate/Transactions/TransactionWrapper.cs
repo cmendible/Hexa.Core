@@ -1,34 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Hexa.Core.Domain
 {
+    using NHibernate;
+
     public class TransactionWrapper : ITransactionWrapper
     {
-        public TransactionWrapper(global::NHibernate.ITransaction transaction)
+        #region Constructors
+
+        public TransactionWrapper(ITransaction transaction)
         {
-            Transaction = transaction;
+            this.Transaction = transaction;
         }
 
-        protected global::NHibernate.ITransaction Transaction { get; set; }
+        #endregion Constructors
 
-        #region ITransaction Members
+        #region Properties
+
+        protected ITransaction Transaction
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public virtual void Commit()
         {
-            Transaction.Commit();
+            this.Transaction.Commit();
         }
 
         public void Rollback()
         {
-            if (Transaction.WasRolledBack)
+            if (this.Transaction.WasRolledBack)
+            {
                 return;
+            }
 
-            Transaction.Rollback();
+            this.Transaction.Rollback();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

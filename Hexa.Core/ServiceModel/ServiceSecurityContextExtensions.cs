@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Policy;
-using System.Security.Principal;
-using System.ServiceModel;
-
 namespace Hexa.Core.ServiceModel
 {
+    using System.Collections.Generic;
+    using System.IdentityModel.Policy;
+    using System.Security.Principal;
+    using System.ServiceModel;
+
     public static class ServiceSecurityContextExtensions
     {
+        #region Methods
+
         public static IList<IIdentity> GetIdentities(this ServiceSecurityContext context)
         {
             return GetIdentities(context.AuthorizationContext);
@@ -35,5 +37,7 @@ namespace Hexa.Core.ServiceModel
 
             return new List<IIdentity>();
         }
+
+        #endregion Methods
     }
 }

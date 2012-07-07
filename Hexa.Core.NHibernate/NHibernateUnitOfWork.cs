@@ -1,150 +1,63 @@
-﻿#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 
-#endregion
-
-using System;
-using NHibernate;
-using System.Runtime.Remoting.Messaging;
-using System.ServiceModel;
-using System.Web;
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Runtime.Remoting.Messaging;
+    using System.ServiceModel;
+    using System.Transactions;
+    using System.Web;
+
+    using NHibernate;
+
     public class NHibernateUnitOfWork : IUnitOfWork
     {
-        ITransactionWrapper _transactionWrapper;
+        #region Fields
+
+        private readonly ITransactionWrapper _transactionWrapper;
+
+        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
+
+        #endregion Fields
+
+        #region Constructors
 
         public NHibernateUnitOfWork(ISessionFactory sessionFactory)
         {
             if (RunningSession == null)
+            {
                 RunningSession = sessionFactory.OpenSession();
+            }
 
-            _transactionWrapper = _BeginTransaction(RunningSession);
+            this._transactionWrapper = _BeginTransaction(RunningSession);
         }
 
         internal NHibernateUnitOfWork(ISession session)
         {
             RunningSession = session;
-            _transactionWrapper = _BeginTransaction(RunningSession);
+            this._transactionWrapper = _BeginTransaction(RunningSession);
         }
 
-        private static ITransactionWrapper _BeginTransaction(ISession session)
-        {
-            if (session.Transaction.IsActive)
-                return new NestedTransactionWrapper(session.Transaction);
+        #endregion Constructors
 
-            return new TransactionWrapper(session.BeginTransaction());
-        }
-
-        #region IUnitOfWork Members
-
-        public void Commit()
-        {
-            try
-            {
-                _transactionWrapper.Commit();
-            }
-            catch (StaleObjectStateException ex)
-            {
-                throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
-            }
-        }
-
-        public void RollbackChanges()
-        {
-            _transactionWrapper.Rollback();
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>() where TEntity : class
-        {
-            return new NHibernateObjectSet<TEntity>(RunningSession);
-        }
-
-        #endregion
-
-        #region IDisposable Members
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                UnitOfWorkScope.DisposeCurrent();
-                if (UnitOfWorkScope.RunningScopes.Count == 0)
-                {
-                    if (RunningSession != null && RunningSession.IsOpen)
-                    {
-                        if (RunningSession.Transaction != null)
-                        {
-                            if (RunningSession.Transaction.IsActive)
-                            {
-                                if (System.Transactions.Transaction.Current == null)
-                                    _transactionWrapper.Rollback();
-                            }
-
-                            RunningSession.Transaction.Dispose();
-                        }
-
-                        RunningSession.Dispose();
-                        RunningSession = null;
-                    }
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion
-
-        #region Nested
-
-        /// <summary>
-        /// Custom extension for OperationContext scope
-        /// </summary>
-        class ContainerExtension : IExtension<OperationContext>
-        {
-            #region Members
-
-            public object Value { get; set; }
-
-            #endregion
-
-            #region IExtension<OperationContext> Members
-
-            public void Attach(OperationContext owner)
-            {
-
-            }
-
-            public void Detach(OperationContext owner)
-            {
-
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
+        #region Properties
 
         public static ISession RunningSession
         {
@@ -167,15 +80,15 @@ namespace Hexa.Core.Domain
                 }
                 else if (HttpContext.Current != null)
                 {
-                    return HttpContext.Current.Items[_key.ToString()] as ISession;
+                    return HttpContext.Current.Items[_key] as ISession;
                 }
                 else
                 {
                     //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                    return CallContext.GetData(_key.ToString()) as ISession;
+                    return CallContext.GetData(_key) as ISession;
                 }
             }
-            set 
+            set
             {
                 //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
                 if (OperationContext.Current != null)
@@ -192,15 +105,120 @@ namespace Hexa.Core.Domain
                 }
                 else if (HttpContext.Current != null)
                 {
-                    HttpContext.Current.Items[_key.ToString()] = value;
+                    HttpContext.Current.Items[_key] = value;
                 }
                 else
                 {
                     //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                    CallContext.SetData(_key.ToString(), value);
+                    CallContext.SetData(_key, value);
                 }
             }
         }
+
+        #endregion Properties
+
+        #region Methods
+
+        public void Commit()
+        {
+            try
+            {
+                this._transactionWrapper.Commit();
+            }
+            catch (StaleObjectStateException ex)
+            {
+                throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
+            }
+        }
+
+        public IEntitySet<TEntity> CreateSet<TEntity>()
+            where TEntity : class
+        {
+            return new NHibernateObjectSet<TEntity>(RunningSession);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void RollbackChanges()
+        {
+            this._transactionWrapper.Rollback();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                UnitOfWorkScope.DisposeCurrent();
+                if (UnitOfWorkScope.RunningScopes.Count == 0)
+                {
+                    if (RunningSession != null && RunningSession.IsOpen)
+                    {
+                        if (RunningSession.Transaction != null)
+                        {
+                            if (RunningSession.Transaction.IsActive)
+                            {
+                                if (Transaction.Current == null)
+                                {
+                                    this._transactionWrapper.Rollback();
+                                }
+                            }
+
+                            RunningSession.Transaction.Dispose();
+                        }
+
+                        RunningSession.Dispose();
+                        RunningSession = null;
+                    }
+                }
+            }
+        }
+
+        private static ITransactionWrapper _BeginTransaction(ISession session)
+        {
+            if (session.Transaction.IsActive)
+            {
+                return new NestedTransactionWrapper(session.Transaction);
+            }
+
+            return new TransactionWrapper(session.BeginTransaction());
+        }
+
+        #endregion Methods
+
+        #region Nested Types
+
+        /// <summary>
+        /// Custom extension for OperationContext scope
+        /// </summary>
+        private class ContainerExtension : IExtension<OperationContext>
+        {
+            #region Properties
+
+            public object Value
+            {
+                get;
+                set;
+            }
+
+            #endregion Properties
+
+            #region Methods
+
+            public void Attach(OperationContext owner)
+            {
+            }
+
+            public void Detach(OperationContext owner)
+            {
+            }
+
+            #endregion Methods
+        }
+
+        #endregion Nested Types
     }
-    
 }

@@ -1,102 +1,126 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
-using log4net;
-
 namespace Hexa.Core.ServiceModel.Security
 {
-	/// <summary>
-	/// 
-	/// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors")]
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IdentityModel.Claims;
+    using System.IdentityModel.Policy;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Security.Principal;
+
+    using log4net;
+
+    /// <summary>
+    ///
+    /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"
+                    )]
     public abstract class BaseX509AuthorizationPolicy : BaseAuthorizationPolicy
-	{
-		private static readonly ILog _Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+    {
+        #region Fields
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BaseX509AuthorizationPolicy"/> class.
-		/// </summary>
-		public BaseX509AuthorizationPolicy()
-			: base()
-		{
-			_Log.DebugFormat("New instance {0} created.", Id);
-		}
+        private static readonly ILog _Log = 
+            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-		/// <summary>
-		/// Get client certificate.
-		/// </summary>
-		/// <param name="evaluationContext">The evaluation context.</param>
-		/// <returns></returns>
-		protected static X509Certificate2 GetClientCertificate(EvaluationContext evaluationContext)
-		{
-			X509CertificateClaimSet claimset = evaluationContext.ClaimSets
-				.Where(cs => cs is X509CertificateClaimSet)
-				.Cast<X509CertificateClaimSet>()
-				.FirstOrDefault();
+        #endregion Fields
 
-			if (claimset != null)
-				return claimset.X509Certificate;
+        #region Constructors
 
-			return null;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseX509AuthorizationPolicy"/> class.
+        /// </summary>
+        public BaseX509AuthorizationPolicy()
+        {
+            _Log.DebugFormat("New instance {0} created.", Id);
+        }
 
-		/// <summary>
-		/// Evaluates whether a user meets the requirements for this authorization policy.
-		/// </summary>
-		/// <param name="evaluationContext">An <see cref="T:System.IdentityModel.Policy.EvaluationContext"/> that contains the claim set that the authorization policy evaluates.</param>
-		/// <param name="state">A <see cref="T:System.Object"/>, passed by reference that represents the custom state for this authorization policy.</param>
-		/// <returns>
-		/// false if the <see cref="M:System.IdentityModel.Policy.IAuthorizationPolicy.Evaluate(System.IdentityModel.Policy.EvaluationContext,System.Object@)"/> method for this authorization policy must be called if additional claims are added by other authorization policies to <paramref name="evaluationContext"/>; otherwise, true to state no additional evaluation is required by this authorization policy.
-		/// </returns>
-		public override bool Evaluate(EvaluationContext evaluationContext, ref object state)
-		{
-			IList<IIdentity> identities = evaluationContext.TryGetIdentities();
+        #endregion Constructors
 
-			// Sleep no identities found yet.
-			if (identities == null || identities.Count == 0)
-			{
-				_Log.Debug("identities == null or identities.Count == 0; sleeping..");
-				return false;
-			}
+        #region Methods
 
-			// Sleep no identities of type X509.
-			if (!identities.Any(i => i.AuthenticationType == "X509"))
-			{
-				_Log.Debug("No identity authenticated by X509 certificate; sleeping..");
-				return false;
-			}
+        /// <summary>
+        /// Evaluates whether a user meets the requirements for this authorization policy.
+        /// </summary>
+        /// <param name="evaluationContext">An <see cref="T:System.IdentityModel.Policy.EvaluationContext"/> that contains the claim set that the authorization policy evaluates.</param>
+        /// <param name="state">A <see cref="T:System.Object"/>, passed by reference that represents the custom state for this authorization policy.</param>
+        /// <returns>
+        /// false if the <see cref="M:System.IdentityModel.Policy.IAuthorizationPolicy.Evaluate(System.IdentityModel.Policy.EvaluationContext,System.Object@)"/> method for this authorization policy must be called if additional claims are added by other authorization policies to <paramref name="evaluationContext"/>; otherwise, true to state no additional evaluation is required by this authorization policy.
+        /// </returns>
+        public override bool Evaluate(EvaluationContext evaluationContext, ref object state)
+        {
+            IList<IIdentity> identities = evaluationContext.TryGetIdentities();
 
-			if (state == null)
-				state = 0;
-			else
-				state = (int)state + 1;
+            // Sleep no identities found yet.
+            if (identities == null || identities.Count == 0)
+            {
+                _Log.Debug("identities == null or identities.Count == 0; sleeping..");
+                return false;
+            }
 
-			// Should not evaluate policy twice.
-			if ((int)state > 0)
-				return true;
+            // Sleep no identities of type X509.
+            if (!identities.Any(i => i.AuthenticationType == "X509"))
+            {
+                _Log.Debug("No identity authenticated by X509 certificate; sleeping..");
+                return false;
+            }
 
-			X509Certificate2 certificate = GetClientCertificate(evaluationContext);
-			if (certificate == null)
-			{
-				_Log.Debug("No valid X509CertificateClaimSet was found.");
-				return true;
-			}
-			
-			IPrincipal principal = GetPrincipal(evaluationContext, certificate);
-			if (principal == null)
-			{
-				_Log.Warn("User not authorized.");
-				return true;
-			}
+            if (state == null)
+            {
+                state = 0;
+            }
+            else
+            {
+                state = (int)state + 1;
+            }
 
-			SetupEvaluationContext(evaluationContext, principal);
+            // Should not evaluate policy twice.
+            if ((int)state > 0)
+            {
+                return true;
+            }
 
-			return true;
-		}
+            X509Certificate2 certificate = GetClientCertificate(evaluationContext);
+            if (certificate == null)
+            {
+                _Log.Debug("No valid X509CertificateClaimSet was found.");
+                return true;
+            }
 
-		protected abstract IPrincipal GetPrincipal(EvaluationContext evaluationContext, X509Certificate2 certificate);
-	}
+            IPrincipal principal = GetPrincipal(evaluationContext, certificate);
+            if (principal == null)
+            {
+                _Log.Warn("User not authorized.");
+                return true;
+            }
+
+            SetupEvaluationContext(evaluationContext, principal);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Get client certificate.
+        /// </summary>
+        /// <param name="evaluationContext">The evaluation context.</param>
+        /// <returns></returns>
+        protected static X509Certificate2 GetClientCertificate(EvaluationContext evaluationContext)
+        {
+            X509CertificateClaimSet claimset = evaluationContext.ClaimSets
+                                               .Where(cs => cs is X509CertificateClaimSet)
+                                               .Cast<X509CertificateClaimSet>()
+                                               .FirstOrDefault();
+
+            if (claimset != null)
+            {
+                return claimset.X509Certificate;
+            }
+
+            return null;
+        }
+
+        protected abstract IPrincipal GetPrincipal(EvaluationContext evaluationContext, X509Certificate2 certificate);
+
+        #endregion Methods
+    }
 }

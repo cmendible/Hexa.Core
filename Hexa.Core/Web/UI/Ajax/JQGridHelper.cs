@@ -1,59 +1,180 @@
-﻿#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 
-#endregion
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using Hexa.Core.Domain.Specification;
+#endregion Header
 
 namespace Hexa.Core.Web.UI.Ajax
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq.Expressions;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Json;
+    using System.Text;
+
+    using Domain.Specification;
+
+    [DataContract]
+    public class jqFilter
+    {
+        #region Properties
+
+        [DataMember]
+        public string groupOp
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        public jqRule[] rules
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        internal static jqFilter Create(string jsonData)
+        {
+            try
+            {
+                var serializer =
+                    new DataContractJsonSerializer(typeof(jqFilter));
+                var reader =
+                    new StringReader(jsonData);
+                var ms =
+                    new MemoryStream(
+                    Encoding.Default.GetBytes(jsonData));
+                return serializer.ReadObject(ms) as jqFilter;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion Methods
+    }
+
+    public class jqGridData
+    {
+        #region Fields
+
+        private readonly int _pageIndex;
+        private readonly int _pageSize;
+        private readonly List<jqGridItem> _rows;
+        private readonly int _totalRecords;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
+        {
+            this._rows = new List<jqGridItem>();
+            this._totalRecords = totalRecords;
+            this._pageIndex = pageIndex;
+            this._pageSize = pageSize;
+
+            foreach (var row in rows)
+            {
+                this._rows.Add(new jqGridItem(row.Key, row.Value));
+            }
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public int page
+        {
+            get
+            {
+                return this._pageIndex;
+            }
+        }
+
+        public int records
+        {
+            get
+            {
+                return this._totalRecords;
+            }
+        }
+
+        public IEnumerable rows
+        {
+            get
+            {
+                return this._rows;
+            }
+        }
+
+        public int total
+        {
+            get
+            {
+                return (int)Math.Ceiling(this._totalRecords/(decimal)_pageSize);
+            }
+        }
+
+        #endregion Properties
+    }
 
     /// <summary>
     /// JQGrid Helper
     /// </summary>
     public class jqGridHelper
     {
-        private string _gridName;
-        private string _caption;
-        private string _dataType;
-        private string _pager;
-        private string _cols;
-        private string _width;
-        private string _height;
-        private string _onSelect = string.Empty;
-        private string _onComplete = string.Empty;
-        private string _multiSelect = "false";
-        private string _multiSearch = "false";
+        #region Fields
 
-        private string _sortOrder = string.Empty;
-        private string _sortColumn = string.Empty;
+        private readonly string _gridName;
+
+        private string _caption;
+        private string _cols;
+        private string _dataType;
         private string _firstSortOrder = "asc";
+        private string _height;
+        private string _multiSearch = "false";
+        private string _multiSelect = "false";
+        private string _onComplete = string.Empty;
+        private string _onSelect = string.Empty;
+        private string _pager;
+        private string _sortColumn = string.Empty;
+        private string _sortOrder = string.Empty;
+        private string _width;
+
+        #endregion Fields
+
+        #region Constructors
 
         private jqGridHelper(string gridName)
         {
-            _gridName = gridName;
+            this._gridName = gridName;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public static jqGridHelper Create(string gridName)
         {
@@ -62,198 +183,174 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public jqGridHelper Caption(string caption)
         {
-            _caption = caption;
-            return this;
-        }
-
-        public jqGridHelper SortOrder(string sortOrder)
-        {
-            _sortOrder = sortOrder;
-            return this;
-        }
-
-        public jqGridHelper SortColumn(string sortColumn)
-        {
-            _sortColumn = sortColumn;
-            return this;
-        }
-
-        public jqGridHelper FirstSortOrder(string firstSortOrder)
-        {
-            _firstSortOrder = firstSortOrder;
-            return this;
-        }
-
-        public jqGridHelper DataType(string dataType)
-        {
-            _dataType = dataType;
-            return this;
-        }
-
-        public jqGridHelper Pager(string pager)
-        {
-            _pager = pager;
+            this._caption = caption;
             return this;
         }
 
         public jqGridHelper Cols(string cols)
         {
-            _cols = cols;
+            this._cols = cols;
             return this;
         }
 
-        public jqGridHelper Width(string width)
+        public jqGridHelper DataType(string dataType)
         {
-            _width = width;
+            this._dataType = dataType;
+            return this;
+        }
+
+        public jqGridHelper FirstSortOrder(string firstSortOrder)
+        {
+            this._firstSortOrder = firstSortOrder;
             return this;
         }
 
         public jqGridHelper Height(string height)
         {
-            _height = height;
-            return this;
-        }
-
-        public jqGridHelper OnSelect(string onSelect)
-        {
-            _onSelect = onSelect;
-            return this;
-        }
-
-        public jqGridHelper OnComplete(string onComplete)
-        {
-            _onComplete = onComplete;
-            return this;
-        }
-
-        public jqGridHelper MultiSelect(bool multiSelect)
-        {
-            _multiSelect = multiSelect.ToString().ToLower();
+            this._height = height;
             return this;
         }
 
         public jqGridHelper MultiSearch(bool multiSearch)
         {
-            _multiSearch = multiSearch.ToString().ToLower();
+            this._multiSearch = multiSearch.ToString().ToLower();
             return this;
         }
 
-		public string ToString()
+        public jqGridHelper MultiSelect(bool multiSelect)
+        {
+            this._multiSelect = multiSelect.ToString().ToLower();
+            return this;
+        }
+
+        public jqGridHelper OnComplete(string onComplete)
+        {
+            this._onComplete = onComplete;
+            return this;
+        }
+
+        public jqGridHelper OnSelect(string onSelect)
+        {
+            this._onSelect = onSelect;
+            return this;
+        }
+
+        public jqGridHelper Pager(string pager)
+        {
+            this._pager = pager;
+            return this;
+        }
+
+        public jqGridHelper SortColumn(string sortColumn)
+        {
+            this._sortColumn = sortColumn;
+            return this;
+        }
+
+        public jqGridHelper SortOrder(string sortOrder)
+        {
+            this._sortOrder = sortOrder;
+            return this;
+        }
+
+        public string ToString()
         {
             #region datagrid texts
 
-			//string loadtext = "Cargando datos...";
-			//string recordtext = "{0} - {1} de {2} elementos";
-			//string emptyrecords = "No hay resultados";
-			//string pgtext = "Pág: {0} de {1}"; //Paging input control text format.
+            //string loadtext = "Cargando datos...";
+            //string recordtext = "{0} - {1} de {2} elementos";
+            //string emptyrecords = "No hay resultados";
+            //string pgtext = "Pág: {0} de {1}"; //Paging input control text format.
 
             #endregion
 
             int rowNum = 10; // PageSize.
-            int[] rowList = new int[] { 10, 20, 30 }; //Variable PageSize DropDownList. 
+            var rowList = new[] {10, 20, 30}; //Variable PageSize DropDownList.
 
             #region script
 
-            string script = string.Format("$(\"{0}\").jqGrid(", _gridName) + "\r\n";
+            string script = string.Format("$(\"{0}\").jqGrid(", this._gridName) + "\r\n";
             script += "{" + "\r\n";
-            script += string.Format("datatype: {0},", _dataType) + "\r\n";
-            script += string.Format("colModel: {0},", _cols) + "\r\n";
-            script += string.Format("pager: \"{0}\", ", _pager) + "\r\n";
-			//script += string.Format("loadtext: '{0}',", loadtext) + "\r\n";
-			//script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
-			//script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
-			//script += string.Format("pgtext : '{0}',", pgtext) + "\r\n";
-            script += string.Format("rowNum: \"{0}\",", rowNum.ToString()) + "\r\n";
-			//script += "rowList: [10,20,30]," + "\r\n";
+            script += string.Format("datatype: {0},", this._dataType) + "\r\n";
+            script += string.Format("colModel: {0},", this._cols) + "\r\n";
+            script += string.Format("pager: \"{0}\", ", this._pager) + "\r\n";
+            //script += string.Format("loadtext: '{0}',", loadtext) + "\r\n";
+            //script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
+            //script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
+            //script += string.Format("pgtext : '{0}',", pgtext) + "\r\n";
+            script += string.Format("rowNum: \"{0}\",", rowNum) + "\r\n";
+            //script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
-            script += string.Format("multiselect: {0}, ", _multiSelect) + "\r\n";
+            script += string.Format("multiselect: {0}, ", this._multiSelect) + "\r\n";
 
-			if (!string.IsNullOrEmpty(_onSelect))
-				script += string.Format("onSelectRow: {0}, ", _onSelect) + "\r\n";
-
-			if (!string.IsNullOrEmpty(_onComplete))
-				script += string.Format("gridComplete: {0}, ", _onComplete) + "\r\n";
-
-            if (!string.IsNullOrEmpty(_width))
-                script += string.Format("width: \"{0}\",", _width) + "\r\n";
-            else
-                script += "autowidth: true," + "\r\n";
-
-			script += "hidegrid: false," + "\r\n"; // Cant hide grids.
-
-            var closeOnEscape = true;
-            var closeAfterSearch = true;
-
-            var searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
-                closeOnEscape.ToString().ToLower(),
-                _multiSearch,
-                closeAfterSearch.ToString().ToLower());
-
-            if (!string.IsNullOrEmpty(_sortColumn))
+            if (!string.IsNullOrEmpty(this._onSelect))
             {
-                script += string.Format("sortname: \"{0}\",", _sortColumn) + "\r\n";
-
-                if (!string.IsNullOrEmpty(_sortOrder))
-                    script += string.Format("sortorder: \"{0}\",", _sortOrder) + "\r\n";
+                script += string.Format("onSelectRow: {0}, ", this._onSelect) + "\r\n";
             }
 
-            if (!string.IsNullOrEmpty(_firstSortOrder))
-                script += string.Format("firstsortorder: \"{0}\",", _firstSortOrder) + "\r\n";
+            if (!string.IsNullOrEmpty(this._onComplete))
+            {
+                script += string.Format("gridComplete: {0}, ", this._onComplete) + "\r\n";
+            }
 
-            script += string.Format("height: \"{0}\",", _height) + "\r\n";
-            script += string.Format("caption: \"{0}\"", _caption) + "\r\n";
+            if (!string.IsNullOrEmpty(this._width))
+            {
+                script += string.Format("width: \"{0}\",", this._width) + "\r\n";
+            }
+            else
+            {
+                script += "autowidth: true," + "\r\n";
+            }
+
+            script += "hidegrid: false," + "\r\n"; // Cant hide grids.
+
+            bool closeOnEscape = true;
+            bool closeAfterSearch = true;
+
+            string searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
+                                                   closeOnEscape.ToString().ToLower(),
+                                                   this._multiSearch,
+                                                   closeAfterSearch.ToString().ToLower());
+
+            if (!string.IsNullOrEmpty(this._sortColumn))
+            {
+                script += string.Format("sortname: \"{0}\",", this._sortColumn) + "\r\n";
+
+                if (!string.IsNullOrEmpty(this._sortOrder))
+                {
+                    script += string.Format("sortorder: \"{0}\",", this._sortOrder) + "\r\n";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(this._firstSortOrder))
+            {
+                script += string.Format("firstsortorder: \"{0}\",", this._firstSortOrder) + "\r\n";
+            }
+
+            script += string.Format("height: \"{0}\",", this._height) + "\r\n";
+            script += string.Format("caption: \"{0}\"", this._caption) + "\r\n";
 
             script += "})" + "\r\n";
-			script += string.Format(".navGrid(\"{0}\",", _pager);
+            script += string.Format(".navGrid(\"{0}\",", this._pager);
             script += "{edit:false, add:false, search:true, del:false}, {}, {}, {}, {" + searhBoxOptions + "}, {});";
 
             #endregion
 
             return script;
         }
-    }
 
-    public class jqGridData
-    {
-        List<jqGridItem> _rows;
-        int _totalRecords;
-        int _pageIndex;
-        int _pageSize;
-
-		public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
+        public jqGridHelper Width(string width)
         {
-            _rows = new List<jqGridItem>();
-            _totalRecords = totalRecords;
-            _pageIndex = pageIndex;
-            _pageSize = pageSize;
-
-            foreach (var row in rows)
-                _rows.Add(new jqGridItem(row.Key, row.Value));
+            this._width = width;
+            return this;
         }
 
-		public int total { get { return (int)Math.Ceiling((decimal)_totalRecords / (decimal)_pageSize); } }
-
-		public int page { get { return _pageIndex; } }
-
-		public int records { get { return _totalRecords; } }
-
-		public IEnumerable rows { get { return _rows; } }
+        #endregion Methods
     }
 
     public class jqGridItem
     {
-        #region Properties
-
-        /// <summary>
-        /// RowId de la fila.
-        /// </summary>
-		public string id { get; protected set; }
-        /// <summary>
-        /// Fila del JQGrid.
-        /// </summary>
-		public IList<string> cell { get; protected set; }
-
-        #endregion
+        #region Constructors
 
         /// <summary>
         /// Contructor.
@@ -261,68 +358,78 @@ namespace Hexa.Core.Web.UI.Ajax
         public jqGridItem(string id, IList<string> values)
         {
             this.id = id;
-			cell = values;
+            this.cell = values;
         }
 
-    }
+        #endregion Constructors
 
-    [DataContract]
-    public class jqFilter
-    {
-        [DataMember]
-        public string groupOp { get; set; }
-        [DataMember]
-        public jqRule[] rules { get; set; }
+        #region Properties
 
-        internal static jqFilter Create(string jsonData)
+        /// <summary>
+        /// Fila del JQGrid.
+        /// </summary>
+        public IList<string> cell
         {
-            try
-            {
-                var serializer =
-                  new DataContractJsonSerializer(typeof(jqFilter));
-                System.IO.StringReader reader =
-                  new System.IO.StringReader(jsonData);
-                System.IO.MemoryStream ms =
-                  new System.IO.MemoryStream(
-                  Encoding.Default.GetBytes(jsonData));
-                return serializer.ReadObject(ms) as jqFilter;
-            }
-            catch
-            {
-                return null;
-            }
+            get;
+            protected set;
         }
-    }
 
-    [DataContract]
-    public class jqRule
-    {
-        [DataMember]
-        public string field { get; set; }
-        [DataMember]
-        public string op { get; set; }
-        [DataMember]
-        public string data { get; set; }
+        /// <summary>
+        /// RowId de la fila.
+        /// </summary>
+        public string id
+        {
+            get;
+            protected set;
+        }
+
+        #endregion Properties
     }
 
     public static class jqGridSearchHelper
     {
-        static Dictionary<string, string> _linqOperations = new Dictionary<string, string> {
-            {"eq","=="}, //equal
-            {"ne","!="},//not equal
-            {"lt","<"}, //less than
-            {"le","<="},//less than or equal
-            {"gt",">"}, //greater than
-            {"ge",">="},//greater than or equal
-            {"bw","{0}.StartsWith({1})"}, //begins with
-            {"bn","!{0}.StartsWith({1})"}, //doesn"t begin with
-            {"in","{0}.Contains({1})"}, //is in
-            {"ni","!{0}.Contains({1})"}, //is not in
-            {"ew","{0}.EndsWith({1})"}, //ends with
-            {"en","!{0}.EndsWith({1})"}, //doesn"t end with
-            {"cn","{0}.Contains({1})"}, // contains
-            {"nc","!{0}.Contains({1})"}  //doesn"t contain
+        #region Fields
+
+        private static readonly Dictionary<string, string> _linqOperations = new Dictionary<string, string>
+        {
+            {"eq", "=="},
+            //equal
+            {"ne", "!="},
+            //not equal
+            {"lt", "<"},
+            //less than
+            {"le", "<="},
+            //less than or equal
+            {"gt", ">"},
+            //greater than
+            {"ge", ">="},
+            //greater than or equal
+            {"bw", "{0}.StartsWith({1})"},
+            //begins with
+            {"bn", "!{0}.StartsWith({1})"},
+            //doesn"t begin with
+            {"in", "{0}.Contains({1})"},
+            //is in
+            {"ni", "!{0}.Contains({1})"},
+            //is not in
+            {"ew", "{0}.EndsWith({1})"},
+            //ends with
+            {"en", "!{0}.EndsWith({1})"},
+            //doesn"t end with
+            {"cn", "{0}.Contains({1})"},
+            // contains
+            {"nc", "!{0}.Contains({1})"}
+            //doesn"t contain
         };
+
+        #endregion Fields
+
+        #region Methods
+
+        public static jqFilter DeserializeFilters(string filters)
+        {
+            return jqFilter.Create(filters);
+        }
 
         public static string ToLinq(string operation, string column, string value)
         {
@@ -340,26 +447,51 @@ namespace Hexa.Core.Web.UI.Ajax
             }
         }
 
-        public static jqFilter DeserializeFilters(string filters)
+        #endregion Methods
+    }
+
+    [DataContract]
+    public class jqRule
+    {
+        #region Properties
+
+        [DataMember]
+        public string data
         {
-            return jqFilter.Create(filters);
+            get;
+            set;
         }
 
+        [DataMember]
+        public string field
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        public string op
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 
     public static class LinqExtensions
     {
-        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
+        #region Methods
+
+        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
+            string operation)
+            where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
-        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value, string operation) where T : class
-        {
-            return query.OrElse(CreateSpecification<T>(column, value, operation));
-        }
-
-        public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation) where T : class
+        public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
+            where T : class
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
@@ -374,113 +506,122 @@ namespace Hexa.Core.Web.UI.Ajax
             //change param value type
             //necessary to getting bool from string
             ConstantExpression filter = Expression.Constant
-                (
-                    Convert.ChangeType(value, memberAccess.Type)
-                );
+                                        (
+                                            Convert.ChangeType(value, memberAccess.Type)
+                                        );
 
             Expression condition = null;
             LambdaExpression lambda = null;
             switch (operation)
             {
                 //equal ==
-                case "eq":
-                    condition = Expression.Equal(memberAccess, filter);
+            case "eq":
+                condition = Expression.Equal(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
+                lambda = Expression.Lambda(condition, parameter);
+                break;
                 //not equal !=
-                case "ne":
-                    condition = Expression.NotEqual(memberAccess, filter);
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
+            case "ne":
+                condition = Expression.NotEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
                 //string.Contains()
-                case "cn":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("Contains"),
-                        Expression.Constant(value));
+            case "cn":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("Contains"),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "bw":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
-                        Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "bw":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "bn":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("StartsWith", new Type[] { typeof(string) }),
-                        Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "bn":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
+                condition = Expression.Not(condition);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "ew":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
-                        Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "ew":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "en":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("EndsWith", new Type[] { typeof(string) }),
-                        Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "en":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
+                condition = Expression.Not(condition);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "gt":
-                    condition = Expression.GreaterThan(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "gt":
+                condition = Expression.GreaterThan(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "ge":
-                    condition = Expression.GreaterThanOrEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "ge":
+                condition = Expression.GreaterThanOrEqual(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "lt":
-                    condition = Expression.LessThan(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "lt":
+                condition = Expression.LessThan(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "le":
-                    condition = Expression.LessThanOrEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "le":
+                condition = Expression.LessThanOrEqual(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "nc":
-                    condition = Expression.Call(memberAccess,
-                        typeof(String).GetMethod("Contains"),
-                        Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "nc":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("Contains"),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
-                    
-                    lambda = Expression.Lambda(condition, parameter);
+                condition = Expression.Not(condition);
 
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("operation");
+                lambda = Expression.Lambda(condition, parameter);
+
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("operation");
             }
 
-            var hLambda = Expression<Func<T, bool>>.Lambda<Func<T, bool>>(condition, parameter);
+            Expression<Func<T, bool>> hLambda = Expression.Lambda<Func<T, bool>>(condition, parameter);
 
             return new DirectSpecification<T>(hLambda);
+        }
+
+        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
+            string operation)
+            where T : class
+        {
+            return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
         private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
         {
             MemberExpression memberAccess = null;
-            foreach (var property in column.Split('.'))
+            foreach (string property in column.Split('.'))
             {
-                memberAccess = MemberExpression.Property
-                   (memberAccess ?? (parameter as Expression), property);
+                memberAccess = Expression.Property
+                               (memberAccess ?? (parameter as Expression), property);
             }
             return memberAccess;
         }
+
+        #endregion Methods
     }
 }

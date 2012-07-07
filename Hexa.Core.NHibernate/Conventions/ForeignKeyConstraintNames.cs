@@ -17,43 +17,32 @@
 
 #endregion Header
 
-namespace Hexa.Core.Web.UI
+namespace Hexa.Core.Domain
 {
-    using System;
-    using System.Runtime.Serialization;
+    using FluentNHibernate.Conventions;
+    using FluentNHibernate.Conventions.Instances;
 
-    [Serializable]
-    public class RequestLengthException : Exception
+    public class ForeignKeyConstraintNames : IReferenceConvention, IHasManyConvention
     {
-        #region Constructors
+        #region Methods
 
-        //
-        // For guidelines regarding the creation of new exception types, see
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-        // and
-        //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-        //
-        public RequestLengthException()
+        public void Apply(IOneToManyCollectionInstance instance)
         {
+            string entity = instance.EntityType.Name;
+            string member = instance.Member.Name;
+            string child = instance.ChildType.Name;
+
+            instance.Key.ForeignKey(string.Format("FK_{0}{1}_{2}", entity, member, child));
         }
 
-        public RequestLengthException(string message)
-            : base(message)
+        public void Apply(IManyToOneInstance instance)
         {
+            string entity = instance.EntityType.Name;
+            string member = instance.Property.Name;
+
+            instance.ForeignKey(string.Format("FK_{0}_{1}", entity, member));
         }
 
-        public RequestLengthException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-
-        protected RequestLengthException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        #endregion Constructors
+        #endregion Methods
     }
 }

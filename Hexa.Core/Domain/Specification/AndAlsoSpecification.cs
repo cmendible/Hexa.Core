@@ -1,35 +1,34 @@
-﻿//===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
+// ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-using System;
-using System.Linq.Expressions;
-
+// ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// A logic AND Specification
     /// </summary>
     /// <typeparam name="T">Type of entity that check this specification</typeparam>
-    public class AndAlsoSpecification<T>
-       : CompositeSpecification<T>
-       where T : class
+    public class AndAlsoSpecification<T> : CompositeSpecification<T>
+        where T : class
     {
-        #region Members
+        #region Fields
 
-        private ISpecification<T> _RightSideSpecification = null;
-        private ISpecification<T> _LeftSideSpecification = null;
+        private readonly ISpecification<T> _LeftSideSpecification;
+        private readonly ISpecification<T> _RightSideSpecification;
 
-        #endregion
+        #endregion Fields
 
-        #region Public Constructor
+        #region Constructors
 
         /// <summary>
         /// Default constructor for AndSpecification
@@ -38,26 +37,33 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="rightSide">Right side specification</param>
         public AndAlsoSpecification(ISpecification<T> leftSide, ISpecification<T> rightSide)
         {
-            if (leftSide == (ISpecification<T>)null)
+            if (leftSide == null)
+            {
                 throw new ArgumentNullException("leftSide");
+            }
 
-            if (rightSide == (ISpecification<T>)null)
+            if (rightSide == null)
+            {
                 throw new ArgumentNullException("rightSide");
+            }
 
-            this._LeftSideSpecification = leftSide;
-            this._RightSideSpecification = rightSide;
+            _LeftSideSpecification = leftSide;
+            _RightSideSpecification = rightSide;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Composite Specification overrides
+        #region Properties
 
         /// <summary>
         /// Left side specification
         /// </summary>
         public override ISpecification<T> LeftSideSpecification
         {
-            get { return _LeftSideSpecification; }
+            get
+            {
+                return _LeftSideSpecification;
+            }
         }
 
         /// <summary>
@@ -65,8 +71,15 @@ namespace Hexa.Core.Domain.Specification
         /// </summary>
         public override ISpecification<T> RightSideSpecification
         {
-            get { return _RightSideSpecification; }
+            get
+            {
+                return _RightSideSpecification;
+            }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{T}"/>
@@ -78,9 +91,8 @@ namespace Hexa.Core.Domain.Specification
             Expression<Func<T, bool>> right = _RightSideSpecification.SatisfiedBy();
 
             return (left.AndAlso(right));
-           
         }
 
-        #endregion
+        #endregion Methods
     }
 }

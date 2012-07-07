@@ -1,23 +1,22 @@
-﻿//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
-
-using System;
-using System.Diagnostics;
-using System.Windows.Input;
-
+#if !MONO 
+//  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
 namespace Hexa.Core.Windows.Mvvm
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Input;
+
     /// <summary>
     /// A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
     /// </summary>
     public class RelayCommand<T> : ICommand
     {
+        #region Fields
 
-        #region Declarations
+        private readonly Predicate<T> _canExecute;
+        private readonly Action<T> _execute;
 
-        readonly Predicate<T> _canExecute;
-        readonly Action<T> _execute;
-
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -37,45 +36,52 @@ namespace Hexa.Core.Windows.Mvvm
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-
             if (execute == null)
+            {
                 throw new ArgumentNullException("execute");
-            _execute = execute;
-            _canExecute = canExecute;
+            }
+            this._execute = execute;
+            this._canExecute = canExecute;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region ICommand Members
+        #region Events
 
         public event EventHandler CanExecuteChanged
         {
             add
             {
-
-                if (_canExecute != null)
+                if (this._canExecute != null)
+                {
                     CommandManager.RequerySuggested += value;
+                }
             }
             remove
             {
-
-                if (_canExecute != null)
+                if (this._canExecute != null)
+                {
                     CommandManager.RequerySuggested -= value;
+                }
             }
         }
 
+        #endregion Events
+
+        #region Methods
+
         [DebuggerStepThrough]
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return this._canExecute == null ? true : this._canExecute((T)parameter);
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
-            _execute((T)parameter);
+            this._execute((T)parameter);
         }
 
-        #endregion
+        #endregion Methods
     }
 
     /// <summary>
@@ -83,13 +89,12 @@ namespace Hexa.Core.Windows.Mvvm
     /// </summary>
     public class RelayCommand : ICommand
     {
+        #region Fields
 
-        #region Declarations
+        private readonly Func<bool> _canExecute;
+        private readonly Action _execute;
 
-        readonly Func<Boolean> _canExecute;
-        readonly Action _execute;
-
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -107,46 +112,54 @@ namespace Hexa.Core.Windows.Mvvm
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
-        public RelayCommand(Action execute, Func<Boolean> canExecute)
+        public RelayCommand(Action execute, Func<bool> canExecute)
         {
-
             if (execute == null)
+            {
                 throw new ArgumentNullException("execute");
-            _execute = execute;
-            _canExecute = canExecute;
+            }
+            this._execute = execute;
+            this._canExecute = canExecute;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region ICommand Members
+        #region Events
 
         public event EventHandler CanExecuteChanged
         {
             add
             {
-
-                if (_canExecute != null)
+                if (this._canExecute != null)
+                {
                     CommandManager.RequerySuggested += value;
+                }
             }
             remove
             {
-
-                if (_canExecute != null)
+                if (this._canExecute != null)
+                {
                     CommandManager.RequerySuggested -= value;
+                }
             }
         }
 
+        #endregion Events
+
+        #region Methods
+
         [DebuggerStepThrough]
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return this._canExecute == null ? true : this._canExecute();
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
-            _execute();
+            this._execute();
         }
 
-        #endregion
+        #endregion Methods
     }
 }
+#endif

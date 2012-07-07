@@ -1,25 +1,41 @@
-﻿//===================================================================================
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// ===================================================================================
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
+// ===================================================================================
 // Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
+// This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-
+// ===================================================================================
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Extension methods for add And and Or with parameters rebinder
     /// </summary>
     public static class ExpressionBuilder
     {
+        #region Methods
+
+        /// <summary>
+        /// And operator
+        /// </summary>
+        /// <typeparam name="T">Type of params in expression</typeparam>
+        /// <param name="first">Right Expression in AND operation</param>
+        /// <param name="second">Left Expression in And operation</param>
+        /// <returns>New AND expression</returns>
+        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first,
+            Expression<Func<T, bool>> second)
+        {
+            return first.Compose(second, Expression.AndAlso);
+        }
+
         /// <summary>
         /// Compose two expression and merge all in a new expression
         /// </summary>
@@ -28,27 +44,20 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="second">Expression to merge</param>
         /// <param name="merge">Function to merge</param>
         /// <returns>New merged expressions</returns>
-        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
+        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second,
+            Func<Expression, Expression, Expression> merge)
         {
             // build parameter map (from parameters of second to parameters of first)
-            var map = first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
+            Dictionary<ParameterExpression, ParameterExpression> map =
+                first.Parameters.Select((f, i) => new {f, s = second.Parameters[i]}).ToDictionary(p => p.s,
+                        p => p.f);
 
             // replace parameters in the second lambda expression with parameters from the first
-            var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
-            // apply composition of lambda expression bodies to parameters from the first expression 
+            Expression secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
+            // apply composition of lambda expression bodies to parameters from the first expression
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
-        /// <summary>
-        /// And operator
-        /// </summary>
-        /// <typeparam name="T">Type of params in expression</typeparam>
-        /// <param name="first">Right Expression in AND operation</param>
-        /// <param name="second">Left Expression in And operation</param>
-        /// <returns>New AND expression</returns>
-        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
-        {
-            return first.Compose(second, Expression.AndAlso);
-        }
+
         /// <summary>
         /// Or operator
         /// </summary>
@@ -56,12 +65,12 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="first">Right expression in OR operation</param>
         /// <param name="second">Left expression in OR operation</param>
         /// <returns>New Or expressions</returns>
-        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> first,
+            Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.OrElse);
         }
 
+        #endregion Methods
     }
-
-
 }

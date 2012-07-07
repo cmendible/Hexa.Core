@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
-  namespace="Hexa.Core" assembly="Hexa.Core.NHibernate">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Hexa.Core" assembly="Hexa.Core.NHibernate">
 
   <database-object>
     <create>

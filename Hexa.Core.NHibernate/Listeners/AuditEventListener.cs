@@ -1,50 +1,56 @@
-﻿#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NHibernate.Event;
-using NHibernate.Event.Default;
-using NHibernate.Persister.Entity;
-using Hexa.Core.Security;
+#endregion Header
 
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using NHibernate.Event;
+    using NHibernate.Event.Default;
+    using NHibernate.Persister.Entity;
+
+    using Security;
+
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
     {
-        public bool OnPreInsert(PreInsertEvent e)
+        #region Methods
+
+        public bool OnPreInsert(PreInsertEvent @event)
         {
-            var auditable = e.Entity as IAuditableEntity;
+            var auditable = @event.Entity as IAuditableEntity;
             if (auditable == null)
+            {
                 return false;
+            }
 
             var identity = ApplicationContext.User.Identity as ICoreIdentity;
             Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var userUniqueId = identity.Id;
+            string userUniqueId = identity.Id;
 
-            var createdAt = DateTime.Now;
+            DateTime createdAt = DateTime.Now;
 
-            _Set(e.Persister, e.State, "CreatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "CreatedAt", createdAt);
-            _Set(e.Persister, e.State, "UpdatedAt", createdAt);
+            this._Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "CreatedAt", createdAt);
+            this._Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
 
             auditable.CreatedBy = userUniqueId;
             auditable.UpdatedBy = userUniqueId;
@@ -54,38 +60,43 @@ namespace Hexa.Core.Domain
             return false;
         }
 
-        public bool OnPreUpdate(PreUpdateEvent e)
+        public bool OnPreUpdate(PreUpdateEvent @event)
         {
-            var auditable = e.Entity as IAuditableEntity;
+            var auditable = @event.Entity as IAuditableEntity;
             if (auditable == null)
+            {
                 return false;
+            }
 
             var identity = ApplicationContext.User.Identity as ICoreIdentity;
             Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            var userUniqueId = identity.Id;
+            string userUniqueId = identity.Id;
 
-            var updatedAt = DateTime.Now;
+            DateTime updatedAt = DateTime.Now;
 
             var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
-            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(e.Persister.EntityName))
+            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(@event.Persister.EntityName))
             {
-                var tableName = e.Persister.EntityName;
-                var changedPropertiesIdx = e.Persister.FindDirty(e.State, e.OldState, e.Entity, e.Session.GetSessionImplementation());
-                foreach (var idx in changedPropertiesIdx)
+                string tableName = @event.Persister.EntityName;
+                int[] changedPropertiesIdx = @event.Persister.FindDirty(@event.State, @event.OldState, @event.Entity,
+                                             @event.Session.GetSessionImplementation());
+                foreach (int idx in changedPropertiesIdx)
                 {
-                    var propertyName = e.Persister.PropertyNames[idx];
-                    var oldValue = e.OldState[idx];
-                    var newValue = e.State[idx];
+                    string propertyName = @event.Persister.PropertyNames[idx];
+                    object oldValue = @event.OldState[idx];
+                    object newValue = @event.State[idx];
 
-                    var auditTrail = auditTrailFactory.CreateAuditTrail(tableName, e.Id.ToString(), 
-                        propertyName, oldValue, newValue, userUniqueId, updatedAt);
+                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, @event.Id.ToString(),
+                                                   propertyName, oldValue, newValue,
+                                                   userUniqueId,
+                                                   updatedAt);
 
-                    e.Session.Save(auditTrail);
+                    @event.Session.Save(auditTrail);
                 }
             }
 
-            _Set(e.Persister, e.State, "UpdatedBy", userUniqueId);
-            _Set(e.Persister, e.State, "UpdatedAt", updatedAt);
+            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this._Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
             auditable.UpdatedBy = userUniqueId;
             auditable.UpdatedAt = updatedAt;
 
@@ -94,25 +105,31 @@ namespace Hexa.Core.Domain
 
         private void _Set(IEntityPersister persister, object[] state, string propertyName, object value)
         {
-            var index = Array.IndexOf(persister.PropertyNames, propertyName);
+            int index = Array.IndexOf(persister.PropertyNames, propertyName);
             if (index == -1)
+            {
                 return;
+            }
             state[index] = value;
         }
+
+        #endregion Methods
     }
 
     //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
-        protected override void DirtyCheck(FlushEntityEvent e)
+        #region Methods
+
+        protected override void DirtyCheck(FlushEntityEvent @event)
         {
-            base.DirtyCheck(e);
-            if (e.DirtyProperties != null &&
-                e.DirtyProperties.Any() &&
+            base.DirtyCheck(@event);
+            if (@event.DirtyProperties != null &&
+                @event.DirtyProperties.Any() &&
                 //IAuditableEntity is my inteface for audited entities
-                e.Entity is IAuditableEntity)
-                e.DirtyProperties = e.DirtyProperties
-                 .Concat(_GetAdditionalDirtyProperties(e)).ToArray();
+                @event.Entity is IAuditableEntity)
+                @event.DirtyProperties = @event.DirtyProperties
+                                         .Concat(_GetAdditionalDirtyProperties(@event)).ToArray();
         }
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)
@@ -126,5 +143,7 @@ namespace Hexa.Core.Domain
             yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
                                        "CreatedAt");
         }
+
+        #endregion Methods
     }
 }

@@ -1,24 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
-
 namespace uNhAddIns.UserTypes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using NHibernate.SqlTypes;
+    using NHibernate.UserTypes;
+
     /// <summary>
     /// http://code.google.com/p/unhaddins/
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TId">The type of the id.</typeparam>
     [Serializable]
-    public abstract class GenericWellKnownInstanceType<T, TId> : IUserType where T : class
+    public abstract class GenericWellKnownInstanceType<T, TId> : IUserType
+        where T : class
     {
-        private Func<T, TId, bool> findPredicate;
-        private Func<T, TId> idGetter;
-        private IEnumerable<T> repository;
+        #region Fields
+
+        private readonly Func<T, TId, bool> findPredicate;
+        private readonly Func<T, TId> idGetter;
+        private readonly IEnumerable<T> repository;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Base constructor
@@ -26,21 +33,59 @@ namespace uNhAddIns.UserTypes
         /// <param name="repository">The collection that represent a in-memory repository.</param>
         /// <param name="findPredicate">The predicate an instance by the persisted value.</param>
         /// <param name="idGetter">The getter of the persisted value.</param>
-        protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate, Func<T, TId> idGetter)
+        protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate,
+            Func<T, TId> idGetter)
         {
             this.repository = repository;
             this.findPredicate = findPredicate;
             this.idGetter = idGetter;
         }
 
-        public Type ReturnedType
-        {
-            get { return typeof(T); }
-        }
+        #endregion Constructors
+
+        #region Properties
 
         public bool IsMutable
         {
-            get { return false; }
+            get
+            {
+                return false;
+            }
+        }
+
+        public Type ReturnedType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
+
+        /// <summary>
+        /// The SQL types for the columns mapped by this type.
+        /// </summary>
+        public abstract SqlType[] SqlTypes
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public object Assemble(object cached, object owner)
+        {
+            return cached;
+        }
+
+        public object DeepCopy(object value)
+        {
+            return value;
+        }
+
+        public object Disassemble(object value)
+        {
+            return value;
         }
 
         public new bool Equals(object x, object y)
@@ -70,25 +115,20 @@ namespace uNhAddIns.UserTypes
                 return null;
             }
 
-            var value = (TId)rs.GetValue(index0);
-            return repository.FirstOrDefault(x => findPredicate(x, value));
+            var value = (TId) rs.GetValue(index0);
+            return this.repository.FirstOrDefault(x => this.findPredicate(x, value));
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
             if (value == null)
             {
-                ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
+                ((IDbDataParameter) cmd.Parameters[index]).Value = DBNull.Value;
             }
             else
             {
-                ((IDbDataParameter)cmd.Parameters[index]).Value = idGetter((T)value);
+                ((IDbDataParameter) cmd.Parameters[index]).Value = this.idGetter((T) value);
             }
-        }
-
-        public object DeepCopy(object value)
-        {
-            return value;
         }
 
         public object Replace(object original, object target, object owner)
@@ -96,19 +136,6 @@ namespace uNhAddIns.UserTypes
             return original;
         }
 
-        public object Assemble(object cached, object owner)
-        {
-            return cached;
-        }
-
-        public object Disassemble(object value)
-        {
-            return value;
-        }
-
-        /// <summary>
-        /// The SQL types for the columns mapped by this type. 
-        /// </summary>
-        public abstract SqlType[] SqlTypes { get; }
+        #endregion Methods
     }
 }

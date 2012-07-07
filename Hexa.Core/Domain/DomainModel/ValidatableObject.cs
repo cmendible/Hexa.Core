@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Hexa.Core.Validation;
-
 namespace Hexa.Core.Domain
 {
-	[Serializable]
+    using System;
+    using System.Collections.Generic;
+
+    using Validation;
+
+    [Serializable]
     public abstract class ValidatableObject : IValidatable
     {
+        #region Fields
 
-        #region IValidatable Implementation
+        private IValidator _validator;
 
-        private IValidator _validator = null;
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// Gets the validator.
@@ -21,10 +25,28 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                if (_validator == null)
-                    _validator = ServiceLocator.GetInstance<IValidator>();
+                if (this._validator == null)
+                {
+                    this._validator = ServiceLocator.GetInstance<IValidator>();
+                }
 
-                return _validator;
+                return this._validator;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Validates this instance.
+        /// If instance is not valid, method must throw a ValidationException.
+        /// </summary>
+        public virtual void AssertValidation()
+        {
+            if (!Validator.IsValid(this))
+            {
+                throw new ValidationException(GetType(), this.Validator.Validate(this));
             }
         }
 
@@ -36,7 +58,7 @@ namespace Hexa.Core.Domain
         /// </returns>
         public virtual bool IsValid()
         {
-            return Validator.IsValid(this);
+            return this.Validator.IsValid(this);
         }
 
         /// <summary>
@@ -46,19 +68,9 @@ namespace Hexa.Core.Domain
         /// <returns>A list containing error details, or null</returns>
         public virtual IEnumerable<ValidationError> Validate()
         {
-            return Validator.Validate(this);
+            return this.Validator.Validate(this);
         }
 
-        /// <summary>
-        /// Validates this instance.
-        /// If instance is not valid, method must throw a ValidationException.
-        /// </summary>
-        public virtual void AssertValidation()
-        {
-            if (!Validator.IsValid(this))
-                throw new ValidationException(this.GetType(), Validator.Validate(this));
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

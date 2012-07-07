@@ -1,14 +1,5 @@
-﻿// Credits should go to Egil Hansen.
+// Credits should go to Egil Hansen.
 // see: http://stackoverflow.com/questions/328763/how-to-take-control-of-style-sheets-in-asp-net-themes-with-the-styleplaceholder-a
-
-
-using System;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
 //<%@ Register TagPrefix="cc2" Namespace="Hexa.Core.Web.UI.Controls" Assembly="Hexa.Core" %>
 //<cc2:Styles runat="server">
 //    <link rel="Stylesheet" type="text/css" href="%Theme/StyleSheet.css" media="all"/>
@@ -16,12 +7,32 @@ using System.Web.UI.WebControls;
 //</cc2:Styles>
 namespace Hexa.Core.Web.UI.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
     [DefaultProperty("ThemeVariableName")]
     [ToolboxData("<{0}:Styles runat=\"server\"></{0}:Styles>")]
     [Themeable(true)]
     public class Styles : PlaceHolder
     {
+        #region Properties
+
+        /// <summary>
+        /// Get the theme path
+        /// </summary>
+        public string ThemePath
+        {
+            get
+            {
+                return string.Format("{0}/App_Themes/{1}",
+                                     Page.Request.ApplicationPath,
+                                     Page.Theme).Replace("//", "/");
+            }
+        }
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -32,7 +43,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                String s = (String)ViewState["ThemeVariableName"];
+                var s = (string)ViewState["ThemeVariableName"];
                 return ((s == null) ? "%Theme" : s);
             }
 
@@ -42,6 +53,10 @@ namespace Hexa.Core.Web.UI.Controls
             }
         }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Fix controls before render
         /// </summary>
@@ -49,44 +64,33 @@ namespace Hexa.Core.Web.UI.Controls
         {
             base.OnPreRender(e);
 
-            if (this.Visible)
+            if (Visible)
             {
-                // Hide any server side css 
-                foreach (Control c in this.Page.Header.Controls)
+                // Hide any server side css
+                foreach (Control c in Page.Header.Controls)
                 {
                     if (c is HtmlControl && ((HtmlControl)c).TagName.Equals("link",
-                                StringComparison.OrdinalIgnoreCase))
+                            StringComparison.OrdinalIgnoreCase))
                     {
                         c.Visible = false;
                     }
                 }
 
                 // Replace ThemeVariableName with actual theme path
-                Regex reg = new Regex(ThemeVariableName,
-                                      System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                var reg = new Regex(ThemeVariableName,
+                                    RegexOptions.IgnoreCase);
 
-                foreach (Control c in this.Controls)
+                foreach (Control c in Controls)
                 {
                     if (c is LiteralControl)
                     {
-                        LiteralControl l = (LiteralControl)c;
-                        l.Text = reg.Replace(l.Text, this.ThemePath);
+                        var l = (LiteralControl)c;
+                        l.Text = reg.Replace(l.Text, ThemePath);
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Get the theme path
-        /// </summary>
-        public string ThemePath
-        {
-            get
-            {
-                return String.Format("{0}/App_Themes/{1}",
-                                     this.Page.Request.ApplicationPath,
-                                     this.Page.Theme).Replace("//", "/");
-            }
-        }
+        #endregion Methods
     }
 }

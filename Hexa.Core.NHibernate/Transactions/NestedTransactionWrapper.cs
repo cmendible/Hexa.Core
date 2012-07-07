@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Hexa.Core.Domain
 {
+    using NHibernate;
+
     public class NestedTransactionWrapper : TransactionWrapper
     {
-        public NestedTransactionWrapper(global::NHibernate.ITransaction transaction)
+        #region Constructors
+
+        public NestedTransactionWrapper(ITransaction transaction)
             : base(transaction)
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public override void Commit()
         {
             // Do nothing, let the outermost transaction commit.
         }
+
+        #endregion Methods
     }
 }

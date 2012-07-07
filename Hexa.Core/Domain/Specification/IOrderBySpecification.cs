@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
 namespace Hexa.Core.Domain.Specification
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Base contract for Specification pattern, for more information
     /// about this pattern see http://martinfowler.com/apsupp/spec.pdf
@@ -14,18 +14,27 @@ namespace Hexa.Core.Domain.Specification
     public interface IOrderBySpecification<TEntity>
         where TEntity : class
     {
+        #region Methods
+
         IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query);
+
+        #endregion Methods
     }
 
     public static class OrderBySpecificationExtensions
     {
-        public static IOrderedQueryable<TEntity> OrderBySpecification<TEntity>(this IQueryable<TEntity> query, IOrderBySpecification<TEntity> orderBy)
-             where TEntity : class
+        #region Methods
+
+        public static IOrderedQueryable<TEntity> OrderBySpecification<TEntity>(this IQueryable<TEntity> query,
+            IOrderBySpecification<TEntity> orderBy)
+            where TEntity : class
         {
             Guard.Against<ArgumentNullException>(query == null, "query");
             Guard.Against<ArgumentNullException>(orderBy == null, "orderBy");
 
             return orderBy.ApplyOrderBy(query);
         }
+
+        #endregion Methods
     }
 }

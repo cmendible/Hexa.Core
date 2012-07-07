@@ -1,12 +1,15 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
-
+#if !MONO 
 namespace Hexa.Core.Windows.Mvvm
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
     public static class PropertySupport
     {
-        public static String ExtractPropertyName<T>(Expression<Func<T>> propertyExpresssion)
+        #region Methods
+
+        public static string ExtractPropertyName<T>(Expression<Func<T>> propertyExpresssion)
         {
             if (propertyExpresssion == null)
             {
@@ -22,10 +25,11 @@ namespace Hexa.Core.Windows.Mvvm
             var property = memberExpression.Member as PropertyInfo;
             if (property == null)
             {
-                throw new ArgumentException("The member access expression does not access a property.", "propertyExpresssion");
+                throw new ArgumentException("The member access expression does not access a property.",
+                                            "propertyExpresssion");
             }
 
-            var getMethod = property.GetGetMethod(true);
+            MethodInfo getMethod = property.GetGetMethod(true);
             if (getMethod.IsStatic)
             {
                 throw new ArgumentException("The referenced property is a static property.", "propertyExpresssion");
@@ -33,5 +37,8 @@ namespace Hexa.Core.Windows.Mvvm
 
             return memberExpression.Member.Name;
         }
+
+        #endregion Methods
     }
 }
+#endif

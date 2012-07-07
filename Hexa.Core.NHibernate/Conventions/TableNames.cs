@@ -1,37 +1,16 @@
-﻿using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
-
 namespace Hexa.Core.Domain
 {
-
-    //public class PluralizeTableNames : IClassConvention
-    //{
-    //    private static EnglishInflector _inflector = new EnglishInflector();
-
-    //    public void Apply(IClassInstance instance)
-    //    {
-    //        instance.Table(_inflector.Pluralize(instance.EntityType.Name));
-    //    }
-    //}
-
-    public class TableNameConvention : IClassConvention, IClassConventionAcceptance
-    {
-        public void Apply(IClassInstance instance)
-        {
-            instance.Table("`" + Inflector.Underscore(instance.EntityType.Name).ToUpper() + "´");
-        }
-
-        public void Accept(FluentNHibernate.Conventions.AcceptanceCriteria.IAcceptanceCriteria<FluentNHibernate.Conventions.Inspections.IClassInspector> criteria)
-        {
-            criteria.Expect(x => x.TableName, Is.Not.Set);
-        }
-    }
+    using FluentNHibernate.Conventions;
+    using FluentNHibernate.Conventions.AcceptanceCriteria;
+    using FluentNHibernate.Conventions.Inspections;
+    using FluentNHibernate.Conventions.Instances;
 
     public class ManyToManyTableName : ManyToManyTableNameConvention
     {
-        protected override string GetBiDirectionalTableName(IManyToManyCollectionInspector collection, IManyToManyCollectionInspector otherSide)
+        #region Methods
+
+        protected override string GetBiDirectionalTableName(IManyToManyCollectionInspector collection,
+            IManyToManyCollectionInspector otherSide)
         {
             return Inflector.Underscore(collection.EntityType.Name + "_" + otherSide.EntityType.Name).ToUpper();
         }
@@ -40,6 +19,33 @@ namespace Hexa.Core.Domain
         {
             return Inflector.Underscore(collection.EntityType.Name + "_" + collection.ChildType.Name).ToUpper();
         }
+
+        #endregion Methods
     }
 
+    //public class PluralizeTableNames : IClassConvention
+    //{
+    //    private static EnglishInflector _inflector = new EnglishInflector();
+    //    public void Apply(IClassInstance instance)
+    //    {
+    //        instance.Table(_inflector.Pluralize(instance.EntityType.Name));
+    //    }
+    //}
+    public class TableNameConvention : IClassConvention, IClassConventionAcceptance
+    {
+        #region Methods
+
+        public void Accept(
+            IAcceptanceCriteria<IClassInspector> criteria)
+        {
+            criteria.Expect(x => x.TableName, Is.Not.Set);
+        }
+
+        public void Apply(IClassInstance instance)
+        {
+            instance.Table("`" + Inflector.Underscore(instance.EntityType.Name).ToUpper() + "´");
+        }
+
+        #endregion Methods
+    }
 }

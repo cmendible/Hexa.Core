@@ -1,34 +1,35 @@
-﻿#region License
+#region Header
 
-//===================================================================================
-//Copyright 2010 HexaSystems Corporation
-//===================================================================================
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//http://www.apache.org/licenses/LICENSE-2.0
-//===================================================================================
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-//===================================================================================
+// ===================================================================================
+// Copyright 2010 HexaSystems Corporation
+// ===================================================================================
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// ===================================================================================
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
+// ===================================================================================
 
-#endregion
-
-using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
+#endregion Header
 
 namespace Hexa.Core
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
+
     /// <summary>
     /// Internal Exception.
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class InternalException : CoreException
     {
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InternalException"/> class.
@@ -51,7 +52,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
-        public InternalException(string message, System.Exception ex)
+        public InternalException(string message, Exception ex)
             : base(message, ex)
         {
         }
@@ -66,6 +67,10 @@ namespace Hexa.Core
         {
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
         /// </summary>
@@ -78,11 +83,12 @@ namespace Hexa.Core
         /// 	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
         /// 	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
         }
 
+        #endregion Methods
     }
 }
