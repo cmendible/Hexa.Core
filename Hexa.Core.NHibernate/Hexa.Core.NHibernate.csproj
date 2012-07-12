@@ -122,6 +122,7 @@
       <HintPath>..\libs\NHibernate\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -146,6 +147,7 @@
     <Compile Include="Mappings\EntityMap.cs" />
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="Mappings\RootEntityMap.cs" />
+    <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHContextFactory.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="NHibernateObjectSet.cs" />
@@ -170,18 +172,18 @@
     <EmbeddedResource Include="Mappings\Schema\DocumentSchema.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hexa.Core\Hexa.Core.csproj">
-      <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>
-      <Name>Hexa.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Mappings\Schema\RenameUniqueKeys.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
       <Link>CodeAnalysisDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hexa.Core\Hexa.Core.csproj">
+      <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>
+      <Name>Hexa.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

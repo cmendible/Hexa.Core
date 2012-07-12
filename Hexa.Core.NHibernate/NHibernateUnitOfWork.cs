@@ -20,6 +20,7 @@
 namespace Hexa.Core.Domain
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Runtime.Remoting.Messaging;
     using System.ServiceModel;
     using System.Transactions;
@@ -27,6 +28,8 @@ namespace Hexa.Core.Domain
 
     using NHibernate;
 
+    [Export(typeof(IUnitOfWork))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class NHibernateUnitOfWork : IUnitOfWork
     {
         #region Fields

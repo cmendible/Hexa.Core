@@ -30,15 +30,15 @@ namespace Hexa.Core.Domain
 
         public BaseClassMap()
         {
-            Configuration = ServiceLocator.GetInstance<Configuration>();
-            Dialect = Dialect.GetDialect(Configuration.Properties);
+            Configuration = ServiceLocator.GetInstance<NHConfiguration>();
+            Dialect = Dialect.GetDialect(Configuration.Value.Properties);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        protected Configuration Configuration
+        protected NHConfiguration Configuration
         {
             get;
             private set;

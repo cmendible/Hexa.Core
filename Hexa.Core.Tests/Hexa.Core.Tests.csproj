@@ -91,7 +91,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\Hexa.Core.snk</AssemblyOriginatorKeyFile>
@@ -142,6 +142,9 @@
     <Reference Include="FluentNHibernate">
       <HintPath>..\libs\NHibernate\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Mef.CommonServiceLocator">
+      <HintPath>..\libs\Microsoft.Practices.ServiceLocation\Microsoft.Mef.CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\libs\NHibernate\NHibernate.dll</HintPath>
     </Reference>
@@ -174,6 +177,7 @@
       <HintPath>..\libs\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations">
     </Reference>
     <Reference Include="System.Data" />

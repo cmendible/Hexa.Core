@@ -71,7 +71,7 @@ namespace Hexa.Core.Domain
                 return true;
             }
 
-            if (compareTo == null || !GetType().Equals(compareTo.TypeUnproxied()))
+            if (compareTo == null || !GetType().Equals(compareTo.TypeWithoutProxy()))
             {
                 return false;
             }
@@ -133,7 +133,7 @@ namespace Hexa.Core.Domain
             return EntityId == null || EntityId.Equals(default(TKey));
         }
 
-        protected virtual Type TypeUnproxied()
+        protected virtual Type TypeWithoutProxy()
         {
             return GetType();
         }
@@ -169,11 +169,11 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Equalses the specified compare to.
         /// </summary>
-        /// <param name="compareTo">The compare to.</param>
+        /// <param name="other">The compare to.</param>
         /// <returns></returns>
-        public virtual bool Equals(TEntity compareTo)
+        public virtual bool Equals(TEntity other)
         {
-            return base.Equals(compareTo);
+            return base.Equals(other);
         }
 
         #endregion Methods

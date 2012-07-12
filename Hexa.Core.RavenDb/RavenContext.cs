@@ -19,8 +19,12 @@
 
 namespace Hexa.Core.Domain
 {
+    using System.ComponentModel.Composition;
+
     using Raven.Client;
 
+    [Export(typeof(IUnitOfWork))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class RavenUnitOfWork : IUnitOfWork
     {
         #region Fields

@@ -19,10 +19,14 @@
 
 namespace Hexa.Core.Domain
 {
+    using System.ComponentModel.Composition;
+
     using Data;
 
     using Raven.Client.Embedded;
 
+    [Export(typeof(IUnitOfWorkFactory))]
+    [Export(typeof(IDatabaseManager))]
     public class RavenContextFactory : IUnitOfWorkFactory, IDatabaseManager
     {
         #region Fields

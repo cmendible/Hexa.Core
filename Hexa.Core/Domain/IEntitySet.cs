@@ -44,17 +44,13 @@ namespace Hexa.Core.Domain
 
         IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters);
 
-        [SuppressMessage("Microsoft.Design",
-                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path);
 
-        [SuppressMessage("Microsoft.Design",
-                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter);
 
-        [SuppressMessage("Microsoft.Design",
-                             "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter,
+        IEntitySet<TEntity> Include<S>(
+            Expression<Func<TEntity, object>> path, 
+            Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression);
 
         void ModifyObject(TEntity entity);

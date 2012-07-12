@@ -127,7 +127,7 @@ namespace GNU.Gettext
         {
             foreach (GettextResourceSet rs in GetResourceSetsFor(culture))
             {
-                string translation = rs.GetPluralstring(msgid, msgidPlural, n);
+                string translation = rs.GetPluralString(msgid, msgidPlural, n);
                 if (translation != null)
                 {
                     return translation;
@@ -425,11 +425,6 @@ namespace GNU.Gettext
     /// </summary>
     // We need this subclass of ResourceSet, because the plural formula must come
     // from the same ResourceSet as the object containing the plural forms.
-    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"),
-    SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly",
-                     MessageId = "Gettext"),
-    SuppressMessage("Microsoft.Design",
-                     "CA1010:CollectionsShouldImplementGenericInterface")]
     public class GettextResourceSet : ResourceSet
     {
         #region Fields
@@ -522,12 +517,7 @@ namespace GNU.Gettext
         ///                           an ASCII string</param>
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <c>null</c> if none is found</returns>
-        [SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-        SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid"),
-        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public virtual string GetPluralstring(string msgid, string msgidPlural, long n)
+        public virtual string GetPluralString(string msgid, string msgidPlural, long n)
         {
             object value = GetObject(msgid);
             if (value == null || value is string)
@@ -554,9 +544,6 @@ namespace GNU.Gettext
         ///          none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
-        [SuppressMessage("Microsoft.Naming",
-                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
-        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override string GetString(string msgid)
         {
             object value = GetObject(msgid);
@@ -585,9 +572,6 @@ namespace GNU.Gettext
         ///          none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
-        [SuppressMessage("Microsoft.Naming",
-                         "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#"),
-        SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         public override string GetString(string msgid, bool ignoreCase)
         {
             object value = GetObject(msgid, ignoreCase);
@@ -611,10 +595,6 @@ namespace GNU.Gettext
         /// The default implementation is the Germanic plural formula:
         /// zero for <paramref name="n"/> == 1, one for <paramref name="n"/> != 1.
         /// </summary>
-        [SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-        SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eval")]
         protected virtual long PluralEval(long n)
         {
             return (n == 1 ? 0 : 1);
