@@ -204,6 +204,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>

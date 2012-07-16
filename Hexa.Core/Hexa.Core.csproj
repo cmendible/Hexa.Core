@@ -78,7 +78,7 @@
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <WarningLevel>1</WarningLevel>
     <DebugType>full</DebugType>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -211,31 +211,34 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\DbProviders.cs" />
-    <Compile Include="Database\IDatabaseManager.cs" />
-    <Compile Include="Database\SQLScriptHelper.cs" />
-    <Compile Include="Domain\DomainModel\BaseEntity.cs" />
-    <Compile Include="Domain\DomainModel\AuditableRootEntity.cs" />
-    <Compile Include="Domain\DomainModel\Entity.cs" />
-    <Compile Include="Domain\DomainModel\IAuditableEntity.cs" />
-    <Compile Include="Domain\DomainModel\IEntityAuditTrail.cs" />
-    <Compile Include="Domain\DomainModel\RootEntity.cs" />
-    <Compile Include="Domain\DomainModel\ValidatableObject.cs" />
-    <Compile Include="Domain\DomainModel\ValueObject.cs" />
-    <Compile Include="Domain\MemorySet.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Data\DbProviders.cs" />
+    <Compile Include="Data\IDatabaseManager.cs" />
+    <Compile Include="Data\SQLScriptHelper.cs" />
+    <Compile Include="Domain\Model\BaseEntity.cs" />
+    <Compile Include="Domain\Model\AuditableRootEntity.cs" />
+    <Compile Include="Domain\Model\Entity.cs" />
+    <Compile Include="Domain\Model\IAuditableEntity.cs" />
+    <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
+    <Compile Include="Domain\Model\RootEntity.cs" />
+    <Compile Include="Domain\Model\ValidatableObject.cs" />
+    <Compile Include="Domain\Model\ValueObject.cs" />
+    <Compile Include="Domain\Repositories\MemorySet.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="Exceptions\InternalException.cs" />
-    <Compile Include="Domain\BaseRepository.cs" />
-    <Compile Include="Domain\Inflector.cs" />
-    <Compile Include="Domain\IRepository.cs" />
-    <Compile Include="Domain\IUnitOfWork.cs" />
-    <Compile Include="Domain\IUnitOfWorkFactory.cs" />
-    <Compile Include="Database\DatabaseManager.cs" />
-    <Compile Include="Database\DbProviderExtensions.cs" />
-    <Compile Include="Domain\PagedElements.cs" />
+    <Compile Include="Domain\Repositories\BaseRepository.cs" />
+    <Compile Include="Domain\Repositories\Inflector.cs" />
+    <Compile Include="Domain\Repositories\IRepository.cs" />
+    <Compile Include="Domain\UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="Domain\UnitOfWork\IUnitOfWorkFactory.cs" />
+    <Compile Include="Data\DatabaseManager.cs" />
+    <Compile Include="Data\DbProviderExtensions.cs" />
+    <Compile Include="Domain\Repositories\PagedElements.cs" />
     <Compile Include="Domain\Specification\AndAlsoSpecification.cs" />
     <Compile Include="Domain\Specification\CompositeSpecification.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />
@@ -249,7 +252,7 @@
     <Compile Include="Domain\Specification\Specification.cs" />
     <Compile Include="Domain\Specification\SpecificationExtensions.cs" />
     <Compile Include="Domain\Specification\TrueSpecification.cs" />
-    <Compile Include="Domain\UnitOfWorkScope.cs" />
+    <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
     <Compile Include="Encoding\HexEncodingHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -290,13 +293,12 @@
     </Compile>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Security\ICoreIdentity.cs" />
-    <Compile Include="ServiceModel\ErrorBehaviorAttribute.cs" />
-    <Compile Include="ServiceModel\EvaluationContextExtensions.cs" />
+    <Compile Include="ServiceModel\ErrorHandling\ErrorBehaviorAttribute.cs" />
+    <Compile Include="ServiceModel\Security\EvaluationContextExtensions.cs" />
     <Compile Include="ServiceModel\Security\AuthorizationManager.cs" />
     <Compile Include="ServiceModel\Security\BaseAuthorizationPolicy.cs" />
     <Compile Include="ServiceModel\Security\BaseX509AuthorizationPolicy.cs" />
-    <Compile Include="ServiceModel\ServiceFactory.cs" />
-    <Compile Include="ServiceModel\ServiceSecurityContextExtensions.cs" />
+    <Compile Include="ServiceModel\Security\ServiceSecurityContextExtensions.cs" />
     <Compile Include="ServiceModel\ServiceProxyHelper.cs" />
     <Compile Include="Domain\Validation\DataAnnotationsValidator.cs" />
     <Compile Include="Domain\Validation\Guard.cs" />
@@ -305,10 +307,6 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
-    <Compile Include="ServiceModel\Settings\SecurityMode.cs" />
-    <Compile Include="ServiceModel\Settings\ServiceCredentialElement.cs" />
-    <Compile Include="ServiceModel\Settings\Settings.cs" />
-    <Compile Include="ServiceModel\Settings\X509FindType.cs" />
     <Compile Include="Web\Seo\ISeoSiteMapBuilderService.cs" />
     <Compile Include="Web\Seo\SeoSiteMapBuilderService.cs" />
     <Compile Include="Web\UI\BasePage.cs">
@@ -353,7 +351,7 @@
     <Compile Include="Xml\Transform\Transformer.cs" />
     <Compile Include="Xml\Validation\Resolver.cs" />
     <Compile Include="Xml\Validation\Validator.cs" />
-    <Compile Include="Domain\IEntitySet.cs" />
+    <Compile Include="Domain\Repositories\IEntitySet.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

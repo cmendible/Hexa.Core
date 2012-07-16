@@ -132,6 +132,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />
     <Compile Include="Conventions\ForeignKeyConstraintNames.cs" />
@@ -148,9 +151,9 @@
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="Mappings\RootEntityMap.cs" />
     <Compile Include="NHConfiguration.cs" />
-    <Compile Include="NHContextFactory.cs" />
+    <Compile Include="NHibernateUnitOfWorkFactory.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
-    <Compile Include="NHibernateObjectSet.cs" />
+    <Compile Include="NHibernateEntitySet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlExceptionHandlers\SqlExceptionHandler.cs" />
     <Compile Include="Transactions\ITransactionWrapper.cs" />

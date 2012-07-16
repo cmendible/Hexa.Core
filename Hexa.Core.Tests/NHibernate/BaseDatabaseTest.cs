@@ -89,7 +89,7 @@ namespace Hexa.Core.Tests.Sql
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            NHContextFactory ctxFactory = this.CreateNHContextFactory();
+            NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -198,7 +198,7 @@ namespace Hexa.Core.Tests.Sql
 
         protected abstract string ConnectionString();
 
-        protected abstract NHContextFactory CreateNHContextFactory();
+        protected abstract NHibernateUnitOfWorkFactory CreateNHContextFactory();
 
         private Human _Add_Human()
         {

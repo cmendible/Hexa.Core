@@ -43,7 +43,7 @@ namespace Hexa.Core.Domain
 
     [Export(typeof(IUnitOfWorkFactory))]
     [Export(typeof(IDatabaseManager))]
-    public sealed class NHContextFactory : IUnitOfWorkFactory, IDatabaseManager
+    public sealed class NHibernateUnitOfWorkFactory : IUnitOfWorkFactory, IDatabaseManager
     {
         #region Fields
 
@@ -59,7 +59,7 @@ namespace Hexa.Core.Domain
 
         #region Constructors
 
-        public NHContextFactory(DbProvider provider, string connectionString, string cacheProvider,
+        public NHibernateUnitOfWorkFactory(DbProvider provider, string connectionString, string cacheProvider,
             Assembly mappingsAssembly, IoCContainer container)
         {
             _DbProvider = provider;
@@ -137,10 +137,10 @@ namespace Hexa.Core.Domain
             Configuration nhConfiguration = pinfo.GetValue(cfg, null) as Configuration;
             container.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
 
-            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHContextFactory).Assembly))
+            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
             .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
             .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
-            .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHContextFactory).Assembly))
+            .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
             .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
             .ExposeConfiguration(c => c.Properties.Add(Environment.BatchSize, "100"))
             .ExposeConfiguration(c => c.Properties.Add(Environment.UseProxyValidator, "true"));
@@ -178,7 +178,7 @@ namespace Hexa.Core.Domain
             #endregion
         }
 
-        internal NHContextFactory()
+        internal NHibernateUnitOfWorkFactory()
         { 
         
         }

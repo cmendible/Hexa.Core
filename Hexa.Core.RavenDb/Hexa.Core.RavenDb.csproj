@@ -138,9 +138,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RavenContextFactory.cs" />
-    <Compile Include="RavenContext.cs" />
-    <Compile Include="RavenObjectSet.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="RavenUnitOfWorkFactory.cs" />
+    <Compile Include="RavenUnitOfWork.cs" />
+    <Compile Include="RavenEntitySet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

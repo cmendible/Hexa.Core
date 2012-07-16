@@ -137,7 +137,7 @@ namespace Hexa.Core.Domain
         public IEntitySet<TEntity> CreateSet<TEntity>()
             where TEntity : class
         {
-            return new NHibernateObjectSet<TEntity>(RunningSession);
+            return new NHibernateEntitySet<TEntity>(RunningSession);
         }
 
         public void Dispose()
