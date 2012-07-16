@@ -27,7 +27,19 @@ namespace Hexa.Core.ServiceModel.Security
 
     using log4net;
 
-    internal class ServiceAuthorizationManager : System.ServiceModel.ServiceAuthorizationManager
+    // <configuration>
+    // <system.serviceModel>
+    //  <behaviors>
+    //    <serviceAuthorization serviceAuthorizationManagerType=
+    //              "Samples.MyServiceAuthorizationManager" >
+    //      <authorizationPolicies>       
+    //        <add policyType="Samples.MyAuthorizationPolicy"
+    //      </authorizationPolicies>
+    //    </serviceAuthorization>
+    //  </behaviors>
+    // </system.serviceModel>
+    //</configuration>
+    public class ServiceAuthorizationManager : System.ServiceModel.ServiceAuthorizationManager
     {
         #region Fields
 
