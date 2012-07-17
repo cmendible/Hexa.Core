@@ -358,8 +358,6 @@ namespace GNU.Gettext
                             try
                             {
                                 satelliteAssembly = MySatelliteAssembly(culture);
-                                // TODO report the warning(The variable 'e' is declared but never used)
-                                //      caused by this line: } catch (FileNotFoundException e) {
                             }
                             catch (FileNotFoundException)
                             {
