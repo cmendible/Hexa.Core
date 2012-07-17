@@ -12,10 +12,10 @@ namespace Hexa.Core.Tests.Extensions
         #region Methods
 
         [Test]
-        public void MakeTransient()
+        public void DeepClone()
         {
             var human = new Human();
-            Human transientHuman = human.MakeTransient();
+            Human clone = human.DeepClone();
         }
 
         #endregion Methods

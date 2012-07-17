@@ -178,11 +178,6 @@
     <EmbeddedResource Include="Mappings\Schema\RenameUniqueKeys.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
-      <Link>CodeAnalysisDictionary.xml</Link>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Hexa.Core\Hexa.Core.csproj">
       <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>
       <Name>Hexa.Core</Name>

@@ -149,4 +149,17 @@ namespace System
 
         #endregion Methods
     }
+
+    public static class HtmlHelper
+    {
+        #region Methods
+
+        public static string StripHtml(this string text)
+        {
+            Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
+            return reg.Replace(text, "");
+        }
+
+        #endregion Methods
+    }
 }
