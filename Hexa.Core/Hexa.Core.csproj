@@ -406,6 +406,7 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

@@ -64,7 +64,7 @@
 		ToolPath="$(ProjectDirectory)\libs\NUnit"
 		Assemblies="@(TestFiles)" 
 		OutputXmlFile="$(ProjectDirectory)\Reports\TestResults.xml"
-		ContinueOnError="false" />
+		ContinueOnError="false" Condition="'$(EnableTests)' == 'true'"/>
 
     <Message Text="Build Completed..." Importance="high" />
 

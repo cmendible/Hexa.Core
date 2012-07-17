@@ -1,0 +1,56 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<BuildDependsOn>$(BuildDependsOn);CleanReports;CodeMetrics;RunFxCop;RunSimian</BuildDependsOn>
+		<CodeMetricsTool>"$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
+		<SourceAnalysisOutputFile>$(OutDir)$(AssemblyName).StyleCop.xml</SourceAnalysisOutputFile>
+		<SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
+		<SourceAnalysisOverrideSettingsFile>$(SolutionDir)\Settings.StyleCop</SourceAnalysisOverrideSettingsFile>
+		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
+	</PropertyGroup>
+	
+	<!-- This is needed by MSBuild to locate the FxCop task -->
+	<UsingTask AssemblyFile="$(SolutionDir)\libs\MSBuild.Community.Tasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FxCop" 
+		Condition="'$(EnableFxCop)' == 'true'"/>
+	
+	<Target Name="CleanReports">
+    	<ItemGroup>
+			<FilesToDelete Include="$(OutDir)$(AssemblyName).CodeMetrics.xml" />
+			<FilesToDelete Include="$(OutDir)$(AssemblyName).FxCop.xml" />
+			<FilesToDelete Include="$(OutDir)$(AssemblyName).Simian.xml" />
+		</ItemGroup>
+
+		<Delete Files="@(FilesToDelete)" />
+	</Target>	
+	
+	<Target Name="CodeMetrics" Condition="'$(EnableMetrics)' == 'true'">
+		<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(OutDir)$(AssemblyName).CodeMetrics.xml&quot; /f:&quot;$(OutDir)$(AssemblyName).dll&quot; /gac /igc' />
+	</Target>
+	
+	<Target Name="RunFxCop" Condition="'$(EnableFxCop)' == 'true'">
+    	<Message Text="Starting FxCop Analysis..." Importance="high" />
+
+		<ItemGroup>
+			<FilesToAnalyze Include="$(OutDir)$(AssemblyName).dll" />
+			<DependencyDirectories Include="$(SolutionDir)\libs\**\*.dll"/>
+		</ItemGroup>
+
+		<FxCop
+			ToolPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\"
+			SearchGac="True"
+			TargetAssemblies="@(FilesToAnalyze)"
+			DependencyDirectories="@(DependencyDirectories)"
+			RuleLibraries="@(FxCopRuleAssemblies)"
+			Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
+			AnalysisReportFileName="$(OutDir)$(AssemblyName).FxCop.xml"
+			CustomDictionary="$(SolutionDir)\msbuild.targets\CodeAnalysisDictionary.xml"
+			Verbose="True"
+			FailOnError="False"
+		/>
+	</Target>
+	
+	<Target Name="RunSimian" Condition="'$(EnableSimian)' == 'true'">
+		<Exec Command='$(Simian) -formatter=xml:$(OutDir)$(AssemblyName).Simian.xml -includes=$(MSBuildProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' />
+	</Target>
+	
+	<Import Project="$(MSBuildProgramFiles32)\MSBuild\StyleCop\v4.7\StyleCop.targets" Condition="'$(EnableMetrics)' == 'true'" />
+</Project>
