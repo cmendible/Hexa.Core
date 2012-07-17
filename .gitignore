@@ -3,10 +3,5 @@ obj/
 bin/
 *.suo
 Hexa.Core.xml
-TestResults.xml
 *.csproj.user
-/CodeMetricsReports/CodeMetricsReport.xml
-/Reports/CodeMetricsReport.xml
-/Reports/FxCop.xml
-/Reports/StyleCop.xml
-/Reports/Simian.xml
+*.log
