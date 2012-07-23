@@ -20,11 +20,10 @@
 namespace Hexa.Core
 {
     using System;
+    using System.Reflection;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    using SL;
 
     using SL = Microsoft.Practices.ServiceLocation;
 
@@ -81,11 +80,11 @@ namespace Hexa.Core
 
             try
             {
-                service = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetService(dependencyType);
+                service = SL.ServiceLocator.Current.GetService(dependencyType);
             }
-            catch (ActivationException)
+            catch (SL.ActivationException)
             {
-                throw new ActivationException("The needed dependency of type " + dependencyType.Name +
+                throw new SL.ActivationException("The needed dependency of type " + dependencyType.Name +
                                               " could not be located with the ServiceLocator. You'll need to register it with " +
                                               "the Common Service Locator (CSL) via your IoC's CSL adapter.");
             }
