@@ -43,14 +43,10 @@ namespace Hexa.Core.ServiceModel.Security
     {
         #region Fields
 
-        protected static readonly ILog _Log = 
+        protected static readonly ILog Log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected static List<string> _AnonymousActions = new List<string>
-        {
-            "http://schemas.xmlsoap.org/ws/2004/09/transfer/Get",
-            // WS-Transfer WSDL request.
-        };
+        protected static List<string> AnonymousActions = new List<string> {"http://schemas.xmlsoap.org/ws/2004/09/transfer/Get"};
 
         #endregion Fields
 
@@ -58,7 +54,7 @@ namespace Hexa.Core.ServiceModel.Security
 
         public ServiceAuthorizationManager()
         {
-            _Log.Debug("New instance constructed.");
+            Log.Debug("New instance constructed.");
         }
 
         #endregion Constructors
@@ -69,21 +65,21 @@ namespace Hexa.Core.ServiceModel.Security
         {
             string action = operationContext.RequestContext.RequestMessage.Headers.Action;
 
-            _Log.DebugFormat("Authentication in progress. Action: {0}", action);
+            Log.DebugFormat("Authentication in progress. Action: {0}", action);
 
             // Check globally anonymous actions..
-            if (_AnonymousActions.Contains(action))
+            if (AnonymousActions.Contains(action))
             {
-                _Log.Debug("Request authorized as an Anonymous Action");
+                Log.Debug("Request authorized as an Anonymous Action");
                 return true;
             }
 
-            if (_Log.IsDebugEnabled)
+            if (Log.IsDebugEnabled)
             {
                 int count = 0;
                 foreach (IIdentity idt in operationContext.ServiceSecurityContext.GetIdentities())
                 {
-                    _Log.DebugFormat("Identity{1}-{0}: {2}", idt.AuthenticationType, count++, idt.Name);
+                    Log.DebugFormat("Identity{1}-{0}: {2}", idt.AuthenticationType, count++, idt.Name);
                 }
             }
 
