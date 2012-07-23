@@ -57,11 +57,6 @@ namespace Hexa.Core
             {
                 service = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetService(dependencyType);
             }
-            catch (NullReferenceException)
-            {
-                throw new NullReferenceException("ServiceLocator has not been initialized; " +
-                                                 "I was trying to retrieve " + dependencyType);
-            }
             catch (ActivationException)
             {
                 throw new ActivationException("The needed dependency of type " + dependencyType.Name +

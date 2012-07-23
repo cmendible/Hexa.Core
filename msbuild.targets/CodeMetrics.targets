@@ -1,0 +1,78 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--
+	// ===================================================================================
+    // Copyright 2010 HexaSystems Corporation
+	// ===================================================================================
+	// Licensed under the Apache License, Version 2.0 (the "License");
+	// you may not use this file except in compliance with the License.
+	// You may obtain a copy of the License at
+	// http://www.apache.org/licenses/LICENSE-2.0
+	// ===================================================================================
+	// Unless required by applicable law or agreed to in writing, software
+	// distributed under the License is distributed on an "AS IS" BASIS,
+	// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	// See the License for the specific language governing permissions and
+	// See the License for the specific language governing permissions and
+	// ===================================================================================
+	-->
+	<PropertyGroup>
+		<BuildDependsOn>$(BuildDependsOn);CleanReports;CodeMetrics;RunFxCop;RunSimian</BuildDependsOn>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(EnableMetrics)' == 'true'">
+		<CodeMetricsTool>"$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
+		<SourceAnalysisOutputFile>$(OutDir)$(AssemblyName)$(TargetExt).StyleCop.xml</SourceAnalysisOutputFile>
+		<SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
+		<SourceAnalysisOverrideSettingsFile>$(SolutionDir)\Settings.StyleCop</SourceAnalysisOverrideSettingsFile>
+		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(EnableSimian)' == 'true'">
+		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
+	</PropertyGroup>
+	
+	<!-- This is needed by MSBuild to locate the FxCop task -->
+	<UsingTask AssemblyFile="$(SolutionDir)\libs\MSBuild.Community.Tasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FxCop" 
+		Condition="'$(EnableFxCop)' == 'true'"/>
+	
+	<Target Name="CleanReports">
+    	<ItemGroup>
+			<FilesToDelete Include="$(OutDir)$(AssemblyName)$(TargetExt).CodeMetrics.xml" />
+			<FilesToDelete Include="$(OutDir)$(AssemblyName)$(TargetExt).FxCop.xml" />
+			<FilesToDelete Include="$(OutDir)$(AssemblyName)$(TargetExt).Simian.xml" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+	</Target>	
+	
+	<Target Name="CodeMetrics" Condition="'$(EnableMetrics)' == 'true'">
+		<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(OutDir)$(AssemblyName)$(TargetExt).CodeMetrics.xml&quot; /f:&quot;$(OutDir)$(AssemblyName)$(TargetExt)&quot; /gac /igc' />
+	</Target>
+	
+	<Target Name="RunFxCop" Condition="'$(EnableFxCop)' == 'true'">
+    	<Message Text="Starting FxCop Analysis..." Importance="high" />
+
+		<ItemGroup>
+			<FilesToAnalyze Include="$(OutDir)$(AssemblyName)$(TargetExt)" />
+			<DependencyDirectories Include="$(SolutionDir)\libs\**\*.dll"/>
+		</ItemGroup>
+
+		<FxCop
+			ToolPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\"
+			SearchGac="True"
+			TargetAssemblies="@(FilesToAnalyze)"
+			DependencyDirectories="@(DependencyDirectories)"
+			RuleLibraries="@(FxCopRuleAssemblies)"
+			Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
+			AnalysisReportFileName="$(OutDir)$(AssemblyName)$(TargetExt).FxCop.xml"
+			CustomDictionary="$(SolutionDir)\msbuild.targets\CodeAnalysisDictionary.xml"
+			Verbose="True"
+			FailOnError="False"
+		/>
+	</Target>
+	
+	<Target Name="RunSimian" Condition="'$(EnableSimian)' == 'true'">
+		<Exec Command='$(Simian) -formatter=xml:$(OutDir)$(AssemblyName)$(TargetExt).Simian.xml -includes=$(MSBuildProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' />
+	</Target>
+	
+	<Import Project="$(MSBuildProgramFiles32)\MSBuild\StyleCop\v4.7\StyleCop.targets" Condition="'$(EnableMetrics)' == 'true'" />
+</Project>

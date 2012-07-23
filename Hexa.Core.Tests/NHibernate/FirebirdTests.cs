@@ -18,9 +18,9 @@ namespace Hexa.Core.Tests.Sql
             return ConfigurationManager.ConnectionStrings["Firebird.Connection"].ConnectionString;
         }
 
-        protected override NHContextFactory CreateNHContextFactory()
+        protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHContextFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
+            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
                                         ApplicationContext.Container);
         }
 

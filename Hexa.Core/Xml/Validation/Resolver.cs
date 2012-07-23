@@ -41,7 +41,7 @@ namespace Hexa.Core.Xml
 
         public SchemaResolver(Dictionary<string, byte[]> schemas)
         {
-            _schemas = schemas;
+            this._schemas = schemas;
         }
 
         #endregion Constructors

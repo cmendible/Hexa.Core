@@ -73,7 +73,7 @@ namespace Hexa.Core.Tests.Raven
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            var ctxFactory = new RavenContextFactory();
+            var ctxFactory = new RavenUnitOfWorkFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);

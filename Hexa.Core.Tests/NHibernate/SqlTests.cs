@@ -18,9 +18,9 @@ namespace Hexa.Core.Tests.Sql
             return ConfigurationManager.ConnectionStrings["Sql.Connection"].ConnectionString;
         }
 
-        protected override NHContextFactory CreateNHContextFactory()
+        protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHContextFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty,
+            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty,
                                         typeof(Entity).Assembly, ApplicationContext.Container);
         }
 

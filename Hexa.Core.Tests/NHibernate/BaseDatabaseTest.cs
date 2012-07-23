@@ -4,6 +4,8 @@ namespace Hexa.Core.Tests.Sql
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
 
     using Core.Data;
     using Core.Domain;
@@ -63,6 +65,22 @@ namespace Hexa.Core.Tests.Sql
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
+            //AggregateCatalog catalog = new AggregateCatalog();
+            //AssemblyCatalog thisAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
+            //catalog.Catalogs.Add(thisAssembly);
+            //catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Debug"));
+
+            //CompositionContainer compositionContainer = new CompositionContainer(catalog);
+
+            //Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => new Microsoft.Mef.CommonServiceLocator.MefServiceLocator(compositionContainer));
+
+            //IoCContainer containerWrapper = new IoCContainer(
+            //    (x, y) => { },
+            //    (x, y) => { }
+            //);
+
+            //ApplicationContext.Start(containerWrapper, this.ConnectionString());
+
             ApplicationContext.Start(this.ConnectionString());
 
             // Validator and TraceManager
@@ -71,7 +89,7 @@ namespace Hexa.Core.Tests.Sql
             container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            NHContextFactory ctxFactory = this.CreateNHContextFactory();
+            NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
@@ -180,7 +198,7 @@ namespace Hexa.Core.Tests.Sql
 
         protected abstract string ConnectionString();
 
-        protected abstract NHContextFactory CreateNHContextFactory();
+        protected abstract NHibernateUnitOfWorkFactory CreateNHContextFactory();
 
         private Human _Add_Human()
         {

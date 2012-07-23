@@ -30,20 +30,29 @@ namespace System
     using Text;
     using Text.RegularExpressions;
 
-    public static class MD5Helper
+    public static class HashHelper
     {
         #region Methods
 
         public static string CalculateMD5Hash(this string input)
         {
+            return CalculateHash(input, MD5.Create());
+        }
+
+        public static string CalculateSHA1Hash(this string input)
+        {
+            return CalculateHash(input, SHA1.Create());
+        }
+
+        private static string CalculateHash(string input, HashAlgorithm hashAlgorithm)
+        {
             byte[] inputBytes;
             byte[] hash;
 
-            // step 1, calculate MD5 hash from input
-            using (MD5 md5 = MD5.Create())
+            using (var hashProvider = hashAlgorithm)
             {
                 inputBytes = Encoding.ASCII.GetBytes(input);
-                hash = md5.ComputeHash(inputBytes);
+                hash = hashProvider.ComputeHash(inputBytes);
             }
 
             // step 2, convert byte array to hex string
@@ -136,6 +145,19 @@ namespace System
             };
 
             return regex.Replace(source, evaluator);
+        }
+
+        #endregion Methods
+    }
+
+    public static class HtmlHelper
+    {
+        #region Methods
+
+        public static string StripHtml(this string text)
+        {
+            Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
+            return reg.Replace(text, "");
         }
 
         #endregion Methods

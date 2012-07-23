@@ -16,7 +16,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.NHibernate", "Hex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A97AC9F6-5CF5-4B28-B383-6919556AC143}"
 	ProjectSection(SolutionItems) = preProject
+		BuildAndTest.With.Metrics.bat = BuildAndTest.With.Metrics.bat
+		BuildAndTest.With.Metrics.msbuild = BuildAndTest.With.Metrics.msbuild
+		BuildAndTest.bat = BuildAndTest.bat
 		BuildAndTest.msbuild = BuildAndTest.msbuild
+		CodeAnalysisDictionary.xml = CodeAnalysisDictionary.xml
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		CopyFirebird.targets = CopyFirebird.targets
 		Doxyfile = Doxyfile
 		Hexa.Core.snk = Hexa.Core.snk
 		README = README

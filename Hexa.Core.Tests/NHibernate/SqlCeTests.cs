@@ -18,9 +18,9 @@ namespace Hexa.Core.Tests.Sql
             return ConfigurationManager.ConnectionStrings["SqlCe.Connection"].ConnectionString;
         }
 
-        protected override NHContextFactory CreateNHContextFactory()
+        protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHContextFactory(DbProvider.SqlCe, ConnectionString(), string.Empty, typeof(Entity).Assembly, ApplicationContext.Container);
+            return new NHibernateUnitOfWorkFactory(DbProvider.SqlCe, ConnectionString(), string.Empty, typeof(Entity).Assembly, ApplicationContext.Container);
         }
 
         #endregion Methods
