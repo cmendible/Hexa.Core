@@ -1,4 +1,5 @@
-#if !MONO 
+#if !MONO
+
 namespace Hexa.Core.Tests.Sql
 {
     using System.Configuration;
@@ -21,10 +22,11 @@ namespace Hexa.Core.Tests.Sql
         protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
             return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty,
-                                        typeof(Entity).Assembly, ApplicationContext.Container);
+                                                   typeof(Entity).Assembly, ApplicationContext.Container);
         }
 
         #endregion Methods
     }
 }
+
 #endif

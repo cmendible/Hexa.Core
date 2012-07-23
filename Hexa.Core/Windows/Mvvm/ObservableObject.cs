@@ -1,4 +1,5 @@
-#if !MONO 
+#if !MONO
+
 // Event Design: http://msdn.microsoft.com/en-us/library/ms229011.aspx
 namespace Hexa.Core.Windows.Mvvm
 {
@@ -59,4 +60,5 @@ namespace Hexa.Core.Windows.Mvvm
         #endregion Methods
     }
 }
+
 #endif

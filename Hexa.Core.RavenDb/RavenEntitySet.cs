@@ -44,7 +44,7 @@ namespace Hexa.Core.Domain
         {
             this._session = session;
             this._set = this._session.Query<TEntity>()
-                   .Customize(x => x.WaitForNonStaleResultsAsOfNow());
+                        .Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }
 
         #endregion Constructors

@@ -1,4 +1,4 @@
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
     using FluentNHibernate.Conventions;
     using FluentNHibernate.Conventions.AcceptanceCriteria;

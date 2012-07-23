@@ -20,12 +20,19 @@
 namespace Hexa.Core
 {
     using System.ComponentModel.Composition;
+
     using NHibernate.Cfg;
 
     [Export(typeof(NHConfiguration))]
     public class NHConfiguration
     {
+        #region Fields
+
         static Configuration _configuration;
+
+        #endregion Fields
+
+        #region Constructors
 
         public NHConfiguration()
         {
@@ -36,6 +43,18 @@ namespace Hexa.Core
             _configuration = configuration;
         }
 
-        public Configuration Value { get { return _configuration; } }
+        #endregion Constructors
+
+        #region Properties
+
+        public Configuration Value
+        {
+            get
+            {
+                return _configuration;
+            }
+        }
+
+        #endregion Properties
     }
 }

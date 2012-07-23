@@ -1,4 +1,4 @@
-#region Header
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -62,6 +62,19 @@ namespace System
                 sb.Append(hash[i].ToString("X2", CultureInfo.InvariantCulture));
             }
             return sb.ToString();
+        }
+
+        #endregion Methods
+    }
+
+    public static class HtmlHelper
+    {
+        #region Methods
+
+        public static string StripHtml(this string text)
+        {
+            Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
+            return reg.Replace(text, "");
         }
 
         #endregion Methods
@@ -145,19 +158,6 @@ namespace System
             };
 
             return regex.Replace(source, evaluator);
-        }
-
-        #endregion Methods
-    }
-
-    public static class HtmlHelper
-    {
-        #region Methods
-
-        public static string StripHtml(this string text)
-        {
-            Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
-            return reg.Replace(text, "");
         }
 
         #endregion Methods

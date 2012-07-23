@@ -49,7 +49,7 @@ namespace Hexa.Core.Domain
         IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter);
 
         IEntitySet<TEntity> Include<S>(
-            Expression<Func<TEntity, object>> path, 
+            Expression<Func<TEntity, object>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression);
 

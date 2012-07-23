@@ -1,4 +1,5 @@
-#if MONO 
+#if MONO
+
 namespace Hexa.Core.Mono.Tests
 {
     using Data;
@@ -76,4 +77,5 @@ namespace Hexa.Core.Mono.Tests
         #endregion Methods
     }
 }
+
 #endif

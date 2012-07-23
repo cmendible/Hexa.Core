@@ -1,4 +1,4 @@
-#region License
+#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -15,9 +15,7 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion
-
-using SL = Microsoft.Practices.ServiceLocation;
+#endregion Header
 
 namespace Hexa.Core
 {
@@ -25,7 +23,10 @@ namespace Hexa.Core
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+
     using SL;
+
+    using SL = Microsoft.Practices.ServiceLocation;
 
     /// <summary>
     /// This is a helper for accessing dependencies via the Common Service Locator (CSL).  But while
@@ -34,6 +35,31 @@ namespace Hexa.Core
     /// </summary>
     public static class ServiceLocator
     {
+        #region Methods
+
+        [SuppressMessage("Microsoft.Naming",
+                         "CA2204:Literals should be spelled correctly", MessageId = "ServiceLocator")]
+        public static TDependency[] GetAllInstances<TDependency>()
+        {
+            try
+            {
+                IEnumerable<object> services =
+                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
+
+                if (services != null)
+                {
+                    return services.Cast<TDependency>().ToArray();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                throw new InternalException("ServiceLocator has not been initialized; " +
+                                            "I was trying to retrieve " + typeof(TDependency));
+            }
+
+            return default(TDependency[]);
+        }
+
         /// <summary>
         /// Gets the service.
         /// </summary>
@@ -48,7 +74,7 @@ namespace Hexa.Core
         /// </summary>
         /// <returns></returns>
         [SuppressMessage("Microsoft.Naming",
-            "CA2204:Literals should be spelled correctly", MessageId = "ServiceLocator")]
+                         "CA2204:Literals should be spelled correctly", MessageId = "ServiceLocator")]
         public static object GetInstance(Type dependencyType)
         {
             object service;
@@ -79,7 +105,9 @@ namespace Hexa.Core
                     Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
 
                 if (services != null)
+                {
                     return (TDependency)services.FirstOrDefault();
+                }
             }
             catch (NullReferenceException)
             {
@@ -90,25 +118,6 @@ namespace Hexa.Core
             return default(TDependency);
         }
 
-        [SuppressMessage("Microsoft.Naming",
-            "CA2204:Literals should be spelled correctly", MessageId = "ServiceLocator")]
-        public static TDependency[] GetAllInstances<TDependency>()
-        {
-            try
-            {
-                IEnumerable<object> services =
-                    Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetAllInstances(typeof(TDependency));
-
-                if (services != null)
-                    return services.Cast<TDependency>().ToArray();
-            }
-            catch (NullReferenceException)
-            {
-                throw new InternalException("ServiceLocator has not been initialized; " +
-                                            "I was trying to retrieve " + typeof(TDependency));
-            }
-
-            return default(TDependency[]);
-        }
+        #endregion Methods
     }
 }

@@ -155,8 +155,8 @@ namespace Hexa.Core.Domain
 
             _builtConfiguration = cfg.BuildConfiguration();
             _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
-                                                 typeof(ProxyFactoryFactory).
-                                                 AssemblyQualifiedName);
+                                            typeof(ProxyFactoryFactory).
+                                            AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....
 
@@ -164,23 +164,22 @@ namespace Hexa.Core.Domain
             new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
 
             _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                                                  _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-                                                          new IPreInsertEventListener[]
+                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
+                                                 new IPreInsertEventListener[]
             {new ValidateEventListener(), new AuditEventListener()}).
-                                                  ToArray());
+                                             ToArray());
 
             _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                                                  _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-                                                          new IPreUpdateEventListener[]
+                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
+                                                 new IPreUpdateEventListener[]
             {new ValidateEventListener(), new AuditEventListener()}).
-                                                  ToArray());
+                                             ToArray());
 
             #endregion
         }
 
         internal NHibernateUnitOfWorkFactory()
-        { 
-        
+        {
         }
 
         #endregion Constructors
@@ -274,6 +273,4 @@ namespace Hexa.Core.Domain
 
         #endregion Methods
     }
-
-    
 }

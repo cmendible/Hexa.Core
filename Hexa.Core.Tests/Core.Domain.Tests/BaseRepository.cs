@@ -21,10 +21,15 @@ namespace Hexa.Core.Domain.Tests
     using System.Linq;
 
     using Core.Tests;
+
     using Logging;
+
     using NUnit.Framework;
+
     using Rhino.Mocks;
+
     using Specification;
+
     using SL = Microsoft.Practices.ServiceLocation;
 
     /// <summary>

@@ -82,7 +82,7 @@ namespace Hexa.Core.Xml
                 using (_reader = XmlReader.Create(_XMLReader, _settings))
                 {
                     // Validate XML data
-                    while (_reader.Read()); 
+                    while (_reader.Read());
                     _reader.Close();
                 }
 

@@ -1,4 +1,4 @@
-#region Header
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation

@@ -1,4 +1,5 @@
-#if !MONO 
+#if !MONO
+
 //  Original author - Josh Smith - http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030
 namespace Hexa.Core.Windows.Mvvm
 {
@@ -162,4 +163,5 @@ namespace Hexa.Core.Windows.Mvvm
         #endregion Methods
     }
 }
+
 #endif

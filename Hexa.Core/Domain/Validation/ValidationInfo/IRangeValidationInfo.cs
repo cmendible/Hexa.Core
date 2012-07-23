@@ -122,7 +122,7 @@ namespace Hexa.Core.Validation
         /// <param name="maximum">The maximum.</param>
         public RangeValidationInfo(string propertyName, string error, DateTime minimum, DateTime maximum)
             : base(propertyName,
-            DefaultMessage<TEntity>(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
+               DefaultMessage<TEntity>(propertyName, error, minimum.ToShortDateString(), maximum.ToShortDateString()))
         {
             this.minimum = minimum;
             this.maximum = maximum;

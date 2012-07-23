@@ -32,7 +32,7 @@ namespace Hexa.Core.ServiceModel.Security
     //  <behaviors>
     //    <serviceAuthorization serviceAuthorizationManagerType=
     //              "Samples.MyServiceAuthorizationManager" >
-    //      <authorizationPolicies>       
+    //      <authorizationPolicies>
     //        <add policyType="Samples.MyAuthorizationPolicy"
     //      </authorizationPolicies>
     //    </serviceAuthorization>
