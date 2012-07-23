@@ -18,7 +18,7 @@
 
 	<!-- Specify the Solutions to build -->
 	<ItemGroup>
-		<ProjectFiles Include="$(MSBuildProjectDirectory)/*.sln" />
+		<ProjectFiles Include="$(MSBuildProjectDirectory)/*Hexa.Core.sln" />
 	</ItemGroup>
 
 	<Target Name="RebuildSolution" >
