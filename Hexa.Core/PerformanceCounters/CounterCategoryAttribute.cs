@@ -22,9 +22,7 @@
 namespace Hexa.Core.Diagnostics
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Text;
 
     /// <summary>
     /// Attribute to be set to the category containing a set of performance counters
@@ -35,9 +33,9 @@ namespace Hexa.Core.Diagnostics
     {
         #region Fields
 
-        private string _info;
-        private PerformanceCounterCategoryType _instanceType;
-        private string _name;
+        private string info;
+        private PerformanceCounterCategoryType instanceType;
+        private string name;
 
         #endregion Fields
 
@@ -53,9 +51,9 @@ namespace Hexa.Core.Diagnostics
         public CounterCategoryAttribute(string name, PerformanceCounterCategoryType instanceType, string info)
             : base()
         {
-            this._name = name;
-            this._info = info;
-            this._instanceType = instanceType;
+            this.name = name;
+            this.info = info;
+            this.instanceType = instanceType;
         }
 
         #endregion Constructors
@@ -69,7 +67,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._info;
+                return this.info;
             }
         }
 
@@ -80,7 +78,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._instanceType;
+                return this.instanceType;
             }
         }
 
@@ -91,7 +89,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._name;
+                return this.name;
             }
         }
 

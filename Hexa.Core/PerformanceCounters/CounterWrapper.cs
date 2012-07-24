@@ -22,9 +22,7 @@
 namespace Hexa.Core.Diagnostics
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Text;
 
     /// <summary>
     /// Container of a relevant Performance Counter. It includes context information about that counter such as base performance counter and if it needs to increase/decrease automatically the base when the relevant one is increased / decreased.

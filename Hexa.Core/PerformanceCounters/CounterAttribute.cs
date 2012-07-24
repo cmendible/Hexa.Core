@@ -22,9 +22,7 @@
 namespace Hexa.Core.Diagnostics
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Text;
 
     /// <summary>
     /// Attribute used for Performance counter.
@@ -35,10 +33,10 @@ namespace Hexa.Core.Diagnostics
     {
         #region Fields
 
-        private bool _baseAutoIncreased;
-        private PerformanceCounterType _counterType;
-        private string _info;
-        private string _name;
+        private bool baseAutoIncreased;
+        private PerformanceCounterType counterType;
+        private string info;
+        private string name;
 
         #endregion Fields
 
@@ -67,10 +65,10 @@ namespace Hexa.Core.Diagnostics
         public CounterAttribute(string name, string info, PerformanceCounterType counterType, bool baseAutoIncreased)
             : base()
         {
-            this._name = name;
-            this._info = info;
-            this._counterType = counterType;
-            this._baseAutoIncreased = baseAutoIncreased;
+            this.name = name;
+            this.info = info;
+            this.counterType = counterType;
+            this.baseAutoIncreased = baseAutoIncreased;
         }
 
         #endregion Constructors
@@ -84,7 +82,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._counterType;
+                return this.counterType;
             }
         }
 
@@ -96,7 +94,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._info;
+                return this.info;
             }
         }
 
@@ -107,7 +105,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._baseAutoIncreased;
+                return this.baseAutoIncreased;
             }
         }
 
@@ -118,7 +116,7 @@ namespace Hexa.Core.Diagnostics
         {
             get
             {
-                return this._name;
+                return this.name;
             }
         }
 

@@ -24,8 +24,6 @@ namespace Hexa.Core.Diagnostics
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Reflection;
-    using System.Text;
 
     /// <summary>
     /// Class to wrap managing logic for performance counters

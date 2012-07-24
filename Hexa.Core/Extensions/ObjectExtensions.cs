@@ -19,16 +19,11 @@
 
 namespace System
 {
-    using Collections;
-    using Collections.Generic;
 
-    using Hexa.Core.Domain;
 
     using IO;
 
-    using Linq;
 
-    using Reflection;
 
     using Runtime.Serialization.Formatters.Binary;
 

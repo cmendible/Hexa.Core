@@ -22,9 +22,6 @@
 namespace Hexa.Core.Diagnostics
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Text;
 
     /// <summary>
     /// Interface for implementations that will hold all information and actions available regarding a performance counter.

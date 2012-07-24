@@ -1,6 +1,5 @@
 namespace Hexa.Core.Data
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
 
     #region Enumerations

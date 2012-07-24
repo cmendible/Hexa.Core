@@ -27,7 +27,6 @@ namespace Hexa.Core
 
     using log4net;
 
-    using SL = Microsoft.Practices.ServiceLocation;
 
     /// <summary>
     /// Core Context singleton class. Contains a reference to a root CoreContainer object.
