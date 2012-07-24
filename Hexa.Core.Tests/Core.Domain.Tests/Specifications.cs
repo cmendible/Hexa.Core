@@ -34,7 +34,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void AndAlsoSpecification_Creation_NullLeftSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -44,7 +44,7 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new AndAlsoSpecification<Entity>(null, rightAdHocSpecification);
         }
 
@@ -52,7 +52,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void AndAlsoSpecification_Creation_NullRightSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -62,14 +62,14 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new AndAlsoSpecification<Entity>(leftAdHocSpecification, null);
         }
 
         [Test]
         public void AndAlsoSpecification_Creation_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -79,7 +79,7 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new AndAlsoSpecification<Entity>(leftAdHocSpecification,
                     rightAdHocSpecification);
 
@@ -93,22 +93,22 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DirectSpecification_Constructor_NullSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> adHocSpecification;
             Expression<Func<Entity, bool>> spec = null;
 
-            //Act
+            // Act
             adHocSpecification = new DirectSpecification<Entity>(spec);
         }
 
         [Test]
         public void DirectSpecification_Constructor_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> adHocSpecification;
             Expression<Func<Entity, bool>> spec = s => s.Id == 0;
 
-            //Act
+            // Act
             adHocSpecification = new DirectSpecification<Entity>(spec);
 
             //Assert
@@ -123,10 +123,10 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void NotSpecification_Creation_FromNegationOperator()
         {
-            //Arrange
+            // Arrange
             Expression<Func<Entity, bool>> specificationCriteria = t => t.Id == 0;
 
-            //Act
+            // Act
             var spec = new DirectSpecification<Entity>(specificationCriteria);
             ISpecification<Entity> notSpec = !spec;
 
@@ -138,10 +138,10 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NotSpecification_Creation_NullCriteriaThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             NotSpecification<Entity> notSpec;
 
-            //Act
+            // Act
             notSpec = new NotSpecification<Entity>((Expression<Func<Entity, bool>>) null);
         }
 
@@ -149,20 +149,20 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NotSpecification_Creation_NullSpecificationThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             NotSpecification<Entity> notSpec;
 
-            //Act
+            // Act
             notSpec = new NotSpecification<Entity>((ISpecification<Entity>) null);
         }
 
         [Test]
         public void NotSpecification_Creation_WithCriteria_Test()
         {
-            //Arrange
+            // Arrange
             Expression<Func<Entity, bool>> specificationCriteria = t => t.Id == 0;
 
-            //Act
+            // Act
             var notSpec = new NotSpecification<Entity>(specificationCriteria);
 
             //Assert
@@ -176,11 +176,11 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void NotSpecification_Creation_WithSpecification_Test()
         {
-            //Arrange
+            // Arrange
             Expression<Func<Entity, bool>> specificationCriteria = t => t.Id == 0;
             var specification = new DirectSpecification<Entity>(specificationCriteria);
 
-            //Act
+            // Act
             var notSpec = new NotSpecification<Entity>(specification);
 
             var resultCriteria = notSpec.GetType()
@@ -198,10 +198,10 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void NotSpecification_Operators()
         {
-            //Arrange
+            // Arrange
             Expression<Func<Entity, bool>> specificationCriteria = t => t.Id == 0;
 
-            //Act
+            // Act
             Specification<Entity> spec = new DirectSpecification<Entity>(specificationCriteria);
             Specification<Entity> notSpec = !spec;
             ISpecification<Entity> resultAnd = notSpec && spec;
@@ -217,7 +217,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void OrSpecification_Creation_NullLeftSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -227,7 +227,7 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new OrElseSpecification<Entity>(null, rightAdHocSpecification);
         }
 
@@ -235,7 +235,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void OrSpecification_Creation_NullRightSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -245,14 +245,14 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new OrElseSpecification<Entity>(leftAdHocSpecification, null);
         }
 
         [Test]
         public void OrSpecification_Creation_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -262,7 +262,7 @@ namespace Hexa.Core.Domain.Tests
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
-            //Act
+            // Act
             var composite = new OrElseSpecification<Entity>(leftAdHocSpecification,
                     rightAdHocSpecification);
 
@@ -275,7 +275,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Specification_AndOperator_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -285,7 +285,7 @@ namespace Hexa.Core.Domain.Tests
             Expression<Func<Entity, bool>> expected = null;
             Expression<Func<Entity, bool>> actual = null;
 
-            //Act
+            // Act
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
@@ -303,7 +303,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Specification_OrOperator_Test()
         {
-            //Arrange
+            // Arrange
             DirectSpecification<Entity> leftAdHocSpecification;
             DirectSpecification<Entity> rightAdHocSpecification;
 
@@ -313,7 +313,7 @@ namespace Hexa.Core.Domain.Tests
             Expression<Func<Entity, bool>> expected = null;
             Expression<Func<Entity, bool>> actual = null;
 
-            //Act
+            // Act
             leftAdHocSpecification = new DirectSpecification<Entity>(leftSpec);
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
@@ -332,7 +332,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void TrueSpecification_Creation_Test()
         {
-            //Arrange
+            // Arrange
             ISpecification<Entity> trueSpec = new TrueSpecification<Entity>();
             bool expected = true;
             bool actual = trueSpec.SatisfiedBy().Compile()(new Entity());

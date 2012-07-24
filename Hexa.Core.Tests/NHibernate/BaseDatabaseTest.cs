@@ -41,10 +41,9 @@ namespace Hexa.Core.Tests.Sql
         public void Delete_Human()
         {
             Human human = this._Add_Human();
-
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                IHumanRepository repo = ServiceLocator.GetInstance<IHumanRepository>();
                 IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
@@ -54,10 +53,10 @@ namespace Hexa.Core.Tests.Sql
 
                 ctx.Commit();
             }
-
-            repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                IHumanRepository repo = ServiceLocator.GetInstance<IHumanRepository>();
                 Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
             }
         }
@@ -131,9 +130,9 @@ namespace Hexa.Core.Tests.Sql
         {
             Human human = this._Add_Human();
 
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
                 IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
@@ -148,10 +147,10 @@ namespace Hexa.Core.Tests.Sql
             Human human = this._Add_Human();
 
             Thread.Sleep(1000);
-
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
                 IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
@@ -161,10 +160,10 @@ namespace Hexa.Core.Tests.Sql
 
                 ctx.Commit();
             }
-
-            repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
                 human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
                 Assert.AreEqual("Maria", human.Name);
                 Assert.Greater(human.UpdatedAt, human.CreatedAt);
@@ -180,16 +179,16 @@ namespace Hexa.Core.Tests.Sql
 
             human.Name = "Maria";
 
-            var repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
                 repo.Modify(human);
                 ctx.Commit();
             }
 
-            repo = ServiceLocator.GetInstance<IHumanRepository>();
-            using (IUnitOfWork ctx = repo.UnitOfWork)
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
+                var repo = ServiceLocator.GetInstance<IHumanRepository>();
                 human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
                 Assert.AreEqual("Maria", human.Name);
                 Assert.Greater(human.UpdatedAt, human.CreatedAt);
@@ -209,7 +208,7 @@ namespace Hexa.Core.Tests.Sql
             using (IUnitOfWork uow = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                using (IUnitOfWork ctx = repo.UnitOfWork)
+                using (IUnitOfWork ctx = UnitOfWorkScope.Start())
                 {
                     repo.Add(human);
                     ctx.Commit();

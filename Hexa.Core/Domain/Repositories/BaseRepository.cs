@@ -53,7 +53,7 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(loggerFactory, "loggerFactory");
 
-            IUnitOfWork context = UnitOfWorkScope.Start();
+            IUnitOfWork context = UnitOfWorkScope.Current;
 
             // check preconditions
             Guard.IsNotNull(context, "No context in scope.");
@@ -61,35 +61,12 @@ namespace Hexa.Core.Domain
             // set internal values
             this._context = context;
             this._logger = loggerFactory.Create(GetType());
-
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "", typeof(TEntity).Name));
         }
 
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Return a context in this repository
-        /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return this._context;
-            }
-        }
-
-        /// <summary>
-        /// Return a context in this repository
-        /// </summary>
-        protected IUnitOfWork Context
-        {
-            get
-            {
-                return this._context;
-            }
-        }
 
         protected ILogger Logger
         {
