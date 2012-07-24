@@ -5,3 +5,7 @@ bin/
 Hexa.Core.xml
 *.csproj.user
 *.log
+/Hexa.Core.NHibernate/StyleCop.Cache
+/Hexa.Core.RavenDb/StyleCop.Cache
+/Hexa.Core.Tests/StyleCop.Cache
+/Hexa.Core/StyleCop.Cache
