@@ -219,7 +219,6 @@
     <Compile Include="Data\SQLScriptHelper.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableRootEntity.cs" />
-    <Compile Include="Domain\Model\Entity.cs" />
     <Compile Include="Domain\Model\IAuditableEntity.cs" />
     <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
     <Compile Include="Domain\Model\RootEntity.cs" />
@@ -266,6 +265,13 @@
     <Compile Include="Linq\PagingExtensions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Log4NetLoggerFactory.cs" />
+    <Compile Include="PerformanceCounters\Counter.cs" />
+    <Compile Include="PerformanceCounters\CounterAttribute.cs" />
+    <Compile Include="PerformanceCounters\CounterCategoryAttribute.cs" />
+    <Compile Include="PerformanceCounters\CounterFactory.cs" />
+    <Compile Include="PerformanceCounters\CounterTypeExtensions.cs" />
+    <Compile Include="PerformanceCounters\CounterWrapper.cs" />
+    <Compile Include="PerformanceCounters\ICounter.cs" />
     <Compile Include="Resources\Resource.es.Designer.cs">
       <DependentUpon>Resource.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>

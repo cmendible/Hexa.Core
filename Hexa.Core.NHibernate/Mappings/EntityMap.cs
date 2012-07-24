@@ -20,7 +20,7 @@
 namespace Hexa.Core.Domain
 {
     public class BaseEntityWithUniqueIdMap<TEntity> : BaseClassMap<TEntity>
-        where TEntity : BaseEntityWithUniqueId<TEntity>
+        where TEntity : EntityWithUniqueId<TEntity>
     {
         #region Constructors
 

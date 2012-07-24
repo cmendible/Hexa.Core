@@ -183,7 +183,7 @@ namespace Hexa.Core.Domain
     /// BaseEntity with a long Primary Id.
     /// </summary>
     [Serializable]
-    public abstract class BaseEntityWithId<TEntity> : BaseEntity<TEntity, long>
+    public abstract class Entity<TEntity> : BaseEntity<TEntity, long>
     {
         #region Properties
 
@@ -215,7 +215,7 @@ namespace Hexa.Core.Domain
     /// BaseEntity with an Guid/UniqueId Primary Id.
     /// </summary>
     [Serializable]
-    public abstract class BaseEntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
+    public abstract class EntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
     {
         #region Properties
 

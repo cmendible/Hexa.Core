@@ -22,7 +22,7 @@ namespace Hexa.Core.Domain
     using System;
 
     [Serializable]
-    public abstract class RootEntity<TEntity> : BaseEntityWithUniqueId<TEntity>
+    public abstract class RootEntity<TEntity> : EntityWithUniqueId<TEntity>
     {
         #region Properties
 
