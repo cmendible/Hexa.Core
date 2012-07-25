@@ -243,7 +243,6 @@ namespace Hexa.Core.Diagnostics
                 throw new ArgumentException("enuValue");
             }
 
-            //TODO:Se podría evitar el ToString del enumValue?
             FieldInfo fieldInfo = enumType.GetField(enumValue.ToString());
             CounterAttribute[] attributes = fieldInfo.GetCustomAttributes(typeof(CounterAttribute), false) as CounterAttribute[];
             if ((attributes != null) && (attributes.Length > 0))
