@@ -59,11 +59,11 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public virtual void GenericRepositoryApplyChangesWithNullItemThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             repository.Modify(null);
         }
@@ -71,7 +71,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void GenericrRepository_GetPagedElementsAscending_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -79,7 +79,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, true);
 
             //Assert
@@ -89,13 +89,13 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void GetAllTest()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetAll();
         }
 
@@ -113,10 +113,10 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public virtual void Repository_AddNullItemThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             repository.Add(null);
         }
@@ -124,11 +124,11 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void Repository_AddValidItem_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Add(item);
@@ -137,11 +137,11 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void Repository_ApplyChangesValidItem_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Modify(item);
@@ -151,11 +151,11 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public virtual void Repository_DeleteNullItemThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             repository.Remove(null);
         }
@@ -163,11 +163,11 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void Repository_DeleteValidItemTest()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Remove(item);
@@ -176,14 +176,14 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Repository_GetBySpecDirectSpec_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
             ISpecification<TEntity> specification = new DirectSpecification<TEntity>(this.FilterExpression);
 
-            //Act
+            // Act
             IEnumerable<TEntity> result = repository.GetBySpec(specification);
 
             //Assert
@@ -194,13 +194,13 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetBySpecWithNullSpecThrowArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             repository.GetBySpec(null);
         }
 
@@ -208,13 +208,13 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithFilterNullAndOrderNotNullThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(null, this.OrderByExpression, false);
         }
 
@@ -222,26 +222,26 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithNullFilterThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(null);
         }
 
         [Test]
         public void Repository_GetFilteredElementsWithOrderAscending_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
                                             true);
 
@@ -252,13 +252,13 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Repository_GetFilteredElementsWithOrderDescending_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
                                             false);
 
@@ -270,20 +270,20 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithOrderNullThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements<int>(this.FilterExpression, null, false);
         }
 
         [Test]
         public void Repository_GetFilteredElementsWithPaggingAscending_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -291,7 +291,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               this.FilterExpression, true);
 
@@ -302,7 +302,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Repository_GetFilteredElementsWithPaggingDescending_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -310,7 +310,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               this.FilterExpression, false);
 
@@ -322,7 +322,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void Repository_GetFilteredElementsWithPaggingInvalidPageCountThrowNewArgumentException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -330,7 +330,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 1;
             int pageCount = 0;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               this.FilterExpression, false);
         }
@@ -339,7 +339,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void Repository_GetFilteredElementsWithPaggingInvalidPageIndexThrowNewArgumentException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -347,7 +347,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = -1;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               this.FilterExpression, false);
         }
@@ -356,7 +356,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithPaggingNullFilterExpressionThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -364,7 +364,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 1;
             int pageCount = 1;
 
-            //Act
+            // Act
             Expression<Func<TEntity, bool>> filter = null;
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               filter, false);
@@ -374,7 +374,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetFilteredElementsWithPaggingNullOrderExpressionThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -382,7 +382,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 1;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements<int>(pageIndex, pageCount, null,
                                               this.FilterExpression, false);
         }
@@ -390,13 +390,13 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void Repository_GetFilteredElements_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             var repository = new BaseRepository<TEntity>(traceManager);
 
-            //Act
+            // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression);
 
             //Assert
@@ -406,7 +406,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Repository_GetPagedElementsDescending_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -415,7 +415,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
             bool ascending = false;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
                                               ascending);
 
@@ -427,7 +427,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetPagedElementsInvalidOrderByExpressionThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -435,7 +435,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements<int>(pageIndex, pageCount, null, false);
         }
 
@@ -443,7 +443,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void Repository_GetPagedElementsInvalidPageCount_ThrowNewArgumentException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -451,7 +451,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 0;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, false);
         }
 
@@ -459,7 +459,7 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void Repository_GetPagedElementsInvalidPageIndexThrowNewArgumentException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -467,7 +467,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = -1;
             int pageCount = 1;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, false);
         }
 
@@ -475,14 +475,14 @@ namespace Hexa.Core.Domain.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Repository_GetPagedElementsWithNullSpecThrowNewArgumentNullException_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
             var repository = new BaseRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 10;
 
-            //Act
+            // Act
             ISpecification<TEntity> spec = null;
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, spec,
                                               false);
@@ -491,7 +491,7 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public void Repository_GetPagedElementsWithSpec_Invoke_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
@@ -501,7 +501,7 @@ namespace Hexa.Core.Domain.Tests
             int pageIndex = 0;
             int pageCount = 10;
 
-            //Act
+            // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, spec,
                                               false);
         }
@@ -509,16 +509,15 @@ namespace Hexa.Core.Domain.Tests
         [Test]
         public virtual void Repository_InvokeConstructor_Test()
         {
-            //Arrange
+            // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            //Act
+            // Act
             var repository = new BaseRepository<TEntity>(traceManager);
-            IUnitOfWork actual = repository.UnitOfWork;
 
-            //Assret
-            Assert.AreEqual(unitOfWork, actual);
+            //Assert
+            Assert.IsNotNull(repository);
         }
 
         [SetUp]

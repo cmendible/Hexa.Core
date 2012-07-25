@@ -31,18 +31,6 @@ namespace Hexa.Core.Domain
     public interface IRepository<TEntity>
         where TEntity : class
     {
-        #region Properties
-
-        /// <summary>
-        /// Get the context in this repository
-        /// </summary>
-        IUnitOfWork UnitOfWork
-        {
-            get;
-        }
-
-        #endregion Properties
-
         #region Methods
 
         /// <summary>
