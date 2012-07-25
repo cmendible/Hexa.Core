@@ -5,7 +5,7 @@ namespace Hexa.Core.Domain
     using System;
 
     /// <summary>
-    /// Base entity with an abstract key.
+    /// Base entity with an abstract key which implements IEquatable.
     /// </summary>
     /// <remarks>
     /// Derived from SharpArch.Core.EntityWithTypedId.
@@ -13,8 +13,9 @@ namespace Hexa.Core.Domain
     /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
     /// </remarks>
     [Serializable]
-    public abstract class BaseEntity<TKey> : ValidatableObject<BaseEntity<TKey>>
+    public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>
         where TKey : IEquatable<TKey>
+        where TEntity : BaseEntity<TEntity, TKey>
     {
         #region Fields
 
@@ -42,15 +43,35 @@ namespace Hexa.Core.Domain
         /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
         /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
         /// </summary>
-        protected virtual TKey EntityId
+        public virtual TKey UniqueId
         {
             get;
-            set;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets or sets the timestamp.
+        /// </summary>
+        /// <value>The timestamp.</value>
+        public virtual string Version
+        {
+            get;
+            protected set;
         }
 
         #endregion Properties
 
         #region Methods
+
+        /// <summary>
+        /// Equalses the specified compare to.
+        /// </summary>
+        /// <param name="other">The compare to.</param>
+        /// <returns></returns>
+        public virtual bool Equals(TEntity other)
+        {
+            return base.Equals(other);
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -64,7 +85,7 @@ namespace Hexa.Core.Domain
         /// </exception>
         public override bool Equals(object obj)
         {
-            var compareTo = obj as BaseEntity<TKey>;
+            var compareTo = obj as BaseEntity<TEntity, TKey>;
 
             if (ReferenceEquals(this, compareTo))
             {
@@ -116,7 +137,7 @@ namespace Hexa.Core.Domain
                     // identically valued properties, even if they're of two different types,
                     // so we include the object's type in the hash calculation
                     int hashCode = GetType().GetHashCode();
-                    cachedHashcode = (hashCode*HASH_MULTIPLIER) ^ EntityId.GetHashCode();
+                    cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ UniqueId.GetHashCode();
                 }
             }
 
@@ -130,7 +151,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual bool IsTransient()
         {
-            return EntityId == null || EntityId.Equals(default(TKey));
+            return UniqueId == null || UniqueId.Equals(default(TKey));
         }
 
         protected virtual Type TypeWithoutProxy()
@@ -142,104 +163,13 @@ namespace Hexa.Core.Domain
         /// Returns true if self and the provided entity have the same Id values
         /// and the Ids are not of the default Id value
         /// </summary>
-        private bool HasSameNonDefaultIdAs(BaseEntity<TKey> compareTo)
+        private bool HasSameNonDefaultIdAs(BaseEntity<TEntity, TKey> compareTo)
         {
             return !IsTransient() &&
                    !compareTo.IsTransient() &&
-                   EntityId.Equals(compareTo.EntityId);
+                   UniqueId.Equals(compareTo.UniqueId);
         }
 
         #endregion Methods
-    }
-
-    /// <summary>
-    /// Base entity with an abstract key which implements IEquatable.
-    /// </summary>
-    /// <remarks>
-    /// Derived from SharpArch.Core.EntityWithTypedId.
-    /// For a discussion of this object, see
-    /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
-    /// </remarks>
-    [Serializable]
-    public abstract class BaseEntity<TEntity, TKey> : BaseEntity<TKey>, IEquatable<TEntity>
-        where TKey : IEquatable<TKey>
-    {
-        #region Methods
-
-        /// <summary>
-        /// Equalses the specified compare to.
-        /// </summary>
-        /// <param name="other">The compare to.</param>
-        /// <returns></returns>
-        public virtual bool Equals(TEntity other)
-        {
-            return base.Equals(other);
-        }
-
-        #endregion Methods
-    }
-
-    /// <summary>
-    /// BaseEntity with a long Primary Id.
-    /// </summary>
-    [Serializable]
-    public abstract class Entity<TEntity> : BaseEntity<TEntity, long>
-    {
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Entity's primary Id.
-        /// Setter is protected to allow unit tests to set this property via reflection and to allow
-        /// domain objects more flexibility in setting this for those objects with assigned Ids.
-        /// It's virtual to allow NHibernate-backed objects to be lazily loaded.
-        /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
-        /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
-        /// </summary>
-        /// <value></value>
-        public virtual long Id
-        {
-            get
-            {
-                return base.EntityId;
-            }
-            protected set
-            {
-                base.EntityId = value;
-            }
-        }
-
-        #endregion Properties
-    }
-
-    /// <summary>
-    /// BaseEntity with an Guid/UniqueId Primary Id.
-    /// </summary>
-    [Serializable]
-    public abstract class EntityWithUniqueId<TEntity> : BaseEntity<TEntity, Guid>
-    {
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the Entity's primary Id.
-        /// Setter is protected to allow unit tests to set this property via reflection and to allow
-        /// domain objects more flexibility in setting this for those objects with assigned Ids.
-        /// It's virtual to allow NHibernate-backed objects to be lazily loaded.
-        /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
-        /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
-        /// </summary>
-        /// <value></value>
-        public virtual Guid UniqueId
-        {
-            get
-            {
-                return base.EntityId;
-            }
-            protected set
-            {
-                base.EntityId = value;
-            }
-        }
-
-        #endregion Properties
     }
 }

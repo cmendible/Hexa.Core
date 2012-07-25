@@ -4,7 +4,7 @@ namespace Hexa.Core.Tests.Data
 
     using Domain;
 
-    public class HumanMap : AuditableRootEntityMap<Human>
+    public class HumanMap : AuditableEntityMap<Human>
     {
         #region Constructors
 

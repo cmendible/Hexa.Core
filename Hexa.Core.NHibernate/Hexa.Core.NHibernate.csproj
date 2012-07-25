@@ -148,10 +148,9 @@
     <Compile Include="Listeners\AuditEventListener.cs" />
     <Compile Include="Listeners\ValidateEventListener.cs" />
     <Compile Include="Mappings\BaseClassMap.cs" />
-    <Compile Include="Mappings\AuditableRootEntityMap.cs" />
-    <Compile Include="Mappings\EntityMap.cs" />
+    <Compile Include="Mappings\AuditableEntityMap.cs" />
+    <Compile Include="Mappings\BaseEntityMap.cs" />
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
-    <Compile Include="Mappings\RootEntityMap.cs" />
     <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHibernateUnitOfWorkFactory.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />

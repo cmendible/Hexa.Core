@@ -6,7 +6,7 @@ namespace Hexa.Core.Tests.Domain
     using Core.Domain;
 
     [Serializable]
-    public class Human : AuditableRootEntity<Human>
+    public class Human : AuditableEntity<Human>
     {
         #region Properties
 

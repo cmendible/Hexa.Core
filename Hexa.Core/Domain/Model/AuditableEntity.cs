@@ -22,7 +22,8 @@ namespace Hexa.Core.Domain
     using System;
 
     [Serializable]
-    public abstract class AuditableRootEntity<TEntity> : RootEntity<TEntity>, IAuditableEntity
+    public abstract class AuditableEntity<TEntity> : BaseEntity<TEntity, Guid>, IAuditableEntity
+        where TEntity : BaseEntity<TEntity, Guid>
     {
         #region Properties
 

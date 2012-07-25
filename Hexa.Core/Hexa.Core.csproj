@@ -218,10 +218,9 @@
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
-    <Compile Include="Domain\Model\AuditableRootEntity.cs" />
+    <Compile Include="Domain\Model\AuditableEntity.cs" />
     <Compile Include="Domain\Model\IAuditableEntity.cs" />
     <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
-    <Compile Include="Domain\Model\RootEntity.cs" />
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
     <Compile Include="Domain\Repositories\MemorySet.cs" />
