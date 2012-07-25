@@ -41,9 +41,17 @@ namespace Hexa.Core.Domain
                 return false;
             }
 
-            var identity = ApplicationContext.User.Identity as ICoreIdentity;
-            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            string userUniqueId = identity.Id;
+            string userUniqueId = string.Empty;
+
+            var user = ApplicationContext.User;
+            if (user != null)
+            {
+                var identity = ApplicationContext.User.Identity as ICoreIdentity;
+                if (identity != null)
+                {
+                    userUniqueId = identity.Id;
+                }
+            }
 
             DateTime createdAt = DateTime.Now;
 
@@ -68,9 +76,17 @@ namespace Hexa.Core.Domain
                 return false;
             }
 
-            var identity = ApplicationContext.User.Identity as ICoreIdentity;
-            Guard.IsNotNull(identity, "No ICoreIdentity found in context.");
-            string userUniqueId = identity.Id;
+            string userUniqueId = string.Empty;
+
+            var user = ApplicationContext.User;
+            if (user != null)
+            {
+                var identity = ApplicationContext.User.Identity as ICoreIdentity;
+                if (identity != null)
+                {
+                    userUniqueId = identity.Id;
+                }
+            }
 
             DateTime updatedAt = DateTime.Now;
 
