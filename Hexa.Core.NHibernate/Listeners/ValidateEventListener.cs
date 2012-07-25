@@ -28,41 +28,9 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        // Fields
-        private static readonly object padlock = new object();
-
-        private static IValidator validator;
-
         private bool isInitialized;
 
         #endregion Fields
-
-        #region Properties
-
-        // Properties
-        private static IValidator Validator
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    if (validator == null)
-                    {
-                        validator = ServiceLocator.GetInstance<IValidator>();
-                    }
-                }
-                return validator;
-            }
-            set
-            {
-                lock (padlock)
-                {
-                    validator = value;
-                }
-            }
-        }
-
-        #endregion Properties
 
         #region Methods
 
@@ -88,18 +56,13 @@ namespace Hexa.Core.Domain
 
         private static void Validate(object entity)
         {
-            if (entity != null)
+            IValidatable validatable = entity as IValidatable;
+            if (validatable != null)
             {
-                Validator.AssertValidation(entity);
+                validatable.AssertValidation();
             }
         }
 
         #endregion Methods
-
-        #region Other
-
-        // Methods
-
-        #endregion Other
     }
 }

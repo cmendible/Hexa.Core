@@ -83,7 +83,6 @@ namespace Hexa.Core.Tests.Sql
             // Validator and TraceManager
             IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-            container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
             NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();

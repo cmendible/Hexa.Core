@@ -71,7 +71,6 @@ namespace Hexa.Core.Tests.Raven
             // Validator and TraceManager
             IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-            container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
             var ctxFactory = new RavenUnitOfWorkFactory();

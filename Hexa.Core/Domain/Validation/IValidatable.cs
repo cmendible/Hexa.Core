@@ -28,7 +28,24 @@ namespace Hexa.Core.Validation
         /// If instance is not valid, a collection of errors will be returned.
         /// </summary>
         /// <returns>A list containing error details, or null</returns>
-        IEnumerable<ValidationError> Validate();
+        ValidationResult Validate();
+
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// Interface for validatable objects.
+    /// </summary>
+    public interface IValidatable<T> : IValidatable
+    {
+        #region Methods
+
+        /// <summary>
+        /// Validates an entitty using the specified validator.
+        /// </summary>
+        /// <param name="validator">The validator.</param>
+        /// <returns></returns>
+        ValidationResult Validate(IValidator<T> validator);
 
         #endregion Methods
     }

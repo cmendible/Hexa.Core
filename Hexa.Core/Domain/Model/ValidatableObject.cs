@@ -6,11 +6,11 @@ namespace Hexa.Core.Domain
     using Validation;
 
     [Serializable]
-    public abstract class ValidatableObject : IValidatable
+    public abstract class ValidatableObject<TEntity> : IValidatable<TEntity> where TEntity : ValidatableObject<TEntity>
     {
         #region Fields
 
-        private IValidator _validator;
+        private DataAnnotationsValidator<TEntity> dataAnnotationsValidator;
 
         #endregion Fields
 
@@ -21,16 +21,16 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <value>The validator.</value>
         /// <remarks>Object should _explicitly_ implement IValidatable or this call will fail.</remarks>
-        private IValidator Validator
+        private DataAnnotationsValidator<TEntity> Validator
         {
             get
             {
-                if (this._validator == null)
+                if (this.dataAnnotationsValidator == null)
                 {
-                    this._validator = ServiceLocator.GetInstance<IValidator>();
+                    this.dataAnnotationsValidator = new DataAnnotationsValidator<TEntity>();
                 }
 
-                return this._validator;
+                return this.dataAnnotationsValidator;
             }
         }
 
@@ -44,10 +44,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual void AssertValidation()
         {
-            if (!Validator.IsValid(this))
-            {
-                throw new ValidationException(GetType(), this.Validator.Validate(this));
-            }
+            this.Validator.AssertValidation((TEntity)this);
         }
 
         /// <summary>
@@ -58,7 +55,8 @@ namespace Hexa.Core.Domain
         /// </returns>
         public virtual bool IsValid()
         {
-            return this.Validator.IsValid(this);
+
+            return this.Validator.IsValid((TEntity)this);
         }
 
         /// <summary>
@@ -66,9 +64,19 @@ namespace Hexa.Core.Domain
         /// If instance is not valid, a collection of errors will be returned.
         /// </summary>
         /// <returns>A list containing error details, or null</returns>
-        public virtual IEnumerable<ValidationError> Validate()
+        public virtual ValidationResult Validate()
         {
-            return this.Validator.Validate(this);
+            return this.Validator.Validate((TEntity)this);
+        }
+
+        /// <summary>
+        /// Validates the specified validator.
+        /// </summary>
+        /// <param name="validator">The validator.</param>
+        /// <returns></returns>
+        public virtual ValidationResult Validate(IValidator<TEntity> validator)
+        {
+            return validator.Validate((TEntity)this);
         }
 
         #endregion Methods

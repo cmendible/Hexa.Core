@@ -34,11 +34,4 @@ namespace Hexa.Core.Validation
         #endregion Methods
     }
 
-    /// <summary>
-    /// Interface implemented by different flavors of validators that provide validation
-    /// logic on domain entities.
-    /// </summary>
-    public interface IValidator : IValidator<object>
-    {
-    }
 }

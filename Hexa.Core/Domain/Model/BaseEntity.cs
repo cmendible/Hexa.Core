@@ -13,7 +13,7 @@ namespace Hexa.Core.Domain
     /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
     /// </remarks>
     [Serializable]
-    public abstract class BaseEntity<TKey> : ValidatableObject
+    public abstract class BaseEntity<TKey> : ValidatableObject<BaseEntity<TKey>>
         where TKey : IEquatable<TKey>
     {
         #region Fields

@@ -27,12 +27,11 @@ namespace Hexa.Core.Validation
     using System.Linq;
 
     [Serializable]
-    [Export(typeof(IValidator))]
-    public class DataAnnotationsValidator : IValidator
+    public class DataAnnotationsValidator<TEntity> : IValidator<TEntity>
     {
         #region Methods
 
-        public void AssertValidation(object instance)
+        public void AssertValidation(TEntity instance)
         {
             ValidationResult result = this.Validate(instance);
             if (!result.IsValid)
@@ -41,14 +40,14 @@ namespace Hexa.Core.Validation
             }
         }
 
-        public bool IsValid(object instance)
+        public bool IsValid(TEntity instance)
         {
             return this.Validate(instance).IsValid;
         }
 
-        public ValidationResult Validate(object instance)
+        public virtual ValidationResult Validate(TEntity instance)
         {
-            Type entityType = instance.GetType();
+            Type entityType = typeof(TEntity);
 
             IEnumerable<ValidationError> errors =
                 from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()

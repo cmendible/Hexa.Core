@@ -38,9 +38,7 @@ namespace Hexa.Core.Validation
         #region Properties
 
         /// <summary>
-        /// Gets an <see cref="IEnumerable{ValidationError}"/> that can be used to enumerate over
-        /// the validation errors as a result of a <see cref="IValidatable.Validate"/> method
-        /// call.
+        /// Gets the errors.
         /// </summary>
         public IEnumerable<ValidationError> Errors
         {

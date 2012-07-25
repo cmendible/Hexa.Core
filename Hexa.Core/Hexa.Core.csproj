@@ -62,7 +62,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -332,25 +332,25 @@
     <Compile Include="Web\Exceptions\RequestLengthException.cs" />
     <Compile Include="Web\UI\Style.cs" />
     <Compile Include="Web\UI\UrlResolver.cs" />
-    <Compile Include="Web\UI\Validations\Controls\Converters\BaseConverter.cs" />
-    <Compile Include="Web\UI\Validations\Controls\Converters\EmailConverter.cs" />
-    <Compile Include="Web\UI\Validations\Controls\Converters\RangeConverter.cs" />
-    <Compile Include="Web\UI\Validations\Controls\Converters\RegularExpressionConverter.cs" />
-    <Compile Include="Web\UI\Validations\Controls\Converters\RequiredConverter.cs" />
-    <Compile Include="Web\UI\Validations\Controls\ExtendedRangeValidator.cs" />
-    <Compile Include="Web\UI\Validations\Controls\ExtendedRegularExpressionValidator.cs" />
-    <Compile Include="Web\UI\Validations\Controls\ExtendeRequieredFieldValidator.cs" />
-    <Compile Include="Web\UI\Validations\Controls\InvalidValidator.cs" />
-    <Compile Include="Web\UI\Validations\Controls\WebValidationHelper.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\DataAnnotationHelper.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\DataAnnotationProvider.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IEmailValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IRangeValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IRegExValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IRequiredValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IValidateTypeValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IValidationInfo.cs" />
-    <Compile Include="Domain\Validation\ValidationInfo\IValidationInfoProvider.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Converters\BaseConverter.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Converters\EmailConverter.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Converters\RangeConverter.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Converters\RegularExpressionConverter.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Converters\RequiredConverter.cs" />
+    <Compile Include="Web\UI\Controls\Validations\ExtendedRangeValidator.cs" />
+    <Compile Include="Web\UI\Controls\Validations\ExtendedRegularExpressionValidator.cs" />
+    <Compile Include="Web\UI\Controls\Validations\ExtendeRequieredFieldValidator.cs" />
+    <Compile Include="Web\UI\Controls\Validations\InvalidValidator.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\DataAnnotationProvider.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IEmailValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IRangeValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IRegExValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IRequiredValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidateTypeValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidationInfo.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidationInfoProvider.cs" />
+    <Compile Include="Web\UI\Controls\Validations\Helpers\WebValidationHelper.cs" />
+    <Compile Include="Domain\Validation\DataAnnotationHelper.cs" />
     <Compile Include="Windows\Mvvm\ObservableObject.cs" />
     <Compile Include="Windows\Mvvm\PropertySupport.cs" />
     <Compile Include="Windows\Mvvm\RelayCommand.cs" />
