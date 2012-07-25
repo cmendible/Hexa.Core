@@ -61,7 +61,7 @@ namespace Hexa.Core.Domain
             // set internal values
             this._context = context;
             this._logger = loggerFactory.Create(GetType());
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "", typeof(TEntity).Name));
+            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
 
         #endregion Constructors
@@ -146,7 +146,7 @@ namespace Hexa.Core.Domain
             // checking query arguments
             Guard.IsNotNull(filter, "filter");
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0}", typeof(TEntity).Name, filter.ToString()));
+            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
             return this._context.CreateSet<TEntity>()
@@ -169,7 +169,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(filter, "filter");
             Guard.IsNotNull(orderByExpression, "orderByExpression");
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0}", typeof(TEntity).Name, filter.ToString()));
+            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
             IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
@@ -204,7 +204,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                              "Getting paged elements {0}",
+                              "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
             // Create associated IObjectSet and perform query
@@ -248,7 +248,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                              "Getting paged elements {0}",
+                              "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
             // Create associated IObjectSet and perform query
@@ -283,7 +283,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                              "Getting paged elements {0}",
+                              "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
 
             // Create associated IObjectSet and perform query
@@ -318,7 +318,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                              "Getting paged elements {0}",
+                              "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
@@ -347,7 +347,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
-                              "Getting paged elements {0}",
+                              "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query

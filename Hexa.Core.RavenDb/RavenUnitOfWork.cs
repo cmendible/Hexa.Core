@@ -19,6 +19,7 @@
 
 namespace Hexa.Core.Domain
 {
+    using System;
     using System.ComponentModel.Composition;
 
     using Raven.Client;
@@ -29,7 +30,8 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private IDocumentSession _session;
+        private bool disposed;
+        private IDocumentSession session;
 
         #endregion Fields
 
@@ -37,7 +39,7 @@ namespace Hexa.Core.Domain
 
         public RavenUnitOfWork(IDocumentSession session)
         {
-            this._session = session;
+            this.session = session;
         }
 
         #endregion Constructors
@@ -46,28 +48,57 @@ namespace Hexa.Core.Domain
 
         public void Commit()
         {
-            this._session.SaveChanges();
+            this.session.SaveChanges();
         }
 
         public IEntitySet<TEntity> CreateSet<TEntity>()
             where TEntity : class
         {
-            return new RavenEntitySet<TEntity>(this._session);
+            return new RavenEntitySet<TEntity>(this.session);
         }
 
+        // Implement IDisposable.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
         public void Dispose()
         {
-            UnitOfWorkScope.DisposeCurrent();
-            if (this._session != null)
-            {
-                this._session.Dispose();
-
-                this._session = null;
-            }
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
 
         public void RollbackChanges()
         {
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                UnitOfWorkScope.DisposeCurrent();
+                if (this.session != null)
+                {
+                    this.session.Dispose();
+
+                    this.session = null;
+                }
+
+                // Note disposing has been done.
+                disposed = true;
+
+            }
         }
 
         #endregion Methods

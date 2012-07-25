@@ -27,6 +27,12 @@ namespace Hexa.Core.Tests
 
     public class ExpirableEntity : IObjectWithExpiration<ExpirableEntity>
     {
+        #region Fields
+
+        private bool disposed;
+
+        #endregion Fields
+
         #region Properties
 
         public bool IsExpired
@@ -39,34 +45,57 @@ namespace Hexa.Core.Tests
 
         public DateTime TimeOut
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         #endregion Properties
 
         #region Methods
 
+        // Implement IDisposable.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
         public void Dispose()
         {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                // Note disposing has been done.
+                disposed = true;
+
+            }
         }
 
         #endregion Methods
     }
 
     [TestFixture]
-    public class ObjectPoolTests
+    public class ObjectPoolTests : IDisposable
     {
         #region Fields
 
-        private ExpirableEntity _objectFromPool;
-        private Pool<ExpirableEntity> _Pool;
+        private bool disposed;
+        private ExpirableEntity objectFromPool;
+        private Pool<ExpirableEntity> pool;
 
         #endregion Fields
 
@@ -75,19 +104,60 @@ namespace Hexa.Core.Tests
         [Test]
         public void CreatePool()
         {
-            this._Pool = new Pool<ExpirableEntity>(10, (p) => { return new ExpirableEntity(); }, true);
-            ExpirableEntity obj = this._Pool.Acquire();
+            this.pool = new Pool<ExpirableEntity>(10, (p) => { return new ExpirableEntity(); }, true);
+            ExpirableEntity obj = this.pool.Acquire();
 
             Assert.IsNotNull(obj);
             Assert.AreEqual(typeof(ExpirableEntity), obj.GetType());
 
-            this._objectFromPool = obj;
+            this.objectFromPool = obj;
+        }
+
+        // Implement IDisposable.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
 
         [Test]
         public void ReleaseObject()
         {
-            this._Pool.Release(this._objectFromPool);
+            this.pool.Release(this.objectFromPool);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                if (this.objectFromPool != null)
+                {
+                    this.objectFromPool.Dispose();
+                }
+
+                if (pool != null)
+                {
+                    this.pool.Dispose();
+                }
+
+                // Note disposing has been done.
+                disposed = true;
+            }
         }
 
         #endregion Methods

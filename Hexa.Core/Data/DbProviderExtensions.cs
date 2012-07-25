@@ -25,6 +25,7 @@ namespace Hexa.Core.Data
     {
         #region Methods
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static void ExecuteNonQuery(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..
@@ -48,6 +49,7 @@ namespace Hexa.Core.Data
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static object ExecuteScalar(this DbProviderFactory provider, string connectionString, string command)
         {
             // Connect & Execute cmd..

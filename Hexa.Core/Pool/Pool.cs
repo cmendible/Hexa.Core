@@ -46,13 +46,13 @@ namespace Hexa.Core.Pooling
     {
         #region Fields
 
-        private readonly bool _eagerLoad;
-        private readonly Func<Pool<T>, T> _factory;
-        private readonly Queue<T> _queue;
-        private readonly Semaphore _sync;
-        private readonly bool _usingExpirableObjects;
+        private readonly bool eagerLoad;
+        private readonly Func<Pool<T>, T> factory;
+        private readonly Queue<T> queue;
+        private readonly Semaphore sync;
+        private readonly bool usingExpirableObjects;
 
-        private bool _isDisposed;
+        private bool disposed;
 
         #endregion Fields
 
@@ -73,17 +73,17 @@ namespace Hexa.Core.Pooling
                 throw new ArgumentNullException("factory");
             }
 
-            this._factory = factory;
-            this._sync = new Semaphore(size, size);
-            this._queue = new Queue<T>(size);
-            this._eagerLoad = eagerLoad;
+            this.factory = factory;
+            this.sync = new Semaphore(size, size);
+            this.queue = new Queue<T>(size);
+            this.eagerLoad = eagerLoad;
 
-            if (this._eagerLoad)
+            if (this.eagerLoad)
             {
-                this._PreloadItems(size);
+                this.PreloadItems(size);
             }
 
-            this._usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
+            this.usingExpirableObjects = typeof(IObjectWithExpiration<T>).IsAssignableFrom(typeof(T));
         }
 
         #endregion Constructors
@@ -94,7 +94,7 @@ namespace Hexa.Core.Pooling
         {
             get
             {
-                return this._isDisposed;
+                return this.disposed;
             }
         }
 
@@ -104,27 +104,27 @@ namespace Hexa.Core.Pooling
 
         public T Acquire()
         {
-            this._sync.WaitOne();
-            lock (this._queue)
+            this.sync.WaitOne();
+            lock (this.queue)
             {
                 T item = default(T);
-                if (!this._eagerLoad)
+                if (!this.eagerLoad)
                 {
-                    if (this._queue.Count > 0)
+                    if (this.queue.Count > 0)
                     {
-                        item = this._queue.Dequeue();
+                        item = this.queue.Dequeue();
                     }
                     else
                     {
-                        item = this._factory(this);
+                        item = this.factory(this);
                     }
                 }
                 else
                 {
-                    item = this._queue.Dequeue();
+                    item = this.queue.Dequeue();
                 }
 
-                if (this._usingExpirableObjects)
+                if (this.usingExpirableObjects)
                 {
                     var expirableObject = item as IObjectWithExpiration<T>;
                     if (expirableObject.IsExpired)
@@ -135,7 +135,7 @@ namespace Hexa.Core.Pooling
                         }
                         finally
                         {
-                            item = this._factory(this);
+                            item = this.factory(this);
                         }
                     }
                 }
@@ -143,42 +143,64 @@ namespace Hexa.Core.Pooling
             }
         }
 
+        // Implement IDisposable.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
         public void Dispose()
         {
-            if (this._isDisposed)
-            {
-                return;
-            }
-            this._isDisposed = true;
-            if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
-            {
-                lock (this._queue)
-                {
-                    while (this._queue.Count > 0)
-                    {
-                        var disposable = (IDisposable)this._queue.Dequeue();
-                        disposable.Dispose();
-                    }
-                }
-            }
-            this._sync.Close();
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
 
         public void Release(T item)
         {
-            lock (this._queue)
+            lock (this.queue)
             {
-                this._queue.Enqueue(item);
+                this.queue.Enqueue(item);
             }
-            this._sync.Release();
+            this.sync.Release();
         }
 
-        private void _PreloadItems(int size)
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                if (typeof(IDisposable).IsAssignableFrom(typeof(T)))
+                {
+                    lock (this.queue)
+                    {
+                        while (this.queue.Count > 0)
+                        {
+                            IDisposable disposable = (IDisposable)this.queue.Dequeue();
+                            disposable.Dispose();
+                        }
+                    }
+                }
+                this.sync.Close();
+
+                this.disposed = true;
+            }
+        }
+
+        private void PreloadItems(int size)
         {
             for (int i = 0; i < size; i++)
             {
-                T item = this._factory(this);
-                this._queue.Enqueue(item);
+                T item = this.factory(this);
+                this.queue.Enqueue(item);
             }
         }
 

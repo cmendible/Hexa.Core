@@ -69,6 +69,7 @@ namespace Hexa.Core.Data
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="sqlCommands">The SQL commands.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         private static void ExecuteCommands(SqlCommand command, string[] sqlCommands)
         {
             foreach (string cmd in sqlCommands)

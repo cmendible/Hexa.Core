@@ -65,7 +65,7 @@ namespace Hexa.Core.Diagnostics
                 throw new NotSupportedException(
                     String.Format(
                         System.Globalization.CultureInfo.CurrentUICulture,
-                        "Category is missing",
+                        "Category is missing {0}",
                         enumType.Name));
 
             Array enumValues = Enum.GetValues(enumType);
@@ -125,7 +125,7 @@ namespace Hexa.Core.Diagnostics
                 throw new NotSupportedException(
                     String.Format(
                         System.Globalization.CultureInfo.CurrentUICulture,
-                        "Category is missing",
+                        "Category is missing {0}",
                         enumType.Name));
 
             Array enumValues = Enum.GetValues(enumType);
@@ -187,7 +187,7 @@ namespace Hexa.Core.Diagnostics
                 throw new NotSupportedException(
                     String.Format(
                         System.Globalization.CultureInfo.CurrentUICulture,
-                        "Category is missing",
+                        "Category is missing {0}",
                         enumType.Name));
 
             if (PerformanceCounterCategory.Exists(categoryInfo.Name))

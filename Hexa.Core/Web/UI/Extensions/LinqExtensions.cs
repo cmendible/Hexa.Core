@@ -42,7 +42,8 @@ namespace Hexa.Core.Web.UI
 
         #region Methods
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities"),
+        SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static IList<T> LinqCache<T>(this Table<T> query)
             where T : class
         {
