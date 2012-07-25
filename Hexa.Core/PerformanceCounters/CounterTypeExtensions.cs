@@ -22,7 +22,7 @@ namespace Hexa.Core.Diagnostics
     using System.Diagnostics;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class CounterTypeExtensions
     {

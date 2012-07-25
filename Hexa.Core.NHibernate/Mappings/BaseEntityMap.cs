@@ -20,6 +20,7 @@
 namespace Hexa.Core.Domain
 {
     using System;
+
     using NHibernate.Dialect;
 
     public class EntityMap<TEntity, TKey> : BaseClassMap<TEntity>

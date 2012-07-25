@@ -19,9 +19,9 @@
 
 namespace Hexa.Core.Web.UI.Controls.Validation
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
 
@@ -32,6 +32,18 @@ namespace Hexa.Core.Web.UI.Controls.Validation
     public class DataAnnotationValidationInfoProvider<TEntity> : IValidationInfoProvider
     {
         #region Methods
+
+        /// <summary>
+        /// Reads the data annotations of type TEntity and return a list of corresponding IValidationInfos
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns></returns>
+        public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
+        {
+            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
+                    from attribute in prop.Attributes.OfType<ValidationAttribute>()
+                    select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
+        }
 
         /// <summary>
         /// Gets the validation info.
@@ -50,18 +62,6 @@ namespace Hexa.Core.Web.UI.Controls.Validation
         public IList<IValidationInfo> GetValidationInfo(string propertyName)
         {
             return this.GetValidationInfo().Where(i => i.PropertyInfo.Name == propertyName).ToList();
-        }
-
-        /// <summary>
-        /// Reads the data annotations of type TEntity and return a list of corresponding IValidationInfos
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns></returns>
-        public static IList<IValidationInfo> GetValidationInfoList<TEntity>()
-        {
-            return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
-                    from attribute in prop.Attributes.OfType<ValidationAttribute>()
-                    select ConvertDataAnnotation<TEntity>(attribute, prop)).ToList();
         }
 
         /// <summary>

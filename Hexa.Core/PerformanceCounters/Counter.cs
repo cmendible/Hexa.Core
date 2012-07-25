@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
 // Based on: http://perfmoncounterhelper.codeplex.com
 
 #endregion Header

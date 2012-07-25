@@ -53,6 +53,10 @@ namespace Hexa.Core.Validation
             return GettextHelper.t(displayName, entityType.Assembly);
         }
 
+        #endregion Methods
+
+        #region Other
+
         /// <summary>
         /// Reads the data annotations list.
         /// </summary>
@@ -66,6 +70,6 @@ namespace Hexa.Core.Validation
         //            .ToDictionary(k => k.Key, s => s.Value);
         //}
 
-        #endregion Methods
+        #endregion Other
     }
 }

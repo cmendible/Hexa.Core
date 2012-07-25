@@ -51,7 +51,7 @@ namespace Hexa.Core.Tests.Sql
 
                 ctx.Commit();
             }
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 IHumanRepository repo = ServiceLocator.GetInstance<IHumanRepository>();
@@ -144,7 +144,7 @@ namespace Hexa.Core.Tests.Sql
             Human human = this._Add_Human();
 
             Thread.Sleep(1000);
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
@@ -157,7 +157,7 @@ namespace Hexa.Core.Tests.Sql
 
                 ctx.Commit();
             }
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();

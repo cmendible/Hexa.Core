@@ -14,8 +14,8 @@ namespace Hexa.Core.Domain
     /// </remarks>
     [Serializable]
     public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>
-        where TKey : IEquatable<TKey>
         where TEntity : BaseEntity<TEntity, TKey>
+        where TKey : IEquatable<TKey>
     {
         #region Fields
 

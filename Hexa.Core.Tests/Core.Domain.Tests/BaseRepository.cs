@@ -139,7 +139,7 @@ namespace Hexa.Core.Domain.Tests
         public void Attach_Test()
         {
             // Arrange
-           
+
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
             // Act
             var target = new BaseRepository<Entity>(loggerFactory);
@@ -609,7 +609,6 @@ namespace Hexa.Core.Domain.Tests
         public void unitOfWorkTestHelper<T>()
             where T : class
         {
-           
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
@@ -660,7 +659,7 @@ namespace Hexa.Core.Domain.Tests
 
             var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
             factory.Expect(f => f.Create()).Return(actual);
-                
+
             this._dictionaryContainer.OverrideInstance<IUnitOfWorkFactory>(factory);
 
             return actual;

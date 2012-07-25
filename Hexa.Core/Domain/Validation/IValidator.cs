@@ -33,5 +33,4 @@ namespace Hexa.Core.Validation
 
         #endregion Methods
     }
-
 }

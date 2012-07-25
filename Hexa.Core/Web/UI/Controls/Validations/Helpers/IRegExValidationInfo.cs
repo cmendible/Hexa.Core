@@ -20,7 +20,9 @@
 namespace Hexa.Core.Web.UI.Controls.Validation
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Hexa.Core.Validation;
+
     using Resources;
 
     /// <summary>

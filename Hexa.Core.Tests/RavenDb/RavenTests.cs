@@ -55,7 +55,7 @@ namespace Hexa.Core.Tests.Raven
 
                 ctx.Commit();
             }
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
@@ -122,7 +122,7 @@ namespace Hexa.Core.Tests.Raven
         public void Update_Human()
         {
             Human human = this._Add_Human();
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
@@ -137,7 +137,7 @@ namespace Hexa.Core.Tests.Raven
 
                 ctx.Commit();
             }
-           
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();
@@ -152,7 +152,7 @@ namespace Hexa.Core.Tests.Raven
             var human = new Human();
             human.Name = "Martin";
             human.isMale = true;
-            
+
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
                 var repo = ServiceLocator.GetInstance<IHumanRepository>();

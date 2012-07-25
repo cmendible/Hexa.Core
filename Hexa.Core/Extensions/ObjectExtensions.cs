@@ -19,11 +19,7 @@
 
 namespace System
 {
-
-
     using IO;
-
-
 
     using Runtime.Serialization.Formatters.Binary;
 

@@ -84,8 +84,8 @@ namespace Hexa.Core
             catch (SL.ActivationException)
             {
                 throw new SL.ActivationException("The needed dependency of type " + dependencyType.Name +
-                                              " could not be located with the ServiceLocator. You'll need to register it with " +
-                                              "the Common Service Locator (CSL) via your IoC's CSL adapter.");
+                                                 " could not be located with the ServiceLocator. You'll need to register it with " +
+                                                 "the Common Service Locator (CSL) via your IoC's CSL adapter.");
             }
 
             return service;

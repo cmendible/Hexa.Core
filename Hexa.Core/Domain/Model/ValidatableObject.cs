@@ -6,7 +6,8 @@ namespace Hexa.Core.Domain
     using Validation;
 
     [Serializable]
-    public abstract class ValidatableObject<TEntity> : IValidatable<TEntity> where TEntity : ValidatableObject<TEntity>
+    public abstract class ValidatableObject<TEntity> : IValidatable<TEntity>
+        where TEntity : ValidatableObject<TEntity>
     {
         #region Fields
 
@@ -55,7 +56,6 @@ namespace Hexa.Core.Domain
         /// </returns>
         public virtual bool IsValid()
         {
-
             return this.Validator.IsValid((TEntity)this);
         }
 
