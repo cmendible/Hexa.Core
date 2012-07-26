@@ -338,7 +338,7 @@
     <Compile Include="Web\UI\Controls\Validations\Converters\RequiredConverter.cs" />
     <Compile Include="Web\UI\Controls\Validations\ExtendedRangeValidator.cs" />
     <Compile Include="Web\UI\Controls\Validations\ExtendedRegularExpressionValidator.cs" />
-    <Compile Include="Web\UI\Controls\Validations\ExtendeRequieredFieldValidator.cs" />
+    <Compile Include="Web\UI\Controls\Validations\ExtendedRequiredFieldValidator.cs" />
     <Compile Include="Web\UI\Controls\Validations\InvalidValidator.cs" />
     <Compile Include="Web\UI\Controls\Validations\Helpers\DataAnnotationProvider.cs" />
     <Compile Include="Web\UI\Controls\Validations\Helpers\IEmailValidationInfo.cs" />
