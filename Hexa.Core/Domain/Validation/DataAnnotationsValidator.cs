@@ -47,7 +47,7 @@ namespace Hexa.Core.Validation
 
         public virtual ValidationResult Validate(TEntity instance)
         {
-            Type entityType = typeof(TEntity);
+            Type entityType = instance.GetType();
 
             IEnumerable<ValidationError> errors =
                 from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
