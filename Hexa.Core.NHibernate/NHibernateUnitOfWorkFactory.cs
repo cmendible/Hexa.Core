@@ -32,7 +32,7 @@ namespace Hexa.Core.Domain
     using FluentNHibernate.Cfg.Db;
 
     using NHibernate;
-    using NHibernate.ByteCode.Castle;
+    using NHibernate.Bytecode;
     using NHibernate.Cfg;
     using NHibernate.Event;
     using NHibernate.Tool.hbm2ddl;
@@ -155,7 +155,7 @@ namespace Hexa.Core.Domain
 
             _builtConfiguration = cfg.BuildConfiguration();
             _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
-                                            typeof(ProxyFactoryFactory).
+                                            typeof(DefaultProxyFactoryFactory).
                                             AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....

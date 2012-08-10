@@ -111,17 +111,11 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\libs\NHibernate\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\libs\NHibernate\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\libs\NHibernate\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.ByteCode.Castle">
-      <HintPath>..\libs\NHibernate\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -143,8 +137,6 @@
     <Compile Include="Conventions\NotNullable.cs" />
     <Compile Include="Conventions\StringLength.cs" />
     <Compile Include="Conventions\TableNames.cs" />
-    <Compile Include="INotifyPropertyChanged\DataBindingFactory.cs" />
-    <Compile Include="INotifyPropertyChanged\DataBindingInterceptor.cs" />
     <Compile Include="Listeners\AuditEventListener.cs" />
     <Compile Include="Listeners\ValidateEventListener.cs" />
     <Compile Include="Mappings\BaseClassMap.cs" />
