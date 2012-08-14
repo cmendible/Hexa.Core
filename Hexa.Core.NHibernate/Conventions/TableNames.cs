@@ -38,7 +38,7 @@
         public void Accept(
             IAcceptanceCriteria<IClassInspector> criteria)
         {
-            criteria.Expect(x => x.TableName, Is.Not.Set);
+            // Nothing
         }
 
         public void Apply(IClassInstance instance)
