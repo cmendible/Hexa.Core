@@ -23,23 +23,9 @@
         #endregion Methods
     }
 
-    //public class PluralizeTableNames : IClassConvention
-    //{
-    //    private static EnglishInflector _inflector = new EnglishInflector();
-    //    public void Apply(IClassInstance instance)
-    //    {
-    //        instance.Table(_inflector.Pluralize(instance.EntityType.Name));
-    //    }
-    //}
-    public class TableNameConvention : IClassConvention, IClassConventionAcceptance
+    public class TableNameConvention : IClassConvention
     {
         #region Methods
-
-        public void Accept(
-            IAcceptanceCriteria<IClassInspector> criteria)
-        {
-            // Nothing
-        }
 
         public void Apply(IClassInstance instance)
         {
