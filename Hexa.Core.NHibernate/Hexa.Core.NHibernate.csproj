@@ -147,7 +147,7 @@
     <Compile Include="Listeners\ValidateEventListener.cs" />
     <Compile Include="Mappings\BaseClassMap.cs" />
     <Compile Include="Mappings\AuditableEntityMap.cs" />
-    <Compile Include="Mappings\BaseEntityMap.cs" />
+    <Compile Include="Mappings\EntityMap.cs" />
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHibernateUnitOfWorkFactory.cs" />

@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{3A9610A4
 		msbuild.targets\Settings.StyleCop = msbuild.targets\Settings.StyleCop
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.EntityFramework", "Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj", "{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,14 @@ Global
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.Build.0 = Release|x64
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|x86
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.Build.0 = Release|x86
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|x64.ActiveCfg = Release|Any CPU
+		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
