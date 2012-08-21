@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{AB2FC350-3CC5-4122-AE8D-FAD9A5E5F108}"
 	ProjectSection(SolutionItems) = preProject
-		Microsoft.Public.license.txt = Microsoft.Public.license.txt
-		license.txt = license.txt
-		log4net.license.txt = log4net.license.txt
+		licenses\license.txt = licenses\license.txt
+		licenses\log4net.license.txt = licenses\log4net.license.txt
+		licenses\Microsoft.Public.license.txt = licenses\Microsoft.Public.license.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core", "Hexa.Core\Hexa.Core.csproj", "{F25CB899-7469-4870-82C8-939989F60322}"
@@ -14,28 +14,34 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Tests", "Hexa.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.NHibernate", "Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj", "{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A97AC9F6-5CF5-4B28-B383-6919556AC143}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj", "{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F9E5E5B9-F774-4B14-9FF0-7064C42EB3E5}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help", "Help", "{AD4DCD33-C941-4CC7-9AF5-95A488406A6A}"
+	ProjectSection(SolutionItems) = preProject
+		Doxyfile = Doxyfile
+		README = README
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{3A9610A4-49FC-482B-84DC-18D72B1A5CD8}"
 	ProjectSection(SolutionItems) = preProject
 		Build.bat = Build.bat
 		Build.msbuild = Build.msbuild
-		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
-		Doxyfile = Doxyfile
-		Hexa.Core.snk = Hexa.Core.snk
-		README = README
 		msbuild.targets\CodeAnalysisDictionary.xml = msbuild.targets\CodeAnalysisDictionary.xml
 		msbuild.targets\CodeMetrics.targets = msbuild.targets\CodeMetrics.targets
 		msbuild.targets\CopyFirebird.targets = msbuild.targets\CopyFirebird.targets
+		Hexa.Core.snk = Hexa.Core.snk
 		msbuild.targets\NUnit.targets = msbuild.targets\NUnit.targets
 		msbuild.targets\Settings.StyleCop = msbuild.targets\Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.Core.RavenDb\Hexa.Core.RavenDb.csproj", "{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}"
-EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-		Svn-Managed = True
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -45,30 +51,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x64.ActiveCfg = Debug|x64
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x64.Build.0 = Debug|x64
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x86.ActiveCfg = Debug|x86
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x86.Build.0 = Debug|x86
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.ActiveCfg = Release|x64
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.Build.0 = Release|x64
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|x86
-		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.Build.0 = Release|x86
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x64.ActiveCfg = Debug|x64
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x64.Build.0 = Debug|x64
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x86.ActiveCfg = Debug|x86
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x86.Build.0 = Debug|x86
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x64.ActiveCfg = Release|x64
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x64.Build.0 = Release|x64
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.ActiveCfg = Release|x86
-		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.Build.0 = Release|x86
 		{F25CB899-7469-4870-82C8-939989F60322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F25CB899-7469-4870-82C8-939989F60322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F25CB899-7469-4870-82C8-939989F60322}.Debug|x64.ActiveCfg = Debug|x64
@@ -93,6 +75,30 @@ Global
 		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|x64.Build.0 = Release|x64
 		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|x86.ActiveCfg = Release|x86
 		{FFD9A4C4-1A38-4FB5-BEEA-1E34D8E3424D}.Release|x86.Build.0 = Release|x86
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x64.ActiveCfg = Debug|x64
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x64.Build.0 = Debug|x64
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x86.ActiveCfg = Debug|x86
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Debug|x86.Build.0 = Debug|x86
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x64.ActiveCfg = Release|x64
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x64.Build.0 = Release|x64
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.ActiveCfg = Release|x86
+		{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}.Release|x86.Build.0 = Release|x86
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x64.ActiveCfg = Debug|x64
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x64.Build.0 = Debug|x64
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x86.ActiveCfg = Debug|x86
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Debug|x86.Build.0 = Debug|x86
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.ActiveCfg = Release|x64
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.Build.0 = Release|x64
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|x86
+		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,7 +106,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		IsWCSFSolution = True
 		IsWCSFSolutionWAP = True
-		RootNamespace = Cfm.Core.Web
+		RootNamespace = Hexa.Core
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj
