@@ -33,7 +33,7 @@
 		<Message Text="TestFile: @(TestFiles)" Importance="high"/>
 
 		<ItemGroup>
-		  <FilesToDelete Include="$(OutDir)$(AssemblyName).xml"/>
+		  <FilesToDelete Include="$(OutDir)$(AssemblyName).NUnit.Results.xml" />
 		</ItemGroup>
 
 		<Delete Files="@(FilesToDelete)" />
@@ -42,7 +42,7 @@
 		<NUnit 
 			ToolPath="$(SolutionDir)\libs\NUnit"
 			Assemblies="@(TestFiles)" 
-			OutputXmlFile="$(OutDir)$(AssemblyName).xml"
+			OutputXmlFile="$(OutDir)$(AssemblyName).NUnit.Results.xml"
 			ContinueOnError="false" Condition="'$(EnableNUnit)' == 'true'"/>
   </Target>
 
