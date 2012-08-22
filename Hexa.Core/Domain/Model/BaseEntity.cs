@@ -15,7 +15,7 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>
         where TEntity : BaseEntity<TEntity, TKey>
-        where TKey : IEquatable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         #region Fields
 
@@ -151,7 +151,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual bool IsTransient()
         {
-            return UniqueId == null || UniqueId.Equals(default(TKey));
+            return UniqueId.Equals(default(TKey));
         }
 
         protected virtual Type TypeWithoutProxy()

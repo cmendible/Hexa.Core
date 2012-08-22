@@ -34,6 +34,14 @@ namespace Hexa.Core.Domain
 
     public class AuditableContext : DbContext
     {
+        #region Constructors
+
+        public AuditableContext(string nameOrConnectionString) : base (nameOrConnectionString)
+        {
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public override int SaveChanges()

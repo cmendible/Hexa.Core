@@ -20,12 +20,12 @@
 namespace Hexa.Core.Domain
 {
     using System;
-
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
 
     public class EntityConfiguration<TEntity, TKey> : EntityTypeConfiguration<TEntity>
         where TEntity : BaseEntity<TEntity, TKey>
-        where TKey : IEquatable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         #region Constructors
 
@@ -33,10 +33,13 @@ namespace Hexa.Core.Domain
         {
             this.HasKey(x => x.UniqueId);
 
+            this.Property(x => x.UniqueId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
             this.Property(x => x.Version)
                 .HasColumnName("Timestamp")
                 .IsConcurrencyToken();
-                //.CustomType<TicksAsString>();
+                //  .CustomType<TicksAsString>();
 
             this.ToTable(Inflector.Underscore(typeof(TEntity).Name).ToUpper(), string.Empty);
         }

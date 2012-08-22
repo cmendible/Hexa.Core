@@ -140,6 +140,9 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.0.960\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=8dd49bbdae3f61af, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.0.960\lib\net40\Esent.Interop.dll</HintPath>
     </Reference>
@@ -249,6 +252,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq">
     </Reference>
     <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
@@ -270,6 +274,9 @@
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
+    <Compile Include="Data\Mappings\EntityFramework\HumanConfiguration.cs" />
+    <Compile Include="Domain\DomainContext.cs" />
+    <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
@@ -277,7 +284,7 @@
     <Compile Include="Core.Domain.Tests\Entity.cs" />
     <Compile Include="Data\Repositories\HumanRepository.cs" />
     <Compile Include="Domain\Human.cs" />
-    <Compile Include="Data\Mappings\HumanMap.cs" />
+    <Compile Include="Data\Mappings\NHibernate\HumanMap.cs" />
     <Compile Include="Domain\Repositories\IHumanRepository.cs" />
     <Compile Include="NHibernate\FirebirdTests.cs" />
     <Compile Include="NHibernate\PostgreSQLTest.cs" />
@@ -312,6 +319,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj">
+      <Project>{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}</Project>
+      <Name>Hexa.Core.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj">
       <Project>{E510BBA8-BE1B-4A2D-9A44-5928E0D89AC0}</Project>
       <Name>Hexa.Core.NHibernate</Name>
@@ -350,6 +361,7 @@
   <ItemGroup>
     <Content Include="Raven.Studio.xap" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CopyFirebird.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />

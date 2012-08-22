@@ -25,7 +25,7 @@ namespace Hexa.Core.Domain
 
     public class EntityMap<TEntity, TKey> : BaseClassMap<TEntity>
         where TEntity : BaseEntity<TEntity, TKey>
-        where TKey : IEquatable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         #region Constructors
 

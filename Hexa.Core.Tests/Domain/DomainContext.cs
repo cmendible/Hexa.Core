@@ -1,4 +1,4 @@
-#region Header
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -17,35 +17,49 @@
 
 #endregion Header
 
-#if !MONO
-
-namespace Hexa.Core.Tests.Sql
+namespace Hexa.Core.Tests.Domain
 {
-    using System.Configuration;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Data.Entity;
+    
+    using Hexa.Core.Domain;
 
-    using Core.Data;
-    using Core.Domain;
-
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class FirebirdTests : BaseDatabaseTest
+    /// <summary>
+    /// TODO: Update summary.
+    /// </summary>
+    public class DomainContext : AuditableContext
     {
+        #region Constructors
+
+        public DomainContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        #endregion
+
+        #region Properties
+
+        public DbSet<Human> Humans 
+        { 
+            get; 
+            set; 
+        }
+
+        #endregion
+
         #region Methods
 
-        protected override string ConnectionString()
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            return ConfigurationManager.ConnectionStrings["Firebird.Connection"].ConnectionString;
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.HumanConfiguration());
         }
 
-        protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
-        {
-            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
-                                                   ApplicationContext.Container);
-        }
-
-        #endregion Methods
+        #endregion
     }
 }
-
-#endif

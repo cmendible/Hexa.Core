@@ -17,35 +17,23 @@
 
 #endregion Header
 
-#if !MONO
-
-namespace Hexa.Core.Tests.Sql
+namespace Hexa.Core.Tests.Data
 {
-    using System.Configuration;
-
-    using Core.Data;
     using Core.Domain;
 
-    using NUnit.Framework;
+    using Domain;
 
-    [TestFixture]
-    public class FirebirdTests : BaseDatabaseTest
+    public class HumanMap : AuditableEntityMap<Human>
     {
-        #region Methods
+        #region Constructors
 
-        protected override string ConnectionString()
+        public HumanMap()
         {
-            return ConfigurationManager.ConnectionStrings["Firebird.Connection"].ConnectionString;
+            Map(h => h.Name);
+
+            Map(h => h.isMale);
         }
 
-        protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
-        {
-            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
-                                                   ApplicationContext.Container);
-        }
-
-        #endregion Methods
+        #endregion Constructors
     }
 }
-
-#endif
