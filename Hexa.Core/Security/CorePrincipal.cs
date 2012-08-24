@@ -32,8 +32,8 @@ namespace Hexa.Core.Security
     {
         #region Fields
 
-        private readonly IIdentity m_identity;
-        private readonly string[] m_roles;
+        private readonly IIdentity identity;
+        private readonly string[] roles;
 
         #endregion Fields
 
@@ -50,13 +50,13 @@ namespace Hexa.Core.Security
             {
                 throw new ArgumentNullException(Resource.IdentityCanNotBeNull);
             }
-            m_identity = identity;
+            this.identity = identity;
             if (roles != null)
             {
-                m_roles = new string[roles.Length];
+                this.roles = new string[roles.Length];
                 for (int i = 0; i < roles.Length; i++)
                 {
-                    m_roles[i] = roles[i];
+                    this.roles[i] = roles[i];
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return m_identity;
+                return this.identity;
             }
         }
 
@@ -91,12 +91,12 @@ namespace Hexa.Core.Security
         /// </returns>
         public virtual bool IsInRole(string role)
         {
-            if ((role != null) && (m_roles != null))
+            if ((role != null) && (this.roles != null))
             {
-                for (int i = 0; i < m_roles.Length; i++)
+                for (int i = 0; i < this.roles.Length; i++)
                 {
-                    if ((m_roles[i] != null) &&
-                        (string.Compare(m_roles[i], role, StringComparison.OrdinalIgnoreCase) == 0))
+                    if ((this.roles[i] != null) &&
+                        (string.Compare(this.roles[i], role, StringComparison.OrdinalIgnoreCase) == 0))
                     {
                         return true;
                     }

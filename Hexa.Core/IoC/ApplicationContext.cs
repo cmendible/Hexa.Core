@@ -37,7 +37,7 @@ namespace Hexa.Core
         /// <summary>
         /// log4net logger.
         /// </summary>
-        private static readonly ILog _Log = 
+        private static readonly ILog log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion Fields
@@ -129,13 +129,13 @@ namespace Hexa.Core
         {
             if (!IsInitialized)
             {
-                _Log.InfoFormat("Starting CoreContext with container {0}", container.GetType().Name);
+                log.InfoFormat("Starting CoreContext with container {0}", container.GetType().Name);
                 Container = container;
 
                 ConnectionString = connectionString;
 
                 IsInitialized = true;
-                _Log.Info("Core Context Activation Successful");
+                log.Info("Core Context Activation Successful");
             }
             else
             {
@@ -148,10 +148,10 @@ namespace Hexa.Core
         /// </summary>
         public static void Stop()
         {
-            _Log.Info("Stopping Core Context");
+            log.Info("Stopping Core Context");
             Container = null;
             IsInitialized = false;
-            _Log.Info("Core Context Deactivation Successful");
+            log.Info("Core Context Deactivation Successful");
         }
 
         #endregion Methods

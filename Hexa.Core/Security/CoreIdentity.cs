@@ -32,9 +32,9 @@ namespace Hexa.Core.Security
         #region Fields
 
         // Fields
-        private readonly string _id;
-        private readonly string _name;
-        private readonly string _type;
+        private readonly string id;
+        private readonly string name;
+        private readonly string type;
 
         #endregion Fields
 
@@ -79,9 +79,9 @@ namespace Hexa.Core.Security
             {
                 throw new ArgumentNullException(Resource.TypeCannotBeNull);
             }
-            _name = name;
-            _type = type;
-            _id = id;
+            this.name = name;
+            this.type = type;
+            this.id = id;
         }
 
         #endregion Constructors
@@ -97,7 +97,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return _type;
+                return this.type;
             }
         }
 
@@ -109,7 +109,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return _id;
+                return this.id;
             }
         }
 
@@ -122,7 +122,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return !string.IsNullOrEmpty(_name);
+                return !string.IsNullOrEmpty(this.name);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return _name;
+                return this.name;
             }
         }
 

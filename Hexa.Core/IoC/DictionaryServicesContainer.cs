@@ -32,11 +32,11 @@ namespace Hexa.Core
     {
         #region Fields
 
-        private static readonly ILog _Log = 
+        private static readonly ILog log = 
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly IDictionary<Type, object> _Instances;
-        private readonly IDictionary<Type, Type> _Types;
+        private readonly IDictionary<Type, object> instances;
+        private readonly IDictionary<Type, Type> types;
 
         #endregion Fields
 
@@ -44,15 +44,15 @@ namespace Hexa.Core
 
         public DictionaryServicesContainer()
         {
-            _Types = new Dictionary<Type, Type>();
-            _Instances = new Dictionary<Type, object>();
+            this.types = new Dictionary<Type, Type>();
+            this.instances = new Dictionary<Type, object>();
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         private DictionaryServicesContainer(IDictionary<Type, Type> services, IDictionary<Type, object> instances)
         {
-            _Types = services;
-            _Instances = instances;
+            this.types = services;
+            this.instances = instances;
         }
 
         #endregion Constructors
@@ -62,8 +62,8 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public DictionaryServicesContainer Clone()
         {
-            return new DictionaryServicesContainer(new Dictionary<Type, Type>(_Types),
-                                                   new Dictionary<Type, object>(_Instances));
+            return new DictionaryServicesContainer(new Dictionary<Type, Type>(this.types),
+                                                   new Dictionary<Type, object>(this.instances));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
@@ -75,29 +75,29 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public void OverrideInstance<I>(object instance)
         {
-            lock (_Instances)
+            lock (this.instances)
             {
-                if (_Instances.ContainsKey(typeof(I)))
+                if (this.instances.ContainsKey(typeof(I)))
                 {
-                    _Instances.Remove(typeof(I));
+                    this.instances.Remove(typeof(I));
                 }
             }
 
-            RegisterInstance<I>(instance);
+            this.RegisterInstance<I>(instance);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public void OverrideType(Type @interface, Type @type)
         {
-            lock (_Types)
+            lock (this.types)
             {
-                if (_Types.ContainsKey(@interface))
+                if (this.types.ContainsKey(@interface))
                 {
-                    _Types.Remove(@interface);
+                    this.types.Remove(@interface);
                 }
             }
 
-            RegisterType(@interface, @type);
+            this.RegisterType(@interface, @type);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
@@ -110,7 +110,7 @@ namespace Hexa.Core
         public void OverrideType<I, T>()
             where T : I
         {
-            OverrideType(typeof(I), typeof(T));
+            this.OverrideType(typeof(I), typeof(T));
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode"),
@@ -122,25 +122,25 @@ namespace Hexa.Core
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I")]
         public void RegisterInstance<I>(object instance)
         {
-            lock (_Instances)
+            lock (this.instances)
             {
-                _Instances.Add(typeof(I), instance);
+                this.instances.Add(typeof(I), instance);
             }
         }
 
         public void RegisterInstance(Type @interface, object instance)
         {
-            lock (_Instances)
+            lock (this.instances)
             {
-                _Instances.Add(@interface, instance);
+                this.instances.Add(@interface, instance);
             }
         }
 
         public void RegisterType(Type @interface, Type @type)
         {
-            lock (_Types)
+            lock (this.types)
             {
-                _Types.Add(@interface, @type);
+                this.types.Add(@interface, @type);
             }
         }
 
@@ -154,7 +154,7 @@ namespace Hexa.Core
         public void RegisterType<I, T>()
             where T : I
         {
-            RegisterType(typeof(I), typeof(T));
+            this.RegisterType(typeof(I), typeof(T));
         }
 
         [SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
@@ -163,27 +163,27 @@ namespace Hexa.Core
         {
             try
             {
-                if (_Instances.ContainsKey(type))
+                if (this.instances.ContainsKey(type))
                 {
-                    return _Instances[type];
+                    return this.instances[type];
                 }
 
-                if (_Types.ContainsKey(type))
+                if (this.types.ContainsKey(type))
                 {
-                    return ConstructObject(_Types[type]);
+                    return this.ConstructObject(this.types[type]);
                 }
 
                 if (type.IsGenericType)
                 {
-                    Type genericType = _Types[type.GetGenericTypeDefinition()];
+                    Type genericType = this.types[type.GetGenericTypeDefinition()];
                     Type[] args = type.GetGenericArguments();
 
-                    lock (_Types)
+                    lock (this.types)
                     {
-                        _Types.Add(type, genericType.MakeGenericType(args));
+                        this.types.Add(type, genericType.MakeGenericType(args));
                     }
 
-                    return ConstructObject(_Types[type]);
+                    return this.ConstructObject(this.types[type]);
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace Hexa.Core
             }
             catch (Exception ex)
             {
-                _Log.Error(string.Format("Unable to resolve key: {0}", type.AssemblyQualifiedName), ex);
+                log.Error(string.Format("Unable to resolve key: {0}", type.AssemblyQualifiedName), ex);
                 throw;
             }
         }
@@ -207,7 +207,7 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public I Resolve<I>()
         {
-            return (I)Resolve(typeof(I));
+            return (I)this.Resolve(typeof(I));
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
@@ -217,7 +217,7 @@ namespace Hexa.Core
             {
                 return new List<object>
                 {
-                    Resolve(serviceType)
+                    this.Resolve(serviceType)
                 };
             }
             catch
@@ -228,7 +228,7 @@ namespace Hexa.Core
 
         protected override object DoGetInstance(Type serviceType, string key)
         {
-            return Resolve(serviceType);
+            return this.Resolve(serviceType);
         }
 
         private object ConstructObject(Type type)

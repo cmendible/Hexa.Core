@@ -30,7 +30,7 @@ namespace Hexa.Core
     {
         #region Fields
 
-        private static readonly string[] _ErrorState = 
+        private static readonly string[] errorState = 
         {
             "Unknown", "Other", "No Error", "Low Paper", "No Paper",
             "Low Toner",
@@ -38,7 +38,7 @@ namespace Hexa.Core
             "Door Open", "Jammed", "Offline", "Service Requested",
             "Output Bin Full"
         };
-        private static readonly string[] _Status = 
+        private static readonly string[] status = 
         {
             "Other", "Unknown", "Idle", "Printing", "WarmUp",
             "Stopped Printing",
@@ -66,7 +66,7 @@ namespace Hexa.Core
                     {
                         if (pData.Name == "DetectedErrorState")
                         {
-                            return _ErrorState[Convert.ToInt32(pData.Value)];
+                            return errorState[Convert.ToInt32(pData.Value)];
                         }
                     }
                 }
@@ -94,7 +94,7 @@ namespace Hexa.Core
                     {
                         if (pData.Name == "DetectedErrorState")
                         {
-                            return _ErrorState[Convert.ToInt32(pData.Value)];
+                            return errorState[Convert.ToInt32(pData.Value)];
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace Hexa.Core
                     {
                         if (pData.Name == "PrinterStatus")
                         {
-                            return _Status[Convert.ToInt32(pData.Value)];
+                            return status[Convert.ToInt32(pData.Value)];
                         }
                     }
                 }
@@ -148,7 +148,7 @@ namespace Hexa.Core
                     {
                         if (pData.Name == "PrinterStatus")
                         {
-                            return _Status[Convert.ToInt32(pData.Value)];
+                            return status[Convert.ToInt32(pData.Value)];
                         }
                     }
                 }

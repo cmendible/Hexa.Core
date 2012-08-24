@@ -33,7 +33,7 @@ namespace Hexa.Core.Xml
     {
         #region Fields
 
-        private readonly Dictionary<string, byte[]> _schemas;
+        private readonly Dictionary<string, byte[]> schemas;
 
         #endregion Fields
 
@@ -41,7 +41,7 @@ namespace Hexa.Core.Xml
 
         public SchemaResolver(Dictionary<string, byte[]> schemas)
         {
-            this._schemas = schemas;
+            this.schemas = schemas;
         }
 
         #endregion Constructors
@@ -60,7 +60,7 @@ namespace Hexa.Core.Xml
         public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
             string name = absoluteUri.AbsoluteUri.Split(new[] {'/'}).Last();
-            byte[] stream = _schemas[name];
+            byte[] stream = schemas[name];
             if (stream != null)
             {
                 return new MemoryStream(stream);

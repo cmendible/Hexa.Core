@@ -32,10 +32,10 @@ namespace Hexa.Core.Xml
         #region Fields
 
         // Validation Error Message
-        private static string _errorMessage = "";
+        private static string errorMessage = "";
 
         // Validation Error Count
-        private static int _errorsCount;
+        private static int errorsCount;
 
         #endregion Fields
 
@@ -87,17 +87,17 @@ namespace Hexa.Core.Xml
                 }
 
                 // Raise exception, if XML validation fails
-                if (_errorsCount > 0)
+                if (errorsCount > 0)
                 {
-                    throw new XmlException(_errorMessage);
+                    throw new XmlException(errorMessage);
                 }
             }
         }
 
         private static void validationHandler(object sender, ValidationEventArgs args)
         {
-            _errorMessage = _errorMessage + args.Message + "\r\n";
-            _errorsCount++;
+            errorMessage = errorMessage + args.Message + "\r\n";
+            errorsCount++;
         }
 
         #endregion Methods
