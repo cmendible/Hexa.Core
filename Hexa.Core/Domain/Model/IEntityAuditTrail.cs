@@ -25,6 +25,12 @@ namespace Hexa.Core.Domain
     {
         #region Properties
 
+        Guid ChangeSetUniqueId
+        {
+            get;
+            set;
+        }
+
         string EntityUniqueId
         {
             get;

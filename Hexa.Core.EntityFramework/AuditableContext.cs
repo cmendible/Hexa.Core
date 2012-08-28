@@ -89,13 +89,15 @@ namespace Hexa.Core.Domain
                         string tableName = entry.Entity.GetType().Name;
                         IEnumerable<string> changedProperties = entry.CurrentValues.PropertyNames.Where(p => entry.Property(p).IsModified);
 
+                        Guid changeSetUniqueId = GuidExtensions.NewCombGuid();
+
                         foreach (string property in changedProperties)
                         {
                             string propertyName = property;
                             object oldValue = entry.OriginalValues[property];
                             object newValue = entry.CurrentValues[property];
 
-                            IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, this.GetEntityUniqueId(entry.Entity),
+                            IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(changeSetUniqueId, tableName, this.GetEntityUniqueId(entry.Entity),
                                                            propertyName, oldValue, newValue,
                                                            userUniqueId,
                                                            now);

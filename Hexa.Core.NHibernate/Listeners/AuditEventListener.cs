@@ -27,6 +27,7 @@ namespace Hexa.Core.Domain
     using NHibernate.Event.Default;
     using NHibernate.Persister.Entity;
 
+    using Hexa.Core;
     using Security;
 
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
@@ -96,13 +97,16 @@ namespace Hexa.Core.Domain
                 string tableName = @event.Persister.EntityName;
                 int[] changedPropertiesIdx = @event.Persister.FindDirty(@event.State, @event.OldState, @event.Entity,
                                              @event.Session.GetSessionImplementation());
+
+                Guid changeSetUniqueId = GuidExtensions.NewCombGuid();
+
                 foreach (int idx in changedPropertiesIdx)
                 {
                     string propertyName = @event.Persister.PropertyNames[idx];
                     object oldValue = @event.OldState[idx];
                     object newValue = @event.State[idx];
 
-                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(tableName, @event.Id.ToString(),
+                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(changeSetUniqueId, tableName, @event.Id.ToString(),
                                                    propertyName, oldValue, newValue,
                                                    userUniqueId,
                                                    updatedAt);
