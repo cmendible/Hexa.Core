@@ -10,3 +10,4 @@ Hexa.Core.xml
 /Hexa.Core.Tests/StyleCop.Cache
 /Hexa.Core/StyleCop.Cache
 /packages
+*.userprefs
