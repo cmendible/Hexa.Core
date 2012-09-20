@@ -47,10 +47,9 @@ namespace Hexa.Core.Mono.Tests
             // Validator and TraceManager
             IoCContainer container = ApplicationContext.Container;
             container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-            container.RegisterType<IValidator, DataAnnotationsValidator>();
 
             // Context Factory
-            var ctxFactory = new NHContextFactory(DbProvider.PostgreSQLProvider,
+            var ctxFactory = new NHibernateUnitOfWorkFactory(DbProvider.PostgreSQLProvider,
                                                   cnnString, string.Empty, typeof(PostgreSQLTest).Assembly,
                                                   ApplicationContext.Container);
 
