@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{AB2FC350-3CC5-4122-AE8D-FAD9A5E5F108}"
 	ProjectSection(SolutionItems) = preProject
 		licenses\license.txt = licenses\license.txt
@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{3A9610A4
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.EntityFramework", "Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj", "{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Windows", "Hexa.Core.Windows\Hexa.Core.Windows.csproj", "{12402808-6B76-4482-8624-7DF28B388EE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Web.Mvc", "Hexa.Core.Web.Mvc\Hexa.Core.Web.Mvc.csproj", "{16ECAB8D-D55F-48C1-91DC-6E817076F694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,14 +113,30 @@ Global
 		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|x64.ActiveCfg = Release|Any CPU
 		{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x64.ActiveCfg = Release|Any CPU
+		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|x64.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		IsWCSFSolution = True
-		IsWCSFSolutionWAP = True
 		RootNamespace = Hexa.Core
+		IsWCSFSolutionWAP = True
+		IsWCSFSolution = True
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj
