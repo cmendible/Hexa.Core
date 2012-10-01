@@ -2165,6 +2165,15 @@
             return script.ToString() + table.ToString() + pager.ToString() + topPager.ToString();
         }
 
+        /// <summary>
+        /// Renders this instance.
+        /// </summary>
+        /// <returns></returns>
+        public MvcHtmlString Render()
+        {
+            return new MvcHtmlString(this.ToString());
+        }
+
         #endregion Methods
     }
 
