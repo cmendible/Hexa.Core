@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.EntityFramework",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Windows", "Hexa.Core.Windows\Hexa.Core.Windows.csproj", "{12402808-6B76-4482-8624-7DF28B388EE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Web.Mvc", "Hexa.Core.Web.Mvc\Hexa.Core.Web.Mvc.csproj", "{16ECAB8D-D55F-48C1-91DC-6E817076F694}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (Mono)|Any CPU = Debug (Mono)|Any CPU
@@ -189,14 +191,30 @@ Global
 		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x64.ActiveCfg = Release|Any CPU
 		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|Any CPU.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|Any CPU.Build.0 = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|x64.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|x86.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release (Mono)|Any CPU.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release (Mono)|Any CPU.Build.0 = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release (Mono)|x64.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release (Mono)|x86.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|x64.ActiveCfg = Release|Any CPU
+		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Hexa.Core
-		IsWCSFSolutionWAP = True
 		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Hexa.Core
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj
