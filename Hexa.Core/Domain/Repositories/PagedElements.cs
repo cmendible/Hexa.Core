@@ -21,7 +21,9 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
+    [DataContract]
     public class PagedElements<TEntity>
         where TEntity : class
     {
@@ -37,12 +39,14 @@ namespace Hexa.Core.Domain
 
         #region Properties
 
+        [DataMember]
         public IEnumerable<TEntity> Elements
         {
             get;
             private set;
         }
 
+        [DataMember]
         public int TotalElements
         {
             get;
