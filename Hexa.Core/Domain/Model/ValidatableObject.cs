@@ -11,7 +11,7 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private DataAnnotationsValidator<TEntity> dataAnnotationsValidator;
+        private IValidator<TEntity> validator;
 
         #endregion Fields
 
@@ -22,16 +22,16 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <value>The validator.</value>
         /// <remarks>Object should _explicitly_ implement IValidatable or this call will fail.</remarks>
-        private DataAnnotationsValidator<TEntity> Validator
+        protected IValidator<TEntity> Validator
         {
             get
             {
-                if (this.dataAnnotationsValidator == null)
+                if (this.validator == null)
                 {
-                    this.dataAnnotationsValidator = new DataAnnotationsValidator<TEntity>();
+                    this.validator = new DataAnnotationsValidator<TEntity>();
                 }
 
-                return this.dataAnnotationsValidator;
+                return this.validator;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// Validates the specified validator.
+        /// Validates the instance with the specified validator.
         /// </summary>
         /// <param name="validator">The validator.</param>
         /// <returns></returns>
