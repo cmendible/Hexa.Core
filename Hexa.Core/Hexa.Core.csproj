@@ -304,6 +304,7 @@
     <Compile Include="Domain\Model\ValueObject.cs" />
     <Compile Include="Domain\Repositories\MemorySet.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
+    <Compile Include="Web\Services\AuthorizationService\IAuthorizationService.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
@@ -391,8 +392,12 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
-    <Compile Include="Web\Seo\ISeoSiteMapBuilderService.cs" />
-    <Compile Include="Web\Seo\SeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Seo\ISeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Seo\SeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\SiteMap\ISiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\SiteMap\SiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\SiteMap\SiteMapNodeInfo.cs" />
+    <Compile Include="Web\Services\SiteMap\SiteMapProvider.cs" />
     <Compile Include="Web\UI\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
