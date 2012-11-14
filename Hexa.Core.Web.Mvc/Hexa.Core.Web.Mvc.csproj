@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridModelBinder.cs" />
     <Compile Include="MvcCustomControllerFactory.cs" />
