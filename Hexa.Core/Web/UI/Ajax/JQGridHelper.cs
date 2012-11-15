@@ -479,10 +479,12 @@ namespace Hexa.Core.Web.UI.Ajax
         #endregion Properties
     }
 
+    [Obsolete]
     public static class LinqExtensions
     {
         #region Methods
 
+        [Obsolete]
         public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
             string operation)
             where T : class
@@ -490,6 +492,7 @@ namespace Hexa.Core.Web.UI.Ajax
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
+        [Obsolete]
         public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
             where T : class
         {
@@ -604,6 +607,7 @@ namespace Hexa.Core.Web.UI.Ajax
             return new DirectSpecification<T>(hLambda);
         }
 
+        [Obsolete]
         public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
             string operation)
             where T : class
@@ -611,6 +615,7 @@ namespace Hexa.Core.Web.UI.Ajax
             return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
+        [Obsolete]
         private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
         {
             MemberExpression memberAccess = null;
