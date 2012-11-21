@@ -273,6 +273,39 @@
             return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
+        public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel)
+           where T : class
+        {
+            ISpecification<T> filter = new TrueSpecification<T>();
+            return specificationModel.ToSpecification<T>(filter);
+        }
+
+        public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel, ISpecification<T> specification)
+            where T : class
+        {
+            foreach (Rule rule in specificationModel.Where.rules)
+            {
+                if (rule.data != "")
+                {
+                    switch (rule.field)
+                    {
+                        default:
+                            if (specificationModel.Where.groupOp.ToLower() == "and")
+                            {
+                                specification = specification.AndAlso(rule.field, rule.data, rule.op);
+                            }
+                            else
+                            {
+                                specification = specification.OrElse(rule.field, rule.data, rule.op);
+                            }
+                            break;
+                    }
+                }
+            }
+
+            return specification;
+        }
+
         private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
         {
             MemberExpression memberAccess = null;
