@@ -5,6 +5,7 @@
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
     using System.Text;
+    using System.Reflection;
 
     [DataContract]
     public class Filter
@@ -157,12 +158,12 @@
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
-            MemberExpression memberAccess = _GetMemberAccess(column, parameter);
+            MemberExpression memberAccess = _GetMemberAccess<T>(column, parameter);
 
             if (memberAccess.Type == typeof(DateTime))
             {
                 column += ".Date";
-                memberAccess = _GetMemberAccess(column, parameter);
+                memberAccess = _GetMemberAccess<T>(column, parameter);
             }
 
             //change param value type
@@ -306,13 +307,33 @@
             return specification;
         }
 
-        private static MemberExpression _GetMemberAccess(string column, ParameterExpression parameter)
+        private static MemberExpression _GetMemberAccess<T>(string column, ParameterExpression parameter)
         {
+            Type inspectedType = typeof(T);
             MemberExpression memberAccess = null;
             foreach (string property in column.Split('.'))
             {
+                PropertyInfo propertyInfo = inspectedType.GetProperty(property);
+                if (propertyInfo == null && inspectedType.IsInterface)
+                {
+                    Type[] implementedInterfaces = inspectedType.GetInterfaces();
+                    foreach (Type implementedInterface in implementedInterfaces)
+                    {
+                        propertyInfo = implementedInterface.GetProperty(property);
+                        if (propertyInfo != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (propertyInfo == null)
+                {
+                    throw new MissingMemberException(inspectedType.FullName, column);
+                }
+
                 memberAccess = Expression.Property
-                               (memberAccess ?? (parameter as Expression), property);
+                               (memberAccess ?? (parameter as Expression), propertyInfo);
             }
             return memberAccess;
         }
