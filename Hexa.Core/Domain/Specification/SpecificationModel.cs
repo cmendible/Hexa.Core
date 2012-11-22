@@ -166,6 +166,12 @@
                 memberAccess = _GetMemberAccess<T>(column, parameter);
             }
 
+            if (memberAccess.Type == typeof(System.Nullable<DateTime>))
+            {
+                column += ".Value";
+                memberAccess = _GetMemberAccess<T>(column, parameter);
+            }
+
             //change param value type
             //necessary to getting bool from string
             ConstantExpression filter = Expression.Constant
@@ -277,8 +283,7 @@
         public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel)
            where T : class
         {
-            ISpecification<T> filter = new TrueSpecification<T>();
-            return specificationModel.ToSpecification<T>(filter);
+            return specificationModel.ToSpecification<T>(null);
         }
 
         public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel, ISpecification<T> specification)
@@ -288,18 +293,20 @@
             {
                 if (rule.data != "")
                 {
-                    switch (rule.field)
+                    if (specification == null)
                     {
-                        default:
-                            if (specificationModel.Where.groupOp.ToLower() == "and")
-                            {
-                                specification = specification.AndAlso(rule.field, rule.data, rule.op);
-                            }
-                            else
-                            {
-                                specification = specification.OrElse(rule.field, rule.data, rule.op);
-                            }
-                            break;
+                        specification = LinqExtensions.CreateSpecification<T>(rule.field, rule.data, rule.op);
+                    }
+                    else
+                    {
+                        if (specificationModel.Where.groupOp.ToLower() == "and")
+                        {
+                            specification = specification.AndAlso(rule.field, rule.data, rule.op);
+                        }
+                        else
+                        {
+                            specification = specification.OrElse(rule.field, rule.data, rule.op);
+                        }
                     }
                 }
             }
@@ -329,11 +336,13 @@
 
                 if (propertyInfo == null)
                 {
-                    throw new MissingMemberException(inspectedType.FullName, column);
+                    throw new MissingMemberException(typeof(T).FullName, column);
                 }
 
                 memberAccess = Expression.Property
                                (memberAccess ?? (parameter as Expression), propertyInfo);
+
+                inspectedType = propertyInfo.PropertyType;
             }
             return memberAccess;
         }
