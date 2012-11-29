@@ -45,7 +45,11 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual void AssertValidation()
         {
-            this.Validator.AssertValidation((TEntity)this);
+            ValidationResult result = this.Validate();
+            if (!result.IsValid)
+            {
+                throw new ValidationException(this.GetType(), result.Errors);
+            }
         }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace Hexa.Core.Domain
         /// </returns>
         public virtual bool IsValid()
         {
-            return this.Validator.IsValid((TEntity)this);
+            return this.Validate().IsValid;
         }
 
         /// <summary>
