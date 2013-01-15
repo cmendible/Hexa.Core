@@ -92,15 +92,22 @@ namespace Hexa.Core.Domain
                 return true;
             }
 
-            if (compareTo == null || !GetType().Equals(compareTo.TypeWithoutProxy()))
+            if (compareTo == null || compareTo is TEntity == false)
             {
                 return false;
             }
 
-            if (HasSameNonDefaultIdAs(compareTo))
+            if (IsTransient())
             {
-                return true;
+                return false;
             }
+
+            return HasSameNonDefaultIdAs(compareTo);
+
+            //if (HasSameNonDefaultIdAs(compareTo))
+            //{
+            //    return true;
+            //}
 
             // Since the Ids aren't the same, both of them must be transient to
             // compare domain signatures; because if one is transient and the

@@ -333,6 +333,7 @@
     <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
+    <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
     <Compile Include="Data\Mappings\EntityFramework\HumanConfiguration.cs" />
     <Compile Include="Domain\DomainContext.cs" />
     <Compile Include="EntityFramework\BaseDatabaseTest.cs" />

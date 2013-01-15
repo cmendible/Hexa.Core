@@ -19,6 +19,7 @@
 
 namespace Hexa.Core.Tests
 {
+    using Hexa.Core.Domain;
     using NUnit.Framework;
 
     public class Entity
@@ -49,11 +50,10 @@ namespace Hexa.Core.Tests
     public class EntityTests
     {
         [Test]
-        public void New_AdidatableEntity_Is_Transient()
+        public void New_AuditableEntity_Is_Transient()
         {
             AuditableEntity entity = new AuditableEntity();
             Assert.IsTrue(entity.IsTransient());
         }
     }
-
 }
