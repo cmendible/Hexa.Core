@@ -11,3 +11,4 @@ Hexa.Core.xml
 /Hexa.Core/StyleCop.Cache
 /packages
 *.userprefs
+*.nupkg

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata >
+    <id>Hexa.Core.NHibernate</id>
+    <version>3.0.0.2</version>
+    <authors>HexaSystems Inc.</authors>
+	<owners>HexaSystems Inc.</owners>
+	<dependencies>
+		<dependency id="Hexa.Core" version="3.0.0.2" />
+		<dependency id="FluentNHibernate" version="1.3.0.733" />
+		<dependency id="Iesi.Collections" version="3.2.0.4000" />
+		<dependency id="NHibernate" version="3.3.1.4000" />
+	</dependencies> 
+	<requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<summary>Hexa.Core NHibernate adapter and utilities</summary>
+    <description>Hexa.Core is HexaSystems implementation of the Domain Driven Design Architecture. Also providing a set of helper classes for ASP.Net and WCF development.
+	</description>
+    <language>en-US</language>
+	<projectUrl>https://github.com/cmendible/Hexa.Core</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <tags>DDD</tags>
+  </metadata>
+  <files>
+     <file src="..\Hexa.Core.NHibernate\bin\Release\Hexa.Core.NHibernate.dll" target="lib" />
+  </files>
+</package>
