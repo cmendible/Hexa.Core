@@ -335,7 +335,15 @@
     </Compile>
     <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
     <Compile Include="Data\Mappings\EntityFramework\HumanConfiguration.cs" />
+    <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
+    <Compile Include="Data\Mappings\NHibernate\EntityBMap .cs" />
+    <Compile Include="Data\Repositories\EntityARepository.cs" />
+    <Compile Include="Data\Repositories\EntityBRepository.cs" />
     <Compile Include="Domain\DomainContext.cs" />
+    <Compile Include="Domain\EntityA.cs" />
+    <Compile Include="Domain\EntityB.cs" />
+    <Compile Include="Domain\Repositories\IEntityARepository.cs" />
+    <Compile Include="Domain\Repositories\IEntityBRepository.cs" />
     <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="NHibernate\BaseDatabaseTest.cs" />

@@ -111,6 +111,8 @@ namespace Hexa.Core.Tests.Sql
 
             // Repositories
             container.RegisterType<IHumanRepository, HumanRepository>();
+            container.RegisterType<IEntityARepository, EntityARepository>();
+            container.RegisterType<IEntityBRepository, EntityBRepository>();
 
             // Services
 
@@ -133,7 +135,7 @@ namespace Hexa.Core.Tests.Sql
             try
             {
                 var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-                dbManager.DeleteDatabase();
+                //dbManager.DeleteDatabase();
             }
             finally
             {
@@ -211,6 +213,45 @@ namespace Hexa.Core.Tests.Sql
             }
         }
 
+        /**
+        * These testcase will show, that an assertion failure "...collection xyz
+        * was not processed by flush" will be thrown, if you use following
+        * entity-constellation and an PostUpdateListener:
+        * 
+        * You have entities that:
+        * 
+        * <pre>
+        * 1.) two entities are having a m:n relation AND 
+        * 2.) we have defined an PostUpdateListener that iterates through all properties of the entity and
+        *     so also through the m:n relation (=Collection)
+        * </pre>
+        * 
+        */
+        [Test]
+        public void Collection_Was_Not_Processed_By_Flush()
+        {
+            /*
+            * create an instance of entity A and an instance of entity B, then link
+            * both with each other via an m:n relationship
+            */
+            EntityA a = this._Create_EntityA_EntityB_And_Many_To_Many_Relation();
+
+            // now update a simple property of EntityA, due to this the
+            // MyPostUpdateListener will be called, which iterates through all
+            // properties of EntityA (and also the Collection of the m:n relation)
+            // --> org.hibernate.AssertionFailure: collection
+            // was not processed by flush()
+            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
+            {
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                a = repo.GetFilteredElements(u => u.UniqueId == a.UniqueId).Single();
+
+                a.Name = "AA";
+                repo.Modify(a);
+                ctx.Commit();
+            }
+        }
+
         protected abstract string ConnectionString();
 
         protected abstract NHibernateUnitOfWorkFactory CreateNHContextFactory();
@@ -233,6 +274,30 @@ namespace Hexa.Core.Tests.Sql
             }
 
             return human;
+        }
+
+        private EntityA _Create_EntityA_EntityB_And_Many_To_Many_Relation()
+        {
+            var a = new EntityA();
+            a.Name = "A";
+            
+            var b = new EntityB();
+            b.Name = "B";
+
+            a.AddB(b);
+
+            using (IUnitOfWork uow = UnitOfWorkScope.Start())
+            {
+                var repoA = ServiceLocator.GetInstance<IEntityARepository>();
+                var repoB = ServiceLocator.GetInstance<IEntityBRepository>();
+
+                repoB.Add(b);
+                repoA.Add(a);
+                
+                uow.Commit();
+            }
+
+            return a;
         }
 
         #endregion Methods
