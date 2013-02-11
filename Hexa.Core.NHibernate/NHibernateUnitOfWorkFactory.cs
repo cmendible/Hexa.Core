@@ -160,6 +160,9 @@ namespace Hexa.Core.Domain
 
             #region Add Listeners to NHibernate pipeline....
 
+            _builtConfiguration.SetListeners(ListenerType.Flush,
+            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
+
             _builtConfiguration.SetListeners(ListenerType.FlushEntity,
             new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
 

@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -176,7 +177,7 @@
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -200,6 +201,8 @@
     <Compile Include="Conventions\StringLength.cs" />
     <Compile Include="Conventions\TableNames.cs" />
     <Compile Include="Listeners\AuditEventListener.cs" />
+    <Compile Include="Listeners\AuditFlushEntityEventListener.cs" />
+    <Compile Include="Listeners\FixedDefaultFlushEventListener.cs" />
     <Compile Include="Listeners\ValidateEventListener.cs" />
     <Compile Include="Mappings\BaseClassMap.cs" />
     <Compile Include="Mappings\AuditableEntityMap.cs" />
