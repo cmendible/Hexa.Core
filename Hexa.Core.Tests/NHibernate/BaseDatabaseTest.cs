@@ -44,37 +44,37 @@ namespace Hexa.Core.Tests.Sql
         #region Methods
 
         [Test]
-        public void Add_Human()
+        public void Add_EntityA()
         {
-            Human human = this._Add_Human();
+            EntityA entityA = this._Add_EntityA();
 
-            Assert.IsNotNull(human);
-            Assert.IsNotNull(human.Version);
-            Assert.IsFalse(human.UniqueId == Guid.Empty);
-            Assert.AreEqual("Martin", human.Name);
+            Assert.IsNotNull(entityA);
+            Assert.IsNotNull(entityA.Version);
+            Assert.IsFalse(entityA.UniqueId == Guid.Empty);
+            Assert.AreEqual("Martin", entityA.Name);
         }
 
         [Test]
-        public void Delete_Human()
+        public void Delete_EntityA()
         {
-            Human human = this._Add_Human();
+            EntityA entityA = this._Add_EntityA();
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                IHumanRepository repo = ServiceLocator.GetInstance<IHumanRepository>();
-                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                IEntityARepository repo = ServiceLocator.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
-                Human human2Delete = results.First();
+                EntityA entityA2Delete = results.First();
 
-                repo.Remove(human2Delete);
+                repo.Remove(entityA2Delete);
 
                 ctx.Commit();
             }
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                IHumanRepository repo = ServiceLocator.GetInstance<IHumanRepository>();
-                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Count());
+                IEntityARepository repo = ServiceLocator.GetInstance<IEntityARepository>();
+                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Count());
             }
         }
 
@@ -110,7 +110,6 @@ namespace Hexa.Core.Tests.Sql
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
 
             // Repositories
-            container.RegisterType<IHumanRepository, HumanRepository>();
             container.RegisterType<IEntityARepository, EntityARepository>();
             container.RegisterType<IEntityBRepository, EntityBRepository>();
 
@@ -135,7 +134,7 @@ namespace Hexa.Core.Tests.Sql
             try
             {
                 var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
-                //dbManager.DeleteDatabase();
+                dbManager.DeleteDatabase();
             }
             finally
             {
@@ -144,72 +143,69 @@ namespace Hexa.Core.Tests.Sql
         }
 
         [Test]
-        public void Query_Human()
+        public void Query_EntityA()
         {
-            Human human = this._Add_Human();
+            EntityA entityA = this._Add_EntityA();
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
-
-                results = repo.GetFilteredElements(u => u.isMale);
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
             }
         }
 
         [Test]
-        public void Update_Human()
+        public void Update_EntityA()
         {
-            Human human = this._Add_Human();
+            EntityA entityA = this._Add_EntityA();
 
             Thread.Sleep(1000);
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                IEnumerable<Human> results = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId);
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
                 Assert.IsTrue(results.Count() > 0);
 
-                Human human2Update = results.First();
-                human2Update.Name = "Maria";
-                repo.Modify(human2Update);
+                EntityA entityA2Update = results.First();
+                entityA2Update.Name = "Maria";
+                repo.Modify(entityA2Update);
 
                 ctx.Commit();
             }
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
-                Assert.AreEqual("Maria", human.Name);
-                Assert.Greater(human.UpdatedAt, human.CreatedAt);
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
+                Assert.AreEqual("Maria", entityA.Name);
+                Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
             }
         }
 
         [Test]
-        public void Update_Human_From_Another_Session()
+        public void Update_EntityA_From_Another_Session()
         {
-            Human human = this._Add_Human();
+            EntityA entityA = this._Add_EntityA();
 
             Thread.Sleep(1000);
 
-            human.Name = "Maria";
+            entityA.Name = "Maria";
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                repo.Modify(human);
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                repo.Modify(entityA);
                 ctx.Commit();
             }
 
             using (IUnitOfWork ctx = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
-                human = repo.GetFilteredElements(u => u.UniqueId == human.UniqueId).Single();
-                Assert.AreEqual("Maria", human.Name);
-                Assert.Greater(human.UpdatedAt, human.CreatedAt);
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
+                entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
+                Assert.AreEqual("Maria", entityA.Name);
+                Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
             }
         }
 
@@ -256,24 +252,23 @@ namespace Hexa.Core.Tests.Sql
 
         protected abstract NHibernateUnitOfWorkFactory CreateNHContextFactory();
 
-        private Human _Add_Human()
+        private EntityA _Add_EntityA()
         {
-            var human = new Human();
-            human.Name = "Martin";
-            human.isMale = true;
+            var entityA = new EntityA();
+            entityA.Name = "Martin";
 
             using (IUnitOfWork uow = UnitOfWorkScope.Start())
             {
-                var repo = ServiceLocator.GetInstance<IHumanRepository>();
+                var repo = ServiceLocator.GetInstance<IEntityARepository>();
                 using (IUnitOfWork ctx = UnitOfWorkScope.Start())
                 {
-                    repo.Add(human);
+                    repo.Add(entityA);
                     ctx.Commit();
                 }
                 uow.Commit();
             }
 
-            return human;
+            return entityA;
         }
 
         private EntityA _Create_EntityA_EntityB_And_Many_To_Many_Relation()

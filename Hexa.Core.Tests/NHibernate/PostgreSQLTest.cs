@@ -57,7 +57,7 @@ namespace Hexa.Core.Mono.Tests
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
 
             // Repositories
-            //container.RegisterType<IHumanRepository, HumanRepository>();
+            //container.RegisterType<IEntityARepository, EntityARepository>();
 
             // Services
 

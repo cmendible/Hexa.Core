@@ -43,7 +43,7 @@ namespace Hexa.Core.Tests.Domain
 
         #region Properties
 
-        public DbSet<Human> Humans 
+        public DbSet<EntityA> EntitiesOfA
         { 
             get; 
             set; 
@@ -57,7 +57,7 @@ namespace Hexa.Core.Tests.Domain
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.HumanConfiguration());
+            modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.EntityAConfiguration());
         }
 
         #endregion

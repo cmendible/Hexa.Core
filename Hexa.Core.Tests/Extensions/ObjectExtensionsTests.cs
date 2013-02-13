@@ -33,8 +33,8 @@ namespace Hexa.Core.Tests.Extensions
         [Test]
         public void DeepClone()
         {
-            var human = new Human();
-            Human clone = human.DeepClone();
+            var entityA = new EntityA();
+            EntityA clone = entityA.DeepClone();
         }
 
         #endregion Methods

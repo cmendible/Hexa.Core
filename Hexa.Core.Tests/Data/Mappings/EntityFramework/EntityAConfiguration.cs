@@ -25,15 +25,13 @@ namespace Hexa.Core.Tests.Data
 
     using Domain;
 
-    public class HumanConfiguration : AuditableEntityConfiguration<Human>
+    public class EntityAConfiguration : AuditableEntityConfiguration<EntityA>
     {
         #region Constructors
 
-        public HumanConfiguration() 
+        public EntityAConfiguration() 
         {
             this.Property(h => h.Name);
-
-            this.Property(h => h.isMale);
         }
 
         #endregion Constructors

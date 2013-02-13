@@ -334,7 +334,7 @@
       <Link>IoC\DictionaryServicesContainer.cs</Link>
     </Compile>
     <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
-    <Compile Include="Data\Mappings\EntityFramework\HumanConfiguration.cs" />
+    <Compile Include="Data\Mappings\EntityFramework\EntityAConfiguration.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityBMap .cs" />
     <Compile Include="Data\Repositories\EntityARepository.cs" />
@@ -350,10 +350,6 @@
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
-    <Compile Include="Data\Repositories\HumanRepository.cs" />
-    <Compile Include="Domain\Human.cs" />
-    <Compile Include="Data\Mappings\NHibernate\HumanMap.cs" />
-    <Compile Include="Domain\Repositories\IHumanRepository.cs" />
     <Compile Include="NHibernate\FirebirdTests.cs" />
     <Compile Include="NHibernate\PostgreSQLTest.cs" />
     <Compile Include="Pool\Pool.cs" />
