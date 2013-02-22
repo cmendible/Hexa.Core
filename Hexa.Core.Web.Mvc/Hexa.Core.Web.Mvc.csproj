@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\EnumHelper.cs" />
-    <Compile Include="Security\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Security\CheckAuthorizationAttribute.cs" />
     <Compile Include="Security\Extensions\AuthorizeActionLinkExtensions.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridModelBinder.cs" />

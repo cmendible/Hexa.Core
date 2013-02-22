@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.RavenDb", "Hexa.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F9E5E5B9-F774-4B14-9FF0-7064C42EB3E5}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\Hexa.Core.NHibernate.nuspec = .nuget\Hexa.Core.NHibernate.nuspec
+		.nuget\Hexa.Core.Web.Mvc.nuspec = .nuget\Hexa.Core.Web.Mvc.nuspec
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
@@ -212,9 +214,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		IsWCSFSolution = True
-		IsWCSFSolutionWAP = True
 		RootNamespace = Hexa.Core
+		IsWCSFSolutionWAP = True
+		IsWCSFSolution = True
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj

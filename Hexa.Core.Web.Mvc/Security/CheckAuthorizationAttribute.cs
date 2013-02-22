@@ -13,7 +13,7 @@ namespace Hexa.Core.Web.Mvc.Security
     using System.Web.Mvc;
     using Hexa.Core.Web.Security;
 
-    public class CustomAuthorizeAttribute : AuthorizeAttribute
+    public class CheckAuthorizationAttribute : AuthorizeAttribute
     {
         #region Methods
 
