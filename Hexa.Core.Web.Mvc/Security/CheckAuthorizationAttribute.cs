@@ -19,7 +19,7 @@ namespace Hexa.Core.Web.Mvc.Security
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            base.OnAuthorization(filterContext);
+            //base.OnAuthorization(filterContext);
 
             // Try Get IAuthorizationService 
             IAuthorizationService authorizationService = ServiceLocator.TryGetInstance<IAuthorizationService>();

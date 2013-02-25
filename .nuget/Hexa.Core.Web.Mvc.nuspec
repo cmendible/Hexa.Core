@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata >
     <id>Hexa.Core.Web.Mvc</id>
-    <version>3.0.0.3</version>
+    <version>3.0.0.4</version>
     <authors>HexaSystems Inc.</authors>
 	<owners>HexaSystems Inc.</owners>
 	<dependencies>
-		<dependency id="Hexa.Core" version="3.0.0.3" />
+		<dependency id="Hexa.Core" version="3.0.0.4" />
 	</dependencies> 
 	<requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<summary>Hexa.Core Mvc helpers</summary>
