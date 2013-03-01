@@ -250,7 +250,6 @@
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -333,7 +332,6 @@
     <Compile Include="Domain\Specification\SpecificationExtensions.cs" />
     <Compile Include="Domain\Specification\TrueSpecification.cs" />
     <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
-    <Compile Include="Encoding\HexEncodingHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />

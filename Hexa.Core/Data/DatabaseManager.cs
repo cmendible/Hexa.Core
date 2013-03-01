@@ -162,7 +162,7 @@ namespace Hexa.Core.Data
                 });
 
                 object engine = Activator.CreateInstance(type);
-                createDatabase.Invoke(engine, new object[] {connectionString, 8192, true, false});
+                createDatabase.Invoke(engine, new object[] { connectionString, 8192, true, false });
 
                 return;
             }
@@ -230,26 +230,26 @@ namespace Hexa.Core.Data
 
                 switch (providerName)
                 {
-                case MsSqlProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
-                    break;
-                case MySqlProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
-                                            dbName);
-                    break;
-                case OracleDataProvider:
-                    cmdText = "SELECT 1 FROM DUAL";
-                    break;
-                case PostgreSQLProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            "select count(*) from pg_catalog.pg_database where datname = '{0}'",
-                                            dbName);
-                    break;
-                default:
-                    throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
-                                                    "Provider {0} is not supported", providerName));
+                    case MsSqlProvider:
+                        cmdText = string.Format(CultureInfo.InvariantCulture,
+                                                "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
+                        break;
+                    case MySqlProvider:
+                        cmdText = string.Format(CultureInfo.InvariantCulture,
+                                                @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
+                                                dbName);
+                        break;
+                    case OracleDataProvider:
+                        cmdText = "SELECT 1 FROM DUAL";
+                        break;
+                    case PostgreSQLProvider:
+                        cmdText = string.Format(CultureInfo.InvariantCulture,
+                                                "select count(*) from pg_catalog.pg_database where datname = '{0}'",
+                                                dbName);
+                        break;
+                    default:
+                        throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
+                                                        "Provider {0} is not supported", providerName));
                 }
 
                 object ret = provider.ExecuteScalar(connStr, cmdText);

@@ -19,16 +19,32 @@
 
 namespace Hexa.Core.Data
 {
+    /// <summary>
+    /// Handles Db creation, deletion, etc.
+    /// </summary>
     public interface IDatabaseManager
     {
         #region Methods
 
+        /// <summary>
+        /// Creates the database.
+        /// </summary>
         void CreateDatabase();
 
+        /// <summary>
+        /// Checks whether the database instance exists.
+        /// </summary>
+        /// <returns></returns>
         bool DatabaseExists();
 
+        /// <summary>
+        /// Deletes the database.
+        /// </summary>
         void DeleteDatabase();
 
+        /// <summary>
+        /// Validates the database schema.
+        /// </summary>
         void ValidateDatabaseSchema();
 
         #endregion Methods
