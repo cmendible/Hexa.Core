@@ -43,16 +43,18 @@ namespace Hexa.Core.Domain
 
         IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters);
 
-        IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path);
+        IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path);
 
-        IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path, Expression<Func<TEntity, bool>> filter);
+        IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
+            Expression<Func<TEntity, bool>> filter);
 
-        IEntitySet<TEntity> Include<S>(
-            Expression<Func<TEntity, object>> path,
+        IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression);
 
         void ModifyObject(TEntity entity);
+
+        IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path);
 
         #endregion Methods
     }

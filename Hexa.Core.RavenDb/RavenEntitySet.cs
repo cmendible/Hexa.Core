@@ -107,15 +107,11 @@ namespace Hexa.Core.Domain
         {
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             throw new NotImplementedException();
@@ -131,24 +127,18 @@ namespace Hexa.Core.Domain
             return this._set.GetEnumerator();
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
         {
             throw new NotImplementedException();
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression)
         {
@@ -157,6 +147,12 @@ namespace Hexa.Core.Domain
 
         public void ModifyObject(TEntity entity)
         {
+
+        }
+
+        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Methods

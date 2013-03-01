@@ -112,21 +112,11 @@ namespace Hexa.Core.Domain
             this._session.Evict(entity);
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<TEntity> ExecuteDatabaseQuery(string queryName, IDictionary<string, object> parameters)
         {
-            IQuery query = this._session.GetNamedQuery(queryName);
-            foreach (var param in parameters)
-            {
-                query = query.SetParameter(param.Key, param.Value);
-            }
-
-            return query.List<TEntity>();
+            return this.ExecuteDatabaseQuery<TEntity>(queryName, parameters);
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters)
         {
             IQuery query = this._session.GetNamedQuery(queryName);
@@ -148,26 +138,20 @@ namespace Hexa.Core.Domain
             return this._set.GetEnumerator();
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
         {
             this._set = this._set.Fetch(path);
             return this;
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter)
         {
             this._set = this._set.Where(filter).Fetch(path);
             return this;
         }
 
-        [SuppressMessage("Microsoft.Design",
-                         "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression)
         {
@@ -181,6 +165,12 @@ namespace Hexa.Core.Domain
             {
                 this._session.Update(entity);
             }
+        }
+
+        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        {
+            this._set = ((INhFetchRequest<TEntity, TFetch>)this._set).ThenFetch(path);
+            return this;
         }
 
         #endregion Methods

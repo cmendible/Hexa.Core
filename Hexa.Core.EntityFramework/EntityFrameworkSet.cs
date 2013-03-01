@@ -125,18 +125,18 @@ namespace Hexa.Core.Domain
             return ((IEnumerable<TEntity>)this.dbSet).GetEnumerator();
         }
 
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path)
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
         {
             throw new NotImplementedException();
         }
 
-        public IEntitySet<TEntity> Include(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public IEntitySet<TEntity> Include<S>(Expression<Func<TEntity, object>> path,
+        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression)
         {
@@ -145,6 +145,12 @@ namespace Hexa.Core.Domain
 
         public void ModifyObject(TEntity entity)
         {
+
+        }
+
+        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Methods
