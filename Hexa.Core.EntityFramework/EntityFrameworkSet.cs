@@ -125,30 +125,27 @@ namespace Hexa.Core.Domain
             return ((IEnumerable<TEntity>)this.dbSet).GetEnumerator();
         }
 
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, S>> orderByExpression)
-        {
-            throw new NotImplementedException();
-        }
-
         public void ModifyObject(TEntity entity)
         {
 
         }
 
-        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated>(Expression<Func<TEntity, TRelated>> path, Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated>(Expression<Func<TEntity, IEnumerable<TRelated>>> path, Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated, S>(Expression<Func<TEntity, IEnumerable<TRelated>>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
         {
             throw new NotImplementedException();
         }

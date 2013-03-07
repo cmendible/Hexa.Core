@@ -43,19 +43,23 @@ namespace Hexa.Core.Domain
 
         IList<T> ExecuteDatabaseQuery<T>(string queryName, IDictionary<string, object> parameters);
 
-        IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path);
+        void ModifyObject(TEntity entity);
 
-        IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter);
+        IIncludeRequest<TEntity, TRelated> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
+           Expression<Func<TEntity, bool>> filter);
 
-        IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
+        IIncludeRequest<TEntity, TRelated> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
             Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, S>> orderByExpression);
 
-        void ModifyObject(TEntity entity);
+        IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated>(Expression<Func<TEntity, IEnumerable<TRelated>>> path,
+           Expression<Func<TEntity, bool>> filter);
 
-        IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path);
+        IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated, S>(Expression<Func<TEntity, IEnumerable<TRelated>>> path,
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, S>> orderByExpression);
 
         #endregion Methods
     }
+
 }

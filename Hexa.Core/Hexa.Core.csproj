@@ -301,6 +301,7 @@
     <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
+    <Compile Include="Domain\Repositories\IIncludeRequest.cs" />
     <Compile Include="Domain\Repositories\MemorySet.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />

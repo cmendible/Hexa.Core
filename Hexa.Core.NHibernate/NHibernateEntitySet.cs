@@ -138,27 +138,6 @@ namespace Hexa.Core.Domain
             return this._set.GetEnumerator();
         }
 
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
-        {
-            this._set = this._set.Fetch(path);
-            return this;
-        }
-
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter)
-        {
-            this._set = this._set.Where(filter).Fetch(path);
-            return this;
-        }
-
-        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, S>> orderByExpression)
-        {
-            this._set = this._set.Where(filter).OrderByDescending(orderByExpression).Fetch(path);
-            return this;
-        }
-
         public void ModifyObject(TEntity entity)
         {
             if (!_session.Contains(entity))
@@ -167,12 +146,47 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated>(Expression<Func<TEntity, TRelated>> relatedObjectSelector)
         {
-            this._set = ((INhFetchRequest<TEntity, TFetch>)this._set).ThenFetch(path);
-            return this;
+            return new NHibernateIncludeRequest<TEntity, TRelated>(this._set.Fetch(relatedObjectSelector));
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated>(Expression<Func<TEntity, IEnumerable<TRelated>>> relatedObjectSelector)
+        {
+            return new NHibernateIncludeRequest<TEntity, TRelated>(this._set.FetchMany(relatedObjectSelector));
+        }
+
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
+           Expression<Func<TEntity, bool>> filter)
+        {
+            this._set = this._set.Where(filter).Fetch(path);
+            return new NHibernateIncludeRequest<TEntity, TRelated>((INhFetchRequest<TEntity, TRelated>)this._set);
+        }
+
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, S>> orderByExpression)
+        {
+            this._set = this._set.Where(filter).Fetch(path);
+            return new NHibernateIncludeRequest<TEntity, TRelated>((INhFetchRequest<TEntity, TRelated>)this._set);
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated>(Expression<Func<TEntity, IEnumerable<TRelated>>> path,
+           Expression<Func<TEntity, bool>> filter)
+        {
+            this._set = this._set.Where(filter).FetchMany(path);
+            return new NHibernateIncludeRequest<TEntity, TRelated>((INhFetchRequest<TEntity, TRelated>)this._set);
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated, S>(Expression<Func<TEntity, IEnumerable<TRelated>>> path,
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, S>> orderByExpression)
+        {
+            this._set = this._set.Where(filter).FetchMany(path);
+            return new NHibernateIncludeRequest<TEntity, TRelated>((INhFetchRequest<TEntity, TRelated>)this._set);
         }
 
         #endregion Methods
     }
+
 }

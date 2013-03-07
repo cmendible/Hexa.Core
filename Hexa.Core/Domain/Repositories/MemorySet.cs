@@ -164,51 +164,32 @@ namespace Hexa.Core.Domain
             return this.GetEnumerator();
         }
 
-        /// <summary>
-        /// Include path in query objects
-        /// </summary>
-        /// <param name="path">Path to include</param>
-        /// <returns>IObjectSet with include path</returns>
-        public MemorySet<TEntity> Include(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("path");
-            }
-
-            this._IncludePaths.Add(path);
-
-            return this;
-        }
-
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEntitySet<TEntity> Include<TRelated>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEntitySet<TEntity> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path,
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, S>> orderByExpression)
-        {
-            throw new NotImplementedException();
-        }
-
         public void ModifyObject(TEntity entity)
         {
             
         }
 
-        public IEntitySet<TEntity> ThenInclude<TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path)
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated>(Expression<Func<TEntity, TRelated>> path, Expression<Func<TEntity, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
+        public IIncludeRequest<TEntity, TRelated> Include<TRelated, S>(Expression<Func<TEntity, TRelated>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated>(Expression<Func<TEntity, IEnumerable<TRelated>>> path, Expression<Func<TEntity, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IIncludeRequest<TEntity, TRelated> IncludeMany<TRelated, S>(Expression<Func<TEntity, IEnumerable<TRelated>>> path, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, S>> orderByExpression)
+        {
+            throw new NotImplementedException();
+        }
+        
         #endregion Methods
+        
     }
 }

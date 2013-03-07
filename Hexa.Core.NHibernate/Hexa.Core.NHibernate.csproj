@@ -209,6 +209,7 @@
     <Compile Include="Mappings\EntityMap.cs" />
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
     <Compile Include="NHConfiguration.cs" />
+    <Compile Include="NHibernateIncludeRequest.cs" />
     <Compile Include="NHibernateUnitOfWorkFactory.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="NHibernateEntitySet.cs" />
