@@ -385,8 +385,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Dev\Hexa.Core\Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj">
-      <Project>{70f67902-1fbf-4e9b-ac25-e37bbead3d0b}</Project>
+    <ProjectReference Include="..\Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj">
+      <Project>{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}</Project>
       <Name>Hexa.Core.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj">

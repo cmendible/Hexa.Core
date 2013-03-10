@@ -44,17 +44,20 @@ namespace Hexa.Core.Domain
 
         #endregion Constructors
 
+        #region Properties
+
+        public DbContext DbContext
+        {
+            get { return this.dbContext; }
+        }
+
+        #endregion Properties
+
         #region Methods
 
         public void Commit()
         {
             this.dbContext.SaveChanges();
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>()
-            where TEntity : class
-        {
-            return new EntityFrameworkEntitySet<TEntity>(this.dbContext);
         }
 
         // Implement IDisposable.

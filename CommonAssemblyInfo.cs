@@ -4,7 +4,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Hexasystems Inc")]
-[assembly: AssemblyCopyright("Copyright � Hexasystems Inc 2010")]
+[assembly: AssemblyCopyright("Copyright © Hexasystems Inc 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.0.0.4")]
+[assembly: AssemblyVersion("4.0.0.0")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
