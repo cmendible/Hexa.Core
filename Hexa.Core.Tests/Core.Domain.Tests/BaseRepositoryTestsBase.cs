@@ -64,7 +64,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             repository.Modify(null);
         }
 
@@ -75,7 +75,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -93,7 +93,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetAll();
@@ -117,7 +117,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             repository.Add(null);
         }
 
@@ -129,7 +129,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Add(item);
         }
@@ -142,7 +142,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Modify(item);
         }
@@ -156,7 +156,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             repository.Remove(null);
         }
 
@@ -168,7 +168,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             TEntity item = this.CreateEntity();
             repository.Remove(item);
         }
@@ -180,7 +180,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             ISpecification<TEntity> specification = new DirectSpecification<TEntity>(this.FilterExpression);
 
             // Act
@@ -198,7 +198,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             repository.GetBySpec(null);
@@ -212,7 +212,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(null, this.OrderByExpression, false);
@@ -226,7 +226,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(null);
@@ -239,7 +239,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
@@ -256,7 +256,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
@@ -274,7 +274,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements<int>(this.FilterExpression, null, false);
@@ -287,7 +287,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -306,7 +306,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -326,7 +326,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 1;
             int pageCount = 0;
 
@@ -343,7 +343,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = -1;
             int pageCount = 1;
 
@@ -360,7 +360,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 1;
             int pageCount = 1;
 
@@ -378,7 +378,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 1;
             int pageCount = 1;
 
@@ -394,7 +394,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression);
@@ -410,7 +410,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 1;
             bool ascending = false;
@@ -431,7 +431,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -447,7 +447,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 0;
 
@@ -463,7 +463,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = -1;
             int pageCount = 1;
 
@@ -478,7 +478,7 @@ namespace Hexa.Core.Domain.Tests
             // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             int pageIndex = 0;
             int pageCount = 10;
 
@@ -495,7 +495,7 @@ namespace Hexa.Core.Domain.Tests
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
             ISpecification<TEntity> spec = new TrueSpecification<TEntity>();
 
             int pageIndex = 0;
@@ -514,7 +514,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory traceManager = this.GetLoggerFactory();
 
             // Act
-            var repository = new BaseRepository<TEntity>(traceManager);
+            var repository = new NHRepository<TEntity>(traceManager);
 
             //Assert
             Assert.IsNotNull(repository);

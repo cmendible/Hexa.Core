@@ -36,14 +36,6 @@ namespace Hexa.Core.Domain
         void Commit();
 
         /// <summary>
-        /// Create a object set for a type TEntity
-        /// </summary>
-        /// <typeparam name="TEntity">Type of elements in object set</typeparam>
-        /// <returns>Object set of type {TEntity}</returns>
-        IEntitySet<TEntity> CreateSet<TEntity>()
-            where TEntity : class;
-
-        /// <summary>
         /// Rollback changes not stored in databse at
         /// this moment. See references of UnitOfWork pattern
         /// </summary>

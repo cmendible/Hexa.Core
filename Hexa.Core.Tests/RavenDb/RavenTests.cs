@@ -98,7 +98,7 @@ namespace Hexa.Core.Tests.Raven
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
 
             // Repositories
-            container.RegisterType<IEntityARepository, EntityARepository>();
+            container.RegisterType<IEntityARepository, EntityARavenRepository>();
 
             // Services
 

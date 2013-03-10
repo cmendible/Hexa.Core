@@ -339,12 +339,13 @@
     <Compile Include="Data\Mappings\NHibernate\EntityBMap .cs" />
     <Compile Include="Data\Repositories\EntityARepository.cs" />
     <Compile Include="Data\Repositories\EntityBRepository.cs" />
-    <Compile Include="EntityFramework\DomainContext.cs" />
     <Compile Include="Domain\EntityA.cs" />
     <Compile Include="Domain\EntityB.cs" />
     <Compile Include="Domain\Repositories\IEntityARepository.cs" />
     <Compile Include="Domain\Repositories\IEntityBRepository.cs" />
     <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
+    <Compile Include="EntityFramework\DomainContext.cs" />
+    <Compile Include="EntityFramework\EntityAEFRepository.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
@@ -360,9 +361,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
-    <Compile Include="RavenDb\RavenTests.cs" />
     <Compile Include="NHibernate\SqlCeTests.cs" />
     <Compile Include="NHibernate\SqlTests.cs" />
+    <Compile Include="RavenDb\EntityARavenRepository.cs" />
+    <Compile Include="RavenDb\RavenTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">
@@ -383,8 +385,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj">
-      <Project>{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}</Project>
+    <ProjectReference Include="..\..\..\..\..\Dev\Hexa.Core\Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj">
+      <Project>{70f67902-1fbf-4e9b-ac25-e37bbead3d0b}</Project>
       <Name>Hexa.Core.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hexa.Core.NHibernate\Hexa.Core.NHibernate.csproj">

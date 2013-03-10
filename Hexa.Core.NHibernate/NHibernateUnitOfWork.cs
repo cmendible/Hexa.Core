@@ -52,15 +52,14 @@ namespace Hexa.Core.Domain
             this._transactionWrapper = _BeginTransaction(RunningSession);
         }
 
-        internal NHibernateUnitOfWork(ISession session)
-        {
-            RunningSession = session;
-            this._transactionWrapper = _BeginTransaction(RunningSession);
-        }
-
         #endregion Constructors
 
         #region Properties
+
+        public ISession Session
+        {
+            get { return RunningSession; }
+        }
 
         public static ISession RunningSession
         {
@@ -132,12 +131,6 @@ namespace Hexa.Core.Domain
             {
                 throw new ConcurrencyException("Object was edited or deleted by another transaction", ex);
             }
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>()
-            where TEntity : class
-        {
-            return new NHibernateEntitySet<TEntity>(RunningSession);
         }
 
         public void Dispose()

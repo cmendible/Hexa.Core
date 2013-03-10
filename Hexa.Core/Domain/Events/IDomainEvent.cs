@@ -19,19 +19,7 @@
 
 namespace Hexa.Core.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-
-    public interface IIncludeRequest<TEntity, TInclude> : IOrderedQueryable<TEntity>
+    public interface IDomainEvent
     {
-        IIncludeRequest<TOriginating, TRelated> Include<TOriginating, TRelated>(Expression<Func<TOriginating, TRelated>> path);
-
-        IIncludeRequest<TOriginating, TRelated> IncludeMany<TOriginating, TRelated>(Expression<Func<TOriginating, IEnumerable<TRelated>>> path);
-
-        IIncludeRequest<TQueried, TRelated> ThenInclude<TQueried, TFetch, TRelated>(Expression<Func<TFetch, TRelated>> path);
-
-        IIncludeRequest<TQueried, TRelated> ThenIncludeMany<TQueried, TFetch, TRelated>(Expression<Func<TFetch, IEnumerable<TRelated>>> path);
     }
 }

@@ -1,14 +1,22 @@
+#region Header
+
 // ===================================================================================
-// Microsoft Developer & Platform Evangelism
+// Copyright 2010 HexaSystems Corporation
 // ===================================================================================
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
 // ===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license,
-// http://microsoftnlayerapp.codeplex.com/license
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
 // ===================================================================================
+
+#endregion Header
+
 namespace Hexa.Core.Domain
 {
     using System;
@@ -21,6 +29,9 @@ namespace Hexa.Core.Domain
 
     using Specification;
 
+    using NHibernate;
+    using NHibernate.Linq;
+
     /// <summary>
     /// Default base class for repostories. This generic repository
     /// is a default implementation of <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
@@ -32,12 +43,12 @@ namespace Hexa.Core.Domain
     /// in that case, just simply do not use this base class on your Repository.
     /// </summary>
     /// <typeparam name="TEntity">Type of elements in repostory</typeparam>
-    public class BaseRepository<TEntity> : IRepository<TEntity>
+    public class NHRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
         #region Fields
 
-        private readonly IUnitOfWork _context;
+        private readonly NHibernateUnitOfWork unitOfWork;
         private readonly ILogger _logger;
 
         #endregion Fields
@@ -49,17 +60,15 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <param name="traceManager">Trace Manager dependency</param>
         /// <param name="context">A context for this repository</param>
-        public BaseRepository(ILoggerFactory loggerFactory)
+        public NHRepository(Hexa.Core.Logging.ILoggerFactory loggerFactory)
         {
             Guard.IsNotNull(loggerFactory, "loggerFactory");
 
-            IUnitOfWork context = UnitOfWorkScope.Current;
-
             // check preconditions
-            Guard.IsNotNull(context, "No context in scope.");
+            Guard.IsNotNull(UnitOfWorkScope.Current, "No unitOfWork in scope.");
 
             // set internal values
-            this._context = context;
+            this.unitOfWork = (NHibernateUnitOfWork)UnitOfWorkScope.Current;
             this._logger = loggerFactory.Create(GetType());
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
@@ -90,7 +99,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // add object to IObjectSet for this type
-            (this._context.CreateSet<TEntity>()).AddObject(item);
+            this.unitOfWork.Session.Save(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
         }
@@ -103,7 +112,7 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(item, "item");
 
-            this._context.CreateSet<TEntity>().Attach(item);
+            this.unitOfWork.Session.Lock(item, LockMode.None);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
         }
@@ -117,7 +126,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting all {0}", typeof(TEntity).Name));
 
             // Create IObjectSet and perform query
-            return (this._context.CreateSet<TEntity>()).AsEnumerable();
+            return (this.unitOfWork.Session.Query<TEntity>()).AsEnumerable();
         }
 
         /// <summary>
@@ -131,7 +140,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
-            return (this._context.CreateSet<TEntity>()
+            return (this.unitOfWork.Session.Query<TEntity>()
                     .Where(specification.SatisfiedBy())
                     .AsEnumerable());
         }
@@ -149,7 +158,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
-            return this._context.CreateSet<TEntity>()
+            return this.unitOfWork.Session.Query<TEntity>()
                    .Where(filter)
                    .ToList();
         }
@@ -172,7 +181,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             return (ascending)
                    ? objectSet
@@ -209,7 +218,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             int total = objectSet.Count();
 
@@ -253,7 +262,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -288,7 +297,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -322,7 +331,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -351,7 +360,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            IEntitySet<TEntity> objectSet = this._context.CreateSet<TEntity>();
+            var objectSet = this.unitOfWork.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -370,7 +379,10 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // apply changes for item object
-            this._context.CreateSet<TEntity>().ModifyObject(item);
+            if (!this.unitOfWork.Session.Contains(item))
+            {
+                this.unitOfWork.Session.Update(item);
+            }
 
             this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
         }
@@ -384,14 +396,12 @@ namespace Hexa.Core.Domain
             // check item
             Guard.IsNotNull(item, "item");
 
-            IEntitySet<TEntity> objectSet = (this._context.CreateSet<TEntity>());
-
             // Attach object to context and delete this
             // this is valid only if T is a type in model
-            objectSet.Attach(item);
+            this.unitOfWork.Session.Lock(item, LockMode.None);
 
             // delete object to IObjectSet for this type
-            objectSet.DeleteObject(item);
+            this.unitOfWork.Session.Delete(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
         }

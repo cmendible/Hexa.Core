@@ -295,14 +295,15 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
+    <Compile Include="Domain\Events\DomainEvents.cs" />
+    <Compile Include="Domain\Events\IDomainEventHandler.cs" />
+    <Compile Include="Domain\Events\IDomainEvent.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableEntity.cs" />
     <Compile Include="Domain\Model\IAuditableEntity.cs" />
     <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
-    <Compile Include="Domain\Repositories\IIncludeRequest.cs" />
-    <Compile Include="Domain\Repositories\MemorySet.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
@@ -311,8 +312,7 @@
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="Exceptions\InternalException.cs" />
-    <Compile Include="Domain\Repositories\BaseRepository.cs" />
-    <Compile Include="Domain\Repositories\Inflector.cs" />
+    <Compile Include="Inflector\Inflector.cs" />
     <Compile Include="Domain\Repositories\IRepository.cs" />
     <Compile Include="Domain\UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Domain\UnitOfWork\IUnitOfWorkFactory.cs" />
@@ -438,7 +438,6 @@
     <Compile Include="Xml\Transform\Transformer.cs" />
     <Compile Include="Xml\Validation\Resolver.cs" />
     <Compile Include="Xml\Validation\Validator.cs" />
-    <Compile Include="Domain\Repositories\IEntitySet.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -227,9 +227,9 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="RavenRepository.cs" />
     <Compile Include="RavenUnitOfWorkFactory.cs" />
     <Compile Include="RavenUnitOfWork.cs" />
-    <Compile Include="RavenEntitySet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -44,17 +44,20 @@ namespace Hexa.Core.Domain
 
         #endregion Constructors
 
+        #region Properties
+
+        public IDocumentSession Session
+        {
+            get { return this.session; }
+        }
+
+        #endregion
+
         #region Methods
 
         public void Commit()
         {
             this.session.SaveChanges();
-        }
-
-        public IEntitySet<TEntity> CreateSet<TEntity>()
-            where TEntity : class
-        {
-            return new RavenEntitySet<TEntity>(this.session);
         }
 
         // Implement IDisposable.
