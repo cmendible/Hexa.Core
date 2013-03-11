@@ -55,9 +55,39 @@ namespace Hexa.Core.Domain
 
         #region Methods
 
+        /// <summary>
+        /// Adds the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Add<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            Guard.IsNotNull(entity, "entity");
+            this.Session.Store(entity);
+        }
+
+        public void Attach<TEntity>(TEntity entity) where TEntity : class
+        {
+        }
+
+        /// <summary>
+        /// Commit all changes made in  a container.
+        /// </summary>
         public void Commit()
         {
             this.session.SaveChanges();
+        }
+
+        /// <summary>
+        /// Deletes the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        {
+            Guard.IsNotNull(entity, "entity");
+            this.Session.Delete(entity);
         }
 
         // Implement IDisposable.
@@ -74,6 +104,31 @@ namespace Hexa.Core.Domain
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Modifies the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Modify<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+        }
+
+        /// <summary>
+        /// Queries this instance.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns></returns>
+        public System.Linq.IQueryable<TEntity> Query<TEntity>()
+            where TEntity : class
+        {
+            return this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+        }
+
+        /// <summary>
+        /// Rollback changes not stored in databse at
+        /// this moment. See references of UnitOfWork pattern
+        /// </summary>
         public void RollbackChanges()
         {
         }
@@ -105,5 +160,6 @@ namespace Hexa.Core.Domain
         }
 
         #endregion Methods
+
     }
 }

@@ -134,6 +134,11 @@ namespace Hexa.Core.Domain
         /// <param name="item">Item to delete</param>
         void Remove(TEntity item);
 
+        IUnitOfWork UnitOfWork 
+        { 
+            get;
+        }
+
         #endregion Methods
     }
 }

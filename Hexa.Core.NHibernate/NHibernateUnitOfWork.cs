@@ -27,6 +27,7 @@ namespace Hexa.Core.Domain
     using System.Web;
 
     using NHibernate;
+    using NHibernate.Linq;
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
@@ -49,7 +50,7 @@ namespace Hexa.Core.Domain
                 RunningSession = sessionFactory.OpenSession();
             }
 
-            this._transactionWrapper = _BeginTransaction(RunningSession);
+            this._transactionWrapper = BeginTransaction(RunningSession);
         }
 
         #endregion Constructors
@@ -121,6 +122,32 @@ namespace Hexa.Core.Domain
 
         #region Methods
 
+        /// <summary>
+        /// Adds the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Add<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            Guard.IsNotNull(entity, "entity");
+            this.Session.Save(entity);
+        }
+
+        /// <summary>
+        /// Attaches the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public void Attach<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            Guard.IsNotNull(entity, "entity");
+            this.Session.Lock(entity, LockMode.None);
+        }
+
+        /// <summary>
+        /// Commit all changes made in  a container.
+        /// </summary>
         public void Commit()
         {
             try
@@ -133,17 +160,65 @@ namespace Hexa.Core.Domain
             }
         }
 
+        /// <summary>
+        /// Deletes the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        {
+            this.Session.Lock(entity, LockMode.None);
+            this.Session.Delete(entity);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Modifies the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        public void Modify<TEntity>(TEntity entity)
+            where TEntity : class
+        {
+            Guard.IsNotNull(entity, "entity");
+            if (!this.Session.Contains(entity))
+            {
+                this.Session.Update(entity);
+            }
+        }
+
+        /// <summary>
+        /// Returns an IQueryable<TEntity>
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <returns></returns>
+        public System.Linq.IQueryable<TEntity> Query<TEntity>()
+            where TEntity : class
+        {
+            return this.Session.Query<TEntity>();
+        }
+
+        /// <summary>
+        /// Rollback changes not stored in databse at
+        /// this moment. See references of UnitOfWork pattern
+        /// </summary>
         public void RollbackChanges()
         {
             this._transactionWrapper.Rollback();
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
@@ -173,7 +248,12 @@ namespace Hexa.Core.Domain
             }
         }
 
-        private static ITransactionWrapper _BeginTransaction(ISession session)
+        /// <summary>
+        /// Begins the transaction.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        /// <returns></returns>
+        private static ITransactionWrapper BeginTransaction(ISession session)
         {
             if (session.Transaction.IsActive)
             {
@@ -216,5 +296,6 @@ namespace Hexa.Core.Domain
         }
 
         #endregion Nested Types
+
     }
 }
