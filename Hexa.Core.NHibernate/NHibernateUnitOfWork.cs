@@ -30,7 +30,7 @@ namespace Hexa.Core.Domain
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class NHibernateUnitOfWork : IUnitOfWork
+    public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
         #region Fields
 

@@ -26,7 +26,7 @@ namespace Hexa.Core.Domain
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class RavenUnitOfWork : IUnitOfWork
+    public class RavenUnitOfWork : IRavenUnitOfWork
     {
         #region Fields
 

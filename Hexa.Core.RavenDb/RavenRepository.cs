@@ -28,6 +28,7 @@ namespace Hexa.Core.Domain
     using Logging;
 
     using Specification;
+    using Raven.Client;
 
     /// <summary>
     /// Default base class for repostories. This generic repository
@@ -45,7 +46,7 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private readonly RavenUnitOfWork unitOfWork;
+        private readonly IRavenUnitOfWork unitOfWork;
         private readonly ILogger _logger;
 
         #endregion Fields
@@ -65,7 +66,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(UnitOfWorkScope.Current, "No unitOfWork in scope.");
 
             // set internal values
-            this.unitOfWork = (RavenUnitOfWork)UnitOfWorkScope.Current;
+            this.unitOfWork = (IRavenUnitOfWork)UnitOfWorkScope.Current;
             this._logger = loggerFactory.Create(GetType());
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
@@ -79,6 +80,14 @@ namespace Hexa.Core.Domain
             get
             {
                 return this._logger;
+            }
+        }
+
+        protected IDocumentSession Session
+        {
+            get
+            {
+                return this.unitOfWork.Session;
             }
         }
 
@@ -96,7 +105,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // add object to IObjectSet for this type
-            this.unitOfWork.Session.Store(item);
+            this.Session.Store(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
         }
@@ -119,7 +128,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting all {0}", typeof(TEntity).Name));
 
             // Create IObjectSet and perform query
-            return (this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())).AsEnumerable();
+            return (this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())).AsEnumerable();
         }
 
         /// <summary>
@@ -133,7 +142,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
-            return (this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())
+            return (this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())
                     .Where(specification.SatisfiedBy())
                     .AsEnumerable());
         }
@@ -151,7 +160,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
-            return this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())
+            return this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow())
                    .Where(filter)
                    .ToList();
         }
@@ -174,7 +183,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             return (ascending)
                    ? objectSet
@@ -211,7 +220,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             int total = objectSet.Count();
 
@@ -255,7 +264,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -290,7 +299,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -324,7 +333,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -353,7 +362,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+            var objectSet = this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -381,7 +390,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // delete object to IObjectSet for this type
-            this.unitOfWork.Session.Delete(item);
+            this.Session.Delete(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
         }

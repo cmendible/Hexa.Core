@@ -26,7 +26,7 @@ namespace Hexa.Core.Domain
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class EntityFrameworkUnitOfWork : IUnitOfWork
+    public class EntityFrameworkUnitOfWork : IEntityFrameworkUnitOfWork
     {
         #region Fields
 

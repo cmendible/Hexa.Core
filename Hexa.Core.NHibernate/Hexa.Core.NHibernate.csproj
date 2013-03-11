@@ -194,6 +194,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="INHibernateUnitOfWork.cs" />
     <Compile Include="NHRepository.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />

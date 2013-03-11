@@ -48,7 +48,7 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private readonly NHibernateUnitOfWork unitOfWork;
+        private readonly INHibernateUnitOfWork unitOfWork;
         private readonly ILogger _logger;
 
         #endregion Fields
@@ -68,7 +68,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(UnitOfWorkScope.Current, "No unitOfWork in scope.");
 
             // set internal values
-            this.unitOfWork = (NHibernateUnitOfWork)UnitOfWorkScope.Current;
+            this.unitOfWork = (INHibernateUnitOfWork)UnitOfWorkScope.Current;
             this._logger = loggerFactory.Create(GetType());
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
@@ -82,6 +82,14 @@ namespace Hexa.Core.Domain
             get
             {
                 return this._logger;
+            }
+        }
+
+        protected ISession Session
+        {
+            get
+            {
+                return this.unitOfWork.Session;
             }
         }
 
@@ -99,7 +107,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // add object to IObjectSet for this type
-            this.unitOfWork.Session.Save(item);
+            this.Session.Save(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
         }
@@ -112,7 +120,7 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(item, "item");
 
-            this.unitOfWork.Session.Lock(item, LockMode.None);
+            this.Session.Lock(item, LockMode.None);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
         }
@@ -126,7 +134,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting all {0}", typeof(TEntity).Name));
 
             // Create IObjectSet and perform query
-            return (this.unitOfWork.Session.Query<TEntity>()).AsEnumerable();
+            return (this.Session.Query<TEntity>()).AsEnumerable();
         }
 
         /// <summary>
@@ -140,7 +148,7 @@ namespace Hexa.Core.Domain
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
-            return (this.unitOfWork.Session.Query<TEntity>()
+            return (this.Session.Query<TEntity>()
                     .Where(specification.SatisfiedBy())
                     .AsEnumerable());
         }
@@ -158,7 +166,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
-            return this.unitOfWork.Session.Query<TEntity>()
+            return this.Session.Query<TEntity>()
                    .Where(filter)
                    .ToList();
         }
@@ -181,7 +189,7 @@ namespace Hexa.Core.Domain
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             return (ascending)
                    ? objectSet
@@ -218,7 +226,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             int total = objectSet.Count();
 
@@ -262,7 +270,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -297,7 +305,7 @@ namespace Hexa.Core.Domain
 
             // Create associated IObjectSet and perform query
 
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -331,7 +339,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -360,7 +368,7 @@ namespace Hexa.Core.Domain
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            var objectSet = this.unitOfWork.Session.Query<TEntity>();
+            var objectSet = this.Session.Query<TEntity>();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -379,9 +387,9 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(item, "item");
 
             // apply changes for item object
-            if (!this.unitOfWork.Session.Contains(item))
+            if (!this.Session.Contains(item))
             {
-                this.unitOfWork.Session.Update(item);
+                this.Session.Update(item);
             }
 
             this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
@@ -398,10 +406,10 @@ namespace Hexa.Core.Domain
 
             // Attach object to context and delete this
             // this is valid only if T is a type in model
-            this.unitOfWork.Session.Lock(item, LockMode.None);
+            this.Session.Lock(item, LockMode.None);
 
             // delete object to IObjectSet for this type
-            this.unitOfWork.Session.Delete(item);
+            this.Session.Delete(item);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
         }
