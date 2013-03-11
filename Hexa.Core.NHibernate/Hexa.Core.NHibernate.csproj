@@ -194,8 +194,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DatabaseQueryProvider\NHDatabaseQueryProvider.cs" />
+    <Compile Include="EagerFetch\NHFetchProvider.cs" />
+    <Compile Include="EagerFetch\NHFetchRequest.cs" />
     <Compile Include="INHibernateUnitOfWork.cs" />
-    <Compile Include="NHRepository.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />
     <Compile Include="Conventions\ForeignKeyConstraintNames.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHibernateUnitOfWorkFactory.cs" />
     <Compile Include="NHibernateUnitOfWork.cs" />
+    <Compile Include="NHRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlExceptionHandlers\SqlExceptionHandler.cs" />
     <Compile Include="Transactions\ITransactionWrapper.cs" />

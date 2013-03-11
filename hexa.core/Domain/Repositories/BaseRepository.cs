@@ -379,6 +379,11 @@ namespace Hexa.Core.Domain
             this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
         }
 
+        public IQueryable<TEntity> Query()
+        { 
+             return this.unitOfWork.Query<TEntity>();
+        }
+
         /// <summary>
         /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
         /// </summary>
@@ -390,14 +395,6 @@ namespace Hexa.Core.Domain
             this.unitOfWork.Delete<TEntity>(entity);
 
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
-        }
-
-        public IUnitOfWork UnitOfWork 
-        { 
-            get
-            {
-                return this.unitOfWork;
-            }
         }
 
         #endregion Methods

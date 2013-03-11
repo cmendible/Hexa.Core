@@ -16,6 +16,7 @@ namespace Hexa.Core.Domain
     using System.Linq.Expressions;
 
     using Specification;
+    using System.Linq;
 
     /// <summary>
     /// Base interface for implement a "Repository Pattern", for
@@ -128,16 +129,13 @@ namespace Hexa.Core.Domain
         /// <param name="item">Item with changes</param>
         void Modify(TEntity item);
 
+        IQueryable<TEntity> Query();
+
         /// <summary>
         /// Delete item
         /// </summary>
         /// <param name="item">Item to delete</param>
         void Remove(TEntity item);
-
-        IUnitOfWork UnitOfWork 
-        { 
-            get;
-        }
 
         #endregion Methods
     }

@@ -97,7 +97,7 @@ namespace Hexa.Core.Tests.EntityFramework
             container.RegisterInstance<IDatabaseManager>(ctxFactory);
 
             // Repositories
-            container.RegisterType<IEntityARepository, EntityAEFRepository>();
+            container.RegisterType<IEntityARepository, EntityARepository>();
 
             // Services
 

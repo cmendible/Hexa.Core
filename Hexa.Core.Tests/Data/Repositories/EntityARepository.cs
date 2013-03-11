@@ -29,7 +29,7 @@ namespace Hexa.Core.Tests.Data
 
     [Export(typeof(IEntityARepository))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class EntityARepository : NHRepository<EntityA>, IEntityARepository
+    public class EntityARepository : BaseRepository<EntityA>, IEntityARepository
     {
         #region Constructors
 

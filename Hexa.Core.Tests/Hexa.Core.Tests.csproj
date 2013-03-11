@@ -345,7 +345,6 @@
     <Compile Include="Domain\Repositories\IEntityBRepository.cs" />
     <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
     <Compile Include="EntityFramework\DomainContext.cs" />
-    <Compile Include="EntityFramework\EntityAEFRepository.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
@@ -363,7 +362,6 @@
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
     <Compile Include="NHibernate\SqlCeTests.cs" />
     <Compile Include="NHibernate\SqlTests.cs" />
-    <Compile Include="RavenDb\EntityARavenRepository.cs" />
     <Compile Include="RavenDb\RavenTests.cs" />
   </ItemGroup>
   <ItemGroup>

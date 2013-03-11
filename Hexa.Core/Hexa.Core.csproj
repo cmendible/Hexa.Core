@@ -305,6 +305,11 @@
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
     <Compile Include="Domain\Repositories\BaseRepository.cs" />
+    <Compile Include="Domain\Repositories\EagerFetch\EagerFetch.cs" />
+    <Compile Include="Domain\Repositories\EagerFetch\IFetchProvider.cs" />
+    <Compile Include="Domain\Repositories\EagerFetch\IFetchRequest.cs" />
+    <Compile Include="Domain\Repositories\DatabaseQueryProvider\DatabaseQuery.cs" />
+    <Compile Include="Domain\Repositories\DatabaseQueryProvider\IDatabaseQueryProvider.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
