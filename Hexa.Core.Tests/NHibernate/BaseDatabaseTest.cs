@@ -38,6 +38,7 @@ namespace Hexa.Core.Tests.Sql
     using Security;
 
     using Validation;
+    using System.ComponentModel.Composition.Hosting;
 
     public abstract class BaseDatabaseTest
     {
@@ -84,7 +85,7 @@ namespace Hexa.Core.Tests.Sql
             //AggregateCatalog catalog = new AggregateCatalog();
             //AssemblyCatalog thisAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
             //catalog.Catalogs.Add(thisAssembly);
-            //catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Debug"));
+            //catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Release"));
 
             //CompositionContainer compositionContainer = new CompositionContainer(catalog);
 

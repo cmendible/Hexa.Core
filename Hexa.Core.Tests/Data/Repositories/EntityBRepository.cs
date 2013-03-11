@@ -27,7 +27,7 @@ namespace Hexa.Core.Tests.Data
 
     using Logging;
 
-    [Export(typeof(IEntityARepository))]
+    [Export(typeof(IEntityBRepository))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EntityBRepository : NHRepository<EntityB>, IEntityBRepository
     {
