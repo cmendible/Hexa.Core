@@ -14,22 +14,22 @@ namespace Hexa.Core.Domain
             return new RavenFetchRequest<TOriginating, TRelated>(query);
         }
 
-        public IFetchRequest<TOriginating, TRelated> FetchMany<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, IEnumerable<TRelated>>> relatedObjectSelector)
-            where TOriginating : class
-        {
-            return new RavenFetchRequest<TOriginating, TRelated>(query);
-        }
+        //public IFetchRequest<TOriginating, TRelated> FetchMany<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, IEnumerable<TRelated>>> relatedObjectSelector)
+        //    where TOriginating : class
+        //{
+        //    return new RavenFetchRequest<TOriginating, TRelated>(query);
+        //}
 
-        public IFetchRequest<TQueried, TRelated> ThenFetch<TQueried, TFetch, TRelated>(IFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, TRelated>> relatedObjectSelector)
-            where TQueried : class
-        {
-            return new RavenFetchRequest<TQueried, TRelated>(query);
-        }
+        //public IFetchRequest<TQueried, TRelated> ThenFetch<TQueried, TFetch, TRelated>(IFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, TRelated>> relatedObjectSelector)
+        //    where TQueried : class
+        //{
+        //    return new RavenFetchRequest<TQueried, TRelated>(query);
+        //}
 
-        public IFetchRequest<TQueried, TRelated> ThenFetchMany<TQueried, TFetch, TRelated>(IFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
-            where TQueried : class
-        {
-            return new RavenFetchRequest<TQueried, TRelated>(query);
-        }
+        //public IFetchRequest<TQueried, TRelated> ThenFetchMany<TQueried, TFetch, TRelated>(IFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
+        //    where TQueried : class
+        //{
+        //    return new RavenFetchRequest<TQueried, TRelated>(query);
+        //}
     }
 }
