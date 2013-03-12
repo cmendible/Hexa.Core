@@ -72,7 +72,6 @@
     <Compile Include="AuditableContext.cs" />
     <Compile Include="EagerFetch\EFFetchRequest.cs" />
     <Compile Include="EagerFetch\EFFetchProvider.cs" />
-    <Compile Include="EFRepository.cs" />
     <Compile Include="IEntityFrameworkUnitOfWork.cs" />
     <Compile Include="Mappings\AuditableEntityConfiguration.cs" />
     <Compile Include="Mappings\EntityConfiguration.cs" />
