@@ -310,6 +310,7 @@
     <Compile Include="Domain\Repositories\EagerFetch\IFetchRequest.cs" />
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\DatabaseQuery.cs" />
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\IDatabaseQueryProvider.cs" />
+    <Compile Include="Domain\Repositories\EagerFetch\BaseFetchRequest.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />

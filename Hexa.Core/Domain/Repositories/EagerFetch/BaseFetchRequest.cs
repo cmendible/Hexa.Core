@@ -20,18 +20,53 @@
 namespace Hexa.Core.Domain
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
-    public static class EagerFetch
+    public class BaseFetchRequest<TQueried, TFetch> : IFetchRequest<TQueried, TFetch>
+        where TQueried : class
     {
-        public static Func<IFetchProvider> FetchingProvider;
+        private IQueryable<TQueried> query;
 
-        public static IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(
-            this IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
-            where TOriginating : class
+        public IEnumerator<TQueried> GetEnumerator()
         {
-            return FetchingProvider().Fetch(query, relatedObjectSelector);
+            return this.query.GetEnumerator();
         }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.query.GetEnumerator();
+        }
+
+        public Type ElementType
+        {
+            get
+            {
+                return this.query.ElementType;
+            }
+        }
+
+        public Expression Expression
+        {
+            get
+            {
+                return this.query.Expression;
+            }
+        }
+
+        public IQueryProvider Provider
+        {
+            get
+            {
+                return this.query.Provider;
+            }
+        }
+
+        public BaseFetchRequest(IQueryable<TQueried> query)
+        {
+            this.query = query;
+        }
+
     }
 }

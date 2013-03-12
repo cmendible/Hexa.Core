@@ -196,7 +196,6 @@
     </Compile>
     <Compile Include="DatabaseQueryProvider\NHDatabaseQueryProvider.cs" />
     <Compile Include="EagerFetch\NHFetchProvider.cs" />
-    <Compile Include="EagerFetch\NHFetchRequest.cs" />
     <Compile Include="INHibernateUnitOfWork.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />

@@ -228,7 +228,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EagerFetch\RavenFetchProvider.cs" />
-    <Compile Include="EagerFetch\RavenFetchRequest.cs" />
     <Compile Include="IRavenUnitOfWork.cs" />
     <Compile Include="RavenUnitOfWorkFactory.cs" />
     <Compile Include="RavenUnitOfWork.cs" />
