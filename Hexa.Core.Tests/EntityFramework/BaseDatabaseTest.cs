@@ -46,7 +46,6 @@ namespace Hexa.Core.Tests.EntityFramework
         #region Methods
 
         [Test]
-        [Ignore("Concurrency Token is not set")]
         public void Add_EntityA()
         {
             EntityA entityA = this._Add_EntityA();
@@ -171,7 +170,6 @@ namespace Hexa.Core.Tests.EntityFramework
         }
 
         [Test]
-        [Ignore("Further investigation needed...")]
         public void Update_EntityA_From_Another_Session()
         {
             EntityA entityA = this._Add_EntityA();

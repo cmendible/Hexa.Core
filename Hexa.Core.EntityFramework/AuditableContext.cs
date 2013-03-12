@@ -71,6 +71,11 @@ namespace Hexa.Core.Domain
 
             foreach (DbEntityEntry<IAuditableEntity> entry in ChangeTracker.Entries<IAuditableEntity>())
             {
+                if (entry.State == System.Data.EntityState.Added || entry.State == System.Data.EntityState.Modified)
+                {
+                    entry.Entity.GetType().GetProperty("Version").SetValue(entry.Entity, DateTime.UtcNow.Ticks.ToString(), null);
+                }
+
                 if (entry.State == System.Data.EntityState.Added)
                 {
                     entry.Entity.CreatedBy = userUniqueId;

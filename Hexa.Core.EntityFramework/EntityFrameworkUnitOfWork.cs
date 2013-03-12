@@ -91,6 +91,9 @@ namespace Hexa.Core.Domain
 
         public void Modify<TEntity>(TEntity entity) where TEntity : class
         {
+            var entry = this.dbContext.Entry(entity);
+
+            entry.State = System.Data.EntityState.Modified;
         }
 
         public System.Linq.IQueryable<TEntity> Query<TEntity>() where TEntity : class
