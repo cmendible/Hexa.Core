@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,8 +11,8 @@ namespace Hexa.Core.Domain
     {
         public IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters)
         {
-            ISession session = ((INHibernateUnitOfWork)UnitOfWorkScope.Current).Session;
-            IQuery query = session.GetNamedQuery(queryName);
+            INHibernateUnitOfWork unitOfWork = IoCContainer.GetInstance<IUnitOfWork>() as INHibernateUnitOfWork;
+            IQuery query = unitOfWork.Session.GetNamedQuery(queryName);
             foreach (var parameter in parameters)
             {
                 query.SetParameter(parameter.Key, parameter.Value);

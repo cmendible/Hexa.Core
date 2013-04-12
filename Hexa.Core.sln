@@ -45,8 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{3A9610A4
 		msbuild.targets\Settings.StyleCop = msbuild.targets\Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Windows", "Hexa.Core.Windows\Hexa.Core.Windows.csproj", "{12402808-6B76-4482-8624-7DF28B388EE7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.Web.Mvc", "Hexa.Core.Web.Mvc\Hexa.Core.Web.Mvc.csproj", "{16ECAB8D-D55F-48C1-91DC-6E817076F694}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexa.Core.EntityFramework", "Hexa.Core.EntityFramework\Hexa.Core.EntityFramework.csproj", "{70F67902-1FBF-4E9B-AC25-E37BBEAD3D0B}"
@@ -163,22 +161,6 @@ Global
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x64.Build.0 = Release|x64
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.ActiveCfg = Release|x86
 		{AFE8EC1A-4EEF-40E1-B89C-4F07CAFE666F}.Release|x86.Build.0 = Release|x86
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug (Mono)|Any CPU.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug (Mono)|Any CPU.Build.0 = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug (Mono)|x64.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug (Mono)|x86.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release (Mono)|Any CPU.ActiveCfg = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release (Mono)|Any CPU.Build.0 = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release (Mono)|x64.ActiveCfg = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release (Mono)|x86.ActiveCfg = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x64.ActiveCfg = Release|Any CPU
-		{12402808-6B76-4482-8624-7DF28B388EE7}.Release|x86.ActiveCfg = Release|Any CPU
 		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|Any CPU.ActiveCfg = Debug|Any CPU
 		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|Any CPU.Build.0 = Debug|Any CPU
 		{16ECAB8D-D55F-48C1-91DC-6E817076F694}.Debug (Mono)|x64.ActiveCfg = Debug|Any CPU
@@ -216,9 +198,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Hexa.Core
-		IsWCSFSolutionWAP = True
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Hexa.Core
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj

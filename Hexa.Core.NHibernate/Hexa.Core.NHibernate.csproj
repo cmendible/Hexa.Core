@@ -176,6 +176,9 @@
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
@@ -215,9 +218,6 @@
     <Compile Include="NHibernateUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlExceptionHandlers\SqlExceptionHandler.cs" />
-    <Compile Include="Transactions\ITransactionWrapper.cs" />
-    <Compile Include="Transactions\NestedTransactionWrapper.cs" />
-    <Compile Include="Transactions\TransactionWrapper.cs" />
     <Compile Include="UserTypes\StringToInt.cs" />
     <Compile Include="UserTypes\GenericWellKnownInstanceType.cs" />
     <Compile Include="UserTypes\StringToGuid.cs" />

@@ -101,7 +101,7 @@ namespace Hexa.Core.Domain
             return this.dbContext.Set<TEntity>();
         }
 
-        public void RollbackChanges()
+        public void Start()
         {
         }
 
@@ -117,7 +117,6 @@ namespace Hexa.Core.Domain
             // Check to see if Dispose has already been called.
             if (!this.disposed)
             {
-                UnitOfWorkScope.DisposeCurrent();
                 if (this.dbContext != null)
                 {
                     this.dbContext.Dispose();

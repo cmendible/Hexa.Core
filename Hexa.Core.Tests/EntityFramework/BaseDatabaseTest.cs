@@ -20,7 +20,6 @@
 namespace Hexa.Core.Tests.EntityFramework
 {
     using System;
-    using System.Configuration;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -39,11 +38,40 @@ namespace Hexa.Core.Tests.EntityFramework
     using Security;
 
     using Validation;
+    using System.ComponentModel.Composition.Hosting;
+    using Microsoft.Practices.Unity;
+    using System.Configuration;
+    using Hexa.Core.Tests.Sql;
+    using System.Data.Entity;
 
     [TestFixture]
-    public class BaseDatabaseTest
+    public class SqlTest
     {
+        UnityContainer unityContainer;
+        UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+
         #region Methods
+
+        [NUnit.Framework.SetUp]
+        public void Setup()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Start();
+        }
+
+        public void Commit()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Commit();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Dispose();
+            unitOfWorkPerTestLifeTimeManager.RemoveValue();
+        }
 
         [Test]
         public void Add_EntityA()
@@ -60,45 +88,33 @@ namespace Hexa.Core.Tests.EntityFramework
         public void Delete_EntityA()
         {
             EntityA entityA = this._Add_EntityA();
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                IEntityARepository repo = ServiceLocator.GetInstance<IEntityARepository>();
-                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
 
-                EntityA entityA2Delete = results.First();
+            IEntityARepository repo = unityContainer.Resolve<IEntityARepository>();
+            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            Assert.IsTrue(results.Count() > 0);
 
-                repo.Remove(entityA2Delete);
+            EntityA entityA2Delete = results.First();
 
-                ctx.Commit();
-            }
+            repo.Remove(entityA2Delete);
 
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                IEntityARepository repo = ServiceLocator.GetInstance<IEntityARepository>();
-                Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Count());
-            }
+            Commit();
         }
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            ApplicationContext.Start(this.ConnectionString());
+            unityContainer = new UnityContainer();
+            IoCContainer.Initialize(
+                        (x, y) => unityContainer.RegisterType(x, y),
+                        (x, y) => unityContainer.RegisterInstance(x, y),
+                        (x) => { return unityContainer.Resolve(x); },
+                        (x) => { return unityContainer.ResolveAll(x); }
+                    );
 
-            // Validator and TraceManager
-            IoCContainer container = ApplicationContext.Container;
-            container.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
+            unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
 
             // Context Factory
             EntityFrameworkOfWorkFactory<DomainContext> ctxFactory = new EntityFrameworkOfWorkFactory<DomainContext>(this.ConnectionString());
-
-            container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
-            container.RegisterInstance<IDatabaseManager>(ctxFactory);
-
-            // Repositories
-            container.RegisterType<IEntityARepository, EntityARepository>();
-
-            // Services
 
             if (!ctxFactory.DatabaseExists())
             {
@@ -107,7 +123,14 @@ namespace Hexa.Core.Tests.EntityFramework
 
             ctxFactory.ValidateDatabaseSchema();
 
-            ctxFactory.RegisterSessionFactory(container);
+            unityContainer.RegisterType<DbContext, DomainContext>(new InjectionConstructor(this.ConnectionString()));
+            unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
+
+            unityContainer.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>(unitOfWorkPerTestLifeTimeManager);
+
+            // Repositories
+            unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
+            unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
 
             ApplicationContext.User =
                 new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
@@ -118,12 +141,11 @@ namespace Hexa.Core.Tests.EntityFramework
         {
             try
             {
-                var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+                var dbManager = unityContainer.Resolve<IDatabaseManager>();
                 dbManager.DeleteDatabase();
             }
             finally
             {
-                ApplicationContext.Stop();
             }
         }
 
@@ -132,12 +154,9 @@ namespace Hexa.Core.Tests.EntityFramework
         {
             EntityA entityA = this._Add_EntityA();
 
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
-            }
+            var repo = unityContainer.Resolve<IEntityARepository>();
+            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            Assert.IsTrue(results.Count() > 0);
         }
 
         [Test]
@@ -147,56 +166,30 @@ namespace Hexa.Core.Tests.EntityFramework
 
             Thread.Sleep(1000);
 
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
-                Assert.IsTrue(results.Count() > 0);
+            var repo = unityContainer.Resolve<IEntityARepository>();
+            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            Assert.IsTrue(results.Count() > 0);
 
-                EntityA entityA2Update = results.First();
-                entityA2Update.Name = "Maria";
-                repo.Modify(entityA2Update);
+            EntityA entityA2Update = results.First();
+            entityA2Update.Name = "Maria";
+            repo.Modify(entityA2Update);
 
-                ctx.Commit();
-            }
+            Commit();
 
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
-                Assert.AreEqual("Maria", entityA.Name);
-                Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
-            }
+            repo = unityContainer.Resolve<IEntityARepository>();
+            entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
+            Assert.AreEqual("Maria", entityA.Name);
+            Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
         }
 
-        [Test]
-        public void Update_EntityA_From_Another_Session()
-        {
-            EntityA entityA = this._Add_EntityA();
-
-            Thread.Sleep(1000);
-
-            entityA.Name = "Maria";
-
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                repo.Modify(entityA);
-                ctx.Commit();
-            }
-
-            using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
-                Assert.AreEqual("Maria", entityA.Name);
-                Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
-            }
-        }
-
-        protected string ConnectionString()
+        protected virtual string ConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["Sql.Connection"].ConnectionString;
+        }
+
+        protected virtual NHibernateUnitOfWorkFactory CreateNHContextFactory()
+        {
+            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty, typeof(Entity).Assembly);
         }
 
         private EntityA _Add_EntityA()
@@ -204,16 +197,10 @@ namespace Hexa.Core.Tests.EntityFramework
             var entityA = new EntityA();
             entityA.Name = "Martin";
 
-            using (IUnitOfWork uow = UnitOfWorkScope.Start())
-            {
-                var repo = ServiceLocator.GetInstance<IEntityARepository>();
-                using (IUnitOfWork ctx = UnitOfWorkScope.Start())
-                {
-                    repo.Add(entityA);
-                    ctx.Commit();
-                }
-                uow.Commit();
-            }
+            var repo = unityContainer.Resolve<IEntityARepository>();
+            repo.Add(entityA);
+
+            Commit();
 
             return entityA;
         }

@@ -27,9 +27,8 @@ namespace Hexa.Core.Domain
     using System.Data.Objects;
     using System.Data.Entity;
 
-    [Export(typeof(IUnitOfWorkFactory))]
     [Export(typeof(IDatabaseManager))]
-    public class EntityFrameworkOfWorkFactory<TContext> : IUnitOfWorkFactory, IDatabaseManager where TContext : AuditableContext
+    public class EntityFrameworkOfWorkFactory<TContext> : IDatabaseManager where TContext : AuditableContext
     {
         #region Fields
 
@@ -75,10 +74,6 @@ namespace Hexa.Core.Domain
             {
                 context.Database.Delete();
             }
-        }
-
-        public void RegisterSessionFactory(IoCContainer container)
-        {
         }
 
         public void ValidateDatabaseSchema()

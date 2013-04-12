@@ -41,9 +41,8 @@ namespace Hexa.Core.Domain
 
     using Environment = NHibernate.Cfg.Environment;
 
-    [Export(typeof(IUnitOfWorkFactory))]
     [Export(typeof(IDatabaseManager))]
-    public sealed class NHibernateUnitOfWorkFactory : IUnitOfWorkFactory, IDatabaseManager
+    public sealed class NHibernateUnitOfWorkFactory : IDatabaseManager
     {
         #region Fields
 
@@ -60,7 +59,7 @@ namespace Hexa.Core.Domain
         #region Constructors
 
         public NHibernateUnitOfWorkFactory(DbProvider provider, string connectionString, string cacheProvider,
-            Assembly mappingsAssembly, IoCContainer container)
+            Assembly mappingsAssembly)
         {
             _DbProvider = provider;
             _connectionString = connectionString;
@@ -135,7 +134,7 @@ namespace Hexa.Core.Domain
                                               BindingFlags.Instance | BindingFlags.NonPublic);
 
             Configuration nhConfiguration = pinfo.GetValue(cfg, null) as Configuration;
-            container.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
+            IoCContainer.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
 
             cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
             .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
@@ -189,18 +188,11 @@ namespace Hexa.Core.Domain
 
         #region Methods
 
-        public IUnitOfWork Create()
+        public ISessionFactory Create()
         {
             this._CreateSessionFactory();
 
-            if (_InMemoryDatabase)
-            {
-                ISession session = this._sessionFactory.OpenSession();
-                new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
-                return new NHibernateUnitOfWork(this._sessionFactory);
-            }
-
-            return new NHibernateUnitOfWork(this._sessionFactory);
+            return this._sessionFactory;
         }
 
         public void CreateDatabase()
@@ -250,12 +242,6 @@ namespace Hexa.Core.Domain
             {
                 dbManager.DropDatabase();
             }
-        }
-
-        public void RegisterSessionFactory(IoCContainer container)
-        {
-            this._CreateSessionFactory();
-            container.RegisterInstance<ISessionFactory>(this._sessionFactory);
         }
 
         public void ValidateDatabaseSchema()

@@ -20,30 +20,38 @@
 namespace Hexa.Core
 {
     using System;
+    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
+    using System.Collections;
 
-    public class IoCContainer
+    public static class IoCContainer
     {
         #region Fields
 
-        private readonly Action<Type, object> registerInstanceCallback;
-        private readonly Action<Type, Type> registerTypeCallback;
+        private static Action<Type, object> registerInstanceCallback;
+        private static Action<Type, Type> registerTypeCallback;
+        private static Func<Type, object> resolveCallback;
+        private static Func<Type, IEnumerable<object>> resolveAllCallback;
 
         #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IoCContainer"/> class.
         /// </summary>
         /// <param name="registerCallback">The register callback.</param>
-        public IoCContainer(Action<Type, Type> registerTypeCallback, Action<Type, object> registerInstanceCallback)
+        public static void Initialize(
+            Action<Type, Type> registerType, 
+            Action<Type, object> registerInstance,
+            Func<Type, object> resolve,
+            Func<Type, IEnumerable<object>> resolveAll
+            )
         {
-            this.registerTypeCallback = registerTypeCallback;
-            this.registerInstanceCallback = registerInstanceCallback;
+            registerTypeCallback = registerType;
+            registerInstanceCallback = registerInstance;
+            resolveCallback = resolve;
+            resolveAllCallback = resolveAll;
         }
-
-        #endregion Constructors
 
         #region Methods
 
@@ -52,17 +60,11 @@ namespace Hexa.Core
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <param name="instance">The instance.</param>
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
-                         , MessageId = "T"),
-        SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
-        SuppressMessage("Microsoft.Design",
-                         "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void RegisterInstance<I>(object instance)
+        public static void RegisterInstance<I>(object instance)
         {
-            if (this.registerInstanceCallback != null)
+            if (registerInstanceCallback != null)
             {
-                this.registerInstanceCallback(typeof(I), instance);
+                registerInstanceCallback(typeof(I), instance);
             }
         }
 
@@ -71,11 +73,11 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="instance">The instance.</param>
-        public void RegisterInstance(Type @type, object instance)
+        public static void RegisterInstance(Type @type, object instance)
         {
-            if (this.registerInstanceCallback != null)
+            if (registerInstanceCallback != null)
             {
-                this.registerInstanceCallback(@type, instance);
+                registerInstanceCallback(@type, instance);
             }
         }
 
@@ -84,18 +86,12 @@ namespace Hexa.Core
         /// </summary>
         /// <typeparam name="I"></typeparam>
         /// <typeparam name="T"></typeparam>
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix"
-                         , MessageId = "T"),
-        SuppressMessage("Microsoft.Naming",
-                         "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I"),
-        SuppressMessage("Microsoft.Design",
-                         "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public void RegisterType<I, T>()
+        public static void RegisterType<I, T>()
             where T : I
         {
-            if (this.registerTypeCallback != null)
+            if (registerTypeCallback != null)
             {
-                this.registerTypeCallback(typeof(I), typeof(T));
+                registerTypeCallback(typeof(I), typeof(T));
             }
         }
 
@@ -104,12 +100,54 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="interface">The @interface.</param>
         /// <param name="type">The type.</param>
-        public void RegisterType(Type @interface, Type @type)
+        public static void RegisterType(Type @interface, Type @type)
         {
-            if (this.registerTypeCallback != null)
+            if (registerTypeCallback != null)
             {
-                this.registerTypeCallback(@interface, @type);
+                registerTypeCallback(@interface, @type);
             }
+        }
+
+        public static TDependency[] GetAllInstances<TDependency>()
+        {
+            IEnumerable<object> services = resolveAllCallback(typeof(TDependency));
+
+            if (services != null)
+            {
+                return services.Cast<TDependency>().ToArray();
+            }
+
+            return default(TDependency[]);
+        }
+
+        public static TDependency GetInstance<TDependency>()
+        {
+            return (TDependency)GetInstance(typeof(TDependency));
+        }
+
+        public static object GetInstance(Type dependencyType)
+        {
+            return resolveCallback(dependencyType);
+        }
+
+        public static TDependency TryGetInstance<TDependency>()
+        {
+            try
+            {
+                IEnumerable<TDependency> services = GetAllInstances<TDependency>();
+
+                if (services != null)
+                {
+                    return (TDependency)services.FirstOrDefault();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                throw new InternalException("ServiceLocator has not been initialized; " +
+                                            "I was trying to retrieve " + typeof(TDependency));
+            }
+
+            return default(TDependency);
         }
 
         #endregion Methods

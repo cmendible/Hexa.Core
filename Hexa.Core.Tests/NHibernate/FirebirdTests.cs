@@ -29,7 +29,7 @@ namespace Hexa.Core.Tests.Sql
     using NUnit.Framework;
 
     [TestFixture]
-    public class FirebirdTests : BaseDatabaseTest
+    public class FirebirdTests : SqlTest
     {
         #region Methods
 
@@ -40,8 +40,7 @@ namespace Hexa.Core.Tests.Sql
 
         protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly,
-                                                   ApplicationContext.Container);
+            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly);
         }
 
         #endregion Methods

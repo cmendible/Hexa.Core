@@ -234,23 +234,13 @@
     <Reference Include="Microsoft.Mef.CommonServiceLocator">
       <HintPath>..\packages\CommonServiceLocator.MefAdapter.1.0\lib\Microsoft.Mef.CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.ServiceLocatorAdapter">
-      <HintPath>..\packages\CommonServiceLocator.UnityAdapter.1.0.0.41670\lib\net35\Microsoft.Practices.Unity.ServiceLocatorAdapter.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
       <HintPath>..\packages\Npgsql.2.0.11\lib\Net40\Mono.Security.dll</HintPath>
@@ -329,9 +319,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Hexa.Core\IoC\DictionaryServicesContainer.cs">
-      <Link>IoC\DictionaryServicesContainer.cs</Link>
-    </Compile>
     <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
     <Compile Include="Data\Mappings\EntityFramework\EntityAConfiguration.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
@@ -345,7 +332,6 @@
     <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
     <Compile Include="EntityFramework\DomainContext.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
-    <Compile Include="NHibernate\BaseDatabaseTest.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
@@ -359,7 +345,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
-    <Compile Include="NHibernate\SqlCeTests.cs" />
     <Compile Include="NHibernate\SqlTests.cs" />
     <Compile Include="RavenDb\RavenTests.cs" />
   </ItemGroup>

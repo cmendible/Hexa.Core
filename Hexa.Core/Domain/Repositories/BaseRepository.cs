@@ -57,15 +57,15 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <param name="traceManager">Trace Manager dependency</param>
         /// <param name="context">A context for this repository</param>
-        public BaseRepository(Hexa.Core.Logging.ILoggerFactory loggerFactory)
+        public BaseRepository(IUnitOfWork unitOfWork , Hexa.Core.Logging.ILoggerFactory loggerFactory)
         {
             Guard.IsNotNull(loggerFactory, "loggerFactory");
 
             // check preconditions
-            Guard.IsNotNull(UnitOfWorkScope.Current, "No unitOfWork in scope.");
+            Guard.IsNotNull(unitOfWork, "No unitOfWork in scope.");
 
             // set internal values
-            this.unitOfWork = UnitOfWorkScope.Current;
+            this.unitOfWork = unitOfWork;
             this._logger = loggerFactory.Create(GetType());
             this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }

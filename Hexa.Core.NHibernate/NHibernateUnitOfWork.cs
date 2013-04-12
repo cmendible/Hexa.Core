@@ -33,24 +33,13 @@ namespace Hexa.Core.Domain
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
-        #region Fields
-
-        private readonly ITransactionWrapper _transactionWrapper;
-
-        private static string _key = "Hexa.Core.Domain.RunningSession.Key";
-
-        #endregion Fields
+        ISessionFactory sessionFactory;
 
         #region Constructors
 
         public NHibernateUnitOfWork(ISessionFactory sessionFactory)
         {
-            if (RunningSession == null)
-            {
-                RunningSession = sessionFactory.OpenSession();
-            }
-
-            this._transactionWrapper = BeginTransaction(RunningSession);
+            this.sessionFactory = sessionFactory;
         }
 
         #endregion Constructors
@@ -59,68 +48,25 @@ namespace Hexa.Core.Domain
 
         public ISession Session
         {
-            get { return RunningSession; }
-        }
-
-        public static ISession RunningSession
-        {
-            get
-            {
-                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                if (OperationContext.Current != null)
-                {
-                    //WCF without HttpContext environment
-                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
-
-                    if (containerExtension == null)
-                    {
-                        containerExtension = new ContainerExtension();
-
-                        OperationContext.Current.Extensions.Add(containerExtension);
-                    }
-
-                    return containerExtension.Value as ISession;
-                }
-                else if (HttpContext.Current != null)
-                {
-                    return HttpContext.Current.Items[_key] as ISession;
-                }
-                else
-                {
-                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                    return CallContext.GetData(_key) as ISession;
-                }
-            }
-            set
-            {
-                //Get object depending on  execution environment ( WCF without HttpContext,HttpContext or CallContext)
-                if (OperationContext.Current != null)
-                {
-                    //WCF without HttpContext environment
-                    var containerExtension = OperationContext.Current.Extensions.Find<ContainerExtension>();
-
-                    if (containerExtension == null)
-                    {
-                        containerExtension = new ContainerExtension();
-                        OperationContext.Current.Extensions.Add(containerExtension);
-                    }
-                    containerExtension.Value = value;
-                }
-                else if (HttpContext.Current != null)
-                {
-                    HttpContext.Current.Items[_key] = value;
-                }
-                else
-                {
-                    //Not in WCF or ASP.NET Environment, UnitTesting, WinForms, WPF etc.
-                    CallContext.SetData(_key, value);
-                }
-            }
+            get;
+            private set;
         }
 
         #endregion Properties
 
         #region Methods
+
+        public void Start()
+        {
+            Session = sessionFactory.OpenSession();
+            Session.BeginTransaction();
+        }
+
+        public void Start(System.Data.IsolationLevel isolationLevel)
+        {
+            Session = sessionFactory.OpenSession();
+            Session.BeginTransaction(isolationLevel);
+        }
 
         /// <summary>
         /// Adds the specified entity.
@@ -152,7 +98,7 @@ namespace Hexa.Core.Domain
         {
             try
             {
-                this._transactionWrapper.Commit();
+                this.Session.Transaction.Commit();
             }
             catch (StaleObjectStateException ex)
             {
@@ -212,7 +158,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public void RollbackChanges()
         {
-            this._transactionWrapper.Rollback();
+            this.Session.Transaction.Rollback();
         }
 
         /// <summary>
@@ -223,79 +169,27 @@ namespace Hexa.Core.Domain
         {
             if (disposing)
             {
-                UnitOfWorkScope.DisposeCurrent();
-                if (UnitOfWorkScope.RunningScopes.Count == 0)
+                if (Session != null && Session.IsOpen)
                 {
-                    if (RunningSession != null && RunningSession.IsOpen)
+                    if (Session.Transaction != null)
                     {
-                        if (RunningSession.Transaction != null)
+                        if (Session.Transaction.IsActive)
                         {
-                            if (RunningSession.Transaction.IsActive)
+                            if (Transaction.Current == null)
                             {
-                                if (Transaction.Current == null)
-                                {
-                                    this._transactionWrapper.Rollback();
-                                }
+                                this.Session.Transaction.Rollback();
                             }
-
-                            RunningSession.Transaction.Dispose();
                         }
 
-                        RunningSession.Dispose();
-                        RunningSession = null;
+                        Session.Transaction.Dispose();
                     }
+
+                    Session.Dispose();
+                    Session = null;
                 }
             }
         }
 
-        /// <summary>
-        /// Begins the transaction.
-        /// </summary>
-        /// <param name="session">The session.</param>
-        /// <returns></returns>
-        private static ITransactionWrapper BeginTransaction(ISession session)
-        {
-            if (session.Transaction.IsActive)
-            {
-                return new NestedTransactionWrapper(session.Transaction);
-            }
-
-            return new TransactionWrapper(session.BeginTransaction());
-        }
-
         #endregion Methods
-
-        #region Nested Types
-
-        /// <summary>
-        /// Custom extension for OperationContext scope
-        /// </summary>
-        private class ContainerExtension : IExtension<OperationContext>
-        {
-            #region Properties
-
-            public object Value
-            {
-                get;
-                set;
-            }
-
-            #endregion Properties
-
-            #region Methods
-
-            public void Attach(OperationContext owner)
-            {
-            }
-
-            public void Detach(OperationContext owner)
-            {
-            }
-
-            #endregion Methods
-        }
-
-        #endregion Nested Types
-
     }
 }

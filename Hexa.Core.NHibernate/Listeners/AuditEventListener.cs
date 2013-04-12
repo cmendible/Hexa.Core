@@ -91,7 +91,7 @@ namespace Hexa.Core.Domain
 
             DateTime updatedAt = DateTime.Now;
 
-            var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
+            var auditTrailFactory = IoCContainer.TryGetInstance<IAuditTrailFactory>();
             if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(@event.Persister.EntityName))
             {
                 string tableName = @event.Persister.EntityName;

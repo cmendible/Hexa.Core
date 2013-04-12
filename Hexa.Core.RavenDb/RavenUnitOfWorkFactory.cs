@@ -24,10 +24,10 @@ namespace Hexa.Core.Domain
     using Data;
 
     using Raven.Client.Embedded;
+    using Raven.Client.Document;
 
-    [Export(typeof(IUnitOfWorkFactory))]
     [Export(typeof(IDatabaseManager))]
-    public class RavenUnitOfWorkFactory : IUnitOfWorkFactory, IDatabaseManager
+    public class RavenUnitOfWorkFactory : IDatabaseManager
     {
         #region Fields
 
@@ -54,9 +54,9 @@ namespace Hexa.Core.Domain
 
         #region Methods
 
-        public IUnitOfWork Create()
+        public DocumentStore Create()
         {
-            return new RavenUnitOfWork(_documenFactory.OpenSession());
+            return _documenFactory;
         }
 
         public void CreateDatabase()
@@ -70,12 +70,6 @@ namespace Hexa.Core.Domain
 
         public void DeleteDatabase()
         {
-        }
-
-        // Registers Raven IDocumentStore for testing purposes.
-        public void RegisterSessionFactory(IoCContainer container)
-        {
-            container.RegisterInstance<EmbeddableDocumentStore>(_documenFactory);
         }
 
         public void ValidateDatabaseSchema()

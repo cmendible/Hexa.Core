@@ -32,44 +32,7 @@ namespace Hexa.Core
     /// </summary>
     public static class ApplicationContext
     {
-        #region Fields
-
-        /// <summary>
-        /// log4net logger.
-        /// </summary>
-        private static readonly ILog log = 
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        #endregion Fields
-
         #region Properties
-
-        public static string ConnectionString
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// private ICoreContainer instance.
-        /// </summary>
-        public static IoCContainer Container
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is initialized.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is initialized; otherwise, <c>false</c>.
-        /// </value>
-        public static bool IsInitialized
-        {
-            get;
-            private set;
-        }
 
         public static IPrincipal User
         {
@@ -96,64 +59,5 @@ namespace Hexa.Core
         }
 
         #endregion Properties
-
-        #region Methods
-
-        /// <summary>
-        /// Starts the Context.
-        /// </summary>
-        public static void Start(string connectionString)
-        {
-            var dictionaryContainer = new DictionaryServicesContainer();
-
-            Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => dictionaryContainer);
-
-            var container = new IoCContainer(
-                (x, y) => dictionaryContainer.RegisterType(x, y),
-                (x, y) => dictionaryContainer.RegisterInstance(x, y)
-            );
-
-            Start(container, connectionString);
-        }
-
-        /// <summary>
-        /// Starts the Context.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="defaultDataLayer">The default data layer.</param>
-        [SuppressMessage("Microsoft.Design",
-                         "CA1062:Validate arguments of public methods", MessageId = "0"),
-        SuppressMessage("Microsoft.Naming",
-                         "CA2204:Literals should be spelled correctly", MessageId = "CoreContext")]
-        public static void Start(IoCContainer container, string connectionString)
-        {
-            if (!IsInitialized)
-            {
-                log.InfoFormat("Starting CoreContext with container {0}", container.GetType().Name);
-                Container = container;
-
-                ConnectionString = connectionString;
-
-                IsInitialized = true;
-                log.Info("Core Context Activation Successful");
-            }
-            else
-            {
-                throw new InternalException("CoreContext is already running.");
-            }
-        }
-
-        /// <summary>
-        /// Stops this context.
-        /// </summary>
-        public static void Stop()
-        {
-            log.Info("Stopping Core Context");
-            Container = null;
-            IsInitialized = false;
-            log.Info("Core Context Deactivation Successful");
-        }
-
-        #endregion Methods
     }
 }

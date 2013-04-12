@@ -23,6 +23,8 @@ namespace Hexa.Core.Domain
     using System.ComponentModel.Composition;
 
     using Raven.Client;
+    using Raven.Client.Embedded;
+    using Raven.Client.Document;
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
@@ -31,15 +33,16 @@ namespace Hexa.Core.Domain
         #region Fields
 
         private bool disposed;
+        DocumentStore documentStore;
         private IDocumentSession session;
 
         #endregion Fields
 
         #region Constructors
 
-        public RavenUnitOfWork(IDocumentSession session)
+        public RavenUnitOfWork(DocumentStore documentStore)
         {
-            this.session = session;
+            this.documentStore = documentStore;
         }
 
         #endregion Constructors
@@ -125,12 +128,14 @@ namespace Hexa.Core.Domain
             return this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }
 
-        /// <summary>
-        /// Rollback changes not stored in databse at
-        /// this moment. See references of UnitOfWork pattern
-        /// </summary>
-        public void RollbackChanges()
+        public void Start()
         {
+            this.session = documentStore.OpenSession();
+        }
+
+        public void Start(System.Data.IsolationLevel isolationLevel)
+        {
+            this.session = documentStore.OpenSession();
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -145,7 +150,6 @@ namespace Hexa.Core.Domain
             // Check to see if Dispose has already been called.
             if (!this.disposed)
             {
-                UnitOfWorkScope.DisposeCurrent();
                 if (this.session != null)
                 {
                     this.session.Dispose();
@@ -155,7 +159,6 @@ namespace Hexa.Core.Domain
 
                 // Note disposing has been done.
                 disposed = true;
-
             }
         }
 

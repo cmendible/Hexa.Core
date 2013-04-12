@@ -247,9 +247,6 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -313,6 +310,7 @@
     <Compile Include="Domain\Repositories\EagerFetch\BaseFetchRequest.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
+    <Compile Include="IoC\ApplicationContext.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
     <Compile Include="Web\Services\AuthorizationService\IAuthorizationService.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
@@ -322,7 +320,6 @@
     <Compile Include="Inflector\Inflector.cs" />
     <Compile Include="Domain\Repositories\IRepository.cs" />
     <Compile Include="Domain\UnitOfWork\IUnitOfWork.cs" />
-    <Compile Include="Domain\UnitOfWork\IUnitOfWorkFactory.cs" />
     <Compile Include="Data\DatabaseManager.cs" />
     <Compile Include="Data\DbProviderExtensions.cs" />
     <Compile Include="Domain\Repositories\PagedElements.cs" />
@@ -339,7 +336,6 @@
     <Compile Include="Domain\Specification\Specification.cs" />
     <Compile Include="Domain\Specification\SpecificationExtensions.cs" />
     <Compile Include="Domain\Specification\TrueSpecification.cs" />
-    <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
@@ -347,8 +343,6 @@
     <Compile Include="Globalization\GettextHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\IoCContainer.cs" />
-    <Compile Include="IoC\DictionaryServicesContainer.cs" />
-    <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="Linq\PagingExtensions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Log4NetLoggerFactory.cs" />
@@ -371,7 +365,6 @@
     </Compile>
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
-    <Compile Include="IoC\ApplicationContext.cs" />
     <Compile Include="Printer\PrinterHelper.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Pool\Pool.cs" />

@@ -22,7 +22,7 @@ namespace Hexa.Core.Web.Mvc.Security
             //base.OnAuthorization(filterContext);
 
             // Try Get IAuthorizationService 
-            IAuthorizationService authorizationService = ServiceLocator.TryGetInstance<IAuthorizationService>();
+            IAuthorizationService authorizationService = IoCContainer.TryGetInstance<IAuthorizationService>();
             if (authorizationService != null)
             {
                 // Get Action to Authorize

@@ -46,7 +46,7 @@ namespace Hexa.Core.Domain
         //Raises the given domain event
         public static void Raise<T>(T args) where T : IDomainEvent
         {
-            foreach (var handler in ServiceLocator.GetAllInstances<IDomainEventHandler<T>>())
+            foreach (var handler in IoCContainer.GetAllInstances<IDomainEventHandler<T>>())
                 handler.Handle(args);
 
             if (actions != null)

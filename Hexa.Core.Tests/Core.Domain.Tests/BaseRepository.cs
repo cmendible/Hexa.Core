@@ -29,9 +29,7 @@ namespace Hexa.Core.Domain.Tests
     using Rhino.Mocks;
 
     using Specification;
-
-    using SL = Microsoft.Practices.ServiceLocation;
-
+    using Microsoft.Practices.Unity;
     /// <summary>
     ///This is a test class for RepositoryTest and is intended
     ///to contain all common RepositoryTest Unit Tests
@@ -39,13 +37,6 @@ namespace Hexa.Core.Domain.Tests
     [TestFixture]
     public class BaseRepositoryTests
     {
-        #region Fields
-
-        private IoCContainer _container;
-        private DictionaryServicesContainer _dictionaryContainer;
-
-        #endregion Fields
-
         #region Methods
 
         /// <summary>
@@ -58,7 +49,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             var entity = new Entity
             {
                 Id = 4,
@@ -86,7 +77,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             Entity entity = null;
 
             // Act
@@ -101,7 +92,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             //Assert
             target.Modify(null);
@@ -114,7 +105,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             Entity item = target.GetAll().First();
 
             //Assert
@@ -129,7 +120,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.Attach(null);
@@ -142,7 +133,7 @@ namespace Hexa.Core.Domain.Tests
 
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             var entity = new Entity
             {
                 Id = 5,
@@ -166,7 +157,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             IEnumerable<Entity> result = target.GetAll();
@@ -192,7 +183,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             Entity entity = null;
 
             // Act
@@ -209,7 +200,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             IEnumerable<Entity> result = target.GetAll();
@@ -227,7 +218,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             ISpecification<Entity> spec = new DirectSpecification<Entity>(t => t.Id == 1);
 
             // Act
@@ -241,7 +232,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             ISpecification<Entity> spec = new DirectSpecification<Entity>(t => t.Id == 1);
 
             // Act
@@ -262,7 +253,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -282,7 +273,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 0;
 
@@ -302,7 +293,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = -1;
             int pageCount = 1;
 
@@ -322,7 +313,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             IEnumerable<Entity> result = target.GetFilteredElements<int>(e => e.Id == 1, null, false);
@@ -342,7 +333,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             IEnumerable<Entity> result = target.GetFilteredElements(e => e.Id == 1);
@@ -364,7 +355,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.GetFilteredElements(null);
@@ -381,7 +372,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.GetFilteredElements(null, t => t.Id, true);
@@ -397,7 +388,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.GetFilteredElements(e => e.Id == 1, t => t.Id, true);
@@ -414,7 +405,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.GetFilteredElements(null, t => t.Id, false);
@@ -430,7 +421,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
 
             // Act
             target.GetFilteredElements(e => e.Id == 1, t => t.Id, false);
@@ -446,7 +437,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -469,7 +460,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -492,7 +483,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -514,7 +505,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -537,7 +528,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -555,7 +546,7 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = 0;
             int pageCount = 0;
 
@@ -573,34 +564,11 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<Entity>(loggerFactory);
+            var target = new BaseRepository<Entity>(_MockUnitOfWork(), loggerFactory);
             int pageIndex = -1;
             int pageCount = 0;
 
             target.GetPagedElements<int>(pageIndex, pageCount, null, false);
-        }
-
-        [SetUp]
-        public void Setup()
-        {
-            this._dictionaryContainer = new DictionaryServicesContainer();
-
-            SL.ServiceLocator.SetLocatorProvider(() => this._dictionaryContainer);
-
-            this._container = new IoCContainer(
-                (x, y) => this._dictionaryContainer.RegisterType(x, y),
-                (x, y) => this._dictionaryContainer.RegisterInstance(x, y)
-            );
-
-            IUnitOfWork actual = this._MockUnitOfWork();
-
-            UnitOfWorkScope.Start();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            UnitOfWorkScope.DisposeCurrent();
         }
 
         /// <summary>
@@ -612,14 +580,14 @@ namespace Hexa.Core.Domain.Tests
             ILoggerFactory loggerFactory = this._MockLoggerFactory();
 
             // Act
-            var target = new BaseRepository<T>(loggerFactory);
+            var target = new BaseRepository<T>(_MockUnitOfWork(), loggerFactory);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UoW_Creation_NullLoggerFactoryThrowArgumentNullException_Test()
         {
-            var repository = new BaseRepository<Entity>(null);
+            var repository = new BaseRepository<Entity>(_MockUnitOfWork(), null);
         }
 
         [Test]
@@ -653,12 +621,12 @@ namespace Hexa.Core.Domain.Tests
             };
 
             var actual = MockRepository.GenerateMock<IUnitOfWork>();
-                actual.Expect(w => w.Query<Entity>())
-                .Return(list.AsQueryable());
+            actual.Expect(w => w.Query<Entity>())
+            .Return(list.AsQueryable());
 
             actual.Expect(w => w.Add<Entity>(null))
                 .IgnoreArguments()
-                .WhenCalled((mi) => {list.Add(mi.Arguments[0] as Entity);});
+                .WhenCalled((mi) => { list.Add(mi.Arguments[0] as Entity); });
 
             actual.Expect(w => w.Attach<Entity>(null))
                 .IgnoreArguments()
@@ -668,13 +636,6 @@ namespace Hexa.Core.Domain.Tests
                 .IgnoreArguments()
                 .WhenCalled((mi) => { list.Remove(mi.Arguments[0] as Entity); });
 
-
-                
-
-            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            factory.Expect(f => f.Create()).Return(actual);
-
-            this._dictionaryContainer.OverrideInstance<IUnitOfWorkFactory>(factory);
 
             return actual;
         }

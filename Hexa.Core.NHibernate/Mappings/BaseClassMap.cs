@@ -30,7 +30,7 @@ namespace Hexa.Core.Domain
 
         public BaseClassMap()
         {
-            Configuration = ServiceLocator.GetInstance<NHConfiguration>();
+            Configuration = IoCContainer.GetInstance<NHConfiguration>();
             Dialect = Dialect.GetDialect(Configuration.Value.Properties);
         }
 

@@ -1,14 +1,22 @@
+#region Header
+
 // ===================================================================================
-// Microsoft Developer & Platform Evangelism
+// Copyright 2010 HexaSystems Corporation
 // ===================================================================================
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
 // ===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license,
-// http://microsoftnlayerapp.codeplex.com/license
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// See the License for the specific language governing permissions and
 // ===================================================================================
+
+#endregion Header
+
 namespace Hexa.Core.Domain
 {
     using System;
@@ -69,10 +77,9 @@ namespace Hexa.Core.Domain
             where TEntity : class;
 
         /// <summary>
-        /// Rollback changes not stored in databse at
-        /// this moment. See references of UnitOfWork pattern
+        /// Starts this instance.
         /// </summary>
-        void RollbackChanges();
+        void Start();
 
         /// <summary>
         /// Returns an IQueryable<TEntity>
