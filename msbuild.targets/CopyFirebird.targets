@@ -25,7 +25,7 @@
 		<Is32Bit Condition="'$(MachineProcessorArchitecture)' == 'x86'">True</Is32Bit>
 		<Is64Bit>False</Is64Bit>
 		<Is64Bit Condition="'$(MachineProcessorArchitecture)' == 'AMD64'">True</Is64Bit>
-		<DeployTo>$(SolutionDir)Hexa.Core.Tests\bin\Release\</DeployTo>
+		<DeployTo>$(OutDir)\</DeployTo>
 	</PropertyGroup>
 	<!--Deploy Firebird files-->
 	<Target Name="CopyFirebird">
