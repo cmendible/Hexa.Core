@@ -50,40 +50,40 @@ namespace Hexa.Core.Xml
         public static XmlSchemaSet CreateXmlSchemaSet(string schemaName, Dictionary<string, byte[]> schemas)
         {
             //Create and compile XmlSchemaSet
-            using (var _XSDReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
+            using (XmlTextReader xsdReader = new XmlTextReader(new MemoryStream(schemas[schemaName])))
             {
-                var _schemaSet = new XmlSchemaSet();
-                _schemaSet.XmlResolver = new SchemaResolver(schemas);
-                _schemaSet.Add(null, _XSDReader);
-                _schemaSet.Compile();
-                return _schemaSet;
+                XmlSchemaSet schemaSet = new XmlSchemaSet();
+                schemaSet.XmlResolver = new SchemaResolver(schemas);
+                schemaSet.Add(null, xsdReader);
+                schemaSet.Compile();
+                return schemaSet;
             }
         }
 
         public static void Validate(byte[] xmlDoc, XmlSchemaSet schemas)
         {
             // Declare local objects
-            XmlTextReader _XMLReader = null;
-            XmlReaderSettings _settings = null;
-            XmlReader _reader = null;
+            XmlTextReader xmlReader = null;
+            XmlReaderSettings settings = null;
+            XmlReader reader = null;
 
             // Create your fragment reader
-            using (_XMLReader = new XmlTextReader(new MemoryStream(xmlDoc)))
+            using (xmlReader = new XmlTextReader(new MemoryStream(xmlDoc)))
             {
                 // Add the schema to your reader settings
-                _settings = new XmlReaderSettings();
-                _settings.Schemas.Add(schemas);
+                settings = new XmlReaderSettings();
+                settings.Schemas.Add(schemas);
 
                 // Add validation event handler
-                _settings.ValidationType = ValidationType.Schema;
-                _settings.ValidationEventHandler += validationHandler;
+                settings.ValidationType = ValidationType.Schema;
+                settings.ValidationEventHandler += validationHandler;
 
                 // Create your reader with the validation
-                using (_reader = XmlReader.Create(_XMLReader, _settings))
+                using (reader = XmlReader.Create(xmlReader, settings))
                 {
                     // Validate XML data
-                    while (_reader.Read());
-                    _reader.Close();
+                    while (reader.Read());
+                    reader.Close();
                 }
 
                 // Raise exception, if XML validation fails

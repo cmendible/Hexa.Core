@@ -29,18 +29,18 @@ namespace Hexa.Core.Xml
 
         public static byte[] Transform(byte[] inputDocument, byte[] xsl)
         {
-            var xslt = new XslCompiledTransform();
-            var settings = new XmlReaderSettings();
+            XslCompiledTransform xslt = new XslCompiledTransform();
+            XmlReaderSettings settings = new XmlReaderSettings();
             settings.ProhibitDtd = false;
 
-            using (var memXsl = new MemoryStream(xsl))
+            using (MemoryStream memXsl = new MemoryStream(xsl))
             {
                 xslt.Load(XmlReader.Create(new MemoryStream(xsl)));
             }
 
-            using (var memOut = new MemoryStream())
+            using (MemoryStream memOut = new MemoryStream())
             {
-                using (var memXml = new MemoryStream(inputDocument))
+                using (MemoryStream memXml = new MemoryStream(inputDocument))
                 {
                     xslt.Transform(XmlReader.Create(memXml, settings), XmlWriter.Create(memOut, xslt.OutputSettings));
                 }

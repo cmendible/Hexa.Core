@@ -25,7 +25,7 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Fields
 
-        private readonly Expression<Func<TEntity, bool>> _OriginalCriteria;
+        private readonly Expression<Func<TEntity, bool>> originalCriteria;
 
         #endregion Fields
 
@@ -42,7 +42,7 @@ namespace Hexa.Core.Domain.Specification
                 throw new ArgumentNullException("originalSpecification");
             }
 
-            _OriginalCriteria = originalSpecification.SatisfiedBy();
+            this.originalCriteria = originalSpecification.SatisfiedBy();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Hexa.Core.Domain.Specification
                 throw new ArgumentNullException("originalSpecification");
             }
 
-            _OriginalCriteria = originalSpecification;
+            this.originalCriteria = originalSpecification;
         }
 
         #endregion Constructors
@@ -69,8 +69,8 @@ namespace Hexa.Core.Domain.Specification
         /// <returns><see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/></returns>
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
-            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(_OriginalCriteria.Body),
-                    _OriginalCriteria.Parameters.Single());
+            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(this.originalCriteria.Body),
+                    this.originalCriteria.Parameters.Single());
         }
 
         #endregion Methods

@@ -26,11 +26,11 @@ namespace Hexa.Core.Data
         public const string SqlCe = "System.Data.SqlServerCe.3.5";
         public const string SQLiteProvider = "System.Data.SQLite";
 
-        private static readonly ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly DbProviderFactory _connectionProvider;
-        private readonly string _connectionString;
-        private readonly string _providerName;
+        private readonly DbProviderFactory connectionProvider;
+        private readonly string connectionString;
+        private readonly string providerName;
 
         #endregion Fields
 
@@ -44,9 +44,9 @@ namespace Hexa.Core.Data
         public DatabaseManager(DbProvider provider, string connectionString)
         {
             string providerName = provider.GetEnumMemberValue();
-            this._connectionProvider = DbProviderFactories.GetFactory(providerName);
-            this._providerName = providerName;
-            this._connectionString = connectionString;
+            this.connectionProvider = DbProviderFactories.GetFactory(providerName);
+            this.providerName = providerName;
+            this.connectionString = connectionString;
         }
 
         #endregion Constructors
@@ -61,7 +61,7 @@ namespace Hexa.Core.Data
         {
             get
             {
-                return this._connectionProvider;
+                return this.connectionProvider;
             }
         }
 
@@ -74,7 +74,7 @@ namespace Hexa.Core.Data
         /// </summary>
         public void CreateDatabase()
         {
-            _CreateDatabase(this._connectionProvider, this._connectionString, this._providerName);
+            _CreateDatabase(this.connectionProvider, this.connectionString, this.providerName);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Hexa.Core.Data
         /// <returns></returns>
         public bool DatabaseExists()
         {
-            return _DatabaseExists(this._connectionProvider, this._connectionString, this._providerName);
+            return _DatabaseExists(this.connectionProvider, this.connectionString, this.providerName);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Hexa.Core.Data
         /// </summary>
         public void DropDatabase()
         {
-            this._DropDatabase(this._connectionProvider, this._connectionString, this._providerName);
+            this._DropDatabase(this.connectionProvider, this.connectionString, this.providerName);
         }
 
         private static void _ClearAllPools(string providerName)
@@ -194,9 +194,9 @@ namespace Hexa.Core.Data
                 }
             }
 
-            _Log.DebugFormat(CultureInfo.InvariantCulture, "Creating Database '{0}..", dbName);
+            log.DebugFormat(CultureInfo.InvariantCulture, "Creating Database '{0}..", dbName);
             provider.ExecuteNonQuery(connStr, command.ToString());
-            _Log.InfoFormat(CultureInfo.InvariantCulture, "Database instance '{0}' created!", dbName);
+            log.InfoFormat(CultureInfo.InvariantCulture, "Database instance '{0}' created!", dbName);
         }
 
         private static bool _DatabaseExists(DbProviderFactory provider, string connectionString, string providerName)
@@ -206,7 +206,7 @@ namespace Hexa.Core.Data
 
             try
             {
-                _Log.DebugFormat(CultureInfo.InvariantCulture,
+                log.DebugFormat(CultureInfo.InvariantCulture,
                                  "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
                                  dbName, providerName, connStr);
 
@@ -266,10 +266,10 @@ namespace Hexa.Core.Data
             }
             catch (Exception ex)
             {
-                _Log.Error("Database connection failed", ex);
+                log.Error("Database connection failed", ex);
             }
 
-            _Log.DebugFormat(CultureInfo.InvariantCulture, "Database '{0}' does not exists", dbName);
+            log.DebugFormat(CultureInfo.InvariantCulture, "Database '{0}' does not exists", dbName);
             return false;
         }
 
@@ -402,20 +402,20 @@ namespace Hexa.Core.Data
                 string cmd = string.Format(CultureInfo.InvariantCulture,
                                            "USE master; ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;",
                                            dbName);
-                this._connectionProvider.ExecuteNonQuery(connStr, cmd);
-                this._connectionProvider.ExecuteNonQuery(connStr,
+                this.connectionProvider.ExecuteNonQuery(connStr, cmd);
+                this.connectionProvider.ExecuteNonQuery(connStr,
                         string.Format(CultureInfo.InvariantCulture,
                                       "DROP DATABASE [{0}]", dbName));
             }
             else if (providerName == PostgreSQLProvider)
             {
-                this._connectionProvider.ExecuteNonQuery(connStr,
+                this.connectionProvider.ExecuteNonQuery(connStr,
                         string.Format(CultureInfo.InvariantCulture,
                                       "DROP DATABASE \"{0}\"", dbName));
             }
             else
             {
-                this._connectionProvider.ExecuteNonQuery(connStr,
+                this.connectionProvider.ExecuteNonQuery(connStr,
                         string.Format(CultureInfo.InvariantCulture,
                                       "DROP DATABASE '{0}'", dbName));
             }

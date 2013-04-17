@@ -113,7 +113,7 @@ namespace Hexa.Core.Domain.Tests
 
             //Assert
             object expectedValue =
-                adHocSpecification.GetType().GetField("_MatchingCriteria",
+                adHocSpecification.GetType().GetField("matchingCriteria",
                         BindingFlags.Instance |
                         BindingFlags.NonPublic).GetValue(
                     adHocSpecification);
@@ -168,7 +168,7 @@ namespace Hexa.Core.Domain.Tests
             //Assert
             Assert.IsNotNull(notSpec);
             Assert.IsNotNull(
-                notSpec.GetType().GetField("_OriginalCriteria",
+                notSpec.GetType().GetField("originalCriteria",
                                            BindingFlags.Instance |
                                            BindingFlags.NonPublic).GetValue(notSpec));
         }
@@ -184,7 +184,7 @@ namespace Hexa.Core.Domain.Tests
             var notSpec = new NotSpecification<Entity>(specification);
 
             var resultCriteria = notSpec.GetType()
-                                 .GetField("_OriginalCriteria",
+                                 .GetField("originalCriteria",
                                            BindingFlags.Instance |
                                            BindingFlags.NonPublic).
                                  GetValue(notSpec) as Expression<Func<Entity, bool>>;

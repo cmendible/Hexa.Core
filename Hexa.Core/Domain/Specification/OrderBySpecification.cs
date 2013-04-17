@@ -19,11 +19,11 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Fields
 
-        private readonly Expression<Func<TEntity, object>> _predicate;
-        private readonly Expression<Func<TEntity, object>> _predicate2;
+        private readonly Expression<Func<TEntity, object>> predicate;
+        private readonly Expression<Func<TEntity, object>> predicate2;
 
-        private bool _descending;
-        private bool _descending2;
+        private bool descending;
+        private bool descending2;
 
         #endregion Fields
 
@@ -44,10 +44,10 @@ namespace Hexa.Core.Domain.Specification
         {
             Guard.Against<ArgumentNullException>(orderBy == null,
                                                  "Expected a non null expression as a predicate for the specification.");
-            this._predicate = orderBy;
-            this._descending = descending;
-            this._predicate2 = thenBy;
-            this._descending2 = thenByDescending;
+            this.predicate = orderBy;
+            this.descending = descending;
+            this.predicate2 = thenBy;
+            this.descending2 = thenByDescending;
         }
 
         /// <summary>
@@ -110,11 +110,11 @@ namespace Hexa.Core.Domain.Specification
         {
             get
             {
-                return this._descending ? OrderDirection.Descending : OrderDirection.Ascending;
+                return this.descending ? OrderDirection.Descending : OrderDirection.Ascending;
             }
             set
             {
-                this._descending = (value == OrderDirection.Descending) ? true : false;
+                this.descending = (value == OrderDirection.Descending) ? true : false;
             }
         }
 
@@ -122,11 +122,11 @@ namespace Hexa.Core.Domain.Specification
         {
             get
             {
-                return this._descending2 ? OrderDirection.Descending : OrderDirection.Ascending;
+                return this.descending2 ? OrderDirection.Descending : OrderDirection.Ascending;
             }
             set
             {
-                this._descending2 = (value == OrderDirection.Descending) ? true : false;
+                this.descending2 = (value == OrderDirection.Descending) ? true : false;
             }
         }
 
@@ -136,13 +136,13 @@ namespace Hexa.Core.Domain.Specification
 
         public IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query)
         {
-            IOrderedQueryable<TEntity> ret = this._descending
-                                             ? query.OrderByDescending(this._predicate)
-                                             : query.OrderBy(this._predicate);
+            IOrderedQueryable<TEntity> ret = this.descending
+                                             ? query.OrderByDescending(this.predicate)
+                                             : query.OrderBy(this.predicate);
 
-            if (this._predicate2 != null)
+            if (this.predicate2 != null)
             {
-                ret = this._descending2 ? ret.ThenByDescending(this._predicate2) : ret.ThenBy(this._predicate2);
+                ret = this.descending2 ? ret.ThenByDescending(this.predicate2) : ret.ThenBy(this.predicate2);
             }
 
             return ret;

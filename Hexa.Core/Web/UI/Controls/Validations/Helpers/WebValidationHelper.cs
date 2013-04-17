@@ -94,13 +94,13 @@ namespace Hexa.Core.Web.UI.Controls
     {
         #region Fields
 
-        private readonly Control _Control;
-        private readonly Dictionary<Type, BaseConverter> _converters = new Dictionary<Type, BaseConverter>();
-        private readonly List<string> _UsedControlIdValues = new List<string>();
+        private readonly Control control;
+        private readonly Dictionary<Type, BaseConverter> converters = new Dictionary<Type, BaseConverter>();
+        private readonly List<string> usedControlIdValues = new List<string>();
 
-        private string _ValidationGroup = "";
-        private ValidatorDisplay _ValidatorDisplay = ValidatorDisplay.Static;
-        private string _ValidatorText = "";
+        private string validationGroup = "";
+        private ValidatorDisplay validatorDisplay = ValidatorDisplay.Static;
+        private string validatorText = "";
 
         #endregion Fields
 
@@ -111,7 +111,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// </summary>
         public WebValidationHelper(Control control)
         {
-            this._Control = control;
+            this.control = control;
             this.EnsureConvertersAreCreated();
         }
 
@@ -123,7 +123,7 @@ namespace Hexa.Core.Web.UI.Controls
         public WebValidationHelper(Control control, string validationGroup)
             : this(control)
         {
-            this._ValidationGroup = validationGroup;
+            this.validationGroup = validationGroup;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Hexa.Core.Web.UI.Controls
             string validatorText)
             : this(control, validationGroup, validatorDisplay)
         {
-            this._ValidatorText = validatorText;
+            this.validatorText = validatorText;
         }
 
         #endregion Constructors
@@ -175,11 +175,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return this._ValidationGroup;
+                return this.validationGroup;
             }
             set
             {
-                this._ValidationGroup = value;
+                this.validationGroup = value;
             }
         }
 
@@ -190,11 +190,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return this._ValidatorDisplay;
+                return this.validatorDisplay;
             }
             set
             {
-                this._ValidatorDisplay = value;
+                this.validatorDisplay = value;
             }
         }
 
@@ -205,11 +205,11 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return this._ValidatorText;
+                return this.validatorText;
             }
             set
             {
-                this._ValidatorText = value;
+                this.validatorText = value;
             }
         }
 
@@ -217,7 +217,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return this._Control;
+                return this.control;
             }
         }
 
@@ -225,7 +225,7 @@ namespace Hexa.Core.Web.UI.Controls
         {
             get
             {
-                return this._converters;
+                return this.converters;
             }
         }
 
@@ -264,12 +264,12 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 Type providerType = typeof(IValidationInfoProvider<>).MakeGenericType(new[] {entityType});
 
-                var provider = IoCContainer.GetInstance(providerType) as IValidationInfoProvider;
+                IValidationInfoProvider provider = IoCContainer.GetInstance(providerType) as IValidationInfoProvider;
 
                 validationInfos = provider.GetValidationInfo();
             }
 
-            var validators = new List<BaseValidator>();
+            List<BaseValidator> validators = new List<BaseValidator>();
 
             foreach (IValidationInfo validationInfo in validationInfos)
             {
@@ -301,7 +301,7 @@ namespace Hexa.Core.Web.UI.Controls
 
         private static BaseValidator GetInputFormatValidator(PropertyInfo pi)
         {
-            var validator = new ExtendedRegularExpressionValidator();
+            ExtendedRegularExpressionValidator validator = new ExtendedRegularExpressionValidator();
 
             if (pi.PropertyType == typeof(int))
             {
@@ -325,9 +325,9 @@ namespace Hexa.Core.Web.UI.Controls
 
         private string CreateControlId(string proposedID)
         {
-            if (!_UsedControlIdValues.Contains(proposedID))
+            if (!this.usedControlIdValues.Contains(proposedID))
             {
-                this._UsedControlIdValues.Add(proposedID);
+                this.usedControlIdValues.Add(proposedID);
                 return "v" + proposedID;
             }
             else
@@ -370,9 +370,9 @@ namespace Hexa.Core.Web.UI.Controls
             v.EnableViewState = false;
             v.ControlToValidate = controlToValidate.ID;
             v.ErrorMessage = validationInfo.ErrorMessage;
-            v.Text = this._ValidatorText;
-            v.Display = this._ValidatorDisplay;
-            v.ValidationGroup = this._ValidationGroup;
+            v.Text = this.validatorText;
+            v.Display = this.validatorDisplay;
+            v.ValidationGroup = this.validationGroup;
 
             if (!addToControl)
             {

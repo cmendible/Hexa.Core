@@ -23,8 +23,8 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Fields
 
-        private readonly ISpecification<T> _LeftSideSpecification;
-        private readonly ISpecification<T> _RightSideSpecification;
+        private readonly ISpecification<T> leftSideSpecification;
+        private readonly ISpecification<T> rightSideSpecification;
 
         #endregion Fields
 
@@ -47,8 +47,8 @@ namespace Hexa.Core.Domain.Specification
                 throw new ArgumentNullException("rightSide");
             }
 
-            _LeftSideSpecification = leftSide;
-            _RightSideSpecification = rightSide;
+            this.leftSideSpecification = leftSide;
+            this.rightSideSpecification = rightSide;
         }
 
         #endregion Constructors
@@ -62,7 +62,7 @@ namespace Hexa.Core.Domain.Specification
         {
             get
             {
-                return _LeftSideSpecification;
+                return this.leftSideSpecification;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Hexa.Core.Domain.Specification
         {
             get
             {
-                return _RightSideSpecification;
+                return this.rightSideSpecification;
             }
         }
 
@@ -87,8 +87,8 @@ namespace Hexa.Core.Domain.Specification
         /// <returns><see cref="Hexa.Core.Domain.Specification.ISpecification{T}"/></returns>
         public override Expression<Func<T, bool>> SatisfiedBy()
         {
-            Expression<Func<T, bool>> left = _LeftSideSpecification.SatisfiedBy();
-            Expression<Func<T, bool>> right = _RightSideSpecification.SatisfiedBy();
+            Expression<Func<T, bool>> left = this.leftSideSpecification.SatisfiedBy();
+            Expression<Func<T, bool>> right = this.rightSideSpecification.SatisfiedBy();
 
             return (left.AndAlso(right));
         }

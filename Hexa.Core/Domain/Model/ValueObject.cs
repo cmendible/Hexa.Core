@@ -23,7 +23,7 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Flags used to reflect over Generic Equeatable
         /// </summary>
-        protected BindingFlags RelfectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        protected BindingFlags reflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
@@ -68,7 +68,7 @@ namespace Hexa.Core.Domain
                 return false;
             }
 
-            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
+            foreach (FieldInfo field in GetType().GetFields(this.reflectingFlags))
             {
                 object value1 = field.GetValue(other);
                 object value2 = field.GetValue(this);
@@ -105,7 +105,7 @@ namespace Hexa.Core.Domain
             // so we include the object's type in the hash calculation
             int hashCode = GetType().GetHashCode();
 
-            foreach (FieldInfo field in GetType().GetFields(this.RelfectingFlags))
+            foreach (FieldInfo field in GetType().GetFields(this.reflectingFlags))
             {
                 object value = field.GetValue(this);
 
@@ -135,7 +135,7 @@ namespace Hexa.Core.Domain
         /// <summary>
         /// Flags used to reflect over Generic Equeatable
         /// </summary>
-        protected BindingFlags ReflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        protected BindingFlags reflectingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
@@ -262,7 +262,7 @@ namespace Hexa.Core.Domain
 
             while (t != typeof(object))
             {
-                FieldInfo[] tmp = t.GetFields(this.ReflectingFlags);
+                FieldInfo[] tmp = t.GetFields(this.reflectingFlags);
                 fields.AddRange(tmp);
                 t = t.BaseType;
             }

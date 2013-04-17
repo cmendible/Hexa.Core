@@ -64,9 +64,8 @@ namespace Hexa.Core.Xml
             if (stream != null)
             {
                 return new MemoryStream(stream);
-                ;
             }
-            var resolver = new XmlUrlResolver();
+            XmlUrlResolver resolver = new XmlUrlResolver();
             return resolver.GetEntity(absoluteUri, role, ofObjectToReturn);
         }
 

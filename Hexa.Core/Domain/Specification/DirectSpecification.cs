@@ -25,7 +25,7 @@ namespace Hexa.Core.Domain.Specification
     {
         #region Fields
 
-        private readonly Expression<Func<TEntity, bool>> _MatchingCriteria;
+        private readonly Expression<Func<TEntity, bool>> matchingCriteria;
 
         #endregion Fields
 
@@ -42,7 +42,7 @@ namespace Hexa.Core.Domain.Specification
                 throw new ArgumentNullException("matchingCriteria");
             }
 
-            _MatchingCriteria = matchingCriteria;
+            this.matchingCriteria = matchingCriteria;
         }
 
         #endregion Constructors
@@ -55,7 +55,7 @@ namespace Hexa.Core.Domain.Specification
         /// <returns></returns>
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
-            return _MatchingCriteria;
+            return this.matchingCriteria;
         }
 
         #endregion Methods

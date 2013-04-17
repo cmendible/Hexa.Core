@@ -46,7 +46,7 @@ namespace Hexa.Core.Domain
         #region Fields
 
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogger _logger;
+        private readonly ILogger logger;
 
         #endregion Fields
 
@@ -66,8 +66,8 @@ namespace Hexa.Core.Domain
 
             // set internal values
             this.unitOfWork = unitOfWork;
-            this._logger = loggerFactory.Create(GetType());
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
+            this.logger = loggerFactory.Create(GetType());
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
 
         #endregion Constructors
@@ -78,7 +78,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return this._logger;
+                return this.logger;
             }
         }
 
@@ -98,7 +98,7 @@ namespace Hexa.Core.Domain
             // add object to IObjectSet for this type
             this.unitOfWork.Add<TEntity>(entity);
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Hexa.Core.Domain
 
             this.unitOfWork.Attach<TEntity>(entity);
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public IEnumerable<TEntity> GetAll()
         {
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting all {0}", typeof(TEntity).Name));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting all {0}", typeof(TEntity).Name));
 
             // Create IObjectSet and perform query
             return (this.unitOfWork.Query<TEntity>()).AsEnumerable();
@@ -135,7 +135,7 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(specification, "specification");
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
             return (this.unitOfWork.Query<TEntity>()
                     .Where(specification.SatisfiedBy())
@@ -152,7 +152,7 @@ namespace Hexa.Core.Domain
             // checking query arguments
             Guard.IsNotNull(filter, "filter");
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
             return this.unitOfWork.Query<TEntity>()
@@ -175,7 +175,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(filter, "filter");
             Guard.IsNotNull(orderByExpression, "orderByExpression");
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
             var objectSet = this.unitOfWork.Query<TEntity>();
@@ -208,7 +208,7 @@ namespace Hexa.Core.Domain
             Guard.Against<ArgumentException>(pageCount <= 0, "pageCount");
             Guard.IsNotNull(orderByExpression, "orderByExpression");
 
-            this._logger.Debug(
+            this.logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
@@ -252,7 +252,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(orderByExpression, "orderByExpression");
             Guard.IsNotNull(specification, "specification");
 
-            this._logger.Debug(
+            this.logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
@@ -287,7 +287,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(orderByExpression, "orderByExpression");
             Guard.IsNotNull(filter, "filter");
 
-            this._logger.Debug(
+            this.logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderByExpression.ToString()));
@@ -322,7 +322,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(orderBySpecification, "orderBySpecification");
             Guard.IsNotNull(specification, "specification");
 
-            this._logger.Debug(
+            this.logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
@@ -351,7 +351,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(orderBySpecification, "orderBySpecification");
             Guard.IsNotNull(filter, "filter");
 
-            this._logger.Debug(
+            this.logger.Debug(
                 string.Format(CultureInfo.InvariantCulture,
                               "Getting paged elements {0}, pageIndex: {1}, pageCount {2}, oderBy {3}",
                               typeof(TEntity).Name, pageIndex, pageCount, orderBySpecification.ToString()));
@@ -376,7 +376,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(entity, "entity");
             this.unitOfWork.Modify<TEntity>(entity);
 
-            this._logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
+            this.logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
         }
 
         public IQueryable<TEntity> Query()
@@ -394,7 +394,7 @@ namespace Hexa.Core.Domain
             Guard.IsNotNull(entity, "entity");
             this.unitOfWork.Delete<TEntity>(entity);
 
-            this._logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
+            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
         }
 
         #endregion Methods
