@@ -26,7 +26,7 @@ namespace Hexa.Core.Domain.Tests
 
     using NUnit.Framework;
 
-    using Rhino.Mocks;
+    using Moq;
 
     using Specification;
     using Microsoft.Practices.Unity;
@@ -598,13 +598,12 @@ namespace Hexa.Core.Domain.Tests
 
         private ILoggerFactory _MockLoggerFactory()
         {
-            var logger = MockRepository.GenerateMock<ILogger>();
-            var loggerFactory = MockRepository.GenerateMock<ILoggerFactory>();
-            loggerFactory.Expect(l => l.Create(GetType()))
-            .IgnoreArguments()
-            .Return(logger);
+            var loggerMock = new Mock<ILogger>();
+            var loggerFactoryMock = new Mock<ILoggerFactory>();
+            loggerFactoryMock.Setup(l => l.Create(It.IsAny<Type>()))
+                .Returns(loggerMock.Object);
 
-            return loggerFactory;
+            return loggerFactoryMock.Object;
         }
 
         private IUnitOfWork _MockUnitOfWork()
@@ -620,24 +619,20 @@ namespace Hexa.Core.Domain.Tests
                 }
             };
 
-            var actual = MockRepository.GenerateMock<IUnitOfWork>();
-            actual.Expect(w => w.Query<Entity>())
-            .Return(list.AsQueryable());
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(w => w.Query<Entity>())
+                .Returns(list.AsQueryable());
 
-            actual.Expect(w => w.Add<Entity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Add(mi.Arguments[0] as Entity); });
+            unitOfWorkMock.Setup(w => w.Add<Entity>(It.IsAny<Entity>()))
+                .Callback((Entity e) => { list.Add(e); });
 
-            actual.Expect(w => w.Attach<Entity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Add(mi.Arguments[0] as Entity); });
+            unitOfWorkMock.Setup(w => w.Attach<Entity>(It.IsAny<Entity>()))
+                .Callback((Entity e) => { list.Add(e); });
 
-            actual.Expect(w => w.Delete<Entity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Remove(mi.Arguments[0] as Entity); });
+            unitOfWorkMock.Setup(w => w.Delete<Entity>(It.IsAny<Entity>()))
+                .Callback((Entity e) => { list.Remove(e); });
 
-
-            return actual;
+            return unitOfWorkMock.Object;
         }
 
         #endregion Methods

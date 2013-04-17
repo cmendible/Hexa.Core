@@ -21,7 +21,7 @@ namespace Hexa.Core.Domain.Tests
     using NUnit.Framework;
 
     using Specification;
-    using Rhino.Mocks;
+    using Moq;
 
     /// <summary>
     /// This is a base class for testing repositories. This base class
@@ -103,35 +103,31 @@ namespace Hexa.Core.Domain.Tests
 
         public ILoggerFactory GetLoggerFactory()
         {
-            var logger = MockRepository.GenerateMock<ILogger>();
-            var loggerFactory = MockRepository.GenerateMock<ILoggerFactory>();
-            loggerFactory.Expect(l => l.Create(GetType()))
-            .IgnoreArguments()
-            .Return(logger);
+            var loggerMock = new Mock<ILogger>();
+            var loggerFactoryMock = new Mock<ILoggerFactory>();
+            loggerFactoryMock.Setup(l => l.Create(It.IsAny<Type>()))
+                .Returns(loggerMock.Object);
 
-            return loggerFactory;
+            return loggerFactoryMock.Object;
         }
 
         public IUnitOfWork GetUnitOfWork()
         {
             var list = new List<TEntity>();
-            var actual = MockRepository.GenerateMock<IUnitOfWork>();
-            actual.Expect(w => w.Query<TEntity>())
-            .Return(list.AsQueryable());
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock.Setup(w => w.Query<TEntity>())
+                .Returns(list.AsQueryable());
 
-            actual.Expect(w => w.Add<TEntity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Add(mi.Arguments[0] as TEntity); });
+            unitOfWorkMock.Setup(w => w.Add<TEntity>(It.IsAny<TEntity>()))
+                .Callback((TEntity e) => { list.Add(e); });
 
-            actual.Expect(w => w.Attach<TEntity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Add(mi.Arguments[0] as TEntity); });
+            unitOfWorkMock.Setup(w => w.Attach<TEntity>(It.IsAny<TEntity>()))
+                .Callback((TEntity e) => { list.Add(e); });
 
-            actual.Expect(w => w.Delete<TEntity>(null))
-                .IgnoreArguments()
-                .WhenCalled((mi) => { list.Remove(mi.Arguments[0] as TEntity); });
+            unitOfWorkMock.Setup(w => w.Delete<TEntity>(It.IsAny<TEntity>()))
+                .Callback((TEntity e) => { list.Remove(e); });
 
-            return actual;
+            return unitOfWorkMock.Object;
         }
 
         [Test]
