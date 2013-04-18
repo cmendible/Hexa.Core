@@ -87,7 +87,7 @@ namespace Hexa.Core.Tests.RavenTests
         {
             EntityA entityA = this._Add_EntityA();
 
-            var repo = IoCContainer.GetInstance<IEntityARepository>();
+            var repo = ServiceLocator.GetInstance<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
 
@@ -97,7 +97,7 @@ namespace Hexa.Core.Tests.RavenTests
 
             Commit();
 
-            repo = IoCContainer.GetInstance<IEntityARepository>();
+            repo = ServiceLocator.GetInstance<IEntityARepository>();
             Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Count());
         }
 
@@ -105,7 +105,7 @@ namespace Hexa.Core.Tests.RavenTests
         public void FixtureSetup()
         {
             unityContainer = new UnityContainer();
-            IoCContainer.Initialize(
+            ServiceLocator.Initialize(
                         (x, y) => unityContainer.RegisterType(x, y),
                         (x, y) => unityContainer.RegisterInstance(x, y),
                         (x) => { return unityContainer.Resolve(x); },
@@ -119,7 +119,7 @@ namespace Hexa.Core.Tests.RavenTests
             Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.Create();
 
             unityContainer.RegisterInstance<Raven.Client.Document.DocumentStore>(sessionFactory);
-            IoCContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
+            ServiceLocator.RegisterInstance<IDatabaseManager>(ctxFactory);
 
             unityContainer.RegisterType<IUnitOfWork, RavenUnitOfWork>(unitOfWorkPerTestLifeTimeManager);
 
@@ -139,7 +139,7 @@ namespace Hexa.Core.Tests.RavenTests
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            var dbManager = IoCContainer.GetInstance<IDatabaseManager>();
+            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
             dbManager.DeleteDatabase();
         }
 
@@ -148,7 +148,7 @@ namespace Hexa.Core.Tests.RavenTests
         {
             EntityA entityA = this._Add_EntityA();
 
-            var repo = IoCContainer.GetInstance<IEntityARepository>();
+            var repo = ServiceLocator.GetInstance<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
         }
@@ -158,7 +158,7 @@ namespace Hexa.Core.Tests.RavenTests
         {
             EntityA entityA = this._Add_EntityA();
 
-            var repo = IoCContainer.GetInstance<IEntityARepository>();
+            var repo = ServiceLocator.GetInstance<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
 
@@ -170,7 +170,7 @@ namespace Hexa.Core.Tests.RavenTests
 
             Thread.Sleep(1000);
 
-            repo = IoCContainer.GetInstance<IEntityARepository>();
+            repo = ServiceLocator.GetInstance<IEntityARepository>();
             EntityA entityA2 = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
             Assert.AreEqual("Maria", entityA2.Name);
             //Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);
@@ -181,7 +181,7 @@ namespace Hexa.Core.Tests.RavenTests
             var entityA = new EntityA();
             entityA.Name = "Martin";
 
-            var repo = IoCContainer.GetInstance<IEntityARepository>();
+            var repo = ServiceLocator.GetInstance<IEntityARepository>();
             repo.Add(entityA);
 
             Commit();

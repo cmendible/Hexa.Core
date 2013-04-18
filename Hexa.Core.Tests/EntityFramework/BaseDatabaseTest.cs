@@ -104,7 +104,7 @@ namespace Hexa.Core.Tests.EntityFramework
         public void FixtureSetup()
         {
             unityContainer = new UnityContainer();
-            IoCContainer.Initialize(
+            ServiceLocator.Initialize(
                         (x, y) => unityContainer.RegisterType(x, y),
                         (x, y) => unityContainer.RegisterInstance(x, y),
                         (x) => { return unityContainer.Resolve(x); },

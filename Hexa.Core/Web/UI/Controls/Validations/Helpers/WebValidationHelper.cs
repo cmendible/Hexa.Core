@@ -264,7 +264,7 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 Type providerType = typeof(IValidationInfoProvider<>).MakeGenericType(new[] {entityType});
 
-                IValidationInfoProvider provider = IoCContainer.GetInstance(providerType) as IValidationInfoProvider;
+                IValidationInfoProvider provider = ServiceLocator.GetInstance(providerType) as IValidationInfoProvider;
 
                 validationInfos = provider.GetValidationInfo();
             }

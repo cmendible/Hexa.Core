@@ -31,7 +31,7 @@
             {
                 if (this._authorizationService == null)
                 {
-                    this._authorizationService = IoCContainer.GetInstance<IAuthorizationService>();
+                    this._authorizationService = ServiceLocator.GetInstance<IAuthorizationService>();
                 }
 
                 return this._authorizationService;
@@ -48,7 +48,7 @@
             {
                 if (this._siteMapBuilder == null)
                 {
-                    this._siteMapBuilder = IoCContainer.GetInstance<ISiteMapBuilderService>();
+                    this._siteMapBuilder = ServiceLocator.GetInstance<ISiteMapBuilderService>();
                 }
 
                 return this._siteMapBuilder;

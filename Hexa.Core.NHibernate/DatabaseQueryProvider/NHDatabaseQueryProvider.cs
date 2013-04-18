@@ -11,7 +11,7 @@ namespace Hexa.Core.Domain
     {
         public IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters)
         {
-            INHibernateUnitOfWork unitOfWork = IoCContainer.GetInstance<IUnitOfWork>() as INHibernateUnitOfWork;
+            INHibernateUnitOfWork unitOfWork = ServiceLocator.GetInstance<IUnitOfWork>() as INHibernateUnitOfWork;
             IQuery query = unitOfWork.Session.GetNamedQuery(queryName);
             foreach (var parameter in parameters)
             {

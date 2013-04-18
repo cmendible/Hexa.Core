@@ -131,7 +131,7 @@ namespace Hexa.Core.Tests.Sql
             //ApplicationContext.Start(containerWrapper, this.ConnectionString());
 
             unityContainer = new UnityContainer();
-            IoCContainer.Initialize(
+            ServiceLocator.Initialize(
                         (x, y) => unityContainer.RegisterType(x, y),
                         (x, y) => unityContainer.RegisterInstance(x, y),
                         (x) => { return unityContainer.Resolve(x); },

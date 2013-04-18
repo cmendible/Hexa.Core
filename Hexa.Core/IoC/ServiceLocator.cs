@@ -25,7 +25,7 @@ namespace Hexa.Core
     using System.Collections.Generic;
     using System.Collections;
 
-    public static class IoCContainer
+    public static class ServiceLocator
     {
         #region Fields
 
@@ -37,7 +37,7 @@ namespace Hexa.Core
         #endregion Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IoCContainer"/> class.
+        /// Initializes a new instance of the <see cref="ServiceLocator"/> class.
         /// </summary>
         /// <param name="registerCallback">The register callback.</param>
         public static void Initialize(

@@ -26,7 +26,7 @@
         {
             if (controllerType != null)
             {
-                return IoCContainer.GetInstance(controllerType) as IController;
+                return ServiceLocator.GetInstance(controllerType) as IController;
             }
             else
             {

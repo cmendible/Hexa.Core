@@ -21,38 +21,23 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.Linq;
+    using System.Text;
 
-    public static class DomainEvents
+    /// <summary>
+    /// 
+    /// </summary>
+    [Obsolete]
+    public class UnitOfWorkScope
     {
-        [ThreadStatic] //so that each thread has its own callbacks
-        private static List<Delegate> actions;
-
-        //Registers a callback for the given domain event
-        public static void Register<T>(Action<T> callback) where T : IDomainEvent
+        public static IUnitOfWork Start()
         {
-            if (actions == null)
-                actions = new List<Delegate>();
-
-            actions.Add(callback);
+            return Start<IUnitOfWork>();
         }
 
-        //Clears callbacks passed to Register on the current thread
-        public static void ClearCallbacks()
+        public static IUnitOfWork Start<TUnitOfWork>() where TUnitOfWork : IUnitOfWork
         {
-            actions = null;
-        }
-
-        //Raises the given domain event
-        public static void Raise<T>(T args) where T : IDomainEvent
-        {
-            foreach (var handler in ServiceLocator.GetAllInstances<IDomainEventHandler<T>>())
-                handler.Handle(args);
-
-            if (actions != null)
-                foreach (var action in actions)
-                    if (action is Action<T>)
-                        ((Action<T>)action)(args);
+            return ServiceLocator.GetInstance<TUnitOfWork>();
         }
     }
 }

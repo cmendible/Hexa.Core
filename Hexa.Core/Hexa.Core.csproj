@@ -310,6 +310,7 @@
     <Compile Include="Domain\Repositories\EagerFetch\BaseFetchRequest.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
+    <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
     <Compile Include="IoC\ApplicationContext.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
     <Compile Include="Web\Services\AuthorizationService\IAuthorizationService.cs" />
@@ -342,7 +343,7 @@
     <Compile Include="Globalization\Gettext.cs" />
     <Compile Include="Globalization\GettextHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IoC\IoCContainer.cs" />
+    <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="Linq\PagingExtensions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Log4NetLoggerFactory.cs" />

@@ -134,7 +134,7 @@ namespace Hexa.Core.Domain
                                               BindingFlags.Instance | BindingFlags.NonPublic);
 
             Configuration nhConfiguration = pinfo.GetValue(cfg, null) as Configuration;
-            IoCContainer.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
+            ServiceLocator.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
 
             cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
             .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
