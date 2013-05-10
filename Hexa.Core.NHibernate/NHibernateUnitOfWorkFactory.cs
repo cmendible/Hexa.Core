@@ -43,17 +43,17 @@ namespace Hexa.Core.Domain
 
     [Export(typeof(IUnitOfWorkFactory))]
     [Export(typeof(IDatabaseManager))]
-    public sealed class NHibernateUnitOfWorkFactory : IUnitOfWorkFactory, IDatabaseManager
+    public class NHibernateUnitOfWorkFactory : IUnitOfWorkFactory, IDatabaseManager
     {
         #region Fields
 
-        private static Configuration _builtConfiguration;
-        private static string _connectionString;
-        private static DbProvider _DbProvider;
-        private static bool _InMemoryDatabase;
-        private static bool _validationSupported = true;
+        private static Configuration builtConfiguration;
+        private static string connectionString;
+        private static DbProvider dbProvider;
+        private static bool inMemoryDatabase;
+        private static bool validationSupported = true;
 
-        private ISessionFactory _sessionFactory;
+        private ISessionFactory sessionFactory;
 
         #endregion Fields
 
@@ -62,18 +62,18 @@ namespace Hexa.Core.Domain
         public NHibernateUnitOfWorkFactory(DbProvider provider, string connectionString, string cacheProvider,
             Assembly mappingsAssembly, IoCContainer container)
         {
-            _DbProvider = provider;
-            _connectionString = connectionString;
+            NHibernateUnitOfWorkFactory.dbProvider = provider;
+            NHibernateUnitOfWorkFactory.connectionString = connectionString;
 
             FluentConfiguration cfg = null;
 
-            switch (_DbProvider)
+            switch (dbProvider)
             {
             case DbProvider.MsSqlProvider:
             {
                 cfg = Fluently.Configure().Database(MsSqlConfiguration.MsSql2008
                                                     .Raw("format_sql", "true")
-                                                    .ConnectionString(_connectionString))
+                                                    .ConnectionString(connectionString))
                       .ExposeConfiguration(
                           c =>
                           c.Properties.Add(Environment.SqlExceptionConverter,
@@ -86,9 +86,9 @@ namespace Hexa.Core.Domain
             {
                 cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
                                                     .Raw("format_sql", "true")
-                                                    .ConnectionString(_connectionString));
+                                                    .ConnectionString(connectionString));
 
-                _InMemoryDatabase = _connectionString.ToUpperInvariant().Contains(":MEMORY:");
+                inMemoryDatabase = connectionString.ToUpperInvariant().Contains(":MEMORY:");
 
                 break;
             }
@@ -96,13 +96,13 @@ namespace Hexa.Core.Domain
             {
                 cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
                                                     .Raw("format_sql", "true")
-                                                    .ConnectionString(_connectionString))
+                                                    .ConnectionString(connectionString))
                       .ExposeConfiguration(
                           c =>
                           c.Properties.Add(Environment.SqlExceptionConverter,
                                            typeof(SqlExceptionHandler).AssemblyQualifiedName));
 
-                _validationSupported = false;
+                validationSupported = false;
 
                 break;
             }
@@ -110,7 +110,7 @@ namespace Hexa.Core.Domain
             {
                 cfg = Fluently.Configure().Database(new FirebirdConfiguration()
                                                     .Raw("format_sql", "true")
-                                                    .ConnectionString(_connectionString));
+                                                    .ConnectionString(connectionString));
 
                 break;
             }
@@ -118,9 +118,9 @@ namespace Hexa.Core.Domain
             {
                 cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
                                                     .Raw("format_sql", "true")
-                                                    .ConnectionString(_connectionString));
+                                                    .ConnectionString(connectionString));
 
-                _validationSupported = false;
+                validationSupported = false;
 
                 break;
             }
@@ -128,7 +128,7 @@ namespace Hexa.Core.Domain
 
             Guard.IsNotNull(cfg,
                             string.Format("Db provider {0} is currently not supported.",
-                                          EnumExtensions.GetEnumMemberValue(_DbProvider)));
+                                          EnumExtensions.GetEnumMemberValue(dbProvider)));
 
             PropertyInfo pinfo = typeof(FluentConfiguration)
                                  .GetProperty("Configuration",
@@ -153,32 +153,13 @@ namespace Hexa.Core.Domain
                 .ExposeConfiguration(c => c.Properties.Add(Environment.UseQueryCache, "true"));
             }
 
-            _builtConfiguration = cfg.BuildConfiguration();
-            _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
+            builtConfiguration = cfg.BuildConfiguration();
+            builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
                                             typeof(DefaultProxyFactoryFactory).
                                             AssemblyQualifiedName);
 
-            #region Add Listeners to NHibernate pipeline....
-
-            _builtConfiguration.SetListeners(ListenerType.Flush,
-            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
-
-            _builtConfiguration.SetListeners(ListenerType.FlushEntity,
-            new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
-
-            _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-                                                 new IPreInsertEventListener[]
-            {new ValidateEventListener(), new AuditEventListener()}).
-                                             ToArray());
-
-            _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-                                                 new IPreUpdateEventListener[]
-            {new ValidateEventListener(), new AuditEventListener()}).
-                                             ToArray());
-
-            #endregion
+            // Add Listeners to NHibernate pipeline....
+            SetListeners(builtConfiguration);
         }
 
         internal NHibernateUnitOfWorkFactory()
@@ -191,31 +172,31 @@ namespace Hexa.Core.Domain
 
         public IUnitOfWork Create()
         {
-            this._CreateSessionFactory();
+            this.CreateSessionFactory();
 
-            if (_InMemoryDatabase)
+            if (inMemoryDatabase)
             {
-                ISession session = this._sessionFactory.OpenSession();
-                new SchemaExport(_builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
-                return new NHibernateUnitOfWork(this._sessionFactory);
+                ISession session = this.sessionFactory.OpenSession();
+                new SchemaExport(builtConfiguration).Execute(false, true, false, session.Connection, Console.Out);
+                return new NHibernateUnitOfWork(this.sessionFactory);
             }
 
-            return new NHibernateUnitOfWork(this._sessionFactory);
+            return new NHibernateUnitOfWork(this.sessionFactory);
         }
 
         public void CreateDatabase()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(dbProvider, connectionString);
 
             // Check if database exists.. (and create it if needed)
             if (!dbManager.DatabaseExists())
             {
                 dbManager.CreateDatabase();
-                new SchemaExport(_builtConfiguration).Create(false, true);
+                new SchemaExport(builtConfiguration).Create(false, true);
 
-                if (_DbProvider == DbProvider.MsSqlProvider)
+                if (dbProvider == DbProvider.MsSqlProvider)
                 {
-                    using (var conn = new SqlConnection(_connectionString))
+                    using (var conn = new SqlConnection(connectionString))
                     {
                         try
                         {
@@ -238,13 +219,13 @@ namespace Hexa.Core.Domain
 
         public bool DatabaseExists()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(dbProvider, connectionString);
             return dbManager.DatabaseExists();
         }
 
         public void DeleteDatabase()
         {
-            var dbManager = new DatabaseManager(_DbProvider, _connectionString);
+            var dbManager = new DatabaseManager(dbProvider, connectionString);
 
             if (dbManager.DatabaseExists())
             {
@@ -254,24 +235,43 @@ namespace Hexa.Core.Domain
 
         public void RegisterSessionFactory(IoCContainer container)
         {
-            this._CreateSessionFactory();
-            container.RegisterInstance<ISessionFactory>(this._sessionFactory);
+            this.CreateSessionFactory();
+            container.RegisterInstance<ISessionFactory>(this.sessionFactory);
         }
 
         public void ValidateDatabaseSchema()
         {
-            if (!_InMemoryDatabase && _validationSupported)
+            if (!inMemoryDatabase && validationSupported)
             {
-                new SchemaValidator(_builtConfiguration).Validate();
+                new SchemaValidator(builtConfiguration).Validate();
             }
         }
 
-        private void _CreateSessionFactory()
+        private void CreateSessionFactory()
         {
-            if (this._sessionFactory == null)
+            if (this.sessionFactory == null)
             {
-                this._sessionFactory = _builtConfiguration.BuildSessionFactory();
+                this.sessionFactory = builtConfiguration.BuildSessionFactory();
             }
+        }
+
+        protected virtual void SetListeners(Configuration builtConfiguration)
+        {
+            builtConfiguration.SetListeners(ListenerType.Flush,
+            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
+
+            builtConfiguration.SetListeners(ListenerType.FlushEntity,
+            new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
+
+            builtConfiguration.SetListeners(ListenerType.PreInsert,
+                                             builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
+                                                 new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
+                                             ToArray());
+
+            builtConfiguration.SetListeners(ListenerType.PreUpdate,
+                                             builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
+                                                 new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
+                                             ToArray());
         }
 
         #endregion Methods

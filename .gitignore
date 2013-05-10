@@ -12,3 +12,5 @@ Hexa.Core.xml
 /packages
 *.userprefs
 *.nupkg
+*.user
+*.Cache
