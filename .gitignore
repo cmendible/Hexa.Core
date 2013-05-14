@@ -13,4 +13,7 @@ Hexa.Core.xml
 *.userprefs
 *.nupkg
 *.user
+*.Cache
 /Hexa.Core.Web.Mvc/StyleCop.Cache
+.build
+/Build.proj
