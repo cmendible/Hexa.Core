@@ -21,7 +21,7 @@
 	</PropertyGroup>
 
 	<!-- This is needed by MSBuild to locate the NUnit task -->
-	<UsingTask AssemblyFile="$(SolutionDir)\.build\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" 
+	<UsingTask AssemblyFile="$(SolutionDir)\packages\MSBuildTasks.1.4.0.56\tools\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" 
 		Condition="'$(EnableNUnit)' == 'true'"/>
 
 	<Target Name="RunNUnit" Condition="'$(EnableNUnit)' == 'true'">
