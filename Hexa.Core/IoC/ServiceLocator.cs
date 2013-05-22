@@ -71,6 +71,28 @@ namespace Hexa.Core
         /// Gets the service.
         /// </summary>
         /// <returns></returns>
+        public static TDependency GetInstance<TDependency>(string key)
+        {
+            TDependency service;
+
+            try
+            {
+                service = SL.ServiceLocator.Current.GetInstance<TDependency>(key);
+            }
+            catch (SL.ActivationException)
+            {
+                throw new SL.ActivationException("The needed dependency of type " + typeof(TDependency).Name +
+                                                 " could not be located with the ServiceLocator. You'll need to register it with " +
+                                                 "the Common Service Locator (CSL) via your IoC's CSL adapter.");
+            }
+
+            return service;
+        }
+
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA2204:Literals should be spelled correctly", MessageId = "ServiceLocator")]
         public static object GetInstance(Type dependencyType)
