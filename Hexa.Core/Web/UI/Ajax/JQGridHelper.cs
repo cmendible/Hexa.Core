@@ -158,6 +158,7 @@ namespace Hexa.Core.Web.UI.Ajax
         private string _multiSelect = "false";
         private string _onComplete = string.Empty;
         private string _onSelect = string.Empty;
+        private string _onSelectAll = string.Empty;
         private string _pager;
         private string _sortColumn = string.Empty;
         private string _sortOrder = string.Empty;
@@ -235,6 +236,12 @@ namespace Hexa.Core.Web.UI.Ajax
             return this;
         }
 
+        public jqGridHelper OnSelectAll(string onSelectAll)
+        {
+            _onSelectAll = onSelectAll;
+            return this;
+        }
+
         public jqGridHelper Pager(string pager)
         {
             this._pager = pager;
@@ -286,6 +293,11 @@ namespace Hexa.Core.Web.UI.Ajax
             if (!string.IsNullOrEmpty(this._onSelect))
             {
                 script += string.Format("onSelectRow: {0}, ", this._onSelect) + "\r\n";
+            }
+
+            if (!string.IsNullOrEmpty(_onSelectAll))
+            {
+                script += string.Format("onSelectAll: {0}, ", _onSelectAll) + "\r\n";
             }
 
             if (!string.IsNullOrEmpty(this._onComplete))
