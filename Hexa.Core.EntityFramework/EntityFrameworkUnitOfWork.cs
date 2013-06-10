@@ -21,7 +21,6 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.ComponentModel.Composition;
-
     using System.Data.Entity;
 
     [Export(typeof(IUnitOfWork))]
@@ -30,8 +29,8 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private bool disposed;
         private DbContext dbContext;
+        private bool disposed;
 
         #endregion Fields
 
@@ -48,19 +47,24 @@ namespace Hexa.Core.Domain
 
         public DbContext DbContext
         {
-            get { return this.dbContext; }
+            get
+            {
+                return this.dbContext;
+            }
         }
 
         #endregion Properties
 
         #region Methods
 
-        public void Add<TEntity>(TEntity entity) where TEntity : class
+        public void Add<TEntity>(TEntity entity)
+            where TEntity : class
         {
             this.dbContext.Set<TEntity>().Add(entity);
         }
 
-        public void Attach<TEntity>(TEntity entity) where TEntity : class
+        public void Attach<TEntity>(TEntity entity)
+            where TEntity : class
         {
             this.dbContext.Set<TEntity>().Attach(entity);
         }
@@ -70,7 +74,8 @@ namespace Hexa.Core.Domain
             this.dbContext.SaveChanges();
         }
 
-        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        public void Delete<TEntity>(TEntity entity)
+            where TEntity : class
         {
             this.dbContext.Set<TEntity>().Remove(entity);
         }
@@ -89,14 +94,16 @@ namespace Hexa.Core.Domain
             GC.SuppressFinalize(this);
         }
 
-        public void Modify<TEntity>(TEntity entity) where TEntity : class
+        public void Modify<TEntity>(TEntity entity)
+            where TEntity : class
         {
             var entry = this.dbContext.Entry(entity);
 
             entry.State = System.Data.EntityState.Modified;
         }
 
-        public System.Linq.IQueryable<TEntity> Query<TEntity>() where TEntity : class
+        public System.Linq.IQueryable<TEntity> Query<TEntity>()
+            where TEntity : class
         {
             return this.dbContext.Set<TEntity>();
         }
@@ -131,6 +138,5 @@ namespace Hexa.Core.Domain
         }
 
         #endregion Methods
-       
     }
 }

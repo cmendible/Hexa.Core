@@ -17,6 +17,7 @@
 
 #endregion Header
 
+
 #if MONO
 
 namespace Hexa.Core.Mono.Tests
@@ -50,8 +51,8 @@ namespace Hexa.Core.Mono.Tests
 
             // Context Factory
             var ctxFactory = new NHibernateUnitOfWorkFactory(DbProvider.PostgreSQLProvider,
-                                                  cnnString, string.Empty, typeof(PostgreSQLTest).Assembly,
-                                                  ApplicationContext.Container);
+                    cnnString, string.Empty, typeof(PostgreSQLTest).Assembly,
+                    ApplicationContext.Container);
 
             container.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
             container.RegisterInstance<IDatabaseManager>(ctxFactory);

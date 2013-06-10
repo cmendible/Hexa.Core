@@ -25,7 +25,13 @@ namespace Hexa.Core.Domain
 
     public static class EagerFetch
     {
+        #region Fields
+
         public static Func<IFetchProvider> FetchingProvider;
+
+        #endregion Fields
+
+        #region Methods
 
         public static IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(
             this IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
@@ -33,5 +39,7 @@ namespace Hexa.Core.Domain
         {
             return FetchingProvider().Fetch(query, relatedObjectSelector);
         }
+
+        #endregion Methods
     }
 }

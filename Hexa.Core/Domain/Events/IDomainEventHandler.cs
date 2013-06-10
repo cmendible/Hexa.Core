@@ -19,8 +19,21 @@
 
 namespace Hexa.Core.Domain
 {
-    public interface IDomainEventHandler<T> where T : IDomainEvent
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IDomainEventHandler<T>
+        where T : IDomainEvent
     {
-        void Handle(T args); 
-    } 
+        #region Methods
+
+        /// <summary>
+        /// Handles the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        void Handle(T args);
+
+        #endregion Methods
+    }
 }

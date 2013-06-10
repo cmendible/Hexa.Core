@@ -25,11 +25,14 @@ namespace Hexa.Core.Domain
 
     public class RavenFetchProvider : IFetchProvider
     {
+        #region Methods
+
         public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
             where TOriginating : class
         {
             return new BaseFetchRequest<TOriginating, TRelated>(query);
         }
 
+        #endregion Methods
     }
 }

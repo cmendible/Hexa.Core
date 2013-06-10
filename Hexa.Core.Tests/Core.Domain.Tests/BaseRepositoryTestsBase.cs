@@ -12,16 +12,17 @@
 namespace Hexa.Core.Domain.Tests
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
 
     using Logging;
 
+    using Moq;
+
     using NUnit.Framework;
 
     using Specification;
-    using Moq;
 
     /// <summary>
     /// This is a base class for testing repositories. This base class
@@ -106,7 +107,7 @@ namespace Hexa.Core.Domain.Tests
             var loggerMock = new Mock<ILogger>();
             var loggerFactoryMock = new Mock<ILoggerFactory>();
             loggerFactoryMock.Setup(l => l.Create(It.IsAny<Type>()))
-                .Returns(loggerMock.Object);
+            .Returns(loggerMock.Object);
 
             return loggerFactoryMock.Object;
         }
@@ -116,16 +117,16 @@ namespace Hexa.Core.Domain.Tests
             var list = new List<TEntity>();
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkMock.Setup(w => w.Query<TEntity>())
-                .Returns(list.AsQueryable());
+            .Returns(list.AsQueryable());
 
             unitOfWorkMock.Setup(w => w.Add<TEntity>(It.IsAny<TEntity>()))
-                .Callback((TEntity e) => { list.Add(e); });
+            .Callback((TEntity e) => { list.Add(e); });
 
             unitOfWorkMock.Setup(w => w.Attach<TEntity>(It.IsAny<TEntity>()))
-                .Callback((TEntity e) => { list.Add(e); });
+            .Callback((TEntity e) => { list.Add(e); });
 
             unitOfWorkMock.Setup(w => w.Delete<TEntity>(It.IsAny<TEntity>()))
-                .Callback((TEntity e) => { list.Remove(e); });
+            .Callback((TEntity e) => { list.Remove(e); });
 
             return unitOfWorkMock.Object;
         }

@@ -3,20 +3,20 @@
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
+    using NHibernate;
     using NHibernate.Event;
     using NHibernate.Event.Default;
     using NHibernate.Persister.Entity;
-    using NHibernate;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener

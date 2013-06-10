@@ -25,19 +25,24 @@ namespace Hexa.Core.Domain
     using System.Text;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Obsolete]
     public class UnitOfWorkScope
     {
+        #region Methods
+
         public static IUnitOfWork Start()
         {
             return Start<IUnitOfWork>();
         }
 
-        public static IUnitOfWork Start<TUnitOfWork>() where TUnitOfWork : IUnitOfWork
+        public static IUnitOfWork Start<TUnitOfWork>()
+            where TUnitOfWork : IUnitOfWork
         {
             return ServiceLocator.GetInstance<TUnitOfWork>();
         }
+
+        #endregion Methods
     }
 }

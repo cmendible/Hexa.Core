@@ -4,6 +4,7 @@
     using System.Runtime.Serialization.Json;
     using System.Text;
     using System.Web.Mvc;
+
     using Hexa.Core.Domain.Specification;
 
     public class GridModelBinder : IModelBinder
@@ -41,6 +42,5 @@
     [ModelBinder(typeof(GridModelBinder))]
     public class GridSettings : SpecificationModel
     {
-
     }
 }

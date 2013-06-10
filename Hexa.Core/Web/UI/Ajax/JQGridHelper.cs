@@ -57,14 +57,12 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             try
             {
-                var serializer =
-                    new DataContractJsonSerializer(typeof(jqFilter));
-                var reader =
-                    new StringReader(jsonData);
-                var ms =
-                    new MemoryStream(
-                    Encoding.Default.GetBytes(jsonData));
-                return serializer.ReadObject(ms) as jqFilter;
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(jqFilter));
+                using (StringReader reader = new StringReader(jsonData))
+                using (MemoryStream ms = new MemoryStream(Encoding.Default.GetBytes(jsonData)))
+                {
+                    return serializer.ReadObject(ms) as jqFilter;
+                }
             }
             catch
             {

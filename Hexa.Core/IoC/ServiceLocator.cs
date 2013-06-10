@@ -20,10 +20,10 @@
 namespace Hexa.Core
 {
     using System;
-    using System.Linq;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Collections.Generic;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     public static class ServiceLocator
     {
@@ -31,17 +31,41 @@ namespace Hexa.Core
 
         private static Action<Type, object> registerInstanceCallback;
         private static Action<Type, Type> registerTypeCallback;
-        private static Func<Type, object> resolveCallback;
         private static Func<Type, IEnumerable<object>> resolveAllCallback;
+        private static Func<Type, object> resolveCallback;
 
         #endregion Fields
+
+        #region Methods
+
+        public static TDependency[] GetAllInstances<TDependency>()
+        {
+            IEnumerable<object> services = resolveAllCallback(typeof(TDependency));
+
+            if (services != null)
+            {
+                return services.Cast<TDependency>().ToArray();
+            }
+
+            return default(TDependency[]);
+        }
+
+        public static TDependency GetInstance<TDependency>()
+        {
+            return (TDependency)GetInstance(typeof(TDependency));
+        }
+
+        public static object GetInstance(Type dependencyType)
+        {
+            return resolveCallback(dependencyType);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceLocator"/> class.
         /// </summary>
         /// <param name="registerCallback">The register callback.</param>
         public static void Initialize(
-            Action<Type, Type> registerType, 
+            Action<Type, Type> registerType,
             Action<Type, object> registerInstance,
             Func<Type, object> resolve,
             Func<Type, IEnumerable<object>> resolveAll
@@ -52,8 +76,6 @@ namespace Hexa.Core
             resolveCallback = resolve;
             resolveAllCallback = resolveAll;
         }
-
-        #region Methods
 
         /// <summary>
         /// Registers the instance.
@@ -106,28 +128,6 @@ namespace Hexa.Core
             {
                 registerTypeCallback(@interface, @type);
             }
-        }
-
-        public static TDependency[] GetAllInstances<TDependency>()
-        {
-            IEnumerable<object> services = resolveAllCallback(typeof(TDependency));
-
-            if (services != null)
-            {
-                return services.Cast<TDependency>().ToArray();
-            }
-
-            return default(TDependency[]);
-        }
-
-        public static TDependency GetInstance<TDependency>()
-        {
-            return (TDependency)GetInstance(typeof(TDependency));
-        }
-
-        public static object GetInstance(Type dependencyType)
-        {
-            return resolveCallback(dependencyType);
         }
 
         public static TDependency TryGetInstance<TDependency>()

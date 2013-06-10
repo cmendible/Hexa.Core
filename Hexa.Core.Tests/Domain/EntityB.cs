@@ -20,7 +20,7 @@
 namespace Hexa.Core.Tests.Domain
 {
     using System;
-	using System.Collections.Generic;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Core.Domain;
@@ -28,21 +28,23 @@ namespace Hexa.Core.Tests.Domain
     [Serializable]
     public class EntityB : AuditableEntity<EntityB>
     {
-		#region Fields
-		
-		private IList<EntityA> entitiesOfA;
+        #region Fields
 
-        #endregion
+        private IList<EntityA> entitiesOfA;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public EntityB()
+        {
+            this.entitiesOfA = new List<EntityA>();
+        }
+
+        #endregion Constructors
 
         #region Properties
 
-        [Required]
-        public virtual string Name
-        {
-            get;
-            set;
-        }
-		
         public virtual IEnumerable<EntityA> EntitiesOfA
         {
             get
@@ -51,15 +53,13 @@ namespace Hexa.Core.Tests.Domain
             }
         }
 
+        [Required]
+        public virtual string Name
+        {
+            get;
+            set;
+        }
+
         #endregion Properties
-		
-		#region Constructors
-		
-		public EntityB()
-		{
-			this.entitiesOfA = new List<EntityA>();
-		}
-		
-		#endregion
     }
 }

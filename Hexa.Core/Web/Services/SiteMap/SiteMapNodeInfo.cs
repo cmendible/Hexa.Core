@@ -26,22 +26,22 @@
 
         // Methods
         public SiteMapNodeInfo(string key)
-        : this(key, null, null, null, null, null, null, null)
+            : this(key, null, null, null, null, null, null, null)
         {
         }
 
         public SiteMapNodeInfo(string key, string url)
-        : this(key, url, null, null, null, null, null, null)
+            : this(key, url, null, null, null, null, null, null)
         {
         }
 
         public SiteMapNodeInfo(string key, string url, string title)
-        : this(key, url, title, null, null, null, null, null)
+            : this(key, url, title, null, null, null, null, null)
         {
         }
 
         public SiteMapNodeInfo(string key, string url, string title, string description)
-        : this(key, url, title, description, null, null, null, null)
+            : this(key, url, title, description, null, null, null, null)
         {
         }
 
@@ -59,7 +59,7 @@
         }
 
         public SiteMapNodeInfo(string key, string url, Func<string> title, Func<string> description)
-        : this(key, url, title.Invoke(), description.Invoke())
+            : this(key, url, title.Invoke(), description.Invoke())
         {
             TitleCallBack = title;
             DescriptionCallBack = description;

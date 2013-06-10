@@ -25,7 +25,11 @@ namespace Hexa.Core.Domain
 
     public interface IFetchProvider
     {
+        #region Methods
+
         IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
             where TOriginating : class;
+
+        #endregion Methods
     }
 }

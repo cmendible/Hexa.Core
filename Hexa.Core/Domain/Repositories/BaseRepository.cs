@@ -45,8 +45,8 @@ namespace Hexa.Core.Domain
     {
         #region Fields
 
-        private readonly IUnitOfWork unitOfWork;
         private readonly ILogger logger;
+        private readonly IUnitOfWork unitOfWork;
 
         #endregion Fields
 
@@ -380,8 +380,8 @@ namespace Hexa.Core.Domain
         }
 
         public IQueryable<TEntity> Query()
-        { 
-             return this.unitOfWork.Query<TEntity>();
+        {
+            return this.unitOfWork.Query<TEntity>();
         }
 
         /// <summary>

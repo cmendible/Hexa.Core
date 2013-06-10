@@ -32,10 +32,10 @@ namespace Hexa.Core.Tests.Data
             Map(h => h.Name);
 
             HasManyToMany(h => h.EntitiesOfB)
-                .Access.CamelCaseField()
-                .Table("EntityA_EntityB")
-                .ParentKeyColumn("EntityAUniqueId")
-                .ChildKeyColumn("EntityBUniqueId");
+            .Access.CamelCaseField()
+            .Table("EntityA_EntityB")
+            .ParentKeyColumn("EntityAUniqueId")
+            .ChildKeyColumn("EntityBUniqueId");
         }
 
         #endregion Constructors

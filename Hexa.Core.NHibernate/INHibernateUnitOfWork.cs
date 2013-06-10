@@ -20,11 +20,20 @@
 namespace Hexa.Core.Domain
 {
     using System;
+
     using Hexa.Core.Domain;
+
     using NHibernate;
 
     public interface INHibernateUnitOfWork : IUnitOfWork
     {
-        ISession Session { get; }
+        #region Properties
+
+        ISession Session
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 }

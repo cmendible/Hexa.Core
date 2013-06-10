@@ -23,11 +23,12 @@ namespace Hexa.Core.Domain
     using System.Collections.Generic;
     using System.Linq;
 
+    using Hexa.Core;
+
     using NHibernate.Event;
     using NHibernate.Event.Default;
     using NHibernate.Persister.Entity;
 
-    using Hexa.Core;
     using Security;
 
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
@@ -135,6 +136,4 @@ namespace Hexa.Core.Domain
 
         #endregion Methods
     }
-
-   
 }

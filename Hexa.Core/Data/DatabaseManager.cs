@@ -207,8 +207,8 @@ namespace Hexa.Core.Data
             try
             {
                 log.DebugFormat(CultureInfo.InvariantCulture,
-                                 "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
-                                 dbName, providerName, connStr);
+                                "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
+                                dbName, providerName, connStr);
 
                 // XXX: SQLite requires a somewhat special case.. ;)
                 if (providerName == SQLiteProvider)
@@ -230,26 +230,26 @@ namespace Hexa.Core.Data
 
                 switch (providerName)
                 {
-                    case MsSqlProvider:
-                        cmdText = string.Format(CultureInfo.InvariantCulture,
-                                                "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
-                        break;
-                    case MySqlProvider:
-                        cmdText = string.Format(CultureInfo.InvariantCulture,
-                                                @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
-                                                dbName);
-                        break;
-                    case OracleDataProvider:
-                        cmdText = "SELECT 1 FROM DUAL";
-                        break;
-                    case PostgreSQLProvider:
-                        cmdText = string.Format(CultureInfo.InvariantCulture,
-                                                "select count(*) from pg_catalog.pg_database where datname = '{0}'",
-                                                dbName);
-                        break;
-                    default:
-                        throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
-                                                        "Provider {0} is not supported", providerName));
+                case MsSqlProvider:
+                    cmdText = string.Format(CultureInfo.InvariantCulture,
+                                            "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
+                    break;
+                case MySqlProvider:
+                    cmdText = string.Format(CultureInfo.InvariantCulture,
+                                            @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
+                                            dbName);
+                    break;
+                case OracleDataProvider:
+                    cmdText = "SELECT 1 FROM DUAL";
+                    break;
+                case PostgreSQLProvider:
+                    cmdText = string.Format(CultureInfo.InvariantCulture,
+                                            "select count(*) from pg_catalog.pg_database where datname = '{0}'",
+                                            dbName);
+                    break;
+                default:
+                    throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
+                                                    "Provider {0} is not supported", providerName));
                 }
 
                 object ret = provider.ExecuteScalar(connStr, cmdText);
@@ -404,20 +404,20 @@ namespace Hexa.Core.Data
                                            dbName);
                 this.connectionProvider.ExecuteNonQuery(connStr, cmd);
                 this.connectionProvider.ExecuteNonQuery(connStr,
-                        string.Format(CultureInfo.InvariantCulture,
-                                      "DROP DATABASE [{0}]", dbName));
+                                                        string.Format(CultureInfo.InvariantCulture,
+                                                                "DROP DATABASE [{0}]", dbName));
             }
             else if (providerName == PostgreSQLProvider)
             {
                 this.connectionProvider.ExecuteNonQuery(connStr,
-                        string.Format(CultureInfo.InvariantCulture,
-                                      "DROP DATABASE \"{0}\"", dbName));
+                                                        string.Format(CultureInfo.InvariantCulture,
+                                                                "DROP DATABASE \"{0}\"", dbName));
             }
             else
             {
                 this.connectionProvider.ExecuteNonQuery(connStr,
-                        string.Format(CultureInfo.InvariantCulture,
-                                      "DROP DATABASE '{0}'", dbName));
+                                                        string.Format(CultureInfo.InvariantCulture,
+                                                                "DROP DATABASE '{0}'", dbName));
             }
         }
 

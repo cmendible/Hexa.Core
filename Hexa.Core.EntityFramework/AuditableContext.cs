@@ -22,12 +22,11 @@ namespace Hexa.Core.Domain
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
-
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
 
     using Hexa.Core.Security;
     using Hexa.Core.Validation;
@@ -36,7 +35,8 @@ namespace Hexa.Core.Domain
     {
         #region Constructors
 
-        public AuditableContext(string nameOrConnectionString) : base (nameOrConnectionString)
+        public AuditableContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 
@@ -114,17 +114,17 @@ namespace Hexa.Core.Domain
             }
         }
 
-        private string GetEntityUniqueId(object entity)
-        {
-            return string.Empty;
-        }
-
         protected void ValidateEntities()
         {
             foreach (DbEntityEntry<IValidatable> entry in ChangeTracker.Entries<IValidatable>())
             {
                 entry.Entity.AssertValidation();
             }
+        }
+
+        private string GetEntityUniqueId(object entity)
+        {
+            return string.Empty;
         }
 
         #endregion Methods

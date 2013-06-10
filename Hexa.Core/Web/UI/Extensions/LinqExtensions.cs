@@ -49,6 +49,7 @@ namespace Hexa.Core.Web.UI
         {
             string tableName = query.Context.Mapping.GetTable(typeof(T)).TableName;
             IList<T> result = HttpContext.Current.Cache[tableName] as List<T>;
+            SqlCacheDependency dependency = null;
 
             if (result == null)
             {
@@ -57,27 +58,29 @@ namespace Hexa.Core.Web.UI
                     using (var cn = new SqlConnection(query.Context.Connection.ConnectionString))
                     {
                         cn.Open();
-                        var cmd = new SqlCommand(query.Context.GetCommand(query).CommandText, cn);
-                        cmd.Notification = null;
-                        cmd.NotificationAutoEnlist = true;
+                        using (SqlCommand cmd = new SqlCommand(query.Context.GetCommand(query).CommandText, cn))
+                        {
+                            cmd.Notification = null;
+                            cmd.NotificationAutoEnlist = true;
 
-                        _Log.DebugFormat("Attempting to enable sql cache dependency notifications for table {0}",
-                                         tableName);
+                            _Log.DebugFormat("Attempting to enable sql cache dependency notifications for table {0}",
+                                             tableName);
 
-                        SqlCacheDependencyAdmin.EnableNotifications(query.Context.Connection.ConnectionString);
+                            SqlCacheDependencyAdmin.EnableNotifications(query.Context.Connection.ConnectionString);
 
-                        string[] tables =
-                            SqlCacheDependencyAdmin.GetTablesEnabledForNotifications(
-                                query.Context.Connection.ConnectionString);
+                            string[] tables =
+                                SqlCacheDependencyAdmin.GetTablesEnabledForNotifications(
+                                    query.Context.Connection.ConnectionString);
 
-                        if (!tables.Contains(tableName))
-                            SqlCacheDependencyAdmin.EnableTableForNotifications(
-                                query.Context.Connection.ConnectionString, tableName);
+                            if (!tables.Contains(tableName))
+                                SqlCacheDependencyAdmin.EnableTableForNotifications(
+                                    query.Context.Connection.ConnectionString, tableName);
 
-                        _Log.DebugFormat("Sql cache dependency notifications for table {0} is enabled.", tableName);
+                            _Log.DebugFormat("Sql cache dependency notifications for table {0} is enabled.", tableName);
 
-                        var dependency = new SqlCacheDependency(cmd);
-                        cmd.ExecuteNonQuery();
+                            dependency = new SqlCacheDependency(cmd);
+                            cmd.ExecuteNonQuery();
+                        }
 
                         result = query.ToList();
                         HttpContext.Current.Cache.Insert(tableName, result, dependency);

@@ -21,6 +21,9 @@ namespace Hexa.Core.Tests.EntityFramework
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Configuration;
+    using System.Data.Entity;
     using System.Linq;
     using System.Threading;
 
@@ -31,47 +34,29 @@ namespace Hexa.Core.Tests.EntityFramework
 
     using Domain;
 
+    using Hexa.Core.Tests.Sql;
+
     using Logging;
+
+    using Microsoft.Practices.Unity;
 
     using NUnit.Framework;
 
     using Security;
 
     using Validation;
-    using System.ComponentModel.Composition.Hosting;
-    using Microsoft.Practices.Unity;
-    using System.Configuration;
-    using Hexa.Core.Tests.Sql;
-    using System.Data.Entity;
 
     [TestFixture]
     public class SqlTest
     {
-        UnityContainer unityContainer;
+        #region Fields
+
         UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+        UnityContainer unityContainer;
+
+        #endregion Fields
 
         #region Methods
-
-        [NUnit.Framework.SetUp]
-        public void Setup()
-        {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Start();
-        }
-
-        public void Commit()
-        {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Commit();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Dispose();
-            unitOfWorkPerTestLifeTimeManager.RemoveValue();
-        }
 
         [Test]
         public void Add_EntityA()
@@ -82,6 +67,12 @@ namespace Hexa.Core.Tests.EntityFramework
             Assert.IsNotNull(entityA.Version);
             Assert.IsFalse(entityA.UniqueId == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
+        }
+
+        public void Commit()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Commit();
         }
 
         [Test]
@@ -105,11 +96,11 @@ namespace Hexa.Core.Tests.EntityFramework
         {
             unityContainer = new UnityContainer();
             ServiceLocator.Initialize(
-                        (x, y) => unityContainer.RegisterType(x, y),
-                        (x, y) => unityContainer.RegisterInstance(x, y),
-                        (x) => { return unityContainer.Resolve(x); },
-                        (x) => { return unityContainer.ResolveAll(x); }
-                    );
+                (x, y) => unityContainer.RegisterType(x, y),
+                (x, y) => unityContainer.RegisterInstance(x, y),
+                (x) => { return unityContainer.Resolve(x); },
+                (x) => { return unityContainer.ResolveAll(x); }
+            );
 
             unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
 
@@ -157,6 +148,21 @@ namespace Hexa.Core.Tests.EntityFramework
             var repo = unityContainer.Resolve<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
+        }
+
+        [NUnit.Framework.SetUp]
+        public void Setup()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Start();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Dispose();
+            unitOfWorkPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]

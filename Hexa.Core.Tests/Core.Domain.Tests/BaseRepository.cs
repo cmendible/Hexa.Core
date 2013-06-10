@@ -24,12 +24,14 @@ namespace Hexa.Core.Domain.Tests
 
     using Logging;
 
-    using NUnit.Framework;
+    using Microsoft.Practices.Unity;
 
     using Moq;
 
+    using NUnit.Framework;
+
     using Specification;
-    using Microsoft.Practices.Unity;
+
     /// <summary>
     ///This is a test class for RepositoryTest and is intended
     ///to contain all common RepositoryTest Unit Tests
@@ -601,7 +603,7 @@ namespace Hexa.Core.Domain.Tests
             var loggerMock = new Mock<ILogger>();
             var loggerFactoryMock = new Mock<ILoggerFactory>();
             loggerFactoryMock.Setup(l => l.Create(It.IsAny<Type>()))
-                .Returns(loggerMock.Object);
+            .Returns(loggerMock.Object);
 
             return loggerFactoryMock.Object;
         }
@@ -621,16 +623,16 @@ namespace Hexa.Core.Domain.Tests
 
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkMock.Setup(w => w.Query<Entity>())
-                .Returns(list.AsQueryable());
+            .Returns(list.AsQueryable());
 
             unitOfWorkMock.Setup(w => w.Add<Entity>(It.IsAny<Entity>()))
-                .Callback((Entity e) => { list.Add(e); });
+            .Callback((Entity e) => { list.Add(e); });
 
             unitOfWorkMock.Setup(w => w.Attach<Entity>(It.IsAny<Entity>()))
-                .Callback((Entity e) => { list.Add(e); });
+            .Callback((Entity e) => { list.Add(e); });
 
             unitOfWorkMock.Setup(w => w.Delete<Entity>(It.IsAny<Entity>()))
-                .Callback((Entity e) => { list.Remove(e); });
+            .Callback((Entity e) => { list.Remove(e); });
 
             return unitOfWorkMock.Object;
         }

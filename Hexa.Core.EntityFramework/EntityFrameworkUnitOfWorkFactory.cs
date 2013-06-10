@@ -21,14 +21,14 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Data.Entity;
+    using System.Data.Objects;
 
     using Data;
 
-    using System.Data.Objects;
-    using System.Data.Entity;
-
     [Export(typeof(IDatabaseManager))]
-    public class EntityFrameworkOfWorkFactory<TContext> : IDatabaseManager where TContext : AuditableContext
+    public class EntityFrameworkOfWorkFactory<TContext> : IDatabaseManager
+        where TContext : AuditableContext
     {
         #region Fields
 

@@ -23,8 +23,8 @@ namespace Hexa.Core.Domain
 
     using Data;
 
-    using Raven.Client.Embedded;
     using Raven.Client.Document;
+    using Raven.Client.Embedded;
 
     [Export(typeof(IDatabaseManager))]
     public class RavenUnitOfWorkFactory : IDatabaseManager

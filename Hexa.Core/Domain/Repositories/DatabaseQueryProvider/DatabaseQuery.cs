@@ -24,12 +24,19 @@ namespace Hexa.Core.Domain
 
     public static class DatabaseQuery
     {
+        #region Fields
+
         public static Func<IDatabaseQueryProvider> DatabaseQueryProvider;
 
-        public static IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters) 
+        #endregion Fields
+
+        #region Methods
+
+        public static IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters)
         {
             return DatabaseQueryProvider().ExecuteQuery<TEntity>(queryName, parameters);
         }
 
+        #endregion Methods
     }
 }

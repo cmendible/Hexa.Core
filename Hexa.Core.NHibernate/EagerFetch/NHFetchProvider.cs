@@ -26,10 +26,56 @@ namespace Hexa.Core.Domain
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+
     using NHibernate.Linq;
 
     public class NHFetchProvider : IFetchProvider
     {
+        #region Methods
+
+        // code adjusted to prevent horizontal overflow
+        public static PropertyInfo[] GetPublicProperties(Type type)
+        {
+            if (type.IsInterface)
+            {
+                var propertyInfos = new List<PropertyInfo>();
+
+                var considered = new List<Type>();
+                var queue = new Queue<Type>();
+                considered.Add(type);
+                queue.Enqueue(type);
+                while (queue.Count > 0)
+                {
+                    var subType = queue.Dequeue();
+                    foreach (var subInterface in subType.GetInterfaces())
+                    {
+                        if (considered.Contains(subInterface))
+                        {
+                            continue;
+                        }
+
+                        considered.Add(subInterface);
+                        queue.Enqueue(subInterface);
+                    }
+
+                    var typeProperties = subType.GetProperties(
+                                             BindingFlags.FlattenHierarchy
+                                             | BindingFlags.Public
+                                             | BindingFlags.Instance);
+
+                    var newPropertyInfos = typeProperties
+                                           .Where(x => !propertyInfos.Contains(x));
+
+                    propertyInfos.InsertRange(0, newPropertyInfos);
+                }
+
+                return propertyInfos.ToArray();
+            }
+
+            return type.GetProperties(BindingFlags.FlattenHierarchy
+                                      | BindingFlags.Public | BindingFlags.Instance);
+        }
+
         public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
             where TOriginating : class
         {
@@ -62,7 +108,7 @@ namespace Hexa.Core.Domain
                     // We only support IList<T> or something similar
                     propType = propType.GetGenericArguments().Single();
                     delegateType = typeof(Func<,>).MakeGenericType(currentType,
-                                                                    typeof(IEnumerable<>).MakeGenericType(propType));
+                                   typeof(IEnumerable<>).MakeGenericType(propType));
                 }
                 else
                 {
@@ -71,9 +117,9 @@ namespace Hexa.Core.Domain
 
                 // Get the correct extension method (Fetch, FetchMany, ThenFetch, or ThenFetchMany)
                 var fetchMethodInfo = typeof(EagerFetchingExtensionMethods).GetMethod(propFetchFunctionName,
-                                                                                    BindingFlags.Static |
-                                                                                    BindingFlags.Public |
-                                                                                    BindingFlags.InvokeMethod);
+                                      BindingFlags.Static |
+                                      BindingFlags.Public |
+                                      BindingFlags.InvokeMethod);
                 var fetchMethodTypes = new List<System.Type>();
                 fetchMethodTypes.AddRange(currentQueryable.GetType().GetGenericArguments().Take(isFirstFetch ? 1 : 2));
                 fetchMethodTypes.Add(propType);
@@ -84,8 +130,8 @@ namespace Hexa.Core.Domain
 
                 Expression exprProp = System.Linq.Expressions.Expression.Property(exprParam, path);
                 var exprLambda = System.Linq.Expressions.Expression.Lambda(delegateType, exprProp,
-                                                                            new System.Linq.Expressions.
-                                                                                ParameterExpression[] { (ParameterExpression)exprParam });
+                                 new System.Linq.Expressions.
+                                 ParameterExpression[] { (ParameterExpression)exprParam });
 
                 // Call the *Fetch* function
                 var args = new object[] { currentQueryable, exprLambda };
@@ -98,51 +144,13 @@ namespace Hexa.Core.Domain
             return new BaseFetchRequest<TOriginating, TRelated>(currentQueryable.Cast<TOriginating>());
         }
 
-        // code adjusted to prevent horizontal overflow
-        public static PropertyInfo[] GetPublicProperties(Type type)
-        {
-            if (type.IsInterface)
-            {
-                var propertyInfos = new List<PropertyInfo>();
-
-                var considered = new List<Type>();
-                var queue = new Queue<Type>();
-                considered.Add(type);
-                queue.Enqueue(type);
-                while (queue.Count > 0)
-                {
-                    var subType = queue.Dequeue();
-                    foreach (var subInterface in subType.GetInterfaces())
-                    {
-                        if (considered.Contains(subInterface)) continue;
-
-                        considered.Add(subInterface);
-                        queue.Enqueue(subInterface);
-                    }
-
-                    var typeProperties = subType.GetProperties(
-                        BindingFlags.FlattenHierarchy
-                        | BindingFlags.Public
-                        | BindingFlags.Instance);
-
-                    var newPropertyInfos = typeProperties
-                        .Where(x => !propertyInfos.Contains(x));
-
-                    propertyInfos.InsertRange(0, newPropertyInfos);
-                }
-
-                return propertyInfos.ToArray();
-            }
-
-            return type.GetProperties(BindingFlags.FlattenHierarchy
-                | BindingFlags.Public | BindingFlags.Instance);
-        }
-
         private static string GetFullPropertyName<T, TProperty>(Expression<Func<T, TProperty>> exp)
         {
             MemberExpression memberExp;
             if (!TryFindMemberExpression(exp.Body, out memberExp))
+            {
                 return string.Empty;
+            }
 
             var memberNames = new Stack<string>();
             do
@@ -152,6 +160,14 @@ namespace Hexa.Core.Domain
             while (TryFindMemberExpression(memberExp.Expression, out memberExp));
 
             return string.Join(".", memberNames.ToArray());
+        }
+
+        private static bool IsConversion(Expression exp)
+        {
+            return (
+                       exp.NodeType == ExpressionType.Convert ||
+                       exp.NodeType == ExpressionType.ConvertChecked
+                   );
         }
 
         // code adjusted to prevent horizontal overflow
@@ -182,12 +198,6 @@ namespace Hexa.Core.Domain
             return false;
         }
 
-        private static bool IsConversion(Expression exp)
-        {
-            return (
-                exp.NodeType == ExpressionType.Convert ||
-                exp.NodeType == ExpressionType.ConvertChecked
-            );
-        }
+        #endregion Methods
     }
 }

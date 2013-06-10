@@ -922,6 +922,15 @@
         }
 
         /// <summary>
+        /// Renders this instance.
+        /// </summary>
+        /// <returns></returns>
+        public MvcHtmlString Render()
+        {
+            return new MvcHtmlString(this.ToString());
+        }
+
+        /// <summary>
         /// The class that is used for alternate rows. You can construct your own class and replace this value.
         /// This option is valid only if altRows options is set to true (default: ui-priority-secondary)
         /// </summary>
@@ -2163,15 +2172,6 @@
 
             // Return script + required elements
             return script.ToString() + table.ToString() + pager.ToString() + topPager.ToString();
-        }
-
-        /// <summary>
-        /// Renders this instance.
-        /// </summary>
-        /// <returns></returns>
-        public MvcHtmlString Render()
-        {
-            return new MvcHtmlString(this.ToString());
         }
 
         #endregion Methods

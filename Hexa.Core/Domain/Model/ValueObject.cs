@@ -1,5 +1,5 @@
-//Copyright (c) 2009, Codai, Inc.
-//All rights reserved.
+// Copyright (c) 2009, Codai, Inc.
+// All rights reserved.
 namespace Hexa.Core.Domain
 {
     using System;

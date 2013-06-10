@@ -20,7 +20,12 @@
 namespace Hexa.Core.Tests
 {
     using Hexa.Core.Domain;
+
     using NUnit.Framework;
+
+    public class AuditableEntity : Hexa.Core.Domain.AuditableEntity<AuditableEntity>
+    {
+    }
 
     public class Entity
     {
@@ -41,19 +46,18 @@ namespace Hexa.Core.Tests
         #endregion Properties
     }
 
-    public class AuditableEntity : Hexa.Core.Domain.AuditableEntity<AuditableEntity>
-    { 
-    
-    }
-
     [TestFixture]
     public class EntityTests
     {
+        #region Methods
+
         [Test]
         public void New_AuditableEntity_Is_Transient()
         {
             AuditableEntity entity = new AuditableEntity();
             Assert.IsTrue(entity.IsTransient());
         }
+
+        #endregion Methods
     }
 }

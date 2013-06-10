@@ -3,7 +3,6 @@
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Hexa.Core.Domain
 {
     using NHibernate;
@@ -17,6 +16,8 @@ namespace Hexa.Core.Domain
     /// <param name="session">The session.</param>
     public class FixedDefaultFlushEventListener : DefaultFlushEventListener
     {
+        #region Methods
+
         /// <summary>
         /// Fix for issue: https://hibernate.onjira.com/browse/HHH-2763
         /// http://stackoverflow.com/questions/3090733/an-nhibernate-audit-trail-that-doesnt-cause-collection-was-not-processed-by-fl
@@ -31,15 +32,13 @@ namespace Hexa.Core.Domain
                 session.ActionQueue.PrepareActions();
                 session.ActionQueue.ExecuteActions();
             }
-            catch (HibernateException exception)
-            {
-                throw;
-            }
             finally
             {
                 session.PersistenceContext.Flushing = false;
                 session.ConnectionManager.FlushEnding();
             }
         }
-    } 
+
+        #endregion Methods
+    }
 }

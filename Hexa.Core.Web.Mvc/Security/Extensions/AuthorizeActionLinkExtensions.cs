@@ -1,20 +1,23 @@
-﻿
-namespace Hexa.Core.Web.Mvc.Extensions
+﻿namespace Hexa.Core.Web.Mvc.Extensions
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
     using System.Web.Routing;
-    using System.Globalization;
 
     public static class AuthorizeActionLinkExtensions
     {
+        #region Methods
+
         public static MvcHtmlString AuthorizeActionLink(this HtmlHelper helper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             if (HasActionPermission(helper, actionName, controllerName))
+            {
                 return helper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+            }
 
             return MvcHtmlString.Empty;
         }
@@ -22,7 +25,9 @@ namespace Hexa.Core.Web.Mvc.Extensions
         public static MvcHtmlString AuthorizeActionLink(this HtmlHelper helper, string linkText, string actionName, string controllerName)
         {
             if (HasActionPermission(helper, actionName, controllerName))
+            {
                 return helper.ActionLink(linkText, actionName, controllerName);
+            }
 
             return MvcHtmlString.Empty;
         }
@@ -31,29 +36,19 @@ namespace Hexa.Core.Web.Mvc.Extensions
         {
             if (HasActionPermission(helper, actionName, controllerName))
 
+            {
                 return helper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+            }
 
             return MvcHtmlString.Empty;
-        }
-
-        private static bool HasActionPermission(this HtmlHelper htmlHelper, string actionName, string controllerName)
-        {
-            ControllerBase controllerToLinkTo = string.IsNullOrEmpty(controllerName)
-                ? htmlHelper.ViewContext.Controller
-                : GetControllerByName(htmlHelper, controllerName);
-
-            ControllerContext controllerContext = new ControllerContext(htmlHelper.ViewContext.RequestContext, controllerToLinkTo);
-
-            ReflectedControllerDescriptor controllerDescriptor = new ReflectedControllerDescriptor(controllerToLinkTo.GetType());
-            ActionDescriptor actionDescriptor = controllerDescriptor.FindAction(controllerContext, actionName);
-
-            return ActionIsAuthorized(controllerContext, actionDescriptor);
         }
 
         private static bool ActionIsAuthorized(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             if (actionDescriptor == null)
+            {
                 return false;
+            }
 
             AuthorizationContext authContext = new AuthorizationContext(controllerContext, actionDescriptor);
             foreach (Filter authFilter in FilterProviders.Providers.GetFilters(authContext, actionDescriptor))
@@ -63,7 +58,9 @@ namespace Hexa.Core.Web.Mvc.Extensions
                     ((IAuthorizationFilter)authFilter.Instance).OnAuthorization(authContext);
 
                     if (authContext.Result != null)
+                    {
                         return false;
+                    }
                 }
             }
 
@@ -89,5 +86,20 @@ namespace Hexa.Core.Web.Mvc.Extensions
             return (ControllerBase)controller;
         }
 
+        private static bool HasActionPermission(this HtmlHelper htmlHelper, string actionName, string controllerName)
+        {
+            ControllerBase controllerToLinkTo = string.IsNullOrEmpty(controllerName)
+                                                ? htmlHelper.ViewContext.Controller
+                                                : GetControllerByName(htmlHelper, controllerName);
+
+            ControllerContext controllerContext = new ControllerContext(htmlHelper.ViewContext.RequestContext, controllerToLinkTo);
+
+            ReflectedControllerDescriptor controllerDescriptor = new ReflectedControllerDescriptor(controllerToLinkTo.GetType());
+            ActionDescriptor actionDescriptor = controllerDescriptor.FindAction(controllerContext, actionName);
+
+            return ActionIsAuthorized(controllerContext, actionDescriptor);
+        }
+
+        #endregion Methods
     }
 }

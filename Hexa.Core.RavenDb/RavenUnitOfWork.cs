@@ -23,8 +23,8 @@ namespace Hexa.Core.Domain
     using System.ComponentModel.Composition;
 
     using Raven.Client;
-    using Raven.Client.Embedded;
     using Raven.Client.Document;
+    using Raven.Client.Embedded;
 
     [Export(typeof(IUnitOfWork))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
@@ -51,10 +51,13 @@ namespace Hexa.Core.Domain
 
         public IDocumentSession Session
         {
-            get { return this.session; }
+            get
+            {
+                return this.session;
+            }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -70,7 +73,8 @@ namespace Hexa.Core.Domain
             this.Session.Store(entity);
         }
 
-        public void Attach<TEntity>(TEntity entity) where TEntity : class
+        public void Attach<TEntity>(TEntity entity)
+            where TEntity : class
         {
         }
 
@@ -87,7 +91,8 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
-        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        public void Delete<TEntity>(TEntity entity)
+            where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             this.Session.Delete(entity);
@@ -163,6 +168,5 @@ namespace Hexa.Core.Domain
         }
 
         #endregion Methods
-
     }
 }

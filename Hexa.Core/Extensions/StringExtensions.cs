@@ -36,12 +36,18 @@ namespace System
 
         public static string CalculateMD5Hash(this string input)
         {
-            return CalculateHash(input, MD5.Create());
+            using (MD5 md5 = MD5.Create())
+            {
+                return CalculateHash(input, md5);
+            }
         }
 
         public static string CalculateSHA1Hash(this string input)
         {
-            return CalculateHash(input, SHA1.Create());
+            using (SHA1 sha1 = SHA1.Create())
+            {
+                return CalculateHash(input, sha1);
+            }
         }
 
         private static string CalculateHash(string input, HashAlgorithm hashAlgorithm)

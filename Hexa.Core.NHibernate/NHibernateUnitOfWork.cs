@@ -33,7 +33,11 @@ namespace Hexa.Core.Domain
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
+        #region Fields
+
         ISessionFactory sessionFactory;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -55,18 +59,6 @@ namespace Hexa.Core.Domain
         #endregion Properties
 
         #region Methods
-
-        public void Start()
-        {
-            Session = sessionFactory.OpenSession();
-            Session.BeginTransaction();
-        }
-
-        public void Start(System.Data.IsolationLevel isolationLevel)
-        {
-            Session = sessionFactory.OpenSession();
-            Session.BeginTransaction(isolationLevel);
-        }
 
         /// <summary>
         /// Adds the specified entity.
@@ -111,7 +103,8 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
-        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        public void Delete<TEntity>(TEntity entity)
+            where TEntity : class
         {
             this.Session.Lock(entity, LockMode.None);
             this.Session.Delete(entity);
@@ -159,6 +152,18 @@ namespace Hexa.Core.Domain
         public void RollbackChanges()
         {
             this.Session.Transaction.Rollback();
+        }
+
+        public void Start()
+        {
+            Session = sessionFactory.OpenSession();
+            Session.BeginTransaction();
+        }
+
+        public void Start(System.Data.IsolationLevel isolationLevel)
+        {
+            Session = sessionFactory.OpenSession();
+            Session.BeginTransaction(isolationLevel);
         }
 
         /// <summary>

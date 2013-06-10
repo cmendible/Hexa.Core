@@ -3,7 +3,6 @@
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Hexa.Core.Web.Mvc.Security
 {
     using System;
@@ -11,6 +10,7 @@ namespace Hexa.Core.Web.Mvc.Security
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
+
     using Hexa.Core.Web.Security;
 
     public class CheckAuthorizationAttribute : AuthorizeAttribute
@@ -21,7 +21,7 @@ namespace Hexa.Core.Web.Mvc.Security
         {
             //base.OnAuthorization(filterContext);
 
-            // Try Get IAuthorizationService 
+            // Try Get IAuthorizationService
             IAuthorizationService authorizationService = ServiceLocator.TryGetInstance<IAuthorizationService>();
             if (authorizationService != null)
             {

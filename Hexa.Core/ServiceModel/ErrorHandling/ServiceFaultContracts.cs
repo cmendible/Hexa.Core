@@ -22,21 +22,31 @@ namespace Hexa.Core.ServiceModel.ErrorHandling
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.ServiceModel.Description;
     using System.Runtime.Serialization;
     using System.ServiceModel.Channels;
+    using System.ServiceModel.Description;
     using System.ServiceModel.Dispatcher;
+    using System.Text;
 
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public class ServiceFaultContracts : Attribute, IContractBehavior
     {
+        #region Fields
+
         private readonly Type[] knownFaultTypes;
+
+        #endregion Fields
+
+        #region Constructors
 
         public ServiceFaultContracts(Type[] knownFaultTypes)
         {
             this.knownFaultTypes = knownFaultTypes;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
         {
@@ -47,7 +57,10 @@ namespace Hexa.Core.ServiceModel.ErrorHandling
                     // Add fault contract if it is not yet present
                     if (!op.Faults.Any(f => f.DetailType == knownFaultType))
                     {
-                        op.Faults.Add(new FaultDescription(knownFaultType.Name) { DetailType = knownFaultType, Name = knownFaultType.Name });
+                        op.Faults.Add(new FaultDescription(knownFaultType.Name)
+                        {
+                            DetailType = knownFaultType, Name = knownFaultType.Name
+                        });
                     }
                 }
             }
@@ -71,5 +84,7 @@ namespace Hexa.Core.ServiceModel.ErrorHandling
                 throw new ArgumentException(string.Format("The specified fault '{0}' is no data contract. Did you forget to decorate the class with the DataContractAttirbute attribute?", badType));
             }
         }
+
+        #endregion Methods
     }
 }

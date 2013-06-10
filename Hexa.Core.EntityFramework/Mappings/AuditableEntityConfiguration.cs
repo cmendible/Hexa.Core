@@ -35,10 +35,10 @@ namespace Hexa.Core.Domain
         public AuditableEntityConfiguration()
         {
             this.Property(x => x.CreatedAt)
-                .IsRequired();
+            .IsRequired();
 
             this.Property(x => x.UpdatedAt)
-                .IsRequired();
+            .IsRequired();
 
             Type keyType = typeof(TUserKey);
             if (keyType.Equals(typeof(string)))
@@ -49,16 +49,16 @@ namespace Hexa.Core.Domain
             else if (keyType.Equals(typeof(Guid)))
             {
                 this.Property(x => x.CreatedBy)
-                    .HasColumnType("UniqueIdentifier");
+                .HasColumnType("UniqueIdentifier");
                 this.Property(x => x.UpdatedBy)
-                    .HasColumnType("UniqueIdentifier");
+                .HasColumnType("UniqueIdentifier");
             }
             else if (keyType.Equals(typeof(int)))
             {
                 this.Property(x => x.CreatedBy)
-                    .HasColumnType("int");
+                .HasColumnType("int");
                 this.Property(x => x.UpdatedBy)
-                    .HasColumnType("int");
+                .HasColumnType("int");
             }
         }
 

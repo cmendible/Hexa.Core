@@ -17,6 +17,7 @@
 
 #endregion Header
 
+
 #if !MONO
 
 namespace Hexa.Core.Tests.Sql

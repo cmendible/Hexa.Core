@@ -21,6 +21,8 @@ namespace Hexa.Core.Tests.Sql
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Configuration;
     using System.Linq;
     using System.Threading;
 
@@ -33,58 +35,25 @@ namespace Hexa.Core.Tests.Sql
 
     using Logging;
 
+    using Microsoft.Practices.Unity;
+
     using NUnit.Framework;
 
     using Security;
 
     using Validation;
-    using System.ComponentModel.Composition.Hosting;
-    using Microsoft.Practices.Unity;
-    using System.Configuration;
-
-    public class UnitOfWorkPerTestLifeTimeManager : LifetimeManager
-    {
-        IUnitOfWork unitOfWork;
-
-        public override object GetValue()
-        {
-            return unitOfWork;
-        }
-
-        public override void RemoveValue()
-        {
-            unitOfWork = null;
-        }
-
-        public override void SetValue(object newValue)
-        {
-            unitOfWork = newValue as IUnitOfWork;
-        }
-    }
 
     [TestFixture]
     public class SqlTest
     {
-        UnityContainer unityContainer;
+        #region Fields
+
         UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+        UnityContainer unityContainer;
+
+        #endregion Fields
 
         #region Methods
-
-        [NUnit.Framework.SetUp]
-        public void Setup()
-        {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Start();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
-
-            unitOfWork.Dispose();
-            unitOfWorkPerTestLifeTimeManager.RemoveValue();
-        }
 
         [Test]
         public void Add_EntityA()
@@ -95,6 +64,41 @@ namespace Hexa.Core.Tests.Sql
             Assert.IsNotNull(entityA.Version);
             Assert.IsFalse(entityA.UniqueId == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
+        }
+
+        /**
+        * These testcase will show, that an assertion failure "...collection xyz
+        * was not processed by flush" will be thrown, if you use following
+        * entity-constellation and an PostUpdateListener:
+        *
+        * You have entities that:
+        *
+        * <pre>
+        * 1.) two entities are having a m:n relation AND
+        * 2.) we have defined an PostUpdateListener that iterates through all properties of the entity and
+        *     so also through the m:n relation (=Collection)
+        * </pre>
+        *
+        */
+        [Test]
+        public void Collection_Was_Not_Processed_By_Flush()
+        {
+            /*
+            * create an instance of entity A and an instance of entity B, then link
+            * both with each other via an m:n relationship
+            */
+            EntityA a = this._Create_EntityA_EntityB_And_Many_To_Many_Relation();
+
+            //now update a simple property of EntityA, due to this the
+            //MyPostUpdateListener will be called, which iterates through all
+            //properties of EntityA (and also the Collection of the m:n relation)
+            //--> org.hibernate.AssertionFailure: collection
+            //was not processed by flush()
+            var repo = unityContainer.Resolve<IEntityARepository>();
+            a = repo.GetFilteredElements(u => u.UniqueId == a.UniqueId).Single();
+
+            a.Name = "AA";
+            repo.Modify(a);
         }
 
         [Test]
@@ -132,11 +136,11 @@ namespace Hexa.Core.Tests.Sql
 
             unityContainer = new UnityContainer();
             ServiceLocator.Initialize(
-                        (x, y) => unityContainer.RegisterType(x, y),
-                        (x, y) => unityContainer.RegisterInstance(x, y),
-                        (x) => { return unityContainer.Resolve(x); },
-                        (x) => { return unityContainer.ResolveAll(x); }
-                    );
+                (x, y) => unityContainer.RegisterType(x, y),
+                (x, y) => unityContainer.RegisterInstance(x, y),
+                (x) => { return unityContainer.Resolve(x); },
+                (x) => { return unityContainer.ResolveAll(x); }
+            );
 
             unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
 
@@ -192,6 +196,22 @@ namespace Hexa.Core.Tests.Sql
             Assert.IsTrue(results.Count() > 0);
         }
 
+        [NUnit.Framework.SetUp]
+        public void Setup()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            unitOfWork.Start();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+
+            unitOfWork.Dispose();
+            unitOfWorkPerTestLifeTimeManager.RemoveValue();
+        }
+
         [Test]
         public void Update_EntityA()
         {
@@ -211,41 +231,6 @@ namespace Hexa.Core.Tests.Sql
             entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
             Assert.AreEqual("Maria", entityA.Name);
             Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
-        }
-
-        /**
-        * These testcase will show, that an assertion failure "...collection xyz
-        * was not processed by flush" will be thrown, if you use following
-        * entity-constellation and an PostUpdateListener:
-        * 
-        * You have entities that:
-        * 
-        * <pre>
-        * 1.) two entities are having a m:n relation AND 
-        * 2.) we have defined an PostUpdateListener that iterates through all properties of the entity and
-        *     so also through the m:n relation (=Collection)
-        * </pre>
-        * 
-        */
-        [Test]
-        public void Collection_Was_Not_Processed_By_Flush()
-        {
-            /*
-            * create an instance of entity A and an instance of entity B, then link
-            * both with each other via an m:n relationship
-            */
-            EntityA a = this._Create_EntityA_EntityB_And_Many_To_Many_Relation();
-
-            //now update a simple property of EntityA, due to this the
-            //MyPostUpdateListener will be called, which iterates through all
-            //properties of EntityA (and also the Collection of the m:n relation)
-            //--> org.hibernate.AssertionFailure: collection
-            //was not processed by flush()
-            var repo = unityContainer.Resolve<IEntityARepository>();
-            a = repo.GetFilteredElements(u => u.UniqueId == a.UniqueId).Single();
-
-            a.Name = "AA";
-            repo.Modify(a);
         }
 
         protected virtual string ConnectionString()
@@ -286,6 +271,34 @@ namespace Hexa.Core.Tests.Sql
             repoA.Add(a);
 
             return a;
+        }
+
+        #endregion Methods
+    }
+
+    public class UnitOfWorkPerTestLifeTimeManager : LifetimeManager
+    {
+        #region Fields
+
+        IUnitOfWork unitOfWork;
+
+        #endregion Fields
+
+        #region Methods
+
+        public override object GetValue()
+        {
+            return unitOfWork;
+        }
+
+        public override void RemoveValue()
+        {
+            unitOfWork = null;
+        }
+
+        public override void SetValue(object newValue)
+        {
+            unitOfWork = newValue as IUnitOfWork;
         }
 
         #endregion Methods

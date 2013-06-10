@@ -2,10 +2,10 @@
 {
     using System;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Json;
     using System.Text;
-    using System.Reflection;
 
     [DataContract]
     public class Filter
@@ -34,14 +34,12 @@
         {
             try
             {
-                var serializer =
-                    new DataContractJsonSerializer(typeof(Filter));
-                System.IO.StringReader reader =
-                    new System.IO.StringReader(jsonData);
-                System.IO.MemoryStream ms =
-                    new System.IO.MemoryStream(
-                    Encoding.Default.GetBytes(jsonData));
-                return serializer.ReadObject(ms) as Filter;
+                var serializer = new DataContractJsonSerializer(typeof(Filter));
+                using (System.IO.StringReader reader = new System.IO.StringReader(jsonData))
+                using (System.IO.MemoryStream ms = new System.IO.MemoryStream(Encoding.Default.GetBytes(jsonData)))
+                {
+                    return serializer.ReadObject(ms) as Filter;
+                }
             }
             catch
             {
@@ -50,96 +48,6 @@
         }
 
         #endregion Methods
-    }
-
-    public class SpecificationModel
-    {
-        #region Properties
-
-        public string Field
-        {
-            get;
-            set;
-        }
-
-        public bool IsSearch
-        {
-            get;
-            set;
-        }
-
-        public string Operator
-        {
-            get;
-            set;
-        }
-
-        public int PageIndex
-        {
-            get;
-            set;
-        }
-
-        public int PageSize
-        {
-            get;
-            set;
-        }
-
-        public string SearchString
-        {
-            get;
-            set;
-        }
-
-        public string SortColumn
-        {
-            get;
-            set;
-        }
-
-        public string SortOrder
-        {
-            get;
-            set;
-        }
-
-        public Filter Where
-        {
-            get;
-            set;
-        }
-
-        #endregion Properties
-    }
-
-    [DataContract]
-    public class Rule
-    {
-        #region Properties
-
-        [DataMember]
-        public string data
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        public string field
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        public string op
-        {
-            get;
-            set;
-        }
-
-        #endregion Properties
     }
 
     public static class LinqExtensions
@@ -184,88 +92,88 @@
             switch (operation)
             {
                 //equal ==
-                case "eq":
-                    condition = Expression.Equal(memberAccess, filter);
+            case "eq":
+                condition = Expression.Equal(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
+                lambda = Expression.Lambda(condition, parameter);
+                break;
                 //not equal !=
-                case "ne":
-                    condition = Expression.NotEqual(memberAccess, filter);
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
+            case "ne":
+                condition = Expression.NotEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
                 //string.Contains()
-                case "cn":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("Contains"),
-                                                Expression.Constant(value));
+            case "cn":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("Contains"),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "bw":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
-                                                Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "bw":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "bn":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
-                                                Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "bn":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
+                condition = Expression.Not(condition);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "ew":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
-                                                Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "ew":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                            Expression.Constant(value));
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "en":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
-                                                Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "en":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
+                condition = Expression.Not(condition);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "gt":
-                    condition = Expression.GreaterThan(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "gt":
+                condition = Expression.GreaterThan(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "ge":
-                    condition = Expression.GreaterThanOrEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "ge":
+                condition = Expression.GreaterThanOrEqual(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "lt":
-                    condition = Expression.LessThan(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "lt":
+                condition = Expression.LessThan(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "le":
-                    condition = Expression.LessThanOrEqual(memberAccess, filter);
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "le":
+                condition = Expression.LessThanOrEqual(memberAccess, filter);
 
-                    lambda = Expression.Lambda(condition, parameter);
-                    break;
-                case "nc":
-                    condition = Expression.Call(memberAccess,
-                                                typeof(string).GetMethod("Contains"),
-                                                Expression.Constant(value));
+                lambda = Expression.Lambda(condition, parameter);
+                break;
+            case "nc":
+                condition = Expression.Call(memberAccess,
+                                            typeof(string).GetMethod("Contains"),
+                                            Expression.Constant(value));
 
-                    condition = Expression.Not(condition);
+                condition = Expression.Not(condition);
 
-                    lambda = Expression.Lambda(condition, parameter);
+                lambda = Expression.Lambda(condition, parameter);
 
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("operation");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("operation");
             }
 
             Expression<Func<T, bool>> hLambda = Expression.Lambda<Func<T, bool>>(condition, parameter);
@@ -281,7 +189,7 @@
         }
 
         public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel)
-           where T : class
+            where T : class
         {
             return specificationModel.ToSpecification<T>(null);
         }
@@ -348,5 +256,95 @@
         }
 
         #endregion Methods
+    }
+
+    [DataContract]
+    public class Rule
+    {
+        #region Properties
+
+        [DataMember]
+        public string data
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        public string field
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        public string op
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
+    }
+
+    public class SpecificationModel
+    {
+        #region Properties
+
+        public string Field
+        {
+            get;
+            set;
+        }
+
+        public bool IsSearch
+        {
+            get;
+            set;
+        }
+
+        public string Operator
+        {
+            get;
+            set;
+        }
+
+        public int PageIndex
+        {
+            get;
+            set;
+        }
+
+        public int PageSize
+        {
+            get;
+            set;
+        }
+
+        public string SearchString
+        {
+            get;
+            set;
+        }
+
+        public string SortColumn
+        {
+            get;
+            set;
+        }
+
+        public string SortOrder
+        {
+            get;
+            set;
+        }
+
+        public Filter Where
+        {
+            get;
+            set;
+        }
+
+        #endregion Properties
     }
 }

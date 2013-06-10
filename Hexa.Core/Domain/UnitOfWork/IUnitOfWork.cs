@@ -36,29 +36,12 @@ namespace Hexa.Core.Domain
         #region Methods
 
         /// <summary>
-        /// Commit all changes made in  a container.
-        /// </summary>
-        ///<remarks>
-        /// If entity have fixed properties and optimistic concurrency problem exists
-        /// exception is thrown
-        ///</remarks>
-        void Commit();
-
-        /// <summary>
-        /// Deletes the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        void Delete<TEntity>(TEntity entity)    
-            where TEntity : class;
-
-        /// <summary>
         /// Adds the specified entity.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Add<TEntity>(TEntity entity)
-             where TEntity : class;
+            where TEntity : class;
 
         /// <summary>
         /// Attaches the specified entity.
@@ -66,7 +49,24 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Attach<TEntity>(TEntity entity)
-             where TEntity : class;
+            where TEntity : class;
+
+        /// <summary>
+        /// Commit all changes made in  a container.
+        /// </summary>
+        /// <remarks>
+        /// If entity have fixed properties and optimistic concurrency problem exists
+        /// exception is thrown
+        /// </remarks>
+        void Commit();
+
+        /// <summary>
+        /// Deletes the specified entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        void Delete<TEntity>(TEntity entity)
+            where TEntity : class;
 
         /// <summary>
         /// Modifies the specified entity.
@@ -77,17 +77,17 @@ namespace Hexa.Core.Domain
             where TEntity : class;
 
         /// <summary>
-        /// Starts this instance.
-        /// </summary>
-        void Start();
-
-        /// <summary>
         /// Returns an IQueryable<TEntity>
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         IQueryable<TEntity> Query<TEntity>()
-             where TEntity : class;
+            where TEntity : class;
+
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
+        void Start();
 
         #endregion Methods
     }

@@ -21,10 +21,10 @@ namespace Hexa.Core.Tests.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Text;
-    using System.Data.Entity;
-    
+
     using Hexa.Core.Domain;
 
     /// <summary>
@@ -39,17 +39,17 @@ namespace Hexa.Core.Tests.Domain
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public DbSet<EntityA> EntitiesOfA
-        { 
-            get; 
-            set; 
+        {
+            get;
+            set;
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -60,6 +60,6 @@ namespace Hexa.Core.Tests.Domain
             modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.EntityAConfiguration());
         }
 
-        #endregion
+        #endregion Methods
     }
 }

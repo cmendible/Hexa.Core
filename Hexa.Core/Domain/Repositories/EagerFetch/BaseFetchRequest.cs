@@ -27,17 +27,22 @@ namespace Hexa.Core.Domain
     public class BaseFetchRequest<TQueried, TFetch> : IFetchRequest<TQueried, TFetch>
         where TQueried : class
     {
+        #region Fields
+
         private IQueryable<TQueried> query;
 
-        public IEnumerator<TQueried> GetEnumerator()
+        #endregion Fields
+
+        #region Constructors
+
+        public BaseFetchRequest(IQueryable<TQueried> query)
         {
-            return this.query.GetEnumerator();
+            this.query = query;
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.query.GetEnumerator();
-        }
+        #endregion Constructors
+
+        #region Properties
 
         public Type ElementType
         {
@@ -63,10 +68,20 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public BaseFetchRequest(IQueryable<TQueried> query)
+        #endregion Properties
+
+        #region Methods
+
+        public IEnumerator<TQueried> GetEnumerator()
         {
-            this.query = query;
+            return this.query.GetEnumerator();
         }
 
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.query.GetEnumerator();
+        }
+
+        #endregion Methods
     }
 }

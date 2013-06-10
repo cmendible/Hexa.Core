@@ -23,6 +23,13 @@ namespace Hexa.Core.Domain
 
     public interface IRavenUnitOfWork : IUnitOfWork
     {
-        IDocumentSession Session { get; }
+        #region Properties
+
+        IDocumentSession Session
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 }

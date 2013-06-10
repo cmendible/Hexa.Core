@@ -23,6 +23,13 @@ namespace Hexa.Core.Domain
 
     public interface IEntityFrameworkUnitOfWork : IUnitOfWork
     {
-        DbContext DbContext { get; }
+        #region Properties
+
+        DbContext DbContext
+        {
+            get;
+        }
+
+        #endregion Properties
     }
 }

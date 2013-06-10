@@ -34,12 +34,12 @@ namespace Hexa.Core.Domain
             this.HasKey(x => x.UniqueId);
 
             this.Property(x => x.UniqueId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(x => x.Version)
-                .HasColumnName("Timestamp")
-                .IsConcurrencyToken();
-                //  .CustomType<TicksAsString>();
+            .HasColumnName("Timestamp")
+            .IsConcurrencyToken();
+            //  .CustomType<TicksAsString>();
 
             this.ToTable(Inflector.Underscore(typeof(TEntity).Name).ToUpper(), string.Empty);
         }

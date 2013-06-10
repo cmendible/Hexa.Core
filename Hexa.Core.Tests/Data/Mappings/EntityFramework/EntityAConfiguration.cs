@@ -29,7 +29,7 @@ namespace Hexa.Core.Tests.Data
     {
         #region Constructors
 
-        public EntityAConfiguration() 
+        public EntityAConfiguration()
         {
             this.Property(h => h.Name);
         }

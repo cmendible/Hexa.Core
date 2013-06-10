@@ -87,7 +87,7 @@ namespace GNU.Gettext
         /// Constructor.
         /// </summary>
         /// <param name="baseName">the resource name, also the assembly base
-        ///                        name</param>
+        /// name</param>
         public GettextResourceManager(string baseName)
             : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
         {
@@ -97,7 +97,7 @@ namespace GNU.Gettext
         /// Constructor.
         /// </summary>
         /// <param name="baseName">the resource name, also the assembly base
-        ///                        name</param>
+        /// name</param>
         public GettextResourceManager(string baseName, Assembly assembly)
             : base(baseName, assembly, typeof(GettextResourceSet))
         {
@@ -113,12 +113,12 @@ namespace GNU.Gettext
         /// plural form depending on the number <paramref name="n"/>.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
-        ///                           an ASCII string</param>
+        /// an ASCII string</param>
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <paramref name="msgid"/> or
-        ///          <paramref name="msgidPlural"/> if none is found</returns>
+        /// <paramref name="msgidPlural"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
         SuppressMessage("Microsoft.Naming",
@@ -143,12 +143,12 @@ namespace GNU.Gettext
         /// right plural form depending on the number <paramref name="n"/>.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <param name="msgidPlural">the English plural of <paramref name="msgid"/>,
-        ///                           an ASCII string</param>
+        /// an ASCII string</param>
         /// <param name="n">the number, should be &gt;= 0</param>
         /// <returns>the translation, or <paramref name="msgid"/> or
-        ///          <paramref name="msgidPlural"/> if none is found</returns>
+        /// <paramref name="msgidPlural"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
         SuppressMessage("Microsoft.Naming",
@@ -162,9 +162,9 @@ namespace GNU.Gettext
         /// Returns the translation of <paramref name="msgid"/> in a given culture.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or
-        ///          <paramref name="msgid"/> if none is found</returns>
+        /// <paramref name="msgid"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
         public override string GetString(string msgid, CultureInfo culture)
@@ -187,9 +187,9 @@ namespace GNU.Gettext
         /// culture.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or
-        ///          <paramref name="msgid"/> if none is found</returns>
+        /// <paramref name="msgid"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1725:ParameterNamesShouldMatchBaseDeclaration", MessageId = "0#")]
         public override string GetString(string msgid)
@@ -201,7 +201,7 @@ namespace GNU.Gettext
         /// Converts a resource name to a class name.
         /// </summary>
         /// <returns>a nonempty string consisting of alphanumerics and underscores
-        ///          and starting with a letter or underscore</returns>
+        /// and starting with a letter or underscore</returns>
         private static string ConstructClassName(string resourceName)
         {
             // We could just return an arbitrary fixed class name, like "Messages",
@@ -305,13 +305,13 @@ namespace GNU.Gettext
         /// Instantiates a resource set for a given culture.
         /// </summary>
         /// <exception cref="ArgumentException">
-        ///   The expected type name is not valid.
+        /// The expected type name is not valid.
         /// </exception>
         /// <exception cref="ReflectionTypeLoadException">
-        ///   satelliteAssembly does not contain the expected type.
+        /// satelliteAssembly does not contain the expected type.
         /// </exception>
         /// <exception cref="NullReferenceException">
-        ///   The type has no no-arguments constructor.
+        /// The type has no no-arguments constructor.
         /// </exception>
         private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, string resourceName,
             CultureInfo culture)
@@ -537,9 +537,9 @@ namespace GNU.Gettext
         /// Returns the translation of <paramref name="msgid"/>.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or <c>null</c> if
-        ///          none is found</returns>
+        /// none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
         public override string GetString(string msgid)
@@ -565,9 +565,9 @@ namespace GNU.Gettext
         /// case-insensitive lookup.
         /// </summary>
         /// <param name="msgid">the key string to be translated, an ASCII
-        ///                     string</param>
+        /// string</param>
         /// <returns>the translation of <paramref name="msgid"/>, or <c>null</c> if
-        ///          none is found</returns>
+        /// none is found</returns>
         // The default implementation essentially does (String)Table[msgid].
         // Here we also catch the plural form case.
         public override string GetString(string msgid, bool ignoreCase)

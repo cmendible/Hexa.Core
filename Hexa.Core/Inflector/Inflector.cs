@@ -22,7 +22,7 @@ namespace Hexa.Core.Domain
     using System.Diagnostics.CodeAnalysis;
     using System.Text.RegularExpressions;
 
-    ///<summary>
+    /// <summary>
     /// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
     /// class names to table names, modularized class names to ones without, and class names to foreign keys
     ///</summary>

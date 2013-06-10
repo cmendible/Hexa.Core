@@ -23,6 +23,10 @@ namespace Hexa.Core.Domain
 
     public interface IDatabaseQueryProvider
     {
+        #region Methods
+
         IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters);
+
+        #endregion Methods
     }
 }

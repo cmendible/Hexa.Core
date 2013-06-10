@@ -19,6 +19,9 @@
 
 namespace Hexa.Core.Domain
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDomainEvent
     {
     }

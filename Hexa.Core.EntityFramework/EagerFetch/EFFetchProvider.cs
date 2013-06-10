@@ -26,11 +26,15 @@ namespace Hexa.Core.Domain
 
     public class EFFetchProvider : IFetchProvider
     {
+        #region Methods
+
         public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
             where TOriginating : class
         {
             var fetch = DbExtensions.Include(query, relatedObjectSelector);
             return new BaseFetchRequest<TOriginating, TRelated>(fetch);
         }
+
+        #endregion Methods
     }
 }

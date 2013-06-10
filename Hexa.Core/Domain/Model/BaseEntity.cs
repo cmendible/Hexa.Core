@@ -1,5 +1,5 @@
-//Copyright (c) 2009, Codai, Inc.
-//All rights reserved.
+// Copyright (c) 2009, Codai, Inc.
+// All rights reserved.
 namespace Hexa.Core.Domain
 {
     using System;
@@ -87,7 +87,7 @@ namespace Hexa.Core.Domain
         {
             var compareTo = obj as BaseEntity<TEntity, TKey>;
 
-            if (ReferenceEquals(this, compareTo))
+            if (object.ReferenceEquals(this, compareTo))
             {
                 return true;
             }
@@ -97,22 +97,17 @@ namespace Hexa.Core.Domain
                 return false;
             }
 
-            if (IsTransient())
+            if (this.IsTransient())
             {
                 return false;
             }
 
             return HasSameNonDefaultIdAs(compareTo);
 
-            //if (HasSameNonDefaultIdAs(compareTo))
-            //{
-            //    return true;
-            //}
-
             // Since the Ids aren't the same, both of them must be transient to
             // compare domain signatures; because if one is transient and the
             // other is a persisted entity, then they cannot be the same object.
-            return IsTransient() && compareTo.IsTransient(); //&& HasSameObjectSignatureAs(compareTo);
+            return this.IsTransient() && compareTo.IsTransient(); //&& HasSameObjectSignatureAs(compareTo);
         }
 
         /// <summary>
@@ -127,14 +122,14 @@ namespace Hexa.Core.Domain
         public override int GetHashCode()
         {
             // Once we have a hash code we'll never change it
-            if (cachedHashcode.HasValue)
+            if (this.cachedHashcode.HasValue)
             {
-                return cachedHashcode.Value;
+                return this.cachedHashcode.Value;
             }
 
             if (IsTransient())
             {
-                cachedHashcode = base.GetHashCode();
+                this.cachedHashcode = base.GetHashCode();
             }
             else
             {
@@ -143,8 +138,8 @@ namespace Hexa.Core.Domain
                     // It's possible for two objects to return the same hash code based on
                     // identically valued properties, even if they're of two different types,
                     // so we include the object's type in the hash calculation
-                    int hashCode = GetType().GetHashCode();
-                    cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ UniqueId.GetHashCode();
+                    int hashCode = this.GetType().GetHashCode();
+                    this.cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ this.UniqueId.GetHashCode();
                 }
             }
 
@@ -158,12 +153,12 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual bool IsTransient()
         {
-            return UniqueId.Equals(default(TKey));
+            return this.UniqueId.Equals(default(TKey));
         }
 
         protected virtual Type TypeWithoutProxy()
         {
-            return GetType();
+            return this.GetType();
         }
 
         /// <summary>
@@ -172,9 +167,9 @@ namespace Hexa.Core.Domain
         /// </summary>
         private bool HasSameNonDefaultIdAs(BaseEntity<TEntity, TKey> compareTo)
         {
-            return !IsTransient() &&
+            return !this.IsTransient() &&
                    !compareTo.IsTransient() &&
-                   UniqueId.Equals(compareTo.UniqueId);
+                   this.UniqueId.Equals(compareTo.UniqueId);
         }
 
         #endregion Methods
