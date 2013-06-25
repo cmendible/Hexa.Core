@@ -24,7 +24,6 @@ namespace Hexa.Core.Domain
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IDomainEventHandler<T>
-        where T : IDomainEvent
     {
         #region Methods
 

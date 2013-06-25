@@ -25,7 +25,7 @@ namespace Hexa.Core.ServiceModel.Security
     using System.ServiceModel;
     using System.Threading;
 
-    using log4net;
+    using Hexa.Core.Logging;
 
     // <configuration>
     // <system.serviceModel>
@@ -43,8 +43,8 @@ namespace Hexa.Core.ServiceModel.Security
     {
         #region Fields
 
-        protected static readonly ILog Log = 
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly ILogger Log =
+            LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         protected static List<string> AnonymousActions = new List<string> {"http://schemas.xmlsoap.org/ws/2004/09/transfer/Get"};
 
@@ -74,13 +74,10 @@ namespace Hexa.Core.ServiceModel.Security
                 return true;
             }
 
-            if (Log.IsDebugEnabled)
+            int count = 0;
+            foreach (IIdentity idt in operationContext.ServiceSecurityContext.GetIdentities())
             {
-                int count = 0;
-                foreach (IIdentity idt in operationContext.ServiceSecurityContext.GetIdentities())
-                {
-                    Log.DebugFormat("Identity{1}-{0}: {2}", idt.AuthenticationType, count++, idt.Name);
-                }
+                Log.DebugFormat("Identity{1}-{0}: {2}", idt.AuthenticationType, count++, idt.Name);
             }
 
             if (operationContext.ServiceSecurityContext.AuthorizationContext.Properties.ContainsKey("Principal"))

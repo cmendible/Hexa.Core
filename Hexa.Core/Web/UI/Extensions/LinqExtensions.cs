@@ -30,13 +30,13 @@ namespace Hexa.Core.Web.UI
     using System.Web;
     using System.Web.Caching;
 
-    using log4net;
+    using Hexa.Core.Logging;
 
     public static class LinqExtensions
     {
         #region Fields
 
-        private static readonly ILog _Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _Log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion Fields
 

@@ -102,8 +102,6 @@ namespace Hexa.Core.Tests.EntityFramework
                 (x) => { return unityContainer.ResolveAll(x); }
             );
 
-            unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-
             // Context Factory
             EntityFrameworkOfWorkFactory<DomainContext> ctxFactory = new EntityFrameworkOfWorkFactory<DomainContext>(this.ConnectionString());
 

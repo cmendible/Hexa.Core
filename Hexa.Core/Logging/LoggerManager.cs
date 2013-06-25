@@ -1,4 +1,4 @@
-#region Header
+﻿#region Header
 
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
@@ -20,15 +20,24 @@
 namespace Hexa.Core.Logging
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
-    public interface ILoggerFactory
+    public class LoggerManager
     {
-        #region Methods
+        #region Fields
 
-        ILogger Create(Type type);
+        public static Func<Type, ILogger> GetLogger = type => new EmptyLogger();
 
-        ILogger Create(string typeName);
+        #endregion Fields
 
-        #endregion Methods
+        #region Constructors
+
+        public LoggerManager()
+        {
+        }
+
+        #endregion Constructors
     }
 }

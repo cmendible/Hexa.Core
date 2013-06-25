@@ -16,19 +16,14 @@
 	// ===================================================================================
 	-->
 	<PropertyGroup>
-		<BuildDependsOn>$(BuildDependsOn);CleanReports;CodeMetrics;RunSimian</BuildDependsOn>
+		<BuildDependsOn>$(BuildDependsOn);CleanReports;RunSimian</BuildDependsOn>
 	</PropertyGroup>
 	
-	<PropertyGroup Condition="'$(EnableMetrics)' == 'true'">
-		<CodeMetricsTool>"$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\metrics.exe"</CodeMetricsTool>
+	<PropertyGroup Condition="'$(EnableStyleCop)' == 'true'">
 		<StyleCopForceFullAnalysis>true</StyleCopForceFullAnalysis>
 		<SourceAnalysisOutputFile>$(OutDir)$(AssemblyName)$(TargetExt).StyleCop.xml</SourceAnalysisOutputFile>
 		<SourceAnalysisTreatErrorsAsWarnings>true</SourceAnalysisTreatErrorsAsWarnings>
 		<SourceAnalysisOverrideSettingsFile>$(SolutionDir)\Settings.StyleCop</SourceAnalysisOverrideSettingsFile>
-		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
-		<RunCodeAnalysis Condition="'$(EnableFxCop)' == 'true'">true</RunCodeAnalysis>
-		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-		<CodeAnalysisLogFile>$(OutDir)$(TargetName)$(TargetExt).CodeAnalysis.xml</CodeAnalysisLogFile>
 	</PropertyGroup>
 	
 	<Target Name="CleanReports">
@@ -39,20 +34,16 @@
 		<Delete Files="@(FilesToDelete)" />
 	</Target>	
 	
-	<PropertyGroup >
+	<PropertyGroup Condition="'$(EnableFxCop)' == 'true'">
 		<RunCodeAnalysis>true</RunCodeAnalysis>
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-		<CodeAnalysisLogFile>$(OutDir)$(AssemblyName)$(TargetExt).CodeAnalysis.xml</CodeAnalysisLogFile>
+		<CodeAnalysisLogFile>$(OutDir)$(TargetName)$(TargetExt).CodeAnalysis.xml</CodeAnalysisLogFile>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(EnableSimian)' == 'true'">
 		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
 	</PropertyGroup>
-	
-	<Target Name="CodeMetrics" Condition="'$(EnableMetrics)' == 'true'">
-		<Exec Command='$(CodeMetricsTool) /plat:$(MSBuildToolsPath) /out:&quot;$(OutDir)$(AssemblyName)$(TargetExt).CodeMetrics.xml&quot; /f:&quot;$(OutDir)$(AssemblyName)$(TargetExt)&quot; /gac /igc' />
-	</Target>
-	
+
 	<Target Name="RunSimian" Condition="'$(EnableSimian)' == 'true'">
 		<Exec Command='$(Simian) -formatter=xml:$(OutDir)$(AssemblyName)$(TargetExt).Simian.xml -includes=$(MSBuildProjectDirectory)\**\*.cs -reportDuplicateText -failOnDuplication-' />
 	</Target>

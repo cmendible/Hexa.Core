@@ -244,9 +244,7 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -292,11 +290,13 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
-    <Compile Include="Domain\Events\DomainEvents.cs" />
-    <Compile Include="Domain\Events\IDomainEventHandler.cs" />
     <Compile Include="Domain\Events\IDomainEvent.cs" />
+    <Compile Include="Domain\Events\IDomainEventHandler.cs" />
+    <Compile Include="Domain\Events\DomainEvents.cs" />
+    <Compile Include="Domain\Events\IEventPublisher.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableEntity.cs" />
+    <Compile Include="Domain\Model\EventSourcedEntity.cs" />
     <Compile Include="Domain\Model\IAuditableEntity.cs" />
     <Compile Include="Domain\Model\IEntityAuditTrail.cs" />
     <Compile Include="Domain\Model\ValidatableObject.cs" />
@@ -308,10 +308,22 @@
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\DatabaseQuery.cs" />
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\IDatabaseQueryProvider.cs" />
     <Compile Include="Domain\Repositories\EagerFetch\BaseFetchRequest.cs" />
+    <Compile Include="Exceptions\AggregateNotFoundException.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\BaseEventStore.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\EventDescriptor.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\EventSourcedRepository.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\IEventSourcedRepository.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\IEventStore.cs" />
+    <Compile Include="Domain\Repositories\EventSourcing\MemoryEventStore.cs" />
+    <Compile Include="DynamicExtensions\PrivateReflectionDynamicObjectExtensions.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
     <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
+    <Compile Include="DynamicExtensions\PrivateReflectionDynamicObject.cs" />
     <Compile Include="IoC\ApplicationContext.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\EmptyLogger.cs" />
+    <Compile Include="Logging\LoggerManager.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
     <Compile Include="Web\Services\AuthorizationService\IAuthorizationService.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
@@ -345,8 +357,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="Linq\PagingExtensions.cs" />
-    <Compile Include="Logging\ILoggerFactory.cs" />
-    <Compile Include="Logging\Log4NetLoggerFactory.cs" />
     <Compile Include="PerformanceCounters\Counter.cs" />
     <Compile Include="PerformanceCounters\CounterAttribute.cs" />
     <Compile Include="PerformanceCounters\CounterCategoryAttribute.cs" />
@@ -365,7 +375,6 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Printer\PrinterHelper.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Pool\Pool.cs" />

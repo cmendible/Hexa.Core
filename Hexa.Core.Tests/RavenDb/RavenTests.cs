@@ -105,8 +105,6 @@ namespace Hexa.Core.Tests.RavenTests
                 (x) => { return unityContainer.ResolveAll(x); }
             );
 
-            unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-
             // Context Factory
             RavenUnitOfWorkFactory ctxFactory = new RavenUnitOfWorkFactory();
             Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.Create();

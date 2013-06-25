@@ -8,8 +8,7 @@ namespace Hexa.Core.ServiceModel.Security
     using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using System.Security.Principal;
-
-    using log4net;
+    using Hexa.Core.Logging;
 
     /// <summary>
     ///
@@ -20,8 +19,7 @@ namespace Hexa.Core.ServiceModel.Security
     {
         #region Fields
 
-        private static readonly ILog _Log = 
-            LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger _Log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion Fields
 

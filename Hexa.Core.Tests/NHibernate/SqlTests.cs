@@ -142,8 +142,6 @@ namespace Hexa.Core.Tests.Sql
                 (x) => { return unityContainer.ResolveAll(x); }
             );
 
-            unityContainer.RegisterInstance<ILoggerFactory>(new Log4NetLoggerFactory());
-
             // Context Factory
             NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
 

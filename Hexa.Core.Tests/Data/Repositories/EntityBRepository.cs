@@ -34,8 +34,8 @@ namespace Hexa.Core.Tests.Data
         #region Constructors
 
         [ImportingConstructor]
-        public EntityBRepository(IUnitOfWork unitOfWork, ILoggerFactory loggerFactory)
-            : base(unitOfWork, loggerFactory)
+        public EntityBRepository(IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
         }
 

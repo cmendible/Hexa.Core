@@ -9,7 +9,7 @@ namespace Hexa.Core.Data
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using log4net;
+    using Hexa.Core.Logging;
 
     /// <summary>
     /// Handles Db creation, deletion, etc.
@@ -26,7 +26,7 @@ namespace Hexa.Core.Data
         public const string SqlCe = "System.Data.SqlServerCe.3.5";
         public const string SQLiteProvider = "System.Data.SQLite";
 
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILogger log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly DbProviderFactory connectionProvider;
         private readonly string connectionString;

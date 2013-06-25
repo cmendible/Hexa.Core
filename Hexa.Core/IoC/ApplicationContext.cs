@@ -19,13 +19,9 @@
 
 namespace Hexa.Core
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
     using System.Security.Principal;
     using System.Threading;
     using System.Web;
-
-    using log4net;
 
     /// <summary>
     /// Core Context singleton class. Contains a reference to a root CoreContainer object.

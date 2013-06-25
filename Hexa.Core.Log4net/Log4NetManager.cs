@@ -29,8 +29,7 @@ namespace Hexa.Core.Logging
     using log4net;
     using log4net.Config;
 
-    [Export(typeof(ILoggerFactory))]
-    public class Log4NetLoggerFactory : ILoggerFactory
+    public class Log4NetManager
     {
         #region Fields
 
@@ -40,12 +39,12 @@ namespace Hexa.Core.Logging
 
         #region Constructors
 
-        public Log4NetLoggerFactory()
+        public Log4NetManager()
             : this(null)
         {
         }
 
-        public Log4NetLoggerFactory(FileInfo configFile)
+        public Log4NetManager(FileInfo configFile)
         {
             if (!initialized)
             {

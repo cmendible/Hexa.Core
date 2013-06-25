@@ -51,11 +51,15 @@ namespace Hexa.Core.Domain
             }
 
             if (actions != null)
+            {
                 foreach (var action in actions)
-                    if (action is Action<T>)
+                {
+                    if (action.GetType().FullName.Contains(args.GetType().FullName))
                     {
-                        ((Action<T>)action)(args);
+                       action.DynamicInvoke(args);
                     }
+                }
+            }
         }
 
         // Registers a callback for the given domain event
