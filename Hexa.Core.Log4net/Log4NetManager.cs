@@ -37,40 +37,6 @@ namespace Hexa.Core.Logging
 
         #endregion Fields
 
-        #region Constructors
-
-        public Log4NetManager()
-            : this(null)
-        {
-        }
-
-        public Log4NetManager(FileInfo configFile)
-        {
-            if (!initialized)
-            {
-                if (configFile != null)
-                {
-                    XmlConfigurator.ConfigureAndWatch(configFile);
-                }
-                else
-                {
-                    XmlConfigurator.Configure();
-                }
-
-                // Register log4net context loggers..
-                if (_isWebContext())
-                {
-                    GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
-                    GlobalContext.Properties["User"] = new UserLogContext();
-                    GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
-                }
-
-                initialized = true;
-            }
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         public ILogger Create(Type type)
@@ -83,7 +49,37 @@ namespace Hexa.Core.Logging
             return new Log4NetLogger(typeName);
         }
 
-        private static bool _isWebContext()
+        public static void Initialize()
+        {
+            Log4NetManager.Initialize(null);
+        }
+
+        public static void Initialize(FileInfo configFile)
+        {
+            if (!Log4NetManager.initialized)
+            {
+                if (configFile != null)
+                {
+                    XmlConfigurator.ConfigureAndWatch(configFile);
+                }
+                else
+                {
+                    XmlConfigurator.Configure();
+                }
+
+                // Register log4net context loggers..
+                if (Log4NetManager.IsWebContext())
+                {
+                    GlobalContext.Properties["UserHostAddress"] = new UserHostAddressLogContext();
+                    GlobalContext.Properties["User"] = new UserLogContext();
+                    GlobalContext.Properties["SessionId"] = new UserSessionIdLogContext();
+                }
+
+                Log4NetManager.initialized = true;
+            }
+        }
+
+        private static bool IsWebContext()
         {
             if (HttpContext.Current != null)
             {
