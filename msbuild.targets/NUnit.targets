@@ -43,7 +43,7 @@
 			ToolPath="$(SolutionDir)\libs\NUnit"
 			Assemblies="@(TestFiles)" 
 			OutputXmlFile="$(OutDir)$(AssemblyName).NUnit.Results.xml"
-			ContinueOnError="false" Condition="'$(EnableNUnit)' == 'true'"/>
+			ContinueOnError="false" DisableShadowCopy="true" Condition="'$(EnableNUnit)' == 'true'"/>
   </Target>
 
 </Project>
