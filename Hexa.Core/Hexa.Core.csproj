@@ -357,13 +357,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
     <Compile Include="Linq\PagingExtensions.cs" />
-    <Compile Include="PerformanceCounters\Counter.cs" />
-    <Compile Include="PerformanceCounters\CounterAttribute.cs" />
-    <Compile Include="PerformanceCounters\CounterCategoryAttribute.cs" />
-    <Compile Include="PerformanceCounters\CounterFactory.cs" />
-    <Compile Include="PerformanceCounters\CounterTypeExtensions.cs" />
-    <Compile Include="PerformanceCounters\CounterWrapper.cs" />
-    <Compile Include="PerformanceCounters\ICounter.cs" />
     <Compile Include="Resources\Resource.es.Designer.cs">
       <DependentUpon>Resource.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>

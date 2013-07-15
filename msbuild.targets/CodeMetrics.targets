@@ -16,7 +16,7 @@
 	// ===================================================================================
 	-->
 	<PropertyGroup>
-		<BuildDependsOn>$(BuildDependsOn);CleanReports;RunSimian</BuildDependsOn>
+		<BuildDependsOn>$(BuildDependsOn);CleanReports;RunFxCop;RunSimian</BuildDependsOn>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(EnableStyleCop)' == 'true'">
@@ -32,13 +32,33 @@
 			<FilesToDelete Include="$(OutDir)$(AssemblyName)$(TargetExt).Simian.xml" />
 		</ItemGroup>
 		<Delete Files="@(FilesToDelete)" />
-	</Target>	
-	
-	<PropertyGroup Condition="'$(EnableFxCop)' == 'true'">
-		<RunCodeAnalysis>true</RunCodeAnalysis>
-		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-		<CodeAnalysisLogFile>$(OutDir)$(TargetName)$(TargetExt).CodeAnalysis.xml</CodeAnalysisLogFile>
-	</PropertyGroup>
+	</Target>
+
+    <!-- This is needed by MSBuild to locate the FxCop task -->
+    <UsingTask AssemblyFile="$(SolutionDir)\packages\MSBuildTasks.1.4.0.56\tools\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FxCop"
+		Condition="'$(EnableFxCop)' == 'true'"/>
+
+    <Target Name="RunFxCop" Condition="'$(EnableFxCop)' == 'true'">
+        <Message Text="Starting FxCop Analysis..." Importance="high" />
+
+        <ItemGroup>
+            <FilesToAnalyze Include="$(OutDir)$(AssemblyName)$(TargetExt)" />
+            <DependencyDirectories Include="$(SolutionDir)\packages\**\*.dll"/>
+        </ItemGroup>
+
+        <FxCop
+			ToolPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\"
+			SearchGac="True"
+			TargetAssemblies="@(FilesToAnalyze)"
+			DependencyDirectories="@(DependencyDirectories)"
+			RuleLibraries="@(FxCopRuleAssemblies)"
+			Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
+			AnalysisReportFileName="$(OutDir)$(AssemblyName)$(TargetExt).CodeAnalysis.xml"
+			CustomDictionary="$(SolutionDir)\msbuild.targets\CodeAnalysisDictionary.xml"
+			Verbose="True"
+			FailOnError="False"
+		/>
+    </Target>
 	
 	<PropertyGroup Condition="'$(EnableSimian)' == 'true'">
 		<Simian>"C:\Simian\simian-2.3.33.exe"</Simian>
