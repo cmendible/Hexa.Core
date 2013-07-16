@@ -17,33 +17,29 @@
 
 #endregion Header
 
-namespace Hexa.Core.Web.UI.Controls
+namespace Hexa.Core
 {
-    using System.Web.UI.WebControls;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Hexa.Core;
 
-    using Validation;
-
-    /// <summary>
-    /// Class used to convert from a RegularExpression attribute to a BaseValidator
-    /// </summary>
-    internal class RegularExpressionConverter : BaseConverter
+    public static class PagingExtensions
     {
         #region Methods
 
-        /// <summary>
-        /// Converts a given attribute to a BaseValidator
-        /// </summary>
-        /// <param name="attribute">Attribute representing the validator</param>
-        /// <param name="pi">Property that holds attribute</param>
-        /// <returns>A BaseValidator</returns>
-        public override BaseValidator Convert(IValidationInfo validationInfo)
+        public static IQueryable<T> Page<T>(this IQueryable<T> query, int pageNumber, int pageSize)
         {
-            var regexRuleInfo = validationInfo as IRegexValidationInfo;
-            var regularExpressionValidator = new ExtendedRegularExpressionValidator();
+            Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            regularExpressionValidator.ValidationExpression = regexRuleInfo.Expression;
+            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
+        }
 
-            return regularExpressionValidator;
+        public static IEnumerable<T> Page<T>(this IEnumerable<T> query, int pageNumber, int pageSize)
+        {
+            Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
+
+            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
         }
 
         #endregion Methods

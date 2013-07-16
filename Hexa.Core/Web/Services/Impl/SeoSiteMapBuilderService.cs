@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-namespace Hexa.Core.Web.Seo
+namespace Hexa.Core.Web.Services
 {
     using System;
     using System.Collections.Generic;

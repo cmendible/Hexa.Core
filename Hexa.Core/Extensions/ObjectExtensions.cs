@@ -17,11 +17,11 @@
 
 #endregion Header
 
-namespace System
+namespace Hexa.Core
 {
-    using IO;
-
-    using Runtime.Serialization.Formatters.Binary;
+    using System;
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
 
     public static class ObjectExtensions
     {

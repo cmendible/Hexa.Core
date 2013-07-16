@@ -37,8 +37,6 @@ namespace Hexa.Core.Domain
     using NHibernate.Event;
     using NHibernate.Tool.hbm2ddl;
 
-    using EnumExtensions = System.EnumExtensions;
-
     using Environment = NHibernate.Cfg.Environment;
 
     [Export(typeof(IDatabaseManager))]
@@ -209,19 +207,12 @@ namespace Hexa.Core.Domain
                 {
                     using (var conn = new SqlConnection(_connectionString))
                     {
-                        try
+                        conn.Open();
+                        using (SqlCommand cmd = conn.CreateCommand())
                         {
-                            conn.Open();
-                            using (SqlCommand cmd = conn.CreateCommand())
-                            {
-                                cmd.CommandText = "RENAME_UNIQUE_KEYS";
-                                cmd.CommandType = CommandType.StoredProcedure;
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        finally
-                        {
-                            conn.Close();
+                            cmd.CommandText = "RENAME_UNIQUE_KEYS";
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.ExecuteNonQuery();
                         }
                     }
                 }

@@ -54,7 +54,6 @@ namespace Hexa.Core.Data
                         command.Connection = sqlConn;
                         sqlConn.Open();
                         ExecuteCommands(command, GetCommandsFromScript(script));
-                        sqlConn.Close();
                     }
                 }
             }

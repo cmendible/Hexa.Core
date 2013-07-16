@@ -17,9 +17,10 @@
 
 #endregion Header
 
-namespace System
+namespace Hexa.Core
 {
-    using Runtime.Serialization;
+    using System;
+    using System.Runtime.Serialization;
 
     public static class EnumExtensions
     {

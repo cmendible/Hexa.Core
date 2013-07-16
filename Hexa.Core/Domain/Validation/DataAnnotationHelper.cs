@@ -55,21 +55,5 @@ namespace Hexa.Core.Validation
 
         #endregion Methods
 
-        #region Other
-
-        /// <summary>
-        /// Reads the data annotations list.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns></returns>
-        //public static IDictionary<string, ValidationAttribute> GetDataAnnotations<TEntity>()
-        //{
-        //    return (from prop in TypeDescriptor.GetProperties(typeof(TEntity)).Cast<PropertyDescriptor>()
-        //            from attribute in prop.Attributes.OfType<ValidationAttribute>()
-        //            select new KeyValuePair<string, ValidationAttribute>(prop.Name, attribute))
-        //            .ToDictionary(k => k.Key, s => s.Value);
-        //}
-
-        #endregion Other
     }
 }

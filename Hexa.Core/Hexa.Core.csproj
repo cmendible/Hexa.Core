@@ -315,17 +315,19 @@
     <Compile Include="Domain\Repositories\EventSourcing\IEventSourcedRepository.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\IEventStore.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\MemoryEventStore.cs" />
-    <Compile Include="DynamicExtensions\PrivateReflectionDynamicObjectExtensions.cs" />
+    <Compile Include="Extensions\PrivateReflectionDynamicObjectExtensions.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
     <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
-    <Compile Include="DynamicExtensions\PrivateReflectionDynamicObject.cs" />
+    <Compile Include="Extensions\PrivateReflectionDynamicObject.cs" />
+    <Compile Include="Globalization\Gettext.cs" />
+    <Compile Include="Globalization\GettextHelper.cs" />
     <Compile Include="IoC\ApplicationContext.cs" />
-    <Compile Include="Logging\ConsoleLogger.cs" />
-    <Compile Include="Logging\EmptyLogger.cs" />
+    <Compile Include="Logging\Impl\ConsoleLogger.cs" />
+    <Compile Include="Logging\Impl\EmptyLogger.cs" />
     <Compile Include="Logging\LoggerManager.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
-    <Compile Include="Web\Services\AuthorizationService\IAuthorizationService.cs" />
+    <Compile Include="Web\Services\IAuthorizationService.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
@@ -352,11 +354,9 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
-    <Compile Include="Globalization\Gettext.cs" />
-    <Compile Include="Globalization\GettextHelper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IoC\ServiceLocator.cs" />
-    <Compile Include="Linq\PagingExtensions.cs" />
+    <Compile Include="Extensions\PagingExtensions.cs" />
     <Compile Include="Resources\Resource.es.Designer.cs">
       <DependentUpon>Resource.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -368,9 +368,7 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Printer\PrinterHelper.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
-    <Compile Include="Pool\Pool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -396,51 +394,16 @@
     <Compile Include="Domain\Validation\ValidationError.cs" />
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
-    <Compile Include="Web\Services\Seo\ISeoSiteMapBuilderService.cs" />
-    <Compile Include="Web\Services\Seo\SeoSiteMapBuilderService.cs" />
-    <Compile Include="Web\Services\SiteMap\ISiteMapBuilderService.cs" />
-    <Compile Include="Web\Services\SiteMap\SiteMapBuilderService.cs" />
-    <Compile Include="Web\Services\SiteMap\SiteMapNodeInfo.cs" />
-    <Compile Include="Web\Services\SiteMap\SiteMapProvider.cs" />
-    <Compile Include="Web\UI\BasePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\UI\BaseUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\UI\Ajax\jqGridHelper.cs" />
-    <Compile Include="Web\UI\Controls\CachedImageService.cs" />
-    <Compile Include="Web\UI\Controls\DynamicImage.cs" />
-    <Compile Include="Web\UI\Controls\GridView.cs" />
-    <Compile Include="Web\UI\ExpressionBuilder\ExpressionBuilder.cs" />
-    <Compile Include="Web\UI\Extensions\ControlExtensions.cs" />
-    <Compile Include="Web\UI\Extensions\LinqExtensions.cs" />
-    <Compile Include="Web\UI\Extensions\PageExtensions.cs" />
-    <Compile Include="Web\Exceptions\RequestLengthException.cs" />
-    <Compile Include="Web\UI\Style.cs" />
-    <Compile Include="Web\UI\UrlResolver.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Converters\BaseConverter.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Converters\EmailConverter.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Converters\RangeConverter.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Converters\RegularExpressionConverter.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Converters\RequiredConverter.cs" />
-    <Compile Include="Web\UI\Controls\Validations\ExtendedRangeValidator.cs" />
-    <Compile Include="Web\UI\Controls\Validations\ExtendedRegularExpressionValidator.cs" />
-    <Compile Include="Web\UI\Controls\Validations\ExtendedRequiredFieldValidator.cs" />
-    <Compile Include="Web\UI\Controls\Validations\InvalidValidator.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\DataAnnotationProvider.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IEmailValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IRangeValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IRegExValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IRequiredValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidateTypeValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidationInfo.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\IValidationInfoProvider.cs" />
-    <Compile Include="Web\UI\Controls\Validations\Helpers\WebValidationHelper.cs" />
+    <Compile Include="Web\Services\ISeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Impl\SeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\ISiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapNodeInfo.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapProvider.cs" />
+    <Compile Include="Web\UI\jqGridHelper.cs" />
+    <Compile Include="Web\UI\CachedImageService.cs" />
+    <Compile Include="Web\UI\DynamicImage.cs" />
     <Compile Include="Domain\Validation\DataAnnotationHelper.cs" />
-    <Compile Include="Xml\Transform\Transformer.cs" />
-    <Compile Include="Xml\Validation\Resolver.cs" />
-    <Compile Include="Xml\Validation\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -490,6 +453,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />
   <PropertyGroup>

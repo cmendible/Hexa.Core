@@ -17,18 +17,14 @@
 
 #endregion Header
 
-namespace System
+namespace Hexa.Core
 {
-    using Collections.Generic;
-
-    using Globalization;
-
-    using Linq;
-
-    using Security.Cryptography;
-
-    using Text;
-    using Text.RegularExpressions;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
 
     public static class HashHelper
     {

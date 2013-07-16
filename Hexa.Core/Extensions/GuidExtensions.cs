@@ -1,5 +1,7 @@
-namespace System
+namespace Hexa.Core
 {
+    using System;
+
     /// <summary>
     /// Contains methods to create and manipulate GUID and COMBGUID unique IDs.
     /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Web.Security
+﻿namespace Hexa.Core.Web.Services
 {
     using System.Collections.Generic;
 
@@ -8,11 +8,11 @@
 
         string[] GetAuthorizationRules(string urlPath);
 
-        bool IsAuthorized(string rule);
+        bool IsAuthorized(string action);
 
-        bool IsAuthorized(string role, string rule);
+        bool IsAuthorized(string role, string action);
 
-        void RegisterAuthorizationRule(string urlPath, string rule);
+        void RegisterAuthorizationRule(string urlPath, string action);
 
         #endregion Methods
     }

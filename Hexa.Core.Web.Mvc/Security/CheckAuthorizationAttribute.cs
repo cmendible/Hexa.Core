@@ -10,8 +10,7 @@ namespace Hexa.Core.Web.Mvc.Security
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
-
-    using Hexa.Core.Web.Security;
+    using Hexa.Core.Web.Services;
 
     public class CheckAuthorizationAttribute : AuthorizeAttribute
     {
@@ -31,6 +30,7 @@ namespace Hexa.Core.Web.Mvc.Security
                 string ip = filterContext.HttpContext.Request.UserHostAddress;
 
                 string actionToAuthorize = string.Format("{0}.{1}", controllerName, actionName);
+
                 // If user is authorized return
                 if (authorizationService.IsAuthorized(actionToAuthorize))
                 {

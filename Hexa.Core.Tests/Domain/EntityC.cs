@@ -113,12 +113,6 @@ namespace Hexa.Core.Tests.Domain.Events
             this.Id = id;
             this.Name = name;
         }
-
-        public int Version
-        {
-            get;
-            set;
-        }
     }
 
     public class EntityCUpdated : EntityCCreated

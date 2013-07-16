@@ -1,5 +1,7 @@
-namespace System.Reflection
+namespace Hexa.Core
 {
+    using System;
+
     public static class ReflectionExtensions
     {
         #region Methods

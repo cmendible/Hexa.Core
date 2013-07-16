@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Web.SiteMap
+﻿namespace Hexa.Core.Web.Services
 {
     using System;
     using System.Collections;
