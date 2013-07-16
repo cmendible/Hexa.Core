@@ -77,7 +77,7 @@ namespace Hexa.Core.Domain
             where TEntity : class;
 
         /// <summary>
-        /// Returns an IQueryable<TEntity>
+        /// Returns an IQueryable
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>

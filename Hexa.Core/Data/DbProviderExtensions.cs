@@ -32,19 +32,11 @@ namespace Hexa.Core.Data
             using (DbConnection conn = provider.CreateConnection())
             {
                 conn.ConnectionString = connectionString;
-
-                try
+                conn.Open();
+                using (DbCommand cmd = conn.CreateCommand())
                 {
-                    conn.Open();
-                    using (DbCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = command;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                finally
-                {
-                    conn.Close();
+                    cmd.CommandText = command;
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
