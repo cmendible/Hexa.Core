@@ -40,7 +40,7 @@ namespace Hexa.Core.ServiceModel.ErrorHandling
         #region Constructors
 
         public ServiceFaultContracts()
-        { 
+        {
         }
 
         public ServiceFaultContracts(Type[] knownFaultTypes)

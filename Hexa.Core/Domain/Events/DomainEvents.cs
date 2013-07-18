@@ -43,7 +43,7 @@ namespace Hexa.Core.Domain
 
         // Raises the given domain event
         public static void Raise<T>(T args)
-            where T : IDomainEvent
+        where T : IDomainEvent
         {
             foreach (var handler in ServiceLocator.GetAllInstances<IDomainEventHandler<T>>())
             {
@@ -56,7 +56,7 @@ namespace Hexa.Core.Domain
                 {
                     if (action.GetType().FullName.Contains(args.GetType().FullName))
                     {
-                       action.DynamicInvoke(args);
+                        action.DynamicInvoke(args);
                     }
                 }
             }
@@ -64,7 +64,7 @@ namespace Hexa.Core.Domain
 
         // Registers a callback for the given domain event
         public static void Register<T>(Action<T> callback)
-            where T : IDomainEvent
+        where T : IDomainEvent
         {
             if (actions == null)
             {

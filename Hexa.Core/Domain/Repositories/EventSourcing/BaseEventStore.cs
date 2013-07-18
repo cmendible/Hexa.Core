@@ -25,21 +25,21 @@
                 eventDescriptors.Add(new EventDescriptor(aggregateId, @event, i));
             }
 
-            PersistEventDescriptors(eventDescriptors, aggregateId, expectedVersion);
+            this.PersistEventDescriptors(eventDescriptors, aggregateId, expectedVersion);
 
-            MethodInfo publishMethod = publisher.GetType().GetMethod("Publish");
+            MethodInfo publishMethod = this.publisher.GetType().GetMethod("Publish");
 
-            foreach (var @event in events)
+            foreach (Event @event in events)
             {
                 MethodInfo method = publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
-                method.Invoke(publisher, new object[] { @event });
+                method.Invoke(this.publisher, new object[] { @event });
                 // _publisher.Publish(@event);
             }
         }
 
         public List<Event> GetEventsForAggregate(Guid aggregateId)
         {
-            var eventDescriptors = LoadEventDescriptorsForAggregate(aggregateId);
+            IEnumerable<EventDescriptor> eventDescriptors = this.LoadEventDescriptorsForAggregate(aggregateId);
             if (null == eventDescriptors || !eventDescriptors.Any())
             {
                 throw new AggregateNotFoundException();

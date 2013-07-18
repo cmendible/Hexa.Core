@@ -68,8 +68,7 @@ namespace Hexa.Core
             Action<Type, Type> registerType,
             Action<Type, object> registerInstance,
             Func<Type, object> resolve,
-            Func<Type, IEnumerable<object>> resolveAll
-            )
+            Func<Type, IEnumerable<object>> resolveAll)
         {
             registerTypeCallback = registerType;
             registerInstanceCallback = registerInstance;
@@ -109,7 +108,7 @@ namespace Hexa.Core
         /// <typeparam name="I"></typeparam>
         /// <typeparam name="T"></typeparam>
         public static void RegisterType<I, T>()
-            where T : I
+        where T : I
         {
             if (registerTypeCallback != null)
             {

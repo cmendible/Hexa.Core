@@ -5,7 +5,7 @@
     public interface IEventSourcedRepository<T> where T : EventSourcedEntity, new()
     {
         void Save(EventSourcedEntity aggregate, int expectedVersion);
-            T GetById(Guid id);
+        T GetById(Guid id);
     }
 
 }

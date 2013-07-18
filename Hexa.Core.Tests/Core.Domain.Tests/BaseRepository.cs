@@ -493,7 +493,7 @@ namespace Hexa.Core.Domain.Tests
         ///A test for Container
         ///</summary>
         public void unitOfWorkTestHelper<T>()
-            where T : class
+        where T : class
         {
             // Act
             var target = new BaseRepository<T>(_MockUnitOfWork());

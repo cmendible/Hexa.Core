@@ -12,7 +12,6 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// See the License for the specific language governing permissions and
 // ===================================================================================
 
 #endregion Header
@@ -131,7 +130,7 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return (int)Math.Ceiling(this._totalRecords/(decimal)_pageSize);
+                return (int)Math.Ceiling(this._totalRecords / (decimal)_pageSize);
             }
         }
 
@@ -269,8 +268,11 @@ namespace Hexa.Core.Web.UI.Ajax
 
             #endregion
 
-            int rowNum = 10; // PageSize.
-            var rowList = new[] {10, 20, 30}; //Variable PageSize DropDownList.
+            // PageSize.
+            int rowNum = 10; 
+
+            // Variable PageSize DropDownList.
+            var rowList = new[] {10, 20, 30}; 
 
             #region script
 
@@ -279,12 +281,7 @@ namespace Hexa.Core.Web.UI.Ajax
             script += string.Format("datatype: {0},", this._dataType) + "\r\n";
             script += string.Format("colModel: {0},", this._cols) + "\r\n";
             script += string.Format("pager: \"{0}\", ", this._pager) + "\r\n";
-            //script += string.Format("loadtext: '{0}',", loadtext) + "\r\n";
-            //script += string.Format("recordtext: \"{0}\",", recordtext) + "\r\n";
-            //script += string.Format("emptyrecords: '{0}',", emptyrecords) + "\r\n";
-            //script += string.Format("pgtext : '{0}',", pgtext) + "\r\n";
             script += string.Format("rowNum: \"{0}\",", rowNum) + "\r\n";
-            //script += "rowList: [10,20,30]," + "\r\n";
             script += "viewrecords: true," + "\r\n";
             script += string.Format("multiselect: {0}, ", this._multiSelect) + "\r\n";
 
@@ -312,7 +309,8 @@ namespace Hexa.Core.Web.UI.Ajax
                 script += "autowidth: true," + "\r\n";
             }
 
-            script += "hidegrid: false," + "\r\n"; // Cant hide grids.
+            // Cant hide grids.
+            script += "hidegrid: false," + "\r\n"; 
 
             bool closeOnEscape = true;
             bool closeAfterSearch = true;
@@ -403,33 +401,33 @@ namespace Hexa.Core.Web.UI.Ajax
         private static readonly Dictionary<string, string> _linqOperations = new Dictionary<string, string>
         {
             {"eq", "=="},
-            //equal
+            // equal
             {"ne", "!="},
-            //not equal
+            // not equal
             {"lt", "<"},
-            //less than
+            // less than
             {"le", "<="},
-            //less than or equal
+            // less than or equal
             {"gt", ">"},
-            //greater than
+            // greater than
             {"ge", ">="},
-            //greater than or equal
+            // greater than or equal
             {"bw", "{0}.StartsWith({1})"},
-            //begins with
+            // begins with
             {"bn", "!{0}.StartsWith({1})"},
-            //doesn"t begin with
+            // doesn"t begin with
             {"in", "{0}.Contains({1})"},
-            //is in
+            // is in
             {"ni", "!{0}.Contains({1})"},
-            //is not in
+            // is not in
             {"ew", "{0}.EndsWith({1})"},
-            //ends with
+            // ends with
             {"en", "!{0}.EndsWith({1})"},
-            //doesn"t end with
+            // doesn"t end with
             {"cn", "{0}.Contains({1})"},
             // contains
             {"nc", "!{0}.Contains({1})"}
-            //doesn"t contain
+            // doesn"t contain
         };
 
         #endregion Fields
@@ -496,15 +494,15 @@ namespace Hexa.Core.Web.UI.Ajax
 
         [Obsolete]
         public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
-            string operation)
-            where T : class
+                string operation)
+        where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
         [Obsolete]
         public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
-            where T : class
+        where T : class
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
@@ -518,10 +516,7 @@ namespace Hexa.Core.Web.UI.Ajax
 
             //change param value type
             //necessary to getting bool from string
-            ConstantExpression filter = Expression.Constant
-                                        (
-                                            Convert.ChangeType(value, memberAccess.Type)
-                                        );
+            ConstantExpression filter = Expression.Constant(Convert.ChangeType(value, memberAccess.Type));
 
             Expression condition = null;
             LambdaExpression lambda = null;
@@ -619,8 +614,8 @@ namespace Hexa.Core.Web.UI.Ajax
 
         [Obsolete]
         public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
-            string operation)
-            where T : class
+                string operation)
+        where T : class
         {
             return query.OrElse(CreateSpecification<T>(column, value, operation));
         }

@@ -170,11 +170,9 @@ namespace Hexa.Core.Data
             {
                 throw new NotImplementedException();
             }
-            // PostgreSQL force UTF-8 encoding..
             else if (providerName == PostgreSQLProvider)
             {
-                command.AppendFormat(CultureInfo.InvariantCulture, "CREATE DATABASE \"{0}\" WITH ENCODING = 'UTF8'",
-                                     dbName);
+                command.AppendFormat(CultureInfo.InvariantCulture, "CREATE DATABASE \"{0}\" WITH ENCODING = 'UTF8'", dbName);
             }
             else if (providerName == MsSqlProvider)
             {
@@ -187,10 +185,9 @@ namespace Hexa.Core.Data
                     string pathname = Path.Combine(Path.GetDirectoryName(dbFile), fname);
 
                     command.AppendFormat(CultureInfo.InvariantCulture,
-                                         "ON PRIMARY (NAME = {0}, FILENAME = '{1}.mdf', SIZE = 10MB) " +
-                                         "LOG ON (NAME = {0}_log, FILENAME = '{1}.ldf', SIZE = 2MB)",
-                                         fname, pathname
-                                        );
+                        "ON PRIMARY (NAME = {0}, FILENAME = '{1}.mdf', SIZE = 10MB) " + "LOG ON (NAME = {0}_log, FILENAME = '{1}.ldf', SIZE = 2MB)",
+                        fname, 
+                        pathname);
                 }
             }
 
@@ -207,10 +204,11 @@ namespace Hexa.Core.Data
             try
             {
                 log.DebugFormat(CultureInfo.InvariantCulture,
-                                "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
-                                dbName, providerName, connStr);
+                    "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
+                    dbName, 
+                    providerName, 
+                    connStr);
 
-                // XXX: SQLite requires a somewhat special case.. ;)
                 if (providerName == SQLiteProvider)
                 {
                     if (dbName.ToUpperInvariant() == ":MEMORY:")
@@ -231,8 +229,7 @@ namespace Hexa.Core.Data
                 switch (providerName)
                 {
                 case MsSqlProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
+                    cmdText = string.Format(CultureInfo.InvariantCulture, "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
                     break;
                 case MySqlProvider:
                     cmdText = string.Format(CultureInfo.InvariantCulture,
@@ -249,7 +246,8 @@ namespace Hexa.Core.Data
                     break;
                 default:
                     throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
-                                                    "Provider {0} is not supported", providerName));
+                                                    "Provider {0} is not supported", 
+                                                    providerName));
                 }
 
                 object ret = provider.ExecuteScalar(connStr, cmdText);
@@ -279,8 +277,7 @@ namespace Hexa.Core.Data
         /// <param name="connectionString">The connection string.</param>
         /// <param name="dbName">Name of the db.</param>
         /// <returns>The newly created connection string.</returns>
-        private static string _StripDbName(string connectionString, string providerName, out string dbName,
-            out string dbFile)
+        private static string _StripDbName(string connectionString, string providerName, out string dbName, out string dbFile)
         {
             var builder = new DbConnectionStringBuilder
             {
@@ -349,7 +346,6 @@ namespace Hexa.Core.Data
             {
                 dbname = dbfile;
             }
-            //	dbname = Path.GetFileNameWithoutExtension(dbfile);
 
             // Save return values..
             dbName = dbname;
@@ -402,22 +398,17 @@ namespace Hexa.Core.Data
                 string cmd = string.Format(CultureInfo.InvariantCulture,
                                            "USE master; ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;",
                                            dbName);
+
                 this.connectionProvider.ExecuteNonQuery(connStr, cmd);
-                this.connectionProvider.ExecuteNonQuery(connStr,
-                                                        string.Format(CultureInfo.InvariantCulture,
-                                                                "DROP DATABASE [{0}]", dbName));
+                this.connectionProvider.ExecuteNonQuery(connStr, string.Format(CultureInfo.InvariantCulture, "DROP DATABASE [{0}]", dbName));
             }
             else if (providerName == PostgreSQLProvider)
             {
-                this.connectionProvider.ExecuteNonQuery(connStr,
-                                                        string.Format(CultureInfo.InvariantCulture,
-                                                                "DROP DATABASE \"{0}\"", dbName));
+                this.connectionProvider.ExecuteNonQuery(connStr, string.Format(CultureInfo.InvariantCulture, "DROP DATABASE \"{0}\"", dbName));
             }
             else
             {
-                this.connectionProvider.ExecuteNonQuery(connStr,
-                                                        string.Format(CultureInfo.InvariantCulture,
-                                                                "DROP DATABASE '{0}'", dbName));
+                this.connectionProvider.ExecuteNonQuery(connStr, string.Format(CultureInfo.InvariantCulture, "DROP DATABASE '{0}'", dbName));
             }
         }
 

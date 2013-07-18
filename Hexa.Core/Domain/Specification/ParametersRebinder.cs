@@ -49,7 +49,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="exp">Expression to replace parameters</param>
         /// <returns>Expression with parameters replaced</returns>
         public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map,
-            Expression exp)
+                Expression exp)
         {
             return new ParameterRebinder(map).Visit(exp);
         }

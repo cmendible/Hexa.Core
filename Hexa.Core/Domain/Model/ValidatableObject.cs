@@ -56,7 +56,7 @@ namespace Hexa.Core.Domain
         /// Determines whether this instance is valid.
         /// </summary>
         /// <returns>
-        /// 	<c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance is valid; otherwise, <c>false</c>.
         /// </returns>
         public virtual bool IsValid()
         {

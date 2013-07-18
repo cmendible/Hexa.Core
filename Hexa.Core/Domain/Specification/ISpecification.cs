@@ -24,16 +24,16 @@ namespace Hexa.Core.Domain.Specification
     /// <typeparam name="TEntity">Type of entity</typeparam>
     public interface ISpecification<TEntity>
         where TEntity : class
-    {
-        #region Methods
+        {
+            #region Methods
 
-        /// <summary>
-        /// Check if this specification is satisfied by a
-        /// specific expression lambda
-        /// </summary>
-        /// <returns></returns>
-        Expression<Func<TEntity, bool>> SatisfiedBy();
+            /// <summary>
+            /// Check if this specification is satisfied by a
+            /// specific expression lambda
+            /// </summary>
+            /// <returns></returns>
+            Expression<Func<TEntity, bool>> SatisfiedBy();
 
-        #endregion Methods
-    }
+            #endregion Methods
+        }
 }

@@ -10,7 +10,7 @@
         #region Methods
 
         protected override string GetBiDirectionalTableName(IManyToManyCollectionInspector collection,
-            IManyToManyCollectionInspector otherSide)
+                IManyToManyCollectionInspector otherSide)
         {
             return Inflector.Underscore(collection.EntityType.Name + "_" + otherSide.EntityType.Name).ToUpper();
         }

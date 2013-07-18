@@ -22,7 +22,7 @@ namespace Hexa.Core.Domain
     using System;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public interface IDomainEvent
     {
@@ -31,7 +31,11 @@ namespace Hexa.Core.Domain
     [Serializable]
     public class Message
     {
-        public int Version { get; set; }
+        public int Version
+        {
+            get;
+            set;
+        }
     }
 
     [Serializable]

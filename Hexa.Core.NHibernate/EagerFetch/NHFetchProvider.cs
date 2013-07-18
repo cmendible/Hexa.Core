@@ -77,7 +77,7 @@ namespace Hexa.Core.Domain
         }
 
         public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
-            where TOriginating : class
+        where TOriginating : class
         {
             var selector = GetFullPropertyName(relatedObjectSelector);
             string[] paths = selector.Split('.');
@@ -164,10 +164,7 @@ namespace Hexa.Core.Domain
 
         private static bool IsConversion(Expression exp)
         {
-            return (
-                       exp.NodeType == ExpressionType.Convert ||
-                       exp.NodeType == ExpressionType.ConvertChecked
-                   );
+            return exp.NodeType == ExpressionType.Convert || exp.NodeType == ExpressionType.ConvertChecked;
         }
 
         // code adjusted to prevent horizontal overflow

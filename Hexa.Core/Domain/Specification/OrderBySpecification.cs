@@ -39,11 +39,9 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="descending">if set to <c>true</c> [descending] order will be used.</param>
         /// <param name="thenBy">The then by.</param>
         /// <param name="thenByDescending">if set to <c>true</c> [then by descending].</param>
-        public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, bool descending,
-            Expression<Func<TEntity, object>> thenBy, bool thenByDescending)
+        public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, bool descending, Expression<Func<TEntity, object>> thenBy, bool thenByDescending)
         {
-            Guard.Against<ArgumentNullException>(orderBy == null,
-                                                 "Expected a non null expression as a predicate for the specification.");
+            Guard.Against<ArgumentNullException>(orderBy == null, "Expected a non null expression as a predicate for the specification.");
             this.predicate = orderBy;
             this.descending = descending;
             this.predicate2 = thenBy;
@@ -59,9 +57,8 @@ namespace Hexa.Core.Domain.Specification
         /// satisfy the specification.</param>
         /// <param name="descending">if set to <c>true</c> [descending] order will be used.</param>
         /// <param name="thenBy">The then by.</param>
-        public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, bool descending,
-            Expression<Func<TEntity, object>> thenBy)
-            : this(orderBy, descending, thenBy, false)
+        public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, bool descending, Expression<Func<TEntity, object>> thenBy)
+        : this(orderBy, descending, thenBy, false)
         {
         }
 
@@ -74,7 +71,7 @@ namespace Hexa.Core.Domain.Specification
         /// satisfy the specification.</param>
         /// <param name="thenBy">The then by.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> orderBy, Expression<Func<TEntity, object>> thenBy)
-            : this(orderBy, false, thenBy, false)
+        : this(orderBy, false, thenBy, false)
         {
         }
 
@@ -87,7 +84,7 @@ namespace Hexa.Core.Domain.Specification
         /// satisfy the specification.</param>
         /// <param name="descending">if set to <c>true</c> [descending] order will be used.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> predicate, bool descending)
-            : this(predicate, descending, null, false)
+        : this(predicate, descending, null, false)
         {
         }
 
@@ -98,7 +95,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="predicate">A predicate that can be used to check entities that
         /// satisfy the specification.</param>
         public OrderBySpecification(Expression<Func<TEntity, object>> predicate)
-            : this(predicate, false)
+        : this(predicate, false)
         {
         }
 

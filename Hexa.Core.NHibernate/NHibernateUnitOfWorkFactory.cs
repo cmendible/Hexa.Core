@@ -57,7 +57,7 @@ namespace Hexa.Core.Domain
         #region Constructors
 
         public NHibernateUnitOfWorkFactory(DbProvider provider, string connectionString, string cacheProvider,
-            Assembly mappingsAssembly)
+                                           Assembly mappingsAssembly)
         {
             _DbProvider = provider;
             _connectionString = connectionString;
@@ -145,7 +145,6 @@ namespace Hexa.Core.Domain
             if (!string.IsNullOrEmpty(cacheProvider))
             {
                 cfg.ExposeConfiguration(c => c.Properties.Add(Environment.CacheProvider, cacheProvider))
-                //"NHibernate.Cache.HashtableCacheProvider"
                 .ExposeConfiguration(c => c.Properties.Add(Environment.UseSecondLevelCache, "true"))
                 .ExposeConfiguration(c => c.Properties.Add(Environment.UseQueryCache, "true"));
             }
@@ -158,21 +157,19 @@ namespace Hexa.Core.Domain
             #region Add Listeners to NHibernate pipeline....
 
             _builtConfiguration.SetListeners(ListenerType.Flush,
-            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
+                new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
 
             _builtConfiguration.SetListeners(ListenerType.FlushEntity,
-            new IFlushEntityEventListener[] {new AuditFlushEntityEventListener()});
+                new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
 
             _builtConfiguration.SetListeners(ListenerType.PreInsert,
                                              _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-                                                 new IPreInsertEventListener[]
-            {new ValidateEventListener(), new AuditEventListener()}).
+                                            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
                                              ToArray());
 
             _builtConfiguration.SetListeners(ListenerType.PreUpdate,
                                              _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-                                                 new IPreUpdateEventListener[]
-            {new ValidateEventListener(), new AuditEventListener()}).
+                                            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
                                              ToArray());
 
             #endregion

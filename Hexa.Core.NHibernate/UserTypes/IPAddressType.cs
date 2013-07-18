@@ -52,7 +52,7 @@ namespace Hexa.Core.Domain
                 return null;
             }
 
-            return new IPAddress(((IPAddress) value).GetAddressBytes());
+            return new IPAddress(((IPAddress)value).GetAddressBytes());
         }
 
         public object Disassemble(object value)
@@ -84,7 +84,7 @@ namespace Hexa.Core.Domain
             }
             catch (FormatException)
             {
-                //The uri is malformed, maybe it is worth to doing something else.
+                // The uri is malformed, maybe it is worth to doing something else.
                 return null;
             }
         }
@@ -97,7 +97,7 @@ namespace Hexa.Core.Domain
                 return;
             }
 
-            var obj = (IPAddress) value;
+            var obj = (IPAddress)value;
             NHibernateUtil.String.Set(cmd, obj.ToString(), index);
         }
 

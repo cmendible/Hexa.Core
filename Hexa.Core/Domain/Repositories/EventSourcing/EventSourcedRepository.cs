@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class EventSourcedRepository<T> : IEventSourcedRepository<T> where T : EventSourcedEntity, new() //shortcut you can do as you see fit with new()
+    public class EventSourcedRepository<T> : IEventSourcedRepository<T> where T : EventSourcedEntity, new()
     {
         private readonly IEventStore storage;
 
@@ -18,7 +18,7 @@
 
         public T GetById(Guid Id)
         {
-            var obj = new T();//lots of ways to do this
+            var obj = new T();
             var e = this.storage.GetEventsForAggregate(Id);
             obj.LoadsFromHistory(e);
             return obj;

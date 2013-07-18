@@ -13,7 +13,7 @@ namespace Hexa.Core.Domain
         #region Constructors
 
         public SqlXmlType()
-            : base(DbType.Xml)
+        : base(DbType.Xml)
         {
         }
 

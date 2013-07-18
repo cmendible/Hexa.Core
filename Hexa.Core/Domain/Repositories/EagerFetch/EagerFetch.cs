@@ -35,7 +35,7 @@ namespace Hexa.Core.Domain
 
         public static IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(
             this IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
-            where TOriginating : class
+        where TOriginating : class
         {
             return FetchingProvider().Fetch(query, relatedObjectSelector);
         }

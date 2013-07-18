@@ -14,7 +14,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="guid">The GUID.</param>
         /// <returns>
-        /// 	<c>true</c> if [is empty or null] [the specified GUID]; otherwise, <c>false</c>.
+        /// <c>true</c> if [is empty or null] [the specified GUID]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsEmptyOrNull(this Guid value)
         {
@@ -26,7 +26,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="guid">The GUID.</param>
         /// <returns>
-        /// 	<c>true</c> if [is empty or null] [the specified GUID]; otherwise, <c>false</c>.
+        /// <c>true</c> if [is empty or null] [the specified GUID]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsEmptyOrNull(this Guid? value)
         {
@@ -38,7 +38,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="guid">The GUID.</param>
         /// <returns>
-        /// 	<c>true</c> if the specified GUID is valid; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified GUID is valid; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsValid(this Guid value)
         {
@@ -81,7 +81,7 @@ namespace Hexa.Core
             // Convert to a byte array
             // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333
             byte[] daysArray = BitConverter.GetBytes(days.Days);
-            byte[] msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds/3.333333));
+            byte[] msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds / 3.333333));
 
             // Reverse the bytes to match SQL Servers ordering
             Array.Reverse(daysArray);
@@ -132,14 +132,14 @@ namespace Hexa.Core
             // Now we need to get the hour.. it is encoded in milliseconds with
             // 1/300th aproximation.. so first, let's pass it to a double
             // and multiply it by 3.33333
-            double tmp = (BitConverter.ToInt32(msecBits, 0))*3.333333;
+            double tmp = (BitConverter.ToInt32(msecBits, 0)) * 3.333333;
 
             // Now we can convert this into a TimeSpan, passing milliseconds
             // as Ticks. Remeber, ticks is a "normally" a constant value
             // witch 10000/1 times a second. But you should not assume this value
             // but instead you should use TimeSpan.TicksPerMillisecond constant
             // to operate with ticks vs msecs.
-            var msecs = new TimeSpan(((long)tmp)*TimeSpan.TicksPerMillisecond);
+            var msecs = new TimeSpan(((long)tmp) * TimeSpan.TicksPerMillisecond);
 
             // Now we can obtain the final date
             date = new DateTime(date.Ticks + msecs.Ticks);

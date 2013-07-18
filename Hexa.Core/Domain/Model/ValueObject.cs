@@ -97,9 +97,6 @@ namespace Hexa.Core.Domain
         /// </returns>
         public override int GetHashCode()
         {
-            //int startValue = 17;
-            //int hashCode = startValue;
-
             // It's possible for two objects to return the same hash code based on
             // identically valued properties, even if they're of two different types,
             // so we include the object's type in the hash calculation
@@ -233,9 +230,6 @@ namespace Hexa.Core.Domain
         /// </returns>
         public override int GetHashCode()
         {
-            //int startValue = 17;
-            //int hashCode = startValue;
-
             // It's possible for two objects to return the same hash code based on
             // identically valued properties, even if they're of two different types,
             // so we include the object's type in the hash calculation

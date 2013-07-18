@@ -51,7 +51,7 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="ex">The exception which caused the validation error.</param>
         public ValidationError(string property, Exception ex)
-            : this(ex.Message, property)
+        : this(ex.Message, property)
         {
         }
 

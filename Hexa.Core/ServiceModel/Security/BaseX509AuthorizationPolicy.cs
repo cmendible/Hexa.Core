@@ -13,8 +13,6 @@ namespace Hexa.Core.ServiceModel.Security
     /// <summary>
     ///
     /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"
-                    )]
     public abstract class BaseX509AuthorizationPolicy : BaseAuthorizationPolicy
     {
         #region Fields
@@ -22,18 +20,6 @@ namespace Hexa.Core.ServiceModel.Security
         private static readonly ILogger _Log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion Fields
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseX509AuthorizationPolicy"/> class.
-        /// </summary>
-        public BaseX509AuthorizationPolicy()
-        {
-            _Log.DebugFormat("New instance {0} created.", Id);
-        }
-
-        #endregion Constructors
 
         #region Methods
 

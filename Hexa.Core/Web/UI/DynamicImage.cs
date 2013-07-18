@@ -61,7 +61,7 @@ namespace Hexa.Core.Web.UI.Controls
         /// <value>The image bytes.</value>
         [SuppressMessage("Microsoft.Performance",
                          "CA1819:PropertiesShouldNotReturnArrays"),
-        Browsable(false)]
+         Browsable(false)]
         public byte[] ImageBytes
         {
             get

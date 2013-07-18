@@ -35,7 +35,7 @@ namespace Hexa.Core.Tests.Data
 
         [ImportingConstructor]
         public EntityBRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        : base(unitOfWork)
         {
         }
 

@@ -46,7 +46,7 @@ namespace Hexa.Core
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
         protected CoreException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        : base(info, context)
         {
         }
 
@@ -62,7 +62,7 @@ namespace Hexa.Core
         /// </summary>
         /// <param name="p_Message">The p_ message.</param>
         protected CoreException(string message)
-            : base(message)
+        : base(message)
         {
         }
 
@@ -72,7 +72,7 @@ namespace Hexa.Core
         /// <param name="message">The message.</param>
         /// <param name="ex">The ex.</param>
         protected CoreException(string message, Exception ex)
-            : base(message, ex)
+        : base(message, ex)
         {
         }
 
@@ -105,8 +105,8 @@ namespace Hexa.Core
         /// The <paramref name="info"/> parameter is a null reference (Nothing in Visual Basic).
         /// </exception>
         /// <PermissionSet>
-        /// 	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
-        /// 	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
+        /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
+        /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

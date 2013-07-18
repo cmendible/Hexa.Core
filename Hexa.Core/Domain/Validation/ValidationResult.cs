@@ -28,7 +28,7 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="errors">The errors.</param>
         public ValidationResult(IEnumerable<ValidationError> errors)
-            : this()
+        : this()
         {
             this._errors.AddRange(errors);
         }

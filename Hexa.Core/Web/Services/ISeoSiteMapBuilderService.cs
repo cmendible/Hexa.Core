@@ -52,12 +52,12 @@ namespace Hexa.Core.Web.Services
         #region Constructors
 
         public SeoUrlInfo(string key)
-            : this(key, "daily", 100)
+        : this(key, "daily", 100)
         {
         }
 
         public SeoUrlInfo(string key, string changeFrequency, int priorityPercentage)
-            : this(key, key, changeFrequency, priorityPercentage)
+        : this(key, key, changeFrequency, priorityPercentage)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Hexa.Core.Web.Services
             this.Key = key;
             this.Url = url;
             this.ChangeFrequency = changeFrequency;
-            this.Priority = ((double)priorityPercentage/100).ToString();
+            this.Priority = ((double)priorityPercentage / 100).ToString();
         }
 
         #endregion Constructors

@@ -36,7 +36,7 @@ namespace Hexa.Core.Domain
         #region Constructors
 
         public AuditableContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+        : base(nameOrConnectionString)
         {
         }
 

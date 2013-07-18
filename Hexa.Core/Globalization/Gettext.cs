@@ -89,7 +89,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         /// name</param>
         public GettextResourceManager(string baseName)
-            : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
+        : base(baseName, Assembly.GetCallingAssembly(), typeof(GettextResourceSet))
         {
         }
 
@@ -99,7 +99,7 @@ namespace GNU.Gettext
         /// <param name="baseName">the resource name, also the assembly base
         /// name</param>
         public GettextResourceManager(string baseName, Assembly assembly)
-            : base(baseName, assembly, typeof(GettextResourceSet))
+        : base(baseName, assembly, typeof(GettextResourceSet))
         {
         }
 
@@ -121,7 +121,7 @@ namespace GNU.Gettext
         /// <paramref name="msgidPlural"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-        SuppressMessage("Microsoft.Naming",
+         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
         public virtual string GetPluralString(string msgid, string msgidPlural, long n, CultureInfo culture)
         {
@@ -151,7 +151,7 @@ namespace GNU.Gettext
         /// <paramref name="msgidPlural"/> if none is found</returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "n"),
-        SuppressMessage("Microsoft.Naming",
+         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "msgid")]
         public virtual string GetPluralString(string msgid, string msgidPlural, long n)
         {
@@ -314,7 +314,7 @@ namespace GNU.Gettext
         /// The type has no no-arguments constructor.
         /// </exception>
         private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, string resourceName,
-            CultureInfo culture)
+                CultureInfo culture)
         {
             // We expect a class with a culture dependent class name.
             Type clazz =
@@ -331,22 +331,22 @@ namespace GNU.Gettext
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private GettextResourceSet[] GetResourceSetsFor(CultureInfo culture)
         {
-            //Console.WriteLine(">> GetResourceSetsFor "+culture);
+            // Console.WriteLine(">> GetResourceSetsFor "+culture);
             // Look up in the cache.
-            var result = (GettextResourceSet[]) Loaded[culture];
+            var result = (GettextResourceSet[])Loaded[culture];
             if (result == null)
             {
                 lock (this)
                 {
                     // Look up again - maybe another thread has filled in the entry
                     // while we slept waiting for the lock.
-                    result = (GettextResourceSet[]) Loaded[culture];
+                    result = (GettextResourceSet[])Loaded[culture];
                     if (result == null)
                     {
                         // Determine the GettextResourceSets for the given culture.
-                        if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture))
-                            // Invariant culture.
+                        if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture)) 
                         {
+                            // Invariant culture.
                             result = EmptyResourceSetArray;
                         }
                         else
@@ -397,7 +397,7 @@ namespace GNU.Gettext
                     }
                 }
             }
-            //Console.WriteLine("<< GetResourceSetsFor "+culture);
+            // Console.WriteLine("<< GetResourceSetsFor "+culture);
             return result;
         }
 
@@ -444,7 +444,7 @@ namespace GNU.Gettext
         /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
         /// </summary>
         public GettextResourceSet(IResourceReader reader)
-            : base(reader)
+        : base(reader)
         {
         }
 
@@ -457,7 +457,7 @@ namespace GNU.Gettext
         [SuppressMessage("Microsoft.Security",
                          "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
         public GettextResourceSet(Stream stream)
-            : base(stream)
+        : base(stream)
         {
         }
 
@@ -468,7 +468,7 @@ namespace GNU.Gettext
         /// not support plural forms.
         /// </summary>
         public GettextResourceSet(string fileName)
-            : base(fileName)
+        : base(fileName)
         {
         }
 
@@ -480,7 +480,7 @@ namespace GNU.Gettext
         /// <c>String[]</c> and if the <c>PluralEval</c> method is overridden.
         /// </summary>
         protected GettextResourceSet()
-            : base(DummyResourceReader)
+        : base(DummyResourceReader)
         {
         }
 
@@ -524,7 +524,7 @@ namespace GNU.Gettext
             }
             else if (value is string[])
             {
-                var choices = (string[]) value;
+                var choices = (string[])value;
                 long index = PluralEval(n);
                 return choices[index >= 0 && index < choices.Length ? index : 0];
             }
@@ -550,10 +550,10 @@ namespace GNU.Gettext
                 return (string)value;
             }
             else if (value is string[])
+            {
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
-            {
-                return ((string[]) value)[0];
+                return ((string[])value)[0];
             }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +
@@ -578,10 +578,10 @@ namespace GNU.Gettext
                 return (string)value;
             }
             else if (value is string[])
+            {
                 // A plural form, but no number is given.
                 // Like the C implementation, return the first plural form.
-            {
-                return ((string[]) value)[0];
+                return ((string[])value)[0];
             }
             else
                 throw new InvalidOperationException("resource for \"" + msgid + "\" in " + GetType().FullName +

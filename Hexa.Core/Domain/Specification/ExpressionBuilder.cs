@@ -31,7 +31,7 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="second">Left Expression in And operation</param>
         /// <returns>New AND expression</returns>
         public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first,
-            Expression<Func<T, bool>> second)
+                Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.AndAlso);
         }
@@ -44,16 +44,15 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="second">Expression to merge</param>
         /// <param name="merge">Function to merge</param>
         /// <returns>New merged expressions</returns>
-        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second,
-            Func<Expression, Expression, Expression> merge)
+        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // build parameter map (from parameters of second to parameters of first)
             Dictionary<ParameterExpression, ParameterExpression> map =
-                first.Parameters.Select((f, i) => new {f, s = second.Parameters[i]}).ToDictionary(p => p.s,
-                        p => p.f);
+                first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
 
             // replace parameters in the second lambda expression with parameters from the first
             Expression secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
+
             // apply composition of lambda expression bodies to parameters from the first expression
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
@@ -61,12 +60,11 @@ namespace Hexa.Core.Domain.Specification
         /// <summary>
         /// Or operator
         /// </summary>
-        /// <typeparam name="T">Type of param in expression</typeparam>
+        /// <typeparam name="T">Type in expression</typeparam>
         /// <param name="first">Right expression in OR operation</param>
         /// <param name="second">Left expression in OR operation</param>
         /// <returns>New Or expressions</returns>
-        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> first,
-            Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> OrElse<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.OrElse);
         }

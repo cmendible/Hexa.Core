@@ -38,7 +38,7 @@ namespace GNU.Gettext
         /// <summary>
         /// Gettext resource manager.
         /// </summary>
-        private static readonly Dictionary<string, GettextResourceManager> _ResourceManager = 
+        private static readonly Dictionary<string, GettextResourceManager> _ResourceManager =
             new Dictionary<string, GettextResourceManager>();
 
         #endregion Fields
@@ -65,7 +65,7 @@ namespace GNU.Gettext
         /// <returns></returns>
         [SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
                          MessageId = "t")]
         public static string t(string key)
         {
@@ -80,9 +80,9 @@ namespace GNU.Gettext
         /// <returns></returns>
         [SuppressMessage("Microsoft.Design",
                          "CA1062:Validate arguments of public methods", MessageId = "1"),
-        SuppressMessage("Microsoft.Naming",
+         SuppressMessage("Microsoft.Naming",
                          "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"),
-        SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
+         SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly",
                          MessageId = "t")]
         public static string t(string key, Assembly callingAssembly)
         {

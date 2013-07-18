@@ -41,7 +41,7 @@ namespace Hexa.Core.Tests.Domain
             {
                 return this.entitiesOfB;
             }
-            protected set 
+            protected set
             {
                 this.entitiesOfB = value.ToList();
             }
@@ -88,12 +88,12 @@ namespace Hexa.Core.Tests.Domain.Events
 {
     using Hexa.Core.Domain;
     using System;
-    
+
     public class EntityCCreated : Event
     {
         public EntityCCreated()
-        { 
-        
+        {
+
         }
 
         public Guid Id

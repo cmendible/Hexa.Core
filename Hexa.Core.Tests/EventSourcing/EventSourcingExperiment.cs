@@ -31,10 +31,10 @@ namespace Hexa.Core.Tests.Domain
         }
     }
 
-    public class AnotherEventMessageHandler : 
-        Consumes<EntityCCreated>.All, 
-        Consumes<EntityCUpdated>.All, 
-        Consumes<AddedBToEntityC>.All 
+    public class AnotherEventMessageHandler :
+        Consumes<EntityCCreated>.All,
+        Consumes<EntityCUpdated>.All,
+        Consumes<AddedBToEntityC>.All
         // IHandleMessages<EntityCCreated>, IHandleMessages<EntityCUpdated>, IHandleMessages<AddedBToEntityC>
     {
         public void Consume(EntityCCreated message)
@@ -78,7 +78,7 @@ namespace Hexa.Core.Tests.Domain
             ravenStore.Initialize();
 
             AutoMapper.Mapper.CreateMap<EntityCUpdated, EntityC>()
-                .ForMember(d => d.Id, o => o.Ignore());
+            .ForMember(d => d.Id, o => o.Ignore());
 
             ServiceLocator.RegisterType(typeof(EventSourcedRepository<>), typeof(EventSourcedRepository<>));
 
@@ -158,27 +158,27 @@ namespace Hexa.Core.Tests.Domain
             });
 
             IServiceBus bus = ServiceBusFactory.New(sbc =>
-                {
-                    //sbc.UseMsmq(cfg =>
-                    //{
-                    //    cfg.VerifyMsmqConfiguration();
-                    //    //cfg.UseMulticastSubscriptionClient();
-                    //});
-                    sbc.UseRabbitMq();
-                    sbc.SetCreateTransactionalQueues(true);
-                    //sbc.UseSubscriptionService("msmq://localhost/mt_subscriptions");
-                    //sbc.ReceiveFrom("msmq://localhost/test_queue");
-                    sbc.ReceiveFrom("rabbitmq://localhost/test_queue");
-                    //sbc.Subscribe(subs =>
-                    //{
-                    //    subs.Handler<EntityCUpdated>((msg, @event) => Console.WriteLine(@event.Name));
-                    //    subs.Consumer<AnotherEventMessageHandler>();
-                    //});
-                    sbc.EnableMessageTracing();
-                    sbc.UseJsonSerializer();
-                    sbc.SetDefaultRetryLimit(10);
-                    //sbc.EnableRemoteIntrospection();
-                });
+            {
+                //sbc.UseMsmq(cfg =>
+                //{
+                //    cfg.VerifyMsmqConfiguration();
+                //    //cfg.UseMulticastSubscriptionClient();
+                //});
+                sbc.UseRabbitMq();
+                sbc.SetCreateTransactionalQueues(true);
+                //sbc.UseSubscriptionService("msmq://localhost/mt_subscriptions");
+                //sbc.ReceiveFrom("msmq://localhost/test_queue");
+                sbc.ReceiveFrom("rabbitmq://localhost/test_queue");
+                //sbc.Subscribe(subs =>
+                //{
+                //    subs.Handler<EntityCUpdated>((msg, @event) => Console.WriteLine(@event.Name));
+                //    subs.Consumer<AnotherEventMessageHandler>();
+                //});
+                sbc.EnableMessageTracing();
+                sbc.UseJsonSerializer();
+                sbc.SetDefaultRetryLimit(10);
+                //sbc.EnableRemoteIntrospection();
+            });
 
             //Bus.Instance.Probe();
             //Bus.Instance.WriteIntrospectionToConsole();

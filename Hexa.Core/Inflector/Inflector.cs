@@ -9,13 +9,10 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// See the License for the specific language governing permissions and
+// CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
 
 #endregion Header
 
-/*
-* CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
-*/
 namespace Hexa.Core.Domain
 {
     using System.Collections.Generic;
@@ -25,7 +22,7 @@ namespace Hexa.Core.Domain
     /// <summary>
     /// Implementation of the Infelctor in Ruby that transforms words from singular to plural,
     /// class names to table names, modularized class names to ones without, and class names to foreign keys
-    ///</summary>
+    /// </summary>
     public static class Inflector
     {
         #region Fields
@@ -158,14 +155,14 @@ namespace Hexa.Core.Domain
         public static string Ordinalize(string number)
         {
             int n = int.Parse(number);
-            int nMod100 = n%100;
+            int nMod100 = n % 100;
 
             if (nMod100 >= 11 && nMod100 <= 13)
             {
                 return number + "th";
             }
 
-            switch (n%10)
+            switch (n % 10)
             {
             case 1:
                 return number + "st";
@@ -185,11 +182,12 @@ namespace Hexa.Core.Domain
         /// <returns>The word in Pascal case.</returns>
         public static string Pascalize(string lowercaseAndUnderscoredWord)
         {
-            return Regex.Replace(lowercaseAndUnderscoredWord, "(?:^|_)(.)",
-                                 delegate(Match match)
-            {
-                return match.Groups[1].Value.ToUpper();
-            });
+            return Regex.Replace(lowercaseAndUnderscoredWord, 
+                "(?:^|_)(.)",
+                delegate(Match match)
+                {
+                    return match.Groups[1].Value.ToUpper();
+                });
         }
 
         /// <summary>
@@ -243,10 +241,7 @@ namespace Hexa.Core.Domain
         /// <returns>string. The word with underscore seperators.</returns>
         public static string Underscore(string pascalCasedWord)
         {
-            return Regex.Replace(
-                       Regex.Replace(
-                           Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])",
-                           "$1_$2"), @"[-\s]", "_").ToLower();
+            return Regex.Replace(Regex.Replace(Regex.Replace(pascalCasedWord, @"([A-Z]+)([A-Z][a-z])", "$1_$2"), @"([a-z\d])([A-Z])", "$1_$2"), @"[-\s]", "_").ToLower();
         }
 
         private static void AddIrregular(string singular, string plural)
@@ -315,7 +310,7 @@ namespace Hexa.Core.Domain
 
             public string Apply(string word)
             {
-                if (!_regex.IsMatch(word))
+                if (!this._regex.IsMatch(word))
                 {
                     return null;
                 }

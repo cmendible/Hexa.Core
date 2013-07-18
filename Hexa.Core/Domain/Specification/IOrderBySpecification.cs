@@ -13,21 +13,21 @@ namespace Hexa.Core.Domain.Specification
     /// <typeparam name="TEntity">Type of entity</typeparam>
     public interface IOrderBySpecification<TEntity>
         where TEntity : class
-    {
-        #region Methods
+        {
+            #region Methods
 
-        IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query);
+            IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query);
 
-        #endregion Methods
-    }
+            #endregion Methods
+        }
 
     public static class OrderBySpecificationExtensions
     {
         #region Methods
 
         public static IOrderedQueryable<TEntity> OrderBySpecification<TEntity>(this IQueryable<TEntity> query,
-            IOrderBySpecification<TEntity> orderBy)
-            where TEntity : class
+                IOrderBySpecification<TEntity> orderBy)
+        where TEntity : class
         {
             Guard.Against<ArgumentNullException>(query == null, "query");
             Guard.Against<ArgumentNullException>(orderBy == null, "orderBy");

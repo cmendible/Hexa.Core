@@ -25,8 +25,14 @@ namespace Hexa.Core.Domain
     {
         #region Methods
 
-        IEntityAuditTrail CreateAuditTrail(Guid changeSetUniqueId, string entityName, string entityUniqueId, string propertyName,
-            object oldValue, object newValue, string updatedBy, DateTime updatedAt);
+        IEntityAuditTrail CreateAuditTrail(Guid changeSetUniqueId, 
+            string entityName, 
+            string entityUniqueId, 
+            string propertyName,
+            object oldValue, 
+            object newValue, 
+            string updatedBy, 
+            DateTime updatedAt);
 
         bool IsEntityRegistered(string entityName);
 

@@ -45,7 +45,7 @@ namespace Hexa.Core.Security
         /// </summary>
         /// <param name="name">The name.</param>
         public CoreIdentity(string name)
-            : this(name, "Unknown", name)
+        : this(name, "Unknown", name)
         {
         }
 
@@ -55,7 +55,7 @@ namespace Hexa.Core.Security
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
         public CoreIdentity(string name, string type)
-            : this(name, type, name)
+        : this(name, type, name)
         {
         }
 

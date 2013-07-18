@@ -34,7 +34,7 @@ namespace uNhAddIns.UserTypes
         /// <param name="findPredicate">The predicate an instance by the persisted value.</param>
         /// <param name="idGetter">The getter of the persisted value.</param>
         protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate,
-            Func<T, TId> idGetter)
+                                               Func<T, TId> idGetter)
         {
             this.repository = repository;
             this.findPredicate = findPredicate;

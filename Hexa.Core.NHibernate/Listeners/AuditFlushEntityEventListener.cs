@@ -18,7 +18,7 @@ namespace Hexa.Core.Domain
     /// <summary>
     ///
     /// </summary>
-    //http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
+    /// http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
         #region Methods
@@ -28,10 +28,10 @@ namespace Hexa.Core.Domain
             base.DirtyCheck(@event);
             if (@event.DirtyProperties != null &&
                 @event.DirtyProperties.Any() &&
-                //IAuditableEntity is my inteface for audited entities
                 @event.Entity is IAuditableEntity)
-                @event.DirtyProperties = @event.DirtyProperties
-                                         .Concat(_GetAdditionalDirtyProperties(@event)).ToArray();
+            {
+                @event.DirtyProperties = @event.DirtyProperties.Concat(_GetAdditionalDirtyProperties(@event)).ToArray();
+            }
         }
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)

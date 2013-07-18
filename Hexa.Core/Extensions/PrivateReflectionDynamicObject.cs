@@ -14,7 +14,10 @@
         // Simple abstraction to make field and property access consistent
         interface IProperty
         {
-            string Name { get; }
+            string Name
+            {
+                get;
+            }
             object GetValue(object obj, object[] index);
             void SetValue(object obj, object val, object[] index);
         }
@@ -22,7 +25,11 @@
         // IProperty implementation over a PropertyInfo
         class Property : IProperty
         {
-            internal PropertyInfo PropertyInfo { get; set; }
+            internal PropertyInfo PropertyInfo
+            {
+                get;
+                set;
+            }
 
             string IProperty.Name
             {
@@ -46,7 +53,11 @@
         // IProperty implementation over a FieldInfo
         class Field : IProperty
         {
-            internal FieldInfo FieldInfo { get; set; }
+            internal FieldInfo FieldInfo
+            {
+                get;
+                set;
+            }
 
             string IProperty.Name
             {
@@ -68,16 +79,25 @@
             }
         }
 
-        private object RealObject { get; set; }
+        private object RealObject
+        {
+            get;
+            set;
+        }
         private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         internal static object WrapObjectIfNeeded(object o)
         {
             // Don't wrap primitive types, which don't have many interesting internal APIs
             if (o == null || o.GetType().IsPrimitive || o is string)
+            {
                 return o;
+            }
 
-            return new PrivateReflectionDynamicObject() { RealObject = o };
+            return new PrivateReflectionDynamicObject()
+            {
+                RealObject = o
+            };
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
@@ -171,8 +191,8 @@
             var propNames = typeProperties.Keys.Where(name => name[0] != '<').OrderBy(name => name);
             throw new ArgumentException(
                 String.Format(
-                "The property {0} doesn't exist on type {1}. Supported properties are: {2}",
-                propertyName, RealObject.GetType(), String.Join(", ", propNames)));
+                    "The property {0} doesn't exist on type {1}. Supported properties are: {2}",
+                    propertyName, RealObject.GetType(), String.Join(", ", propNames)));
         }
 
         private static IDictionary<string, IProperty> GetTypeProperties(Type type)
@@ -191,13 +211,19 @@
             // First, add all the properties
             foreach (PropertyInfo prop in type.GetProperties(bindingFlags).Where(p => p.DeclaringType == type))
             {
-                typeProperties[prop.Name] = new Property() { PropertyInfo = prop };
+                typeProperties[prop.Name] = new Property()
+                {
+                    PropertyInfo = prop
+                };
             }
 
             // Now, add all the fields
             foreach (FieldInfo field in type.GetFields(bindingFlags).Where(p => p.DeclaringType == type))
             {
-                typeProperties[field.Name] = new Field() { FieldInfo = field };
+                typeProperties[field.Name] = new Field()
+                {
+                    FieldInfo = field
+                };
             }
 
             // Finally, recurse on the base class to add its fields
@@ -221,11 +247,11 @@
             {
                 // Try to incoke the method
                 return type.InvokeMember(
-                    name,
-                    BindingFlags.InvokeMethod | bindingFlags,
-                    null,
-                    target,
-                    args);
+                           name,
+                           BindingFlags.InvokeMethod | bindingFlags,
+                           null,
+                           target,
+                           args);
             }
             catch (MissingMethodException)
             {

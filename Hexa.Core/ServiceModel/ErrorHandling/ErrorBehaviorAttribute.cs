@@ -40,14 +40,14 @@ namespace Hexa.Core.ServiceModel
         #region Methods
 
         void IServiceBehavior.AddBindingParameters(ServiceDescription serviceDescription,
-            ServiceHostBase serviceHostBase,
-            Collection<ServiceEndpoint> endpoints,
-            BindingParameterCollection bindingParameters)
+                ServiceHostBase serviceHostBase,
+                Collection<ServiceEndpoint> endpoints,
+                BindingParameterCollection bindingParameters)
         {
         }
 
         void IServiceBehavior.ApplyDispatchBehavior(ServiceDescription serviceDescription,
-            ServiceHostBase serviceHostBase)
+                ServiceHostBase serviceHostBase)
         {
             IErrorHandler errorHandler;
 

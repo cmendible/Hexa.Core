@@ -35,7 +35,7 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return new[] {new SqlType(DbType.Int64)};
+                return new[] { new SqlType(DbType.Int64) };
             }
         }
 
@@ -50,7 +50,7 @@ namespace Hexa.Core.Domain
 
         public int Compare(object x, object y)
         {
-            return ((IComparable) x).CompareTo(y);
+            return ((IComparable)x).CompareTo(y);
         }
 
         public object DeepCopy(object value)

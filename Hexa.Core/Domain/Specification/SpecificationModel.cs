@@ -54,8 +54,7 @@
     {
         #region Methods
 
-        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
-            string operation)
+        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation)
             where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
@@ -80,29 +79,25 @@
                 memberAccess = _GetMemberAccess<T>(column, parameter);
             }
 
-            //change param value type
-            //necessary to getting bool from string
-            ConstantExpression filter = Expression.Constant
-                                        (
-                                            Convert.ChangeType(value, memberAccess.Type)
-                                        );
+            // change param value type necessary to getting bool from string
+            ConstantExpression filter = Expression.Constant(Convert.ChangeType(value, memberAccess.Type));
 
             Expression condition = null;
             LambdaExpression lambda = null;
             switch (operation)
             {
-                //equal ==
+                // equal ==
             case "eq":
                 condition = Expression.Equal(memberAccess, filter);
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
-                //not equal !=
+                // not equal !=
             case "ne":
                 condition = Expression.NotEqual(memberAccess, filter);
                 lambda = Expression.Lambda(condition, parameter);
                 break;
-                //string.Contains()
+                // string.Contains()
             case "cn":
                 condition = Expression.Call(memberAccess,
                                             typeof(string).GetMethod("Contains"),
@@ -181,21 +176,20 @@
             return new DirectSpecification<T>(hLambda);
         }
 
-        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
-            string operation)
-            where T : class
+        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value, string operation)
+        where T : class
         {
             return query.OrElse(CreateSpecification<T>(column, value, operation));
         }
 
         public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel)
-            where T : class
+        where T : class
         {
             return specificationModel.ToSpecification<T>(null);
         }
 
         public static ISpecification<T> ToSpecification<T>(this SpecificationModel specificationModel, ISpecification<T> specification)
-            where T : class
+        where T : class
         {
             foreach (Rule rule in specificationModel.Where.rules)
             {
@@ -247,8 +241,7 @@
                     throw new MissingMemberException(typeof(T).FullName, column);
                 }
 
-                memberAccess = Expression.Property
-                               (memberAccess ?? (parameter as Expression), propertyInfo);
+                memberAccess = Expression.Property(memberAccess ?? (parameter as Expression), propertyInfo);
 
                 inspectedType = propertyInfo.PropertyType;
             }

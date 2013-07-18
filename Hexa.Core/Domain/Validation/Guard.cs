@@ -40,7 +40,7 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Design",
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Against<TException>(bool assertion, string message)
-            where TException : Exception
+        where TException : Exception
         {
             if (assertion)
             {
@@ -58,7 +58,7 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Design",
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Against<TException>(bool assertion, string message, params object[] args)
-            where TException : Exception
+        where TException : Exception
         {
             if (assertion)
             {
@@ -77,9 +77,9 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Design",
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Against<TException>(Func<bool> assertion, string message)
-            where TException : Exception
+        where TException : Exception
         {
-            //Execute the lambda and if it evaluates to true then throw the exception.
+            // Execute the lambda and if it evaluates to true then throw the exception.
             if (assertion())
             {
                 throw (TException)Activator.CreateInstance(typeof(TException), message);
@@ -127,7 +127,7 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Design",
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void InheritsFrom<TBase>(object instance, string message)
-            where TBase : Type
+        where TBase : Type
         {
             InheritsFrom<TBase>(instance.GetType(), message);
         }
@@ -159,7 +159,7 @@ namespace Hexa.Core
         [SuppressMessage("Microsoft.Design",
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void IsEqual<TException>(object compare, object instance, string message)
-            where TException : Exception
+        where TException : Exception
         {
             if (compare != instance)
             {

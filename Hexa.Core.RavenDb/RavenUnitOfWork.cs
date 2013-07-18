@@ -67,14 +67,14 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Add<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             this.Session.Store(entity);
         }
 
         public void Attach<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
         }
 
@@ -92,7 +92,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Delete<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             this.Session.Delete(entity);
@@ -118,7 +118,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Modify<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
         }
 
@@ -128,7 +128,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         public System.Linq.IQueryable<TEntity> Query<TEntity>()
-            where TEntity : class
+        where TEntity : class
         {
             return this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
         }

@@ -38,7 +38,7 @@ namespace Hexa.Core.Domain
         }
 
         public static IUnitOfWork Start<TUnitOfWork>()
-            where TUnitOfWork : IUnitOfWork
+        where TUnitOfWork : IUnitOfWork
         {
             return ServiceLocator.GetInstance<TUnitOfWork>();
         }

@@ -20,7 +20,7 @@ namespace Hexa.Core.Validation
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <returns>
-        /// 	<c>true</c> if the specified instance is valid; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified instance is valid; otherwise, <c>false</c>.
         /// </returns>
         bool IsValid(TEntity instance);
 

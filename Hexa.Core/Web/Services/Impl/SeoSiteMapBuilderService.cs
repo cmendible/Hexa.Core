@@ -136,23 +136,26 @@ namespace Hexa.Core.Web.Services
         public string SeoXml()
         {
             //instantiate the XML Text Writer for writing the SiteMap document
-            var stringWriter = new StringWriter();
-            var writer = new XmlTextWriter(stringWriter);
-            //write out the header
-            //start off the site map
-            writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
-            writer.WriteStartElement("urlset");
-            writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-            writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            writer.WriteAttributeString("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (XmlTextWriter writer = new XmlTextWriter(stringWriter))
+                {
+                    //write out the header
+                    //start off the site map
+                    writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+                    writer.WriteStartElement("urlset");
+                    writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+                    writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                    writer.WriteAttributeString("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
 
-            SeoUrlInfo rooturl = this.RootUrl;
-            this.AddChildurls(writer, rooturl, this.GetChildren(rooturl.Key));
+                    SeoUrlInfo rooturl = this.RootUrl;
+                    this.AddChildurls(writer, rooturl, this.GetChildren(rooturl.Key));
 
-            //write the footer and close.
-            writer.WriteEndElement();
-            writer.Close();
-            return stringWriter.ToString();
+                    //write the footer and close.
+                    writer.WriteEndElement();
+                    return stringWriter.ToString();
+                }
+            }
         }
 
         internal static string FormatISODate(DateTime date)

@@ -21,9 +21,9 @@ namespace Hexa.Core.Validation
         /// <param name="errors">The errors.</param>
         /// <param name="entityType">Type of the entity.</param>
         public ValidationException(Type entityType, string message)
-            : base(message)
+        : base(message)
         {
-            ValidationErrors = new ValidationError[] {};
+            ValidationErrors = new ValidationError[] { };
             EntityType = entityType;
         }
 
@@ -34,7 +34,7 @@ namespace Hexa.Core.Validation
         /// <param name="errors">The errors.</param>
         /// <param name="entityType">Type of the entity.</param>
         public ValidationException(Type entityType, string message, IEnumerable<ValidationError> errors)
-            : base(message)
+        : base(message)
         {
             ValidationErrors = errors;
             EntityType = entityType;
@@ -46,7 +46,7 @@ namespace Hexa.Core.Validation
         /// <param name="errors">The errors.</param>
         /// <param name="entityType">Type of the entity.</param>
         public ValidationException(Type entityType, IEnumerable<ValidationError> errors)
-            : base(string.Format(CultureInfo.InvariantCulture, "Entity {0} is not valid.", entityType.Name))
+        : base(string.Format(CultureInfo.InvariantCulture, "Entity {0} is not valid.", entityType.Name))
         {
             ValidationErrors = errors;
             EntityType = entityType;
@@ -89,8 +89,8 @@ namespace Hexa.Core.Validation
         /// The <paramref name="info"/> parameter is a null reference (Nothing in Visual Basic).
         /// </exception>
         /// <PermissionSet>
-        /// 	<IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
-        /// 	<IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
+        /// <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*"/>
+        /// <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter"/>
         /// </PermissionSet>
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -12,7 +12,7 @@
         #region Methods
 
         public object BindModel(ControllerContext controllerContext,
-            ModelBindingContext bindingContext)
+                                ModelBindingContext bindingContext)
         {
             try
             {

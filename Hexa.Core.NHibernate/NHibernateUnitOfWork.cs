@@ -66,7 +66,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Add<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             this.Session.Save(entity);
@@ -77,7 +77,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <param name="item">The item.</param>
         public void Attach<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             this.Session.Lock(entity, LockMode.None);
@@ -104,7 +104,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Delete<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             this.Session.Lock(entity, LockMode.None);
             this.Session.Delete(entity);
@@ -125,7 +125,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         public void Modify<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             Guard.IsNotNull(entity, "entity");
             if (!this.Session.Contains(entity))
@@ -140,7 +140,7 @@ namespace Hexa.Core.Domain
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         public System.Linq.IQueryable<TEntity> Query<TEntity>()
-            where TEntity : class
+        where TEntity : class
         {
             return this.Session.Query<TEntity>();
         }

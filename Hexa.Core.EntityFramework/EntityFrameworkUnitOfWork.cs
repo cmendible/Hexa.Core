@@ -58,13 +58,13 @@ namespace Hexa.Core.Domain
         #region Methods
 
         public void Add<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             this.dbContext.Set<TEntity>().Add(entity);
         }
 
         public void Attach<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             this.dbContext.Set<TEntity>().Attach(entity);
         }
@@ -75,7 +75,7 @@ namespace Hexa.Core.Domain
         }
 
         public void Delete<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             this.dbContext.Set<TEntity>().Remove(entity);
         }
@@ -95,7 +95,7 @@ namespace Hexa.Core.Domain
         }
 
         public void Modify<TEntity>(TEntity entity)
-            where TEntity : class
+        where TEntity : class
         {
             var entry = this.dbContext.Entry(entity);
 
@@ -103,7 +103,7 @@ namespace Hexa.Core.Domain
         }
 
         public System.Linq.IQueryable<TEntity> Query<TEntity>()
-            where TEntity : class
+        where TEntity : class
         {
             return this.dbContext.Set<TEntity>();
         }

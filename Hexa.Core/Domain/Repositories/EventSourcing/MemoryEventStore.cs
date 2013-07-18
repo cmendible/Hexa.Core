@@ -8,7 +8,7 @@
     public class MemoryEventStore : BaseEventStore
     {
         public MemoryEventStore(IEventPublisher publisher)
-            : base(publisher)
+        : base(publisher)
         {
         }
 

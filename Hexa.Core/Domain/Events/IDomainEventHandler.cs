@@ -20,7 +20,7 @@
 namespace Hexa.Core.Domain
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IDomainEventHandler<T>

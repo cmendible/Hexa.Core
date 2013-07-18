@@ -35,7 +35,7 @@ namespace Hexa.Core.Tests.Domain
         #region Constructors
 
         public DomainContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+        : base(nameOrConnectionString)
         {
         }
 
