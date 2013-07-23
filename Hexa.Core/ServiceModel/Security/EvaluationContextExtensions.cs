@@ -1,4 +1,4 @@
-namespace Hexa.Core.ServiceModel
+﻿namespace Hexa.Core.ServiceModel
 {
     using System.Collections.Generic;
     using System.IdentityModel.Policy;
@@ -6,8 +6,6 @@ namespace Hexa.Core.ServiceModel
 
     public static class EvaluationContextExtensions
     {
-        #region Methods
-
         public static IList<IIdentity> GetIdentities(this EvaluationContext context)
         {
             IList<IIdentity> list = TryGetIdentities(context);
@@ -26,6 +24,7 @@ namespace Hexa.Core.ServiceModel
             {
                 return identities[0];
             }
+
             return null;
         }
 
@@ -34,12 +33,10 @@ namespace Hexa.Core.ServiceModel
             object list;
             if ((context != null) && context.Properties.TryGetValue("Identities", out list))
             {
-                return (list as IList<IIdentity>);
+                return list as IList<IIdentity>;
             }
 
             return null;
         }
-
-        #endregion Methods
     }
 }

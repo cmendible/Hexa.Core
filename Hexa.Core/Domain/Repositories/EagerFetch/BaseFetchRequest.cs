@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -27,22 +23,12 @@ namespace Hexa.Core.Domain
     public class BaseFetchRequest<TQueried, TFetch> : IFetchRequest<TQueried, TFetch>
         where TQueried : class
     {
-        #region Fields
-
         private IQueryable<TQueried> query;
-
-        #endregion Fields
-
-        #region Constructors
 
         public BaseFetchRequest(IQueryable<TQueried> query)
         {
             this.query = query;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public Type ElementType
         {
@@ -68,10 +54,6 @@ namespace Hexa.Core.Domain
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
         public IEnumerator<TQueried> GetEnumerator()
         {
             return this.query.GetEnumerator();
@@ -81,7 +63,5 @@ namespace Hexa.Core.Domain
         {
             return this.query.GetEnumerator();
         }
-
-        #endregion Methods
     }
 }

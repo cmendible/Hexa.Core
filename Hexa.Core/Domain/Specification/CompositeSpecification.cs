@@ -18,8 +18,6 @@ namespace Hexa.Core.Domain.Specification
     public abstract class CompositeSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Properties
-
         /// <summary>
         /// Left side specification for this composite element
         /// </summary>
@@ -35,7 +33,5 @@ namespace Hexa.Core.Domain.Specification
         {
             get;
         }
-
-        #endregion Properties
     }
 }

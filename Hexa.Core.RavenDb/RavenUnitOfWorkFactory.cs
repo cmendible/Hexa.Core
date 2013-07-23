@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System.ComponentModel.Composition;
@@ -29,13 +25,7 @@ namespace Hexa.Core.Domain
     [Export(typeof(IDatabaseManager))]
     public class RavenUnitOfWorkFactory : IDatabaseManager
     {
-        #region Fields
-
         private static EmbeddableDocumentStore _documenFactory;
-
-        #endregion Fields
-
-        #region Constructors
 
         public RavenUnitOfWorkFactory()
         {
@@ -50,10 +40,6 @@ namespace Hexa.Core.Domain
                 _documenFactory.Initialize();
             }
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public DocumentStore Create()
         {
@@ -76,7 +62,5 @@ namespace Hexa.Core.Domain
         public void ValidateDatabaseSchema()
         {
         }
-
-        #endregion Methods
     }
 }

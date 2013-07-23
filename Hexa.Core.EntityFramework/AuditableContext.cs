@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -33,16 +29,10 @@ namespace Hexa.Core.Domain
 
     public class AuditableContext : DbContext
     {
-        #region Constructors
-
         public AuditableContext(string nameOrConnectionString)
         : base(nameOrConnectionString)
         {
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public override int SaveChanges()
         {
@@ -101,11 +91,13 @@ namespace Hexa.Core.Domain
                             string propertyName = property;
                             object oldValue = entry.OriginalValues[property];
                             object newValue = entry.CurrentValues[property];
-
-                            IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(changeSetUniqueId, tableName, this.GetEntityUniqueId(entry.Entity),
-                                                           propertyName, oldValue, newValue,
-                                                           userUniqueId,
-                                                           now);
+                            IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(
+                                                               changeSetUniqueId,
+                                                               tableName,
+                                                               this.GetEntityUniqueId(entry.Entity),
+                                                               propertyName, oldValue, newValue,
+                                                               userUniqueId,
+                                                               now);
 
                             this.Set(auditTrail.GetType()).Add(auditTrail);
                         }
@@ -126,7 +118,5 @@ namespace Hexa.Core.Domain
         {
             return string.Empty;
         }
-
-        #endregion Methods
     }
 }

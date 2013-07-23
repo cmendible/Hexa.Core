@@ -21,8 +21,6 @@ namespace Hexa.Core.Domain
     /// http://stackoverflow.com/questions/5087888/ipreupdateeventlistener-and-dynamic-update-true
     public class AuditFlushEntityEventListener : DefaultFlushEntityEventListener
     {
-        #region Methods
-
         protected override void DirtyCheck(FlushEntityEvent @event)
         {
             base.DirtyCheck(@event);
@@ -36,16 +34,18 @@ namespace Hexa.Core.Domain
 
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)
         {
-            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
-                                       "UpdatedAt");
-            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
-                                       "UpdatedBy");
-            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
-                                       "CreatedBy");
-            yield return Array.IndexOf(@event.EntityEntry.Persister.PropertyNames,
-                                       "CreatedAt");
+            yield return Array.IndexOf(
+                             @event.EntityEntry.Persister.PropertyNames,
+                             "UpdatedAt");
+            yield return Array.IndexOf(
+                             @event.EntityEntry.Persister.PropertyNames,
+                             "UpdatedBy");
+            yield return Array.IndexOf(
+                             @event.EntityEntry.Persister.PropertyNames,
+                             "CreatedBy");
+            yield return Array.IndexOf(
+                             @event.EntityEntry.Persister.PropertyNames,
+                             "CreatedAt");
         }
-
-        #endregion Methods
     }
 }

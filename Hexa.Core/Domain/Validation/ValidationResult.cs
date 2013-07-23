@@ -8,13 +8,7 @@ namespace Hexa.Core.Validation
     /// </summary>
     public sealed class ValidationResult : IEnumerable<ValidationError>
     {
-        #region Fields
-
         private readonly List<ValidationError> _errors = new List<ValidationError>();
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationResult"/> class.
@@ -32,10 +26,6 @@ namespace Hexa.Core.Validation
         {
             this._errors.AddRange(errors);
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Gets the errors.
@@ -61,10 +51,6 @@ namespace Hexa.Core.Validation
                 return this._errors.Count == 0;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Adds a validation error into the result.
@@ -108,7 +94,5 @@ namespace Hexa.Core.Validation
                 this._errors.Remove(error);
             }
         }
-
-        #endregion Methods
     }
 }

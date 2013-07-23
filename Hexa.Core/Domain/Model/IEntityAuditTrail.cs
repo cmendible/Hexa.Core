@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,16 +13,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
 
     public interface IEntityAuditTrail
     {
-        #region Properties
-
         Guid ChangeSetUniqueId
         {
             get;
@@ -66,7 +60,5 @@ namespace Hexa.Core.Domain
             get;
             set;
         }
-
-        #endregion Properties
     }
 }

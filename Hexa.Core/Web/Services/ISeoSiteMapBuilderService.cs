@@ -18,16 +18,10 @@ namespace Hexa.Core.Web.Services
 
     public interface ISeoSiteMapBuilderService
     {
-        #region Properties
-
         SeoUrlInfo RootUrl
         {
             get;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         void AddUrl(SeoUrlInfo url);
 
@@ -40,8 +34,6 @@ namespace Hexa.Core.Web.Services
         ReadOnlyCollection<SeoUrlInfo> GetChildren(string urlKey);
 
         string SeoXml();
-
-        #endregion Methods
     }
 
     /// <summary>
@@ -49,8 +41,6 @@ namespace Hexa.Core.Web.Services
     /// </summary>
     public class SeoUrlInfo
     {
-        #region Constructors
-
         public SeoUrlInfo(string key)
         : this(key, "daily", 100)
         {
@@ -71,10 +61,6 @@ namespace Hexa.Core.Web.Services
             this.ChangeFrequency = changeFrequency;
             this.Priority = ((double)priorityPercentage / 100).ToString();
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         ///
@@ -111,7 +97,5 @@ namespace Hexa.Core.Web.Services
             get;
             set;
         }
-
-        #endregion Properties
     }
 }

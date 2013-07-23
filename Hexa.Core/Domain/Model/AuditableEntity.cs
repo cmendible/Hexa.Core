@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -25,8 +21,6 @@ namespace Hexa.Core.Domain
     public abstract class AuditableEntity<TEntity> : BaseEntity<TEntity, Guid>, IAuditableEntity
         where TEntity : BaseEntity<TEntity, Guid>
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the date on which object was created.
         /// </summary>
@@ -72,7 +66,5 @@ namespace Hexa.Core.Domain
             get;
             set;
         }
-
-        #endregion Properties
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Data
 {
     /// <summary>
@@ -24,8 +20,6 @@ namespace Hexa.Core.Data
     /// </summary>
     public interface IDatabaseManager
     {
-        #region Methods
-
         /// <summary>
         /// Creates the database.
         /// </summary>
@@ -46,7 +40,5 @@ namespace Hexa.Core.Data
         /// Validates the database schema.
         /// </summary>
         void ValidateDatabaseSchema();
-
-        #endregion Methods
     }
 }

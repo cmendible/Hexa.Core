@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System;
@@ -28,8 +24,6 @@ namespace Hexa.Core
     /// </summary>
     public static class Guard
     {
-        #region Methods
-
         /// <summary>
         /// Throws an exception of type <typeparamref name="TException"/> with the specified message
         /// when the assertion statement is true.
@@ -209,7 +203,5 @@ namespace Hexa.Core
                 throw new InvalidOperationException(message);
             }
         }
-
-        #endregion Methods
     }
 }

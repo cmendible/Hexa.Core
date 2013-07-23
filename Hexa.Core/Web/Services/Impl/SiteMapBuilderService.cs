@@ -10,8 +10,6 @@
 
     public class SiteMapBuilderService : ISiteMapBuilderService
     {
-        #region Fields
-
         // Fields
         private Dictionary<string, List<SiteMapNodeInfo>> _childNodes = new Dictionary<string, List<SiteMapNodeInfo>>();
         private Dictionary<string, SiteMapNodeInfo> _keyIndex = new Dictionary<string, SiteMapNodeInfo>();
@@ -19,19 +17,11 @@
         private Dictionary<string, int> _nodePreferredOrder = new Dictionary<string, int>();
         private SiteMapNodeInfo _rootNode = new SiteMapNodeInfo("__ROOT__");
 
-        #endregion Fields
-
-        #region Constructors
-
         // Methods
         public SiteMapBuilderService()
         {
             this._childNodes.Add(this._rootNode.Key, new List<SiteMapNodeInfo>());
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         // Properties
         public SiteMapNodeInfo RootNode
@@ -41,10 +31,6 @@
                 return this._rootNode;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public void AddNode(SiteMapNodeInfo node)
         {
@@ -74,6 +60,7 @@
             {
                 this._childNodes.Add(parent.Key, new List<SiteMapNodeInfo>());
             }
+
             this.AddNodeWithOrder(parent.Key, node, preferredDisplayOrder);
         }
 
@@ -101,6 +88,7 @@
             {
                 return this._nodeAuthorization[nodeKey];
             }
+
             return null;
         }
 
@@ -110,6 +98,7 @@
             {
                 return this._childNodes[nodeKey].AsReadOnly();
             }
+
             return new List<SiteMapNodeInfo>().AsReadOnly();
         }
 
@@ -125,6 +114,7 @@
                     return;
                 }
             }
+
             this._childNodes[parentKey].Add(node);
         }
 
@@ -135,9 +125,8 @@
             {
                 throw new ApplicationException("Duplicate key");
             }
+
             this._keyIndex.Add(node.Key, node);
         }
-
-        #endregion Methods
     }
 }

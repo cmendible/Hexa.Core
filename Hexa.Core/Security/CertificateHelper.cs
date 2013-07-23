@@ -1,4 +1,4 @@
-namespace Hexa.Core.Security
+﻿namespace Hexa.Core.Security
 {
     using System;
     using System.IO;
@@ -8,8 +8,6 @@ namespace Hexa.Core.Security
 
     public static class CertificateHelper
     {
-        #region Methods
-
         /// <summary>
         /// Gets a X509 certificate from windows store. Asks the user for the correct certificate.
         /// </summary>
@@ -22,10 +20,12 @@ namespace Hexa.Core.Security
             try
             {
                 X509Certificate2Collection col = st.Certificates;
-                X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(col, "Certificates",
-                                                 "Select one to sign",
-                                                 X509SelectionFlag.
-                                                 SingleSelection);
+                X509Certificate2Collection sel = X509Certificate2UI.SelectFromCollection(
+                                                     col,
+                                                     "Certificates",
+                                                     "Select one to sign",
+                                                     X509SelectionFlag.
+                                                     SingleSelection);
                 if (sel.Count > 0)
                 {
                     X509Certificate2Enumerator en = sel.GetEnumerator();
@@ -37,6 +37,7 @@ namespace Hexa.Core.Security
             {
                 st.Close();
             }
+
             return card;
         }
 
@@ -62,8 +63,10 @@ namespace Hexa.Core.Security
             store.Open(OpenFlags.ReadOnly);
             try
             {
-                X509Certificate2Collection certs = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName,
-                                                   false);
+                X509Certificate2Collection certs = store.Certificates.Find(
+                                                       X509FindType.FindBySubjectName,
+                                                       subjectName,
+                                                       false);
                 if (certs.Count == 1)
                 {
                     cert = certs[0];
@@ -80,6 +83,7 @@ namespace Hexa.Core.Security
                     store.Close();
                 }
             }
+
             return cert;
         }
 
@@ -129,7 +133,5 @@ namespace Hexa.Core.Security
 
             return path;
         }
-
-        #endregion Methods
     }
 }

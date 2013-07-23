@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -28,8 +28,6 @@ namespace Hexa.Core.Domain.Tests
     [TestFixture]
     public class SpecificationTests
     {
-        #region Methods
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AndAlsoSpecification_Creation_NullLeftSpecThrowArgumentNullException_Test()
@@ -80,10 +78,11 @@ namespace Hexa.Core.Domain.Tests
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
             // Act
-            var composite = new AndAlsoSpecification<Entity>(leftAdHocSpecification,
-                    rightAdHocSpecification);
+            var composite = new AndAlsoSpecification<Entity>(
+                leftAdHocSpecification,
+                rightAdHocSpecification);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(composite.SatisfiedBy());
             Assert.AreSame(leftAdHocSpecification, composite.LeftSideSpecification);
             Assert.AreSame(rightAdHocSpecification, composite.RightSideSpecification);
@@ -111,11 +110,12 @@ namespace Hexa.Core.Domain.Tests
             // Act
             adHocSpecification = new DirectSpecification<Entity>(spec);
 
-            //Assert
+            // Assert
             object expectedValue =
-                adHocSpecification.GetType().GetField("matchingCriteria",
-                        BindingFlags.Instance |
-                        BindingFlags.NonPublic).GetValue(
+                adHocSpecification.GetType().GetField(
+                    "matchingCriteria",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic).GetValue(
                     adHocSpecification);
             Assert.AreSame(expectedValue, spec);
         }
@@ -130,7 +130,7 @@ namespace Hexa.Core.Domain.Tests
             var spec = new DirectSpecification<Entity>(specificationCriteria);
             ISpecification<Entity> notSpec = !spec;
 
-            //Assert
+            // Assert
             Assert.IsNotNull(notSpec);
         }
 
@@ -165,12 +165,13 @@ namespace Hexa.Core.Domain.Tests
             // Act
             var notSpec = new NotSpecification<Entity>(specificationCriteria);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(notSpec);
             Assert.IsNotNull(
-                notSpec.GetType().GetField("originalCriteria",
-                                           BindingFlags.Instance |
-                                           BindingFlags.NonPublic).GetValue(notSpec));
+                notSpec.GetType().GetField(
+                    "originalCriteria",
+                    BindingFlags.Instance |
+                    BindingFlags.NonPublic).GetValue(notSpec));
         }
 
         [Test]
@@ -184,12 +185,13 @@ namespace Hexa.Core.Domain.Tests
             var notSpec = new NotSpecification<Entity>(specification);
 
             var resultCriteria = notSpec.GetType()
-                                 .GetField("originalCriteria",
-                                           BindingFlags.Instance |
-                                           BindingFlags.NonPublic).
+                                 .GetField(
+                                     "originalCriteria",
+                                     BindingFlags.Instance |
+                                     BindingFlags.NonPublic).
                                  GetValue(notSpec) as Expression<Func<Entity, bool>>;
 
-            //Assert
+            // Assert
             Assert.IsNotNull(notSpec);
             Assert.IsNotNull(resultCriteria);
             Assert.IsNotNull(notSpec.SatisfiedBy());
@@ -207,7 +209,7 @@ namespace Hexa.Core.Domain.Tests
             ISpecification<Entity> resultAnd = notSpec && spec;
             ISpecification<Entity> resultOr = notSpec || spec;
 
-            //Assert
+            // Assert
             Assert.IsNotNull(notSpec);
             Assert.IsNotNull(resultAnd);
             Assert.IsNotNull(resultOr);
@@ -263,10 +265,11 @@ namespace Hexa.Core.Domain.Tests
             rightAdHocSpecification = new DirectSpecification<Entity>(rightSpec);
 
             // Act
-            var composite = new OrElseSpecification<Entity>(leftAdHocSpecification,
-                    rightAdHocSpecification);
+            var composite = new OrElseSpecification<Entity>(
+                leftAdHocSpecification,
+                rightAdHocSpecification);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(composite.SatisfiedBy());
             Assert.AreSame(leftAdHocSpecification, composite.LeftSideSpecification);
             Assert.AreSame(rightAdHocSpecification, composite.RightSideSpecification);
@@ -291,10 +294,12 @@ namespace Hexa.Core.Domain.Tests
 
             ISpecification<Entity> andSpec = leftAdHocSpecification & rightAdHocSpecification;
             andSpec = leftAdHocSpecification || rightAdHocSpecification;
-            //Assert
+
+            // Assert
 
             InvocationExpression invokedExpr = Expression.Invoke(rightSpec, leftSpec.Parameters.Cast<Expression>());
-            expected = Expression.Lambda<Func<Entity, bool>>(Expression.AndAlso(leftSpec.Body, invokedExpr),
+            expected = Expression.Lambda<Func<Entity, bool>>(Expression.AndAlso(
+                           leftSpec.Body, invokedExpr),
                        leftSpec.Parameters);
 
             actual = andSpec.SatisfiedBy();
@@ -320,10 +325,11 @@ namespace Hexa.Core.Domain.Tests
             ISpecification<Entity> orSpec = leftAdHocSpecification | rightAdHocSpecification;
             orSpec = leftAdHocSpecification || rightAdHocSpecification;
 
-            //Assert
+            // Assert
 
             InvocationExpression invokedExpr = Expression.Invoke(rightSpec, leftSpec.Parameters.Cast<Expression>());
-            expected = Expression.Lambda<Func<Entity, bool>>(Expression.Or(leftSpec.Body, invokedExpr),
+            expected = Expression.Lambda<Func<Entity, bool>>(Expression.Or(
+                           leftSpec.Body, invokedExpr),
                        leftSpec.Parameters);
 
             actual = orSpec.SatisfiedBy();
@@ -336,11 +342,10 @@ namespace Hexa.Core.Domain.Tests
             ISpecification<Entity> trueSpec = new TrueSpecification<Entity>();
             bool expected = true;
             bool actual = trueSpec.SatisfiedBy().Compile()(new Entity());
-            //Assert
+
+            // Assert
             Assert.IsNotNull(trueSpec);
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion Methods
     }
 }

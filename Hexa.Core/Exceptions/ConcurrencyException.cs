@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System;
@@ -29,16 +25,10 @@ namespace Hexa.Core
     [Serializable]
     public class ConcurrencyException : CoreException
     {
-        #region Fields
-
         /// <summary>
         /// Exception unique id used for logging purposes.
         /// </summary>
         private readonly Guid _UniqueId = GuidExtensions.NewCombGuid();
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyException"/> class.
@@ -76,10 +66,6 @@ namespace Hexa.Core
         {
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
         /// </summary>
@@ -97,7 +83,5 @@ namespace Hexa.Core
         {
             base.GetObjectData(info, context);
         }
-
-        #endregion Methods
     }
 }

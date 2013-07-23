@@ -2,8 +2,6 @@ namespace Hexa.Core.Data
 {
     using System.Runtime.Serialization;
 
-    #region Enumerations
-
     public enum DbProvider
     {
         [EnumMember(Value = "MySql.Data.MySQLClient")] MySqlProvider,
@@ -20,6 +18,4 @@ namespace Hexa.Core.Data
 
         [EnumMember(Value = "FirebirdSql.Data.FirebirdClient")] Firebird
     }
-
-    #endregion Enumerations
 }

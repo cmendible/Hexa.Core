@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +13,20 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Logging
 {
     using System;
 
     public class ConsoleLogger : ILogger
     {
-        #region Fields
-
         private const string layout = "{0} - {1} - {2} - {3}";
 
         private string type;
-
-        #endregion Fields
-
-        #region Constructors
 
         public ConsoleLogger(Type type)
         {
             this.type = type.FullName;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public void Debug(object message)
         {
@@ -166,7 +152,5 @@ namespace Hexa.Core.Logging
         {
             Console.WriteLine(string.Format(layout, CurrentDateTime(), level, this.type, string.Format(provider, format, args)));
         }
-
-        #endregion Methods
     }
 }

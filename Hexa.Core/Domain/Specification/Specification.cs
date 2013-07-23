@@ -28,8 +28,6 @@ namespace Hexa.Core.Domain.Specification
     public abstract class Specification<TEntity> : ISpecification<TEntity>
         where TEntity : class
     {
-        #region Methods
-
         /// <summary>
         /// Not specification
         /// </summary>
@@ -89,7 +87,5 @@ namespace Hexa.Core.Domain.Specification
         /// </summary>
         /// <returns>Expression that satisfy this specification</returns>
         public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
-
-        #endregion Methods
     }
 }

@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -33,32 +29,18 @@ namespace Hexa.Core.Domain
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
-        #region Fields
-
         ISessionFactory sessionFactory;
-
-        #endregion Fields
-
-        #region Constructors
 
         public NHibernateUnitOfWork(ISessionFactory sessionFactory)
         {
             this.sessionFactory = sessionFactory;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public ISession Session
         {
             get;
             private set;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Adds the specified entity.
@@ -156,14 +138,14 @@ namespace Hexa.Core.Domain
 
         public void Start()
         {
-            Session = sessionFactory.OpenSession();
-            Session.BeginTransaction();
+            this.Session = this.sessionFactory.OpenSession();
+            this.Session.BeginTransaction();
         }
 
         public void Start(System.Data.IsolationLevel isolationLevel)
         {
-            Session = sessionFactory.OpenSession();
-            Session.BeginTransaction(isolationLevel);
+            this.Session = this.sessionFactory.OpenSession();
+            this.Session.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -174,11 +156,11 @@ namespace Hexa.Core.Domain
         {
             if (disposing)
             {
-                if (Session != null && Session.IsOpen)
+                if (this.Session != null && this.Session.IsOpen)
                 {
-                    if (Session.Transaction != null)
+                    if (this.Session.Transaction != null)
                     {
-                        if (Session.Transaction.IsActive)
+                        if (this.Session.Transaction.IsActive)
                         {
                             if (Transaction.Current == null)
                             {
@@ -186,15 +168,13 @@ namespace Hexa.Core.Domain
                             }
                         }
 
-                        Session.Transaction.Dispose();
+                        this.Session.Transaction.Dispose();
                     }
 
-                    Session.Dispose();
-                    Session = null;
+                    this.Session.Dispose();
+                    this.Session = null;
                 }
             }
         }
-
-        #endregion Methods
     }
 }

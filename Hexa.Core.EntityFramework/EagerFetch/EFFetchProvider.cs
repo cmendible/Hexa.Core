@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -26,15 +22,11 @@ namespace Hexa.Core.Domain
 
     public class EFFetchProvider : IFetchProvider
     {
-        #region Methods
-
         public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
         where TOriginating : class
         {
             var fetch = DbExtensions.Include(query, relatedObjectSelector);
             return new BaseFetchRequest<TOriginating, TRelated>(fetch);
         }
-
-        #endregion Methods
     }
 }

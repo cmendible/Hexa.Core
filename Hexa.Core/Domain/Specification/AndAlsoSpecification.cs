@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -21,14 +21,8 @@ namespace Hexa.Core.Domain.Specification
     public class AndAlsoSpecification<T> : CompositeSpecification<T>
         where T : class
     {
-        #region Fields
-
         private readonly ISpecification<T> leftSideSpecification;
         private readonly ISpecification<T> rightSideSpecification;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Default constructor for AndSpecification
@@ -50,10 +44,6 @@ namespace Hexa.Core.Domain.Specification
             this.leftSideSpecification = leftSide;
             this.rightSideSpecification = rightSide;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Left side specification
@@ -77,10 +67,6 @@ namespace Hexa.Core.Domain.Specification
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{T}"/>
         /// </summary>
@@ -90,9 +76,7 @@ namespace Hexa.Core.Domain.Specification
             Expression<Func<T, bool>> left = this.leftSideSpecification.SatisfiedBy();
             Expression<Func<T, bool>> right = this.rightSideSpecification.SatisfiedBy();
 
-            return (left.AndAlso(right));
+            return left.AndAlso(right);
         }
-
-        #endregion Methods
     }
 }

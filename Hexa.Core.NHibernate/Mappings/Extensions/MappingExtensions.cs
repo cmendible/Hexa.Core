@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using FluentNHibernate.Mapping;
@@ -25,8 +21,6 @@ namespace Hexa.Core.Domain
 
     public static class MappingExtensions
     {
-        #region Methods
-
         private static PropertyPart TimePartWithDatabaseDefault<TEntity>(PropertyPart datePart, Dialect dialect)
         {
             if (dialect is MsSql2005Dialect)
@@ -61,7 +55,5 @@ namespace Hexa.Core.Domain
 
             return datePart;
         }
-
-        #endregion Methods
     }
 }

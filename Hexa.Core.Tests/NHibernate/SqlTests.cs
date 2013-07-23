@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Tests.Sql
 {
@@ -46,14 +42,8 @@ namespace Hexa.Core.Tests.Sql
     [TestFixture]
     public class SqlTest
     {
-        #region Fields
-
         UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
         UnityContainer unityContainer;
-
-        #endregion Fields
-
-        #region Methods
 
         [Test]
         public void Add_EntityA()
@@ -89,12 +79,12 @@ namespace Hexa.Core.Tests.Sql
             */
             EntityA a = this._Create_EntityA_EntityB_And_Many_To_Many_Relation();
 
-            //now update a simple property of EntityA, due to this the
-            //MyPostUpdateListener will be called, which iterates through all
-            //properties of EntityA (and also the Collection of the m:n relation)
+            // now update a simple property of EntityA, due to this the
+            // MyPostUpdateListener will be called, which iterates through all
+            // properties of EntityA (and also the Collection of the m:n relation)
             //--> org.hibernate.AssertionFailure: collection
-            //was not processed by flush()
-            var repo = unityContainer.Resolve<IEntityARepository>();
+            // was not processed by flush()
+            var repo = this.unityContainer.Resolve<IEntityARepository>();
             a = repo.GetFilteredElements(u => u.UniqueId == a.UniqueId).Single();
 
             a.Name = "AA";
@@ -106,7 +96,7 @@ namespace Hexa.Core.Tests.Sql
         {
             EntityA entityA = this._Add_EntityA();
 
-            IEntityARepository repo = unityContainer.Resolve<IEntityARepository>();
+            IEntityARepository repo = this.unityContainer.Resolve<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
 
@@ -118,29 +108,28 @@ namespace Hexa.Core.Tests.Sql
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            //AggregateCatalog catalog = new AggregateCatalog();
-            //AssemblyCatalog thisAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
-            //catalog.Catalogs.Add(thisAssembly);
-            //catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Release"));
+            // AggregateCatalog catalog = new AggregateCatalog();
+            // AssemblyCatalog thisAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
+            // catalog.Catalogs.Add(thisAssembly);
+            // catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Release"));
 
-            //CompositionContainer compositionContainer = new CompositionContainer(catalog);
+            // CompositionContainer compositionContainer = new CompositionContainer(catalog);
 
-            //Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => new Microsoft.Mef.CommonServiceLocator.MefServiceLocator(compositionContainer));
+            // Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => new Microsoft.Mef.CommonServiceLocator.MefServiceLocator(compositionContainer));
 
-            //IoCContainer containerWrapper = new IoCContainer(
+            // IoCContainer containerWrapper = new IoCContainer(
             //    (x, y) => { },
             //    (x, y) => { }
-            //);
+            // );
 
-            //ApplicationContext.Start(containerWrapper, this.ConnectionString());
+            // ApplicationContext.Start(containerWrapper, this.ConnectionString());
 
-            unityContainer = new UnityContainer();
+            this.unityContainer = new UnityContainer();
             ServiceLocator.Initialize(
-                (x, y) => unityContainer.RegisterType(x, y),
-                (x, y) => unityContainer.RegisterInstance(x, y),
+                (x, y) => this.unityContainer.RegisterType(x, y),
+                (x, y) => this.unityContainer.RegisterInstance(x, y),
                 (x) => { return unityContainer.Resolve(x); },
-                (x) => { return unityContainer.ResolveAll(x); }
-            );
+                (x) => { return unityContainer.ResolveAll(x); });
 
             // Context Factory
             NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
@@ -154,18 +143,18 @@ namespace Hexa.Core.Tests.Sql
 
             NHibernate.ISessionFactory sessionFactory = ctxFactory.Create();
 
-            unityContainer.RegisterInstance<NHibernate.ISessionFactory>(sessionFactory);
-            unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
+            this.unityContainer.RegisterInstance<NHibernate.ISessionFactory>(sessionFactory);
+            this.unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
 
-            unityContainer.RegisterType<IUnitOfWork, NHibernateUnitOfWork>(unitOfWorkPerTestLifeTimeManager);
+            this.unityContainer.RegisterType<IUnitOfWork, NHibernateUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
-            unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
-            unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
 
             // Services
 
-            //ctxFactory.RegisterSessionFactory(container);
+            // ctxFactory.RegisterSessionFactory(container);
 
             ApplicationContext.User =
                 new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
@@ -176,7 +165,7 @@ namespace Hexa.Core.Tests.Sql
         {
             try
             {
-                var dbManager = unityContainer.Resolve<IDatabaseManager>();
+                var dbManager = this.unityContainer.Resolve<IDatabaseManager>();
                 dbManager.DeleteDatabase();
             }
             finally
@@ -189,7 +178,7 @@ namespace Hexa.Core.Tests.Sql
         {
             EntityA entityA = this._Add_EntityA();
 
-            var repo = unityContainer.Resolve<IEntityARepository>();
+            var repo = this.unityContainer.Resolve<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
         }
@@ -197,17 +186,17 @@ namespace Hexa.Core.Tests.Sql
         [NUnit.Framework.SetUp]
         public void Setup()
         {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Start();
         }
 
         [TearDown]
         public void TearDown()
         {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
 
             unitOfWork.Dispose();
-            unitOfWorkPerTestLifeTimeManager.RemoveValue();
+            this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]
@@ -217,7 +206,7 @@ namespace Hexa.Core.Tests.Sql
 
             Thread.Sleep(1000);
 
-            var repo = unityContainer.Resolve<IEntityARepository>();
+            var repo = this.unityContainer.Resolve<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
             Assert.IsTrue(results.Count() > 0);
 
@@ -225,7 +214,7 @@ namespace Hexa.Core.Tests.Sql
             entityA2Update.Name = "Maria";
             repo.Modify(entityA2Update);
 
-            repo = unityContainer.Resolve<IEntityARepository>();
+            repo = this.unityContainer.Resolve<IEntityARepository>();
             entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
             Assert.AreEqual("Maria", entityA.Name);
             Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
@@ -238,7 +227,7 @@ namespace Hexa.Core.Tests.Sql
 
         protected virtual NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, ConnectionString(), string.Empty, typeof(Entity).Assembly);
+            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, this.ConnectionString(), string.Empty, typeof(Entity).Assembly);
         }
 
         private EntityA _Add_EntityA()
@@ -246,7 +235,7 @@ namespace Hexa.Core.Tests.Sql
             var entityA = new EntityA();
             entityA.Name = "Martin";
 
-            var repo = unityContainer.Resolve<IEntityARepository>();
+            var repo = this.unityContainer.Resolve<IEntityARepository>();
             repo.Add(entityA);
 
             return entityA;
@@ -262,27 +251,19 @@ namespace Hexa.Core.Tests.Sql
 
             a.AddB(b);
 
-            var repoA = unityContainer.Resolve<IEntityARepository>();
-            var repoB = unityContainer.Resolve<IEntityBRepository>();
+            var repoA = this.unityContainer.Resolve<IEntityARepository>();
+            var repoB = this.unityContainer.Resolve<IEntityBRepository>();
 
             repoB.Add(b);
             repoA.Add(a);
 
             return a;
         }
-
-        #endregion Methods
     }
 
     public class UnitOfWorkPerTestLifeTimeManager : LifetimeManager
     {
-        #region Fields
-
         IUnitOfWork unitOfWork;
-
-        #endregion Fields
-
-        #region Methods
 
         public override object GetValue()
         {
@@ -298,7 +279,5 @@ namespace Hexa.Core.Tests.Sql
         {
             unitOfWork = newValue as IUnitOfWork;
         }
-
-        #endregion Methods
     }
 }

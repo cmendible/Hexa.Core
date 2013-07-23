@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +13,22 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
 
     public interface IAuditTrailFactory
     {
-        #region Methods
-
-        IEntityAuditTrail CreateAuditTrail(Guid changeSetUniqueId, 
-            string entityName, 
-            string entityUniqueId, 
+        IEntityAuditTrail CreateAuditTrail(
+            Guid changeSetUniqueId,
+            string entityName,
+            string entityUniqueId,
             string propertyName,
-            object oldValue, 
-            object newValue, 
-            string updatedBy, 
+            object oldValue,
+            object newValue,
+            string updatedBy,
             DateTime updatedAt);
 
         bool IsEntityRegistered(string entityName);
-
-        #endregion Methods
     }
 }

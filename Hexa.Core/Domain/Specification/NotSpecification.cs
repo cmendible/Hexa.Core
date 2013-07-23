@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -23,13 +23,7 @@ namespace Hexa.Core.Domain.Specification
     public class NotSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Fields
-
         private readonly Expression<Func<TEntity, bool>> originalCriteria;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Constructor for NotSpecificaiton
@@ -59,20 +53,15 @@ namespace Hexa.Core.Domain.Specification
             this.originalCriteria = originalSpecification;
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         /// <summary>
         /// <see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/>
         /// </summary>
         /// <returns><see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/></returns>
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
-            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(this.originalCriteria.Body),
+            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(
+                        this.originalCriteria.Body),
                     this.originalCriteria.Parameters.Single());
         }
-
-        #endregion Methods
     }
 }

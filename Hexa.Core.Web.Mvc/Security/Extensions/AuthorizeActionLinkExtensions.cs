@@ -10,8 +10,6 @@
 
     public static class AuthorizeActionLinkExtensions
     {
-        #region Methods
-
         public static MvcHtmlString AuthorizeActionLink(this HtmlHelper helper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             if (HasActionPermission(helper, actionName, controllerName))
@@ -99,7 +97,5 @@
 
             return ActionIsAuthorized(controllerContext, actionDescriptor);
         }
-
-        #endregion Methods
     }
 }

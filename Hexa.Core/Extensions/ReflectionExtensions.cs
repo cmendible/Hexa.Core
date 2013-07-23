@@ -1,11 +1,9 @@
-namespace Hexa.Core
+﻿namespace Hexa.Core
 {
     using System;
 
     public static class ReflectionExtensions
     {
-        #region Methods
-
         public static bool IsSubclassOfGeneric(this Type source, Type generic)
         {
             while (source != null && source != typeof(object))
@@ -15,11 +13,11 @@ namespace Hexa.Core
                 {
                     return true;
                 }
+
                 source = source.BaseType;
             }
+
             return false;
         }
-
-        #endregion Methods
     }
 }

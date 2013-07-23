@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -27,8 +23,6 @@ namespace Hexa.Core.Domain
 
     public class SqlExceptionHandler : ISQLExceptionConverter
     {
-        #region Methods
-
         public Exception Convert(AdoExceptionContextInfo exInfo)
         {
             var sqle = ADOExceptionHelper.ExtractDbException(exInfo.SqlException) as SqlException;
@@ -37,7 +31,7 @@ namespace Hexa.Core.Domain
                 switch (sqle.Number)
                 {
                 case 17:
-                    // 	SQL Server does not exist or access denied.
+                    // SQL Server does not exist or access denied.
                 case 4060:
                     // Invalid Database
                 case 18456:
@@ -58,8 +52,10 @@ namespace Hexa.Core.Domain
                     return new DatabaseException(sqle.Message, sqle);
                 }
             }
-            return SQLStateConverter.HandledNonSpecificException(exInfo.SqlException,
-                    exInfo.Message, exInfo.Sql);
+
+            return SQLStateConverter.HandledNonSpecificException(
+                       exInfo.SqlException,
+                       exInfo.Message, exInfo.Sql);
         }
 
         /// <summary>
@@ -95,7 +91,5 @@ namespace Hexa.Core.Domain
                 return string.Empty;
             }
         }
-
-        #endregion Methods
     }
 }

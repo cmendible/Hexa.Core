@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -21,13 +21,7 @@ namespace Hexa.Core.Domain.Specification
     /// </summary>
     public class ParameterRebinder : ExpressionVisitor
     {
-        #region Fields
-
         private readonly Dictionary<ParameterExpression, ParameterExpression> map;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Default construcotr
@@ -38,18 +32,15 @@ namespace Hexa.Core.Domain.Specification
             this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         /// <summary>
         /// Replate parameters in expression with a Map information
         /// </summary>
         /// <param name="map">Map information</param>
         /// <param name="exp">Expression to replace parameters</param>
         /// <returns>Expression with parameters replaced</returns>
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map,
-                Expression exp)
+        public static Expression ReplaceParameters(
+            Dictionary<ParameterExpression, ParameterExpression> map,
+            Expression exp)
         {
             return new ParameterRebinder(map).Visit(exp);
         }
@@ -69,7 +60,5 @@ namespace Hexa.Core.Domain.Specification
 
             return base.VisitParameter(p);
         }
-
-        #endregion Methods
     }
 }

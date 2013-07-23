@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -30,24 +26,14 @@ namespace Hexa.Core.Domain
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class RavenUnitOfWork : IRavenUnitOfWork
     {
-        #region Fields
-
         private bool disposed;
         DocumentStore documentStore;
         private IDocumentSession session;
-
-        #endregion Fields
-
-        #region Constructors
 
         public RavenUnitOfWork(DocumentStore documentStore)
         {
             this.documentStore = documentStore;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public IDocumentSession Session
         {
@@ -56,10 +42,6 @@ namespace Hexa.Core.Domain
                 return this.session;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Adds the specified entity.
@@ -103,7 +85,8 @@ namespace Hexa.Core.Domain
         // A derived class should not be able to override this method.
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
+
             // This object will be cleaned up by the Dispose method.
             // Therefore, you should call GC.SupressFinalize to
             // take this object off the finalization queue
@@ -135,12 +118,12 @@ namespace Hexa.Core.Domain
 
         public void Start()
         {
-            this.session = documentStore.OpenSession();
+            this.session = this.documentStore.OpenSession();
         }
 
         public void Start(System.Data.IsolationLevel isolationLevel)
         {
-            this.session = documentStore.OpenSession();
+            this.session = this.documentStore.OpenSession();
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -163,10 +146,8 @@ namespace Hexa.Core.Domain
                 }
 
                 // Note disposing has been done.
-                disposed = true;
+                this.disposed = true;
             }
         }
-
-        #endregion Methods
     }
 }

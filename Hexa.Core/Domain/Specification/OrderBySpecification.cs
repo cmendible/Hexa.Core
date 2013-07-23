@@ -1,10 +1,8 @@
-namespace Hexa.Core.Domain.Specification
+﻿namespace Hexa.Core.Domain.Specification
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-
-    #region Enumerations
 
     public enum OrderDirection
     {
@@ -12,22 +10,14 @@ namespace Hexa.Core.Domain.Specification
         Descending
     }
 
-    #endregion Enumerations
-
     public class OrderBySpecification<TEntity> : IOrderBySpecification<TEntity>
         where TEntity : class
     {
-        #region Fields
-
         private readonly Expression<Func<TEntity, object>> predicate;
         private readonly Expression<Func<TEntity, object>> predicate2;
 
         private bool descending;
         private bool descending2;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Default Constructor.
@@ -99,16 +89,13 @@ namespace Hexa.Core.Domain.Specification
         {
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public OrderDirection Direction
         {
             get
             {
                 return this.descending ? OrderDirection.Descending : OrderDirection.Ascending;
             }
+
             set
             {
                 this.descending = (value == OrderDirection.Descending) ? true : false;
@@ -121,15 +108,12 @@ namespace Hexa.Core.Domain.Specification
             {
                 return this.descending2 ? OrderDirection.Descending : OrderDirection.Ascending;
             }
+
             set
             {
                 this.descending2 = (value == OrderDirection.Descending) ? true : false;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public IOrderedQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query)
         {
@@ -144,7 +128,5 @@ namespace Hexa.Core.Domain.Specification
 
             return ret;
         }
-
-        #endregion Methods
     }
 }

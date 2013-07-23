@@ -23,13 +23,7 @@ namespace Hexa.Core.Domain.Specification
     public class DirectSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Fields
-
         private readonly Expression<Func<TEntity, bool>> matchingCriteria;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Default constructor for Direct Specification
@@ -45,10 +39,6 @@ namespace Hexa.Core.Domain.Specification
             this.matchingCriteria = matchingCriteria;
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         /// <summary>
         ///
         /// </summary>
@@ -57,7 +47,5 @@ namespace Hexa.Core.Domain.Specification
         {
             return this.matchingCriteria;
         }
-
-        #endregion Methods
     }
 }

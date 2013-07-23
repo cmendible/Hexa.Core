@@ -26,7 +26,7 @@ namespace Hexa.Core.Tests.Domain
 
         public void Publish<T>(T @event) where T : Event
         {
-            //DomainEvents.Raise<T>(@event);
+            // DomainEvents.Raise<T>(@event);
             this.bus.Publish<T>(@event);
         }
     }
@@ -35,6 +35,7 @@ namespace Hexa.Core.Tests.Domain
         Consumes<EntityCCreated>.All,
         Consumes<EntityCUpdated>.All,
         Consumes<AddedBToEntityC>.All
+
         // IHandleMessages<EntityCCreated>, IHandleMessages<EntityCUpdated>, IHandleMessages<AddedBToEntityC>
     {
         public void Consume(EntityCCreated message)
@@ -67,8 +68,7 @@ namespace Hexa.Core.Tests.Domain
                 (x, y) => unityContainer.RegisterType(x, y),
                 (x, y) => unityContainer.RegisterInstance(x, y),
                 (x) => { return unityContainer.Resolve(x); },
-                (x) => { return unityContainer.ResolveAll(x); }
-            );
+                (x) => { return unityContainer.ResolveAll(x); });
 
             var ravenStore = new EmbeddableDocumentStore
             {
@@ -92,6 +92,7 @@ namespace Hexa.Core.Tests.Domain
                     session.Store(newC);
                     session.SaveChanges();
                 }
+
                 Console.WriteLine("Entity C Created");
             });
 
@@ -136,15 +137,16 @@ namespace Hexa.Core.Tests.Domain
 
             IServiceBus clientBus = ServiceBusFactory.New(sbc =>
             {
-                //sbc.UseMsmq(cfg =>
-                //{
+                // sbc.UseMsmq(cfg =>
+                // {
                 //    cfg.VerifyMsmqConfiguration();
                 //    //cfg.UseMulticastSubscriptionClient();
-                //});
+                // });
                 sbc.UseRabbitMq();
                 sbc.SetCreateTransactionalQueues(true);
-                //sbc.UseSubscriptionService("msmq://localhost/mt_subscriptions");
-                //sbc.ReceiveFrom("msmq://localhost/test_queue");
+
+                // sbc.UseSubscriptionService("msmq:// localhost/mt_subscriptions");
+                // sbc.ReceiveFrom("msmq:// localhost/test_queue");
                 sbc.ReceiveFrom("rabbitmq://localhost/client_queue");
                 sbc.Subscribe(subs =>
                 {
@@ -154,34 +156,38 @@ namespace Hexa.Core.Tests.Domain
                 sbc.EnableMessageTracing();
                 sbc.UseJsonSerializer();
                 sbc.SetDefaultRetryLimit(10);
-                //sbc.EnableRemoteIntrospection();
+
+                // sbc.EnableRemoteIntrospection();
             });
 
             IServiceBus bus = ServiceBusFactory.New(sbc =>
             {
-                //sbc.UseMsmq(cfg =>
-                //{
+                // sbc.UseMsmq(cfg =>
+                // {
                 //    cfg.VerifyMsmqConfiguration();
                 //    //cfg.UseMulticastSubscriptionClient();
-                //});
+                // });
                 sbc.UseRabbitMq();
                 sbc.SetCreateTransactionalQueues(true);
-                //sbc.UseSubscriptionService("msmq://localhost/mt_subscriptions");
-                //sbc.ReceiveFrom("msmq://localhost/test_queue");
+
+                // sbc.UseSubscriptionService("msmq:// localhost/mt_subscriptions");
+                // sbc.ReceiveFrom("msmq:// localhost/test_queue");
                 sbc.ReceiveFrom("rabbitmq://localhost/test_queue");
-                //sbc.Subscribe(subs =>
-                //{
+
+                // sbc.Subscribe(subs =>
+                // {
                 //    subs.Handler<EntityCUpdated>((msg, @event) => Console.WriteLine(@event.Name));
                 //    subs.Consumer<AnotherEventMessageHandler>();
-                //});
+                // });
                 sbc.EnableMessageTracing();
                 sbc.UseJsonSerializer();
                 sbc.SetDefaultRetryLimit(10);
-                //sbc.EnableRemoteIntrospection();
+
+                // sbc.EnableRemoteIntrospection();
             });
 
-            //Bus.Instance.Probe();
-            //Bus.Instance.WriteIntrospectionToConsole();
+            // Bus.Instance.Probe();
+            // Bus.Instance.WriteIntrospectionToConsole();
 
             // NServiceBus
             // var bus = NServiceBus.Configure.With(typeof(NServiceBusPublisher).Assembly)
@@ -212,23 +218,23 @@ namespace Hexa.Core.Tests.Domain
             EventSourcedRepository<EntityC> repo = ServiceLocator.GetInstance<EventSourcedRepository<EntityC>>();
             repo.Save(entity, -1);
 
-            //EntityC entityFromStore = repo.GetById(entity.Id);
-            //entityFromStore.Update("cmendibl3");
+            // EntityC entityFromStore = repo.GetById(entity.Id);
+            // entityFromStore.Update("cmendibl3");
 
-            //repo.Save(entityFromStore, entityFromStore.Version);
+            // repo.Save(entityFromStore, entityFromStore.Version);
 
-            //entityFromStore = repo.GetById(entity.Id);
+            // entityFromStore = repo.GetById(entity.Id);
 
             ////FROM DE UI
-            //for (int i = 0; i <= 100; i++)
-            //{
+            // for (int i = 0; i <= 100; i++)
+            // {
             //    using (var session = ravenStore.OpenSession())
             //    {
             //        var readModel = session.Query<EntityC>().FirstOrDefault();
             //        if (readModel != null)
             //            Console.WriteLine("This is the name from read model:" + readModel.Name);
             //    }
-            //};
+            // };
 
             Console.WriteLine("Done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }

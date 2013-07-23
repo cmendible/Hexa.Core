@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -9,5 +9,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Hexa.Core")]
 [assembly: AssemblyProduct("Hexa.Core")]
 
-//The following GUID is for the ID of the typelib if this project is exposed to COM
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ABFB8060-9B53-4C4E-94A5-7B5BE76E3B14")]

@@ -21,8 +21,6 @@ namespace Hexa.Core.Domain.Specification
     public class TrueSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {
-        #region Methods
-
         /// <summary>
         /// <see cref=" Hexa.Core.Domain.Specification.Specification{TEntity}"/>
         /// </summary>
@@ -32,7 +30,5 @@ namespace Hexa.Core.Domain.Specification
             Expression<Func<TEntity, bool>> trueExpression = t => true;
             return trueExpression;
         }
-
-        #endregion Methods
     }
 }

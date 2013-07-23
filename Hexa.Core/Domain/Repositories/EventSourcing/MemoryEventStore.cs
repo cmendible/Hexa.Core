@@ -7,12 +7,21 @@
 
     public class MemoryEventStore : BaseEventStore
     {
+        private readonly Dictionary<Guid, List<EventDescriptor>> current = new Dictionary<Guid, List<EventDescriptor>>();
+
         public MemoryEventStore(IEventPublisher publisher)
         : base(publisher)
         {
         }
 
-        private readonly Dictionary<Guid, List<EventDescriptor>> current = new Dictionary<Guid, List<EventDescriptor>>();
+        protected override IEnumerable<EventDescriptor> LoadEventDescriptorsForAggregate(Guid aggregateId)
+        {
+            if (!this.current.ContainsKey(aggregateId))
+            {
+                return new EventDescriptor[] { };
+            }
+            return this.current[aggregateId];
+        }
 
         protected override void PersistEventDescriptors(IEnumerable<EventDescriptor> newEventDescriptors, Guid aggregateId, int expectedVersion)
         {
@@ -26,15 +35,8 @@
             {
                 throw new ConcurrencyException();
             }
+
             eventDescriptors.AddRange(newEventDescriptors);
         }
-
-        protected override IEnumerable<EventDescriptor> LoadEventDescriptorsForAggregate(Guid aggregateId)
-        {
-            if (!this.current.ContainsKey(aggregateId))
-                return new EventDescriptor[] { };
-            return this.current[aggregateId];
-        }
-
     }
 }

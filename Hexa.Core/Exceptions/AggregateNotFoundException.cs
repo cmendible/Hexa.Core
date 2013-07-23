@@ -8,20 +8,28 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateNotFoundException"/> class.
         /// </summary>
-        public AggregateNotFoundException() { }
+        public AggregateNotFoundException()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateNotFoundException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public AggregateNotFoundException(string message) : base(message) { }
+        public AggregateNotFoundException(string message)
+        : base(message)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateNotFoundException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public AggregateNotFoundException(string message, Exception inner) : base(message, inner) { }
+        public AggregateNotFoundException(string message, Exception inner)
+        : base(message, inner)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateNotFoundException"/> class.
@@ -34,6 +42,8 @@
         protected AggregateNotFoundException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context)
-        : base(info, context) { }
+        : base(info, context)
+        {
+        }
     }
 }

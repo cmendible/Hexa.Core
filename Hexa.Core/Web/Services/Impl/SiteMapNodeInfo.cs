@@ -8,8 +8,6 @@
 
     public class SiteMapNodeInfo
     {
-        #region Fields
-
         // Fields
         private NameValueCollection _attributes;
         private string _description;
@@ -19,10 +17,6 @@
         private IList _roles;
         private string _title;
         private string _url;
-
-        #endregion Fields
-
-        #region Constructors
 
         // Methods
         public SiteMapNodeInfo(string key)
@@ -61,13 +55,9 @@
         public SiteMapNodeInfo(string key, string url, Func<string> title, Func<string> description)
         : this(key, url, title.Invoke(), description.Invoke())
         {
-            TitleCallBack = title;
-            DescriptionCallBack = description;
+            this.TitleCallBack = title;
+            this.DescriptionCallBack = description;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         // Properties
         public NameValueCollection Attributes
@@ -84,6 +74,7 @@
             {
                 return this._description;
             }
+
             set
             {
                 this._description = value;
@@ -110,6 +101,7 @@
             {
                 return this._implicitResourceKey;
             }
+
             set
             {
                 this._implicitResourceKey = value;
@@ -122,6 +114,7 @@
             {
                 return this._key;
             }
+
             set
             {
                 this._key = value;
@@ -142,6 +135,7 @@
             {
                 return this._title;
             }
+
             set
             {
                 this._title = value;
@@ -160,12 +154,11 @@
             {
                 return this._url;
             }
+
             set
             {
                 this._url = value;
             }
         }
-
-        #endregion Properties
     }
 }

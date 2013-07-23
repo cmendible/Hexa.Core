@@ -6,8 +6,6 @@
     using System.Text;
     using System.Web.Mvc;
 
-    #region Enumerations
-
     public enum Align
     {
         center,
@@ -94,12 +92,8 @@
         both
     }
 
-    #endregion Enumerations
-
     public class Column
     {
-        #region Fields
-
         private Align? _align;
         private List<string> _classes = new List<string>();
         private string _columnName;
@@ -119,10 +113,6 @@
         private bool? _sortable;
         private bool? _title;
         private int? _width;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Constructor
@@ -150,10 +140,6 @@
             // Set index equal to columnname by default, can be overriden by setter
             this._index = columnName;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// This option allow to add a class to to every cell on that column. In the grid css
@@ -200,6 +186,7 @@
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
+
             this._customFormatter = customFormatter;
             return this;
         }
@@ -237,6 +224,7 @@
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
+
             this._formatter = new KeyValuePair<Formatters, string>(formatter, "");
             return this;
         }
@@ -252,6 +240,7 @@
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
+
             this._formatter = new KeyValuePair<Formatters, string>(formatter, formatOptions);
             return this;
         }
@@ -399,7 +388,7 @@
             // Classes
             if (this._classes.Count > 0)
             {
-                script.AppendFormat("classes: '{0}',", string.Join(" ", (from c in _classes select c).ToArray())).AppendLine();
+                script.AppendFormat("classes: '{0}',", string.Join(" ", (from c in this._classes select c).ToArray())).AppendLine();
             }
 
             // Columnname
@@ -422,6 +411,7 @@
             {
                 script.AppendFormat("formatter: '{0}',", this._formatter.Value.Key).AppendLine();
             }
+
             if (this._formatter.HasValue && !string.IsNullOrWhiteSpace(this._formatter.Value.Value))
             {
                 script.AppendLine("formatter: '" + this._formatter.Value.Key + "', formatoption: {" + this._formatter.Value.Value + "} ,");
@@ -470,6 +460,7 @@
                 {
                     script.AppendLine("stype:'text',");
                 }
+
                 if (this._searchType.Value == Searchtype.select)
                 {
                     script.AppendLine("stype:'select',");
@@ -512,6 +503,7 @@
                         script.Append("dataInit:function(el){$(el).datepicker({changeYear:true, onChange: function(formated, dates){ $(el).val(formated);},dateFormat:'" + this._searchDateFormat + "'});}");
                     }
                 }
+
                 script.AppendLine("},");
             }
 
@@ -541,8 +533,6 @@
 
             return script.ToString();
         }
-
-        #endregion Methods
     }
 
     /// <summary>
@@ -550,8 +540,6 @@
     /// </summary>
     public class Grid
     {
-        #region Fields
-
         private string _altClass;
         private bool? _altRows;
         private bool? _autoEncode;
@@ -634,10 +622,6 @@
         private bool? _viewRecords;
         private int? _width;
 
-        #endregion Fields
-
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -648,12 +632,9 @@
             {
                 throw new ArgumentException("Id must contain a value to identify the grid");
             }
+
             this._id = id;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Adds columns to grid
@@ -945,7 +926,7 @@
         /// Set a zebra-striped grid (default: false)
         /// </summary>
         /// <param name="altRows">Boolean indicating if zebra-striped grid is used</param>
-        public Grid setAltRows(Boolean altRows)
+        public Grid setAltRows(bool altRows)
         {
             this._altRows = altRows;
             return this;
@@ -1413,6 +1394,7 @@
             {
                 throw new InvalidOperationException("You can't set scroll to both a boolean and an integer at the same time, please choose one.");
             }
+
             return this;
         }
 
@@ -1431,6 +1413,7 @@
             {
                 throw new InvalidOperationException("You can't set scroll to both a boolean and an integer at the same time, please choose one.");
             }
+
             return this;
         }
 
@@ -1883,7 +1866,7 @@
             // Rowlist
             if (this._rowList != null)
             {
-                script.AppendFormat("rowList: [{0}],", string.Join(",", ((from p in this._rowList select p.ToString()).ToArray()))).AppendLine();
+                script.AppendFormat("rowList: [{0}],", string.Join(",", (from p in this._rowList select p.ToString()).ToArray())).AppendLine();
             }
 
             // Rownum
@@ -1909,6 +1892,7 @@
             {
                 script.AppendFormat("scroll:{0},", this._scroll.ToString().ToLower()).AppendLine();
             }
+
             if (this._scrollInt.HasValue)
             {
                 script.AppendFormat("scroll:{0},", this._scrollInt.Value).AppendLine();
@@ -1946,10 +1930,12 @@
                 {
                     this._showAllSortIcons = false;
                 }
+
                 if (!this._sortIconDirection.HasValue)
                 {
                     this._sortIconDirection = Direction.vertical;
                 }
+
                 if (!this._sortOnHeaderClick.HasValue)
                 {
                     this._sortOnHeaderClick = true;
@@ -1971,7 +1957,7 @@
             }
 
             // Toolbar
-            if (_toolbar.HasValue)
+            if (this._toolbar.HasValue)
             {
                 script.AppendFormat("toolbar: [{0},\"{1}\"],", this._toolbar.Value.ToString().ToLower(), this._toolbarPosition.ToString()).AppendLine();
             }
@@ -2110,7 +2096,7 @@
 
             // Colmodel
             script.AppendLine("colModel: [");
-            string colModel = string.Join(",", ((from c in this._columns select c.ToString()).ToArray()));
+            string colModel = string.Join(",", (from c in this._columns select c.ToString()).ToArray());
             script.AppendLine(colModel);
             script.AppendLine("]");
 
@@ -2123,6 +2109,7 @@
                 script.AppendLine("jQuery('#" + this._id + "').jqGrid('navButtonAdd',\"#" +
                                   this._pager + "\",{caption:\"Clear\",title:\"Clear Search\",buttonicon :'ui-icon-refresh', onClickButton:function(){mygrid[0].clearToolbar(); }}); ");
             }
+
             // Search toolbar
             if (this._searchToolbar == true)
             {
@@ -2131,18 +2118,20 @@
                 {
                     script.AppendFormat(", searchOnEnter:{0}", this._searchOnEnter.Value.ToString().ToLower());
                 }
+
                 script.AppendLine("});");
             }
 
-            var searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
-                                                _closeOnEscape.ToString().ToLower(),
-                                                _multipleSearch.ToString().ToLower(),
-                                                _closeAfterSearch.ToString().ToLower());
+            var searhBoxOptions = string.Format(
+                                      "closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
+                                      this._closeOnEscape.ToString().ToLower(),
+                                      this._multipleSearch.ToString().ToLower(),
+                                      this._closeAfterSearch.ToString().ToLower());
 
             // CFM
             script.AppendLine("jQuery('#" + this._id + "').jqGrid('navGrid',\"#"
                               + this._pager + "\",{edit:false,add:false,del:false,search:"
-                              + _search.ToString().ToLower() + ",refresh:true},{},{},{},{" +
+                              + this._search.ToString().ToLower() + ",refresh:true},{},{},{},{" +
                               searhBoxOptions + "},{}); ");
 
             // End script
@@ -2173,19 +2162,13 @@
             // Return script + required elements
             return script.ToString() + table.ToString() + pager.ToString() + topPager.ToString();
         }
-
-        #endregion Methods
     }
 
     public static class GridHelper
     {
-        #region Methods
-
         public static Grid Grid(this System.Web.Mvc.HtmlHelper helper, string id)
         {
             return new Grid(id);
         }
-
-        #endregion Methods
     }
 }

@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System.Collections.Generic;
@@ -28,8 +24,6 @@ namespace Hexa.Core
 
     public static class HashHelper
     {
-        #region Methods
-
         public static string CalculateMD5Hash(this string input)
         {
             using (MD5 md5 = MD5.Create())
@@ -63,35 +57,24 @@ namespace Hexa.Core
             {
                 sb.Append(hash[i].ToString("X2", CultureInfo.InvariantCulture));
             }
+
             return sb.ToString();
         }
-
-        #endregion Methods
     }
 
     public static class HtmlHelper
     {
-        #region Methods
-
         public static string StripHtml(this string text)
         {
             Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
             return reg.Replace(text, "");
         }
-
-        #endregion Methods
     }
 
     public static class StringSlugExtension
     {
-        #region Fields
-
         private static readonly Dictionary<string, string> rules1;
         private static readonly Dictionary<string, string> rules2;
-
-        #endregion Fields
-
-        #region Constructors
 
         static StringSlugExtension()
         {
@@ -99,17 +82,13 @@ namespace Hexa.Core
             List<char> validChars = "aaaaaaceeeeiiiinoooooouuuuyy".ToCharArray().ToList();
             rules1 = invalidChars.ToDictionary(i => i.ToString(), i => validChars[invalidChars.IndexOf(i)].ToString());
 
-            invalidChars = new[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' }.ToList();
+            invalidChars = new[] { 'Þ', 'þ', 'Ð', 'ð', 'ß', 'Œ', 'œ', 'Æ', 'æ', 'µ', '&', '(', ')' } .ToList();
 
             List<string> validStrings =
-                new[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" }.ToList();
+                new[] { "TH", "th", "DH", "dh", "ss", "OE", "oe", "AE", "ae", "u", "and", "", "" } .ToList();
 
             rules2 = invalidChars.ToDictionary(i => i.ToString(), i => validStrings[invalidChars.IndexOf(i)]);
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Will transform "some $ugly ###url wit[]h spaces" into "some-ugly-url-with-spaces"
@@ -163,7 +142,5 @@ namespace Hexa.Core
 
             return regex.Replace(source, evaluator);
         }
-
-        #endregion Methods
     }
 }

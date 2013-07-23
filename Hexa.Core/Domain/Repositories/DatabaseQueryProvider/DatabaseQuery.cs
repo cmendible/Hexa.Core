@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -24,19 +20,11 @@ namespace Hexa.Core.Domain
 
     public static class DatabaseQuery
     {
-        #region Fields
-
         public static Func<IDatabaseQueryProvider> DatabaseQueryProvider;
-
-        #endregion Fields
-
-        #region Methods
 
         public static IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters)
         {
             return DatabaseQueryProvider().ExecuteQuery<TEntity>(queryName, parameters);
         }
-
-        #endregion Methods
     }
 }

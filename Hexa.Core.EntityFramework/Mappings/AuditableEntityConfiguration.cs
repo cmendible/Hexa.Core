@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -30,8 +26,6 @@ namespace Hexa.Core.Domain
     public class AuditableEntityConfiguration<TEntity, TUserKey> : EntityConfiguration<TEntity, Guid>
         where TEntity : AuditableEntity<TEntity>
     {
-        #region Constructors
-
         public AuditableEntityConfiguration()
         {
             this.Property(x => x.CreatedAt)
@@ -61,7 +55,5 @@ namespace Hexa.Core.Domain
                 .HasColumnType("int");
             }
         }
-
-        #endregion Constructors
     }
 }

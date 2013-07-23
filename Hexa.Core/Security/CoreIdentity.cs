@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Security
 {
     using System;
@@ -29,16 +25,10 @@ namespace Hexa.Core.Security
     [Serializable]
     public class CoreIdentity : MarshalByRefObject, ICoreIdentity
     {
-        #region Fields
-
         // Fields
         private readonly string id;
         private readonly string name;
         private readonly string type;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
@@ -71,22 +61,21 @@ namespace Hexa.Core.Security
             {
                 throw new ArgumentNullException(Resource.NameCannotBeNull);
             }
+
             if (type == null)
             {
                 throw new ArgumentNullException(Resource.TypeCannotBeNull);
             }
+
             if (id == null)
             {
                 throw new ArgumentNullException(Resource.TypeCannotBeNull);
             }
+
             this.name = name;
             this.type = type;
             this.id = id;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Gets the type of authentication used.
@@ -138,7 +127,5 @@ namespace Hexa.Core.Security
                 return this.name;
             }
         }
-
-        #endregion Properties
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Tests
 {
     using Hexa.Core.Domain;
@@ -29,8 +25,6 @@ namespace Hexa.Core.Tests
 
     public class Entity
     {
-        #region Properties
-
         public int Id
         {
             get;
@@ -42,22 +36,16 @@ namespace Hexa.Core.Tests
             get;
             set;
         }
-
-        #endregion Properties
     }
 
     [TestFixture]
     public class EntityTests
     {
-        #region Methods
-
         [Test]
         public void New_AuditableEntity_Is_Transient()
         {
             AuditableEntity entity = new AuditableEntity();
             Assert.IsTrue(entity.IsTransient());
         }
-
-        #endregion Methods
     }
 }

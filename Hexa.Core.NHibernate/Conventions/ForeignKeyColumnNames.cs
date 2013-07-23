@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -26,8 +22,6 @@ namespace Hexa.Core.Domain
 
     public class ForeignKeyColumnNames : ForeignKeyConvention
     {
-        #region Methods
-
         protected override string GetKeyName(Member property, Type type)
         {
             // many-to-many, one-to-many, join
@@ -49,7 +43,5 @@ namespace Hexa.Core.Domain
 
             return property.Name + "Id";
         }
-
-        #endregion Methods
     }
 }

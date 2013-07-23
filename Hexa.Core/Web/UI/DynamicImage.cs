@@ -1,4 +1,4 @@
-namespace Hexa.Core.Web.UI.Controls
+﻿namespace Hexa.Core.Web.UI.Controls
 {
     using System;
     using System.ComponentModel;
@@ -15,16 +15,10 @@ namespace Hexa.Core.Web.UI.Controls
     [ToolboxData("<{0}:DynamicImage runat=server></{0}:DynamicImage>")]
     public class DynamicImage : Image
     {
-        #region Fields
-
         private const string BaseUrl = "~/CachedImageService.axd?data={0}";
 
         private System.Drawing.Image _image;
         private byte[] _imageBytes;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicImage"/> class.
@@ -33,10 +27,6 @@ namespace Hexa.Core.Web.UI.Controls
         {
             PreRender += DynamicImage_PreRender;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the image.
@@ -49,6 +39,7 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 return _image;
             }
+
             set
             {
                 _image = value;
@@ -68,6 +59,7 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 return _imageBytes;
             }
+
             set
             {
                 Page.Cache.Remove(StorageKey);
@@ -87,6 +79,7 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 return Convert.ToString(ViewState["ImageFile"], CultureInfo.InvariantCulture);
             }
+
             set
             {
                 ViewState["ImageFile"] = value;
@@ -104,6 +97,7 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 return GetImageUrl();
             }
+
             set
             {
                 throw new NotSupportedException();
@@ -120,15 +114,12 @@ namespace Hexa.Core.Web.UI.Controls
             {
                 return Convert.ToString(ViewState["StorageKey"], CultureInfo.InvariantCulture);
             }
+
             set
             {
                 ViewState["StorageKey"] = value;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Handles the PreRender event of the DynamicImage control.
@@ -184,6 +175,7 @@ namespace Hexa.Core.Web.UI.Controls
                     Guid g = Guid.NewGuid();
                     StorageKey = g.ToString();
                 }
+
                 return GetCachedImageUrl();
             }
             else
@@ -203,13 +195,14 @@ namespace Hexa.Core.Web.UI.Controls
         {
             if (Page.Cache[StorageKey] == null)
             {
-                Page.Cache.Add(StorageKey,
-                               data,
-                               null,
-                               Cache.NoAbsoluteExpiration,
-                               TimeSpan.FromMinutes(5),
-                               CacheItemPriority.High,
-                               null);
+                Page.Cache.Add(
+                    StorageKey,
+                    data,
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    TimeSpan.FromMinutes(5),
+                    CacheItemPriority.High,
+                    null);
             }
         }
 
@@ -228,7 +221,5 @@ namespace Hexa.Core.Web.UI.Controls
         {
             StoreData(_imageBytes);
         }
-
-        #endregion Methods
     }
 }

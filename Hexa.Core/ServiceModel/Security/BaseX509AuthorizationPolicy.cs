@@ -8,6 +8,7 @@ namespace Hexa.Core.ServiceModel.Security
     using System.Reflection;
     using System.Security.Cryptography.X509Certificates;
     using System.Security.Principal;
+
     using Hexa.Core.Logging;
 
     /// <summary>
@@ -15,13 +16,7 @@ namespace Hexa.Core.ServiceModel.Security
     /// </summary>
     public abstract class BaseX509AuthorizationPolicy : BaseAuthorizationPolicy
     {
-        #region Fields
-
         private static readonly ILogger _Log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        #endregion Fields
-
-        #region Methods
 
         /// <summary>
         /// Evaluates whether a user meets the requirements for this authorization policy.
@@ -104,7 +99,5 @@ namespace Hexa.Core.ServiceModel.Security
         }
 
         protected abstract IPrincipal GetPrincipal(EvaluationContext evaluationContext, X509Certificate2 certificate);
-
-        #endregion Methods
     }
 }

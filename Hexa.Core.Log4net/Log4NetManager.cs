@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Logging
 {
     using System;
@@ -31,23 +27,7 @@ namespace Hexa.Core.Logging
 
     public class Log4NetManager
     {
-        #region Fields
-
         private static bool initialized;
-
-        #endregion Fields
-
-        #region Methods
-
-        public ILogger Create(Type type)
-        {
-            return new Log4NetLogger(type);
-        }
-
-        public ILogger Create(string typeName)
-        {
-            return new Log4NetLogger(typeName);
-        }
 
         public static void Initialize()
         {
@@ -79,6 +59,16 @@ namespace Hexa.Core.Logging
             }
         }
 
+        public ILogger Create(Type type)
+        {
+            return new Log4NetLogger(type);
+        }
+
+        public ILogger Create(string typeName)
+        {
+            return new Log4NetLogger(typeName);
+        }
+
         private static bool IsWebContext()
         {
             if (HttpContext.Current != null)
@@ -94,14 +84,8 @@ namespace Hexa.Core.Logging
             return false;
         }
 
-        #endregion Methods
-
-        #region Nested Types
-
         private class UserHostAddressLogContext
         {
-            #region Methods
-
             public override string ToString()
             {
                 try
@@ -128,14 +112,10 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
-
-            #endregion Methods
         }
 
         private class UserLogContext
         {
-            #region Methods
-
             public override string ToString()
             {
                 try
@@ -162,14 +142,10 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
-
-            #endregion Methods
         }
 
         private class UserSessionIdLogContext
         {
-            #region Methods
-
             public override string ToString()
             {
                 try
@@ -187,10 +163,6 @@ namespace Hexa.Core.Logging
                     return null;
                 }
             }
-
-            #endregion Methods
         }
-
-        #endregion Nested Types
     }
 }

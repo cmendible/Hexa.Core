@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -25,15 +21,9 @@ namespace Hexa.Core.Domain
 
     public static class DomainEvents
     {
-        #region Fields
-
         // so that each thread has its own callbacks
         [ThreadStatic]
         private static List<Delegate> actions;
-
-        #endregion Fields
-
-        #region Methods
 
         // Clears callbacks passed to Register on the current thread
         public static void ClearCallbacks()
@@ -73,7 +63,5 @@ namespace Hexa.Core.Domain
 
             actions.Add(callback);
         }
-
-        #endregion Methods
     }
 }

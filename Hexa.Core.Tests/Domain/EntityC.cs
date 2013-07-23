@@ -3,36 +3,31 @@
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Hexa.Core.Tests.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Hexa.Core.Tests.Domain.Events;
 
     using Core.Domain;
+
+    using Hexa.Core.Tests.Domain.Events;
 
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
     public class EntityC : EventSourcedEntity
     {
-        #region Fields
-
         private IList<Guid> entitiesOfB;
-
-        #endregion
 
         public EntityC()
         {
         }
 
-        public string Name
+        public EntityC(Guid id, string name)
         {
-            get;
-            protected set;
+            ApplyChange(new EntityCCreated(id, name));
         }
 
         public IEnumerable<Guid> EntitiesOfB
@@ -41,15 +36,17 @@ namespace Hexa.Core.Tests.Domain
             {
                 return this.entitiesOfB;
             }
+
             protected set
             {
                 this.entitiesOfB = value.ToList();
             }
         }
 
-        public EntityC(Guid id, string name)
+        public string Name
         {
-            ApplyChange(new EntityCCreated(id, name));
+            get;
+            protected set;
         }
 
         public void AddB(Guid bId)
@@ -79,6 +76,7 @@ namespace Hexa.Core.Tests.Domain
             {
                 this.entitiesOfB = new List<Guid>();
             }
+
             this.entitiesOfB.Add(e.bId);
         }
     }
@@ -86,14 +84,36 @@ namespace Hexa.Core.Tests.Domain
 
 namespace Hexa.Core.Tests.Domain.Events
 {
-    using Hexa.Core.Domain;
     using System;
+
+    using Hexa.Core.Domain;
+
+    public class AddedBToEntityC : Event
+    {
+        public readonly Guid bId;
+        public readonly Guid Id;
+
+        public AddedBToEntityC()
+        {
+        }
+
+        public AddedBToEntityC(Guid id, Guid bId)
+        {
+            this.Id = id;
+            this.bId = bId;
+        }
+    }
 
     public class EntityCCreated : Event
     {
         public EntityCCreated()
         {
+        }
 
+        public EntityCCreated(Guid id, string name)
+        {
+            this.Id = id;
+            this.Name = name;
         }
 
         public Guid Id
@@ -107,35 +127,17 @@ namespace Hexa.Core.Tests.Domain.Events
             get;
             set;
         }
-
-        public EntityCCreated(Guid id, string name)
-        {
-            this.Id = id;
-            this.Name = name;
-        }
     }
 
     public class EntityCUpdated : EntityCCreated
     {
         public EntityCUpdated()
-        { }
-
-        public EntityCUpdated(Guid id, string name) : base(id, name)
         {
         }
-    }
 
-    public class AddedBToEntityC: Event
-    {
-        public AddedBToEntityC()
-        { }
-
-        public readonly Guid Id;
-        public readonly Guid bId;
-        public AddedBToEntityC(Guid id, Guid bId)
+        public EntityCUpdated(Guid id, string name)
+        : base(id, name)
         {
-            this.Id = id;
-            this.bId = bId;
         }
     }
 }

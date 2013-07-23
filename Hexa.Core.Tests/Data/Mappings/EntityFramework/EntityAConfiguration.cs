@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Tests.Data
 {
     using System.Data.Entity.ModelConfiguration.Configuration;
@@ -27,13 +23,9 @@ namespace Hexa.Core.Tests.Data
 
     public class EntityAConfiguration : AuditableEntityConfiguration<EntityA>
     {
-        #region Constructors
-
         public EntityAConfiguration()
         {
             this.Property(h => h.Name);
         }
-
-        #endregion Constructors
     }
 }

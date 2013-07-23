@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,33 +13,28 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Hexa.Core;
 
     public static class PagingExtensions
     {
-        #region Methods
-
         public static IQueryable<T> Page<T>(this IQueryable<T> query, int pageNumber, int pageSize)
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
+            return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
 
         public static IEnumerable<T> Page<T>(this IEnumerable<T> query, int pageNumber, int pageSize)
         {
             Guard.Against<ArgumentException>(pageNumber <= 0, "pageNumber");
 
-            return query.Skip(((pageNumber - 1) * pageSize)).Take(pageSize);
+            return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
-
-        #endregion Methods
     }
 }

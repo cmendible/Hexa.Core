@@ -10,8 +10,6 @@
 
     public class NHDatabaseProvider : IDatabaseQueryProvider
     {
-        #region Methods
-
         public IList<TEntity> ExecuteQuery<TEntity>(string queryName, IDictionary<string, object> parameters)
         {
             INHibernateUnitOfWork unitOfWork = ServiceLocator.GetInstance<IUnitOfWork>() as INHibernateUnitOfWork;
@@ -23,7 +21,5 @@
 
             return query.List<TEntity>();
         }
-
-        #endregion Methods
     }
 }

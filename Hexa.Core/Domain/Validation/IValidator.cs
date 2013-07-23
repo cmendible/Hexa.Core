@@ -6,8 +6,6 @@ namespace Hexa.Core.Validation
     /// </summary>
     public interface IValidator<TEntity>
     {
-        #region Methods
-
         /// <summary>
         /// Validates this instance.
         /// If instance is not valid, method must throw a ValidationException.
@@ -30,7 +28,5 @@ namespace Hexa.Core.Validation
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
         ValidationResult Validate(TEntity instance);
-
-        #endregion Methods
     }
 }

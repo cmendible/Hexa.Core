@@ -1,4 +1,4 @@
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
     using System;
     using System.Data;
@@ -10,20 +10,14 @@ namespace Hexa.Core.Domain
 
     public class SqlXmlType : SqlType
     {
-        #region Constructors
-
         public SqlXmlType()
         : base(DbType.Xml)
         {
         }
-
-        #endregion Constructors
     }
 
     public class XmlType : IUserType
     {
-        #region Properties
-
         public bool IsMutable
         {
             get
@@ -44,13 +38,9 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return new SqlType[] {new SqlXmlType()};
+                return new SqlType[] { new SqlXmlType() };
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -59,7 +49,7 @@ namespace Hexa.Core.Domain
 
         public object DeepCopy(object value)
         {
-            var other = (XmlDocument) value;
+            var other = (XmlDocument)value;
             var xdoc = new XmlDocument();
             xdoc.LoadXml(other.OuterXml);
             return xdoc;
@@ -72,8 +62,8 @@ namespace Hexa.Core.Domain
 
         public new bool Equals(object x, object y)
         {
-            var xdoc_x = (XmlDocument) x;
-            var xdoc_y = (XmlDocument) y;
+            var xdoc_x = (XmlDocument)x;
+            var xdoc_y = (XmlDocument)y;
             return xdoc_y.OuterXml == xdoc_x.OuterXml;
         }
 
@@ -88,6 +78,7 @@ namespace Hexa.Core.Domain
             {
                 throw new InvalidOperationException("names array has more than one element. can't handle this!");
             }
+
             var document = new XmlDocument();
             var val = rs[names[0]] as string;
             if (val != null)
@@ -95,25 +86,25 @@ namespace Hexa.Core.Domain
                 document.LoadXml(val);
                 return document;
             }
+
             return null;
         }
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            var parameter = (DbParameter) cmd.Parameters[index];
+            var parameter = (DbParameter)cmd.Parameters[index];
             if (value == null)
             {
                 parameter.Value = DBNull.Value;
                 return;
             }
-            parameter.Value = ((XmlDocument) value).OuterXml;
+
+            parameter.Value = ((XmlDocument)value).OuterXml;
         }
 
         public object Replace(object original, object target, object owner)
         {
             return original;
         }
-
-        #endregion Methods
     }
 }

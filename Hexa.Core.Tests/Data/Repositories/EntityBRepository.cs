@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Tests.Data
 {
     using System.ComponentModel.Composition;
@@ -31,14 +27,10 @@ namespace Hexa.Core.Tests.Data
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EntityBRepository : BaseRepository<EntityB>, IEntityBRepository
     {
-        #region Constructors
-
         [ImportingConstructor]
         public EntityBRepository(IUnitOfWork unitOfWork)
         : base(unitOfWork)
         {
         }
-
-        #endregion Constructors
     }
 }

@@ -1,4 +1,4 @@
-namespace uNhAddIns.UserTypes
+﻿namespace uNhAddIns.UserTypes
 {
     using System;
     using System.Collections.Generic;
@@ -17,15 +17,9 @@ namespace uNhAddIns.UserTypes
     public abstract class GenericWellKnownInstanceType<T, TId> : IUserType
         where T : class
     {
-        #region Fields
-
         private readonly Func<T, TId, bool> findPredicate;
         private readonly Func<T, TId> idGetter;
         private readonly IEnumerable<T> repository;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Base constructor
@@ -33,17 +27,17 @@ namespace uNhAddIns.UserTypes
         /// <param name="repository">The collection that represent a in-memory repository.</param>
         /// <param name="findPredicate">The predicate an instance by the persisted value.</param>
         /// <param name="idGetter">The getter of the persisted value.</param>
-        protected GenericWellKnownInstanceType(IEnumerable<T> repository, Func<T, TId, bool> findPredicate,
-                                               Func<T, TId> idGetter)
+        protected GenericWellKnownInstanceType(
+            IEnumerable<T> repository,
+            Func<T,
+            TId,
+            bool> findPredicate,
+            Func<T, TId> idGetter)
         {
             this.repository = repository;
             this.findPredicate = findPredicate;
             this.idGetter = idGetter;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public bool IsMutable
         {
@@ -69,10 +63,6 @@ namespace uNhAddIns.UserTypes
             get;
         }
 
-        #endregion Properties
-
-        #region Methods
-
         public object Assemble(object cached, object owner)
         {
             return cached;
@@ -94,6 +84,7 @@ namespace uNhAddIns.UserTypes
             {
                 return true;
             }
+
             if (ReferenceEquals(null, x) || ReferenceEquals(null, y))
             {
                 return false;
@@ -115,7 +106,7 @@ namespace uNhAddIns.UserTypes
                 return null;
             }
 
-            var value = (TId) rs.GetValue(index0);
+            var value = (TId)rs.GetValue(index0);
             return this.repository.FirstOrDefault(x => this.findPredicate(x, value));
         }
 
@@ -123,11 +114,11 @@ namespace uNhAddIns.UserTypes
         {
             if (value == null)
             {
-                ((IDbDataParameter) cmd.Parameters[index]).Value = DBNull.Value;
+                ((IDbDataParameter)cmd.Parameters[index]).Value = DBNull.Value;
             }
             else
             {
-                ((IDbDataParameter) cmd.Parameters[index]).Value = this.idGetter((T) value);
+                ((IDbDataParameter)cmd.Parameters[index]).Value = this.idGetter((T)value);
             }
         }
 
@@ -135,7 +126,5 @@ namespace uNhAddIns.UserTypes
         {
             return original;
         }
-
-        #endregion Methods
     }
 }

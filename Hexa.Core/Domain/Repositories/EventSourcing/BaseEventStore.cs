@@ -14,6 +14,17 @@
             this.publisher = publisher;
         }
 
+        public List<Event> GetEventsForAggregate(Guid aggregateId)
+        {
+            IEnumerable<EventDescriptor> eventDescriptors = this.LoadEventDescriptorsForAggregate(aggregateId);
+            if (null == eventDescriptors || !eventDescriptors.Any())
+            {
+                throw new AggregateNotFoundException();
+            }
+
+            return eventDescriptors.Select(desc => desc.EventData).ToList();
+        }
+
         public void SaveEvents(Guid aggregateId, IEnumerable<Event> events, int expectedVersion)
         {
             var eventDescriptors = new List<EventDescriptor>();
@@ -33,23 +44,13 @@
             {
                 MethodInfo method = publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
                 method.Invoke(this.publisher, new object[] { @event });
+
                 // _publisher.Publish(@event);
             }
-        }
-
-        public List<Event> GetEventsForAggregate(Guid aggregateId)
-        {
-            IEnumerable<EventDescriptor> eventDescriptors = this.LoadEventDescriptorsForAggregate(aggregateId);
-            if (null == eventDescriptors || !eventDescriptors.Any())
-            {
-                throw new AggregateNotFoundException();
-            }
-            return eventDescriptors.Select(desc => desc.EventData).ToList();
         }
 
         protected abstract IEnumerable<EventDescriptor> LoadEventDescriptorsForAggregate(Guid aggregateId);
 
         protected abstract void PersistEventDescriptors(IEnumerable<EventDescriptor> newEventDescriptors, Guid aggregateId, int expectedVersion);
-
     }
 }

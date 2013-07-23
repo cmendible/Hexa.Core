@@ -1,4 +1,4 @@
-namespace Hexa.Core.Data
+﻿namespace Hexa.Core.Data
 {
     using System;
     using System.Data.Common;
@@ -16,8 +16,6 @@ namespace Hexa.Core.Data
     /// </summary>
     public class DatabaseManager
     {
-        #region Fields
-
         public const string Firebird = "FirebirdSql.Data.FirebirdClient";
         public const string MsSqlProvider = "System.Data.SqlClient";
         public const string MySqlProvider = "MySql.Data.MySQLClient";
@@ -32,10 +30,6 @@ namespace Hexa.Core.Data
         private readonly string connectionString;
         private readonly string providerName;
 
-        #endregion Fields
-
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseManager"/> class.
         /// </summary>
@@ -49,10 +43,6 @@ namespace Hexa.Core.Data
             this.connectionString = connectionString;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Gets the db provider factory.
         /// </summary>
@@ -64,10 +54,6 @@ namespace Hexa.Core.Data
                 return this.connectionProvider;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Creates the database.
@@ -128,6 +114,7 @@ namespace Hexa.Core.Data
                 // Do nothing..
                 return;
             }
+
             if (providerName == SqlCe)
             {
                 if (File.Exists(dbName))
@@ -146,6 +133,7 @@ namespace Hexa.Core.Data
 
                 return;
             }
+
             if (providerName == Firebird)
             {
                 if (File.Exists(dbName))
@@ -154,8 +142,9 @@ namespace Hexa.Core.Data
                 }
 
                 Type type = Type.GetType("FirebirdSql.Data.FirebirdClient.FbConnection, FirebirdSql.Data.FirebirdClient");
-                MethodInfo createDatabase = type.GetMethod("CreateDatabase",
-                                            new[]
+                MethodInfo createDatabase = type.GetMethod(
+                                                "CreateDatabase",
+                                                new[]
                 {
                     typeof(string), typeof(int), typeof(bool),
                     typeof(bool)
@@ -184,9 +173,10 @@ namespace Hexa.Core.Data
                     string fname = Path.GetFileNameWithoutExtension(dbFile);
                     string pathname = Path.Combine(Path.GetDirectoryName(dbFile), fname);
 
-                    command.AppendFormat(CultureInfo.InvariantCulture,
+                    command.AppendFormat(
+                        CultureInfo.InvariantCulture,
                         "ON PRIMARY (NAME = {0}, FILENAME = '{1}.mdf', SIZE = 10MB) " + "LOG ON (NAME = {0}_log, FILENAME = '{1}.ldf', SIZE = 2MB)",
-                        fname, 
+                        fname,
                         pathname);
                 }
             }
@@ -203,10 +193,11 @@ namespace Hexa.Core.Data
 
             try
             {
-                log.DebugFormat(CultureInfo.InvariantCulture,
+                log.DebugFormat(
+                    CultureInfo.InvariantCulture,
                     "Checking if database '{0}' exists, with provider: {1}, and connectionString: {2}",
-                    dbName, 
-                    providerName, 
+                    dbName,
+                    providerName,
                     connStr);
 
                 if (providerName == SQLiteProvider)
@@ -232,22 +223,25 @@ namespace Hexa.Core.Data
                     cmdText = string.Format(CultureInfo.InvariantCulture, "select COUNT(*) from sys.sysdatabases where name=\'{0}\'", dbName);
                     break;
                 case MySqlProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
-                                            dbName);
+                    cmdText = string.Format(
+                                  CultureInfo.InvariantCulture,
+                                  @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '{0}'",
+                                  dbName);
                     break;
                 case OracleDataProvider:
                     cmdText = "SELECT 1 FROM DUAL";
                     break;
                 case PostgreSQLProvider:
-                    cmdText = string.Format(CultureInfo.InvariantCulture,
-                                            "select count(*) from pg_catalog.pg_database where datname = '{0}'",
-                                            dbName);
+                    cmdText = string.Format(
+                                  CultureInfo.InvariantCulture,
+                                  "select count(*) from pg_catalog.pg_database where datname = '{0}'",
+                                  dbName);
                     break;
                 default:
-                    throw new NotSupportedException(string.Format(CultureInfo.InvariantCulture,
-                                                    "Provider {0} is not supported", 
-                                                    providerName));
+                    throw new NotSupportedException(string.Format(
+                                                        CultureInfo.InvariantCulture,
+                                                        "Provider {0} is not supported",
+                                                        providerName));
                 }
 
                 object ret = provider.ExecuteScalar(connStr, cmdText);
@@ -292,26 +286,31 @@ namespace Hexa.Core.Data
                 dbname = tmp.ToString();
                 builder.Remove("Initial Catalog");
             }
+
             // SQLServer default option..
             if (builder.TryGetValue("Database", out tmp))
             {
                 dbname = tmp.ToString();
                 builder.Remove("Database");
             }
+
             // SQLite! (XXX: MsSql has 'Data Source' as a means to specify Server address)
             if ((providerName == SQLiteProvider || providerName == SqlCe) && builder.TryGetValue("Data Source", out tmp))
             {
                 dbname = tmp.ToString();
                 builder.Remove("Data Source");
             }
+
             // SQLServer (auto attach alternate)
             if (builder.TryGetValue("AttachDBFileName", out tmp))
             {
                 dbfile = tmp.ToString();
+
                 // Replace |DataDirectory| in connection string.
                 dbfile = dbfile.Replace("|DataDirectory|", AppDomain.CurrentDomain.GetData("DataDirectory") as string);
                 builder.Remove("AttachDBFileName");
             }
+
             // Oracle SID
             if (providerName == OracleDataProvider && builder.TryGetValue("Data Source", out tmp))
             {
@@ -395,9 +394,10 @@ namespace Hexa.Core.Data
             {
                 _ClearAllPools(providerName);
 
-                string cmd = string.Format(CultureInfo.InvariantCulture,
-                                           "USE master; ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;",
-                                           dbName);
+                string cmd = string.Format(
+                                 CultureInfo.InvariantCulture,
+                                 "USE master; ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;",
+                                 dbName);
 
                 this.connectionProvider.ExecuteNonQuery(connStr, cmd);
                 this.connectionProvider.ExecuteNonQuery(connStr, string.Format(CultureInfo.InvariantCulture, "DROP DATABASE [{0}]", dbName));
@@ -411,7 +411,5 @@ namespace Hexa.Core.Data
                 this.connectionProvider.ExecuteNonQuery(connStr, string.Format(CultureInfo.InvariantCulture, "DROP DATABASE '{0}'", dbName));
             }
         }
-
-        #endregion Methods
     }
 }

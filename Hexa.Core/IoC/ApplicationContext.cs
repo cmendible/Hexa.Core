@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System.Security.Principal;
@@ -28,8 +24,6 @@ namespace Hexa.Core
     /// </summary>
     public static class ApplicationContext
     {
-        #region Properties
-
         public static IPrincipal User
         {
             get
@@ -43,6 +37,7 @@ namespace Hexa.Core
                     return Thread.CurrentPrincipal;
                 }
             }
+
             set
             {
                 if (HttpContext.Current != null)
@@ -53,7 +48,5 @@ namespace Hexa.Core
                 Thread.CurrentPrincipal = value;
             }
         }
-
-        #endregion Properties
     }
 }

@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -33,8 +29,6 @@ namespace Hexa.Core.Domain
 
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
     {
-        #region Methods
-
         public bool OnPreInsert(PreInsertEvent @event)
         {
             var auditable = @event.Entity as IAuditableEntity;
@@ -96,8 +90,11 @@ namespace Hexa.Core.Domain
             if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(@event.Persister.EntityName))
             {
                 string tableName = @event.Persister.EntityName;
-                int[] changedPropertiesIdx = @event.Persister.FindDirty(@event.State, @event.OldState, @event.Entity,
-                                             @event.Session.GetSessionImplementation());
+                int[] changedPropertiesIdx = @event.Persister.FindDirty(
+                                                 @event.State,
+                                                 @event.OldState,
+                                                 @event.Entity,
+                                                 @event.Session.GetSessionImplementation());
 
                 Guid changeSetUniqueId = GuidExtensions.NewCombGuid();
 
@@ -106,11 +103,13 @@ namespace Hexa.Core.Domain
                     string propertyName = @event.Persister.PropertyNames[idx];
                     object oldValue = @event.OldState[idx];
                     object newValue = @event.State[idx];
-
-                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(changeSetUniqueId, tableName, @event.Id.ToString(),
-                                                   propertyName, oldValue, newValue,
-                                                   userUniqueId,
-                                                   updatedAt);
+                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(
+                                                       changeSetUniqueId,
+                                                       tableName,
+                                                       @event.Id.ToString(),
+                                                       propertyName, oldValue, newValue,
+                                                       userUniqueId,
+                                                       updatedAt);
 
                     @event.Session.Save(auditTrail);
                 }
@@ -131,9 +130,8 @@ namespace Hexa.Core.Domain
             {
                 return;
             }
+
             state[index] = value;
         }
-
-        #endregion Methods
     }
 }

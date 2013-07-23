@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -27,17 +23,11 @@ namespace Hexa.Core.Domain
     public class PagedElements<TEntity>
         where TEntity : class
     {
-        #region Constructors
-
         public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
             this.Elements = elements;
             this.TotalElements = totalElements;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         [DataMember]
         public IEnumerable<TEntity> Elements
@@ -53,15 +43,9 @@ namespace Hexa.Core.Domain
             private set;
         }
 
-        #endregion Properties
-
-        #region Methods
-
         public int TotalPages(int pageSize)
         {
             return (int)Math.Ceiling(Convert.ToDouble(this.TotalElements) / pageSize);
         }
-
-        #endregion Methods
     }
 }

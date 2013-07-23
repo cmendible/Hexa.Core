@@ -17,8 +17,6 @@ namespace Hexa.Core.Domain
         where TEntity : BaseEntity<TEntity, TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        #region Fields
-
         /// <summary>
         /// To help ensure hashcode uniqueness, a carefully selected random number multiplier
         /// is used within the calculation.  Goodrich and Tamassia's Data Structures and
@@ -29,10 +27,6 @@ namespace Hexa.Core.Domain
         private const int HASH_MULTIPLIER = 31;
 
         private int? cachedHashcode;
-
-        #endregion Fields
-
-        #region Properties
 
         /// <summary>
         /// Id may be of type string, int, custom type, etc.
@@ -58,10 +52,6 @@ namespace Hexa.Core.Domain
             get;
             protected set;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Equalses the specified compare to.
@@ -171,7 +161,5 @@ namespace Hexa.Core.Domain
                    !compareTo.IsTransient() &&
                    this.UniqueId.Equals(compareTo.UniqueId);
         }
-
-        #endregion Methods
     }
 }

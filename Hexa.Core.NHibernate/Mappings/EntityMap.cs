@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -27,8 +23,6 @@ namespace Hexa.Core.Domain
         where TEntity : BaseEntity<TEntity, TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        #region Constructors
-
         public EntityMap()
         {
             if (typeof(TKey).Equals(typeof(int)))
@@ -49,20 +43,23 @@ namespace Hexa.Core.Domain
 
             // Create Insert statements dynamically.
             DynamicInsert();
+
             // Create Update statements dynamically.
             DynamicUpdate();
 
             // Setup timestamp..
             if (Dialect is SQLiteDialect)
+            {
                 Version(x => x.Version)
                 .Column("Timestamp")
                 .CustomType<TicksAsString>();
+            }
             else
+            {
                 Version(x => x.Version)
                 .Column("`Timestamp`")
                 .CustomType<TicksAsString>();
+            }
         }
-
-        #endregion Constructors
     }
 }

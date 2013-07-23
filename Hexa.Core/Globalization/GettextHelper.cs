@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace GNU.Gettext
 {
@@ -33,25 +29,15 @@ namespace GNU.Gettext
                      MessageId = "Gettext")]
     public sealed class GettextHelper
     {
-        #region Fields
-
         /// <summary>
         /// Gettext resource manager.
         /// </summary>
         private static readonly Dictionary<string, GettextResourceManager> _ResourceManager =
             new Dictionary<string, GettextResourceManager>();
 
-        #endregion Fields
-
-        #region Constructors
-
         private GettextHelper()
         {
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public static void ForceInvariantCulture()
         {
@@ -96,7 +82,5 @@ namespace GNU.Gettext
 
             return _ResourceManager[assemblyName].GetString(key);
         }
-
-        #endregion Methods
     }
 }

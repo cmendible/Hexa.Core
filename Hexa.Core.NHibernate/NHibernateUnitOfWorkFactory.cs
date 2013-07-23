@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -42,8 +38,6 @@ namespace Hexa.Core.Domain
     [Export(typeof(IDatabaseManager))]
     public sealed class NHibernateUnitOfWorkFactory : IDatabaseManager
     {
-        #region Fields
-
         private static Configuration _builtConfiguration;
         private static string _connectionString;
         private static DbProvider _DbProvider;
@@ -52,12 +46,11 @@ namespace Hexa.Core.Domain
 
         private ISessionFactory _sessionFactory;
 
-        #endregion Fields
-
-        #region Constructors
-
-        public NHibernateUnitOfWorkFactory(DbProvider provider, string connectionString, string cacheProvider,
-                                           Assembly mappingsAssembly)
+        public NHibernateUnitOfWorkFactory(
+            DbProvider provider,
+            string connectionString,
+            string cacheProvider,
+            Assembly mappingsAssembly)
         {
             _DbProvider = provider;
             _connectionString = connectionString;
@@ -73,12 +66,14 @@ namespace Hexa.Core.Domain
                                                     .ConnectionString(_connectionString))
                       .ExposeConfiguration(
                           c =>
-                          c.Properties.Add(Environment.SqlExceptionConverter,
-                                           typeof(SqlExceptionHandler).AssemblyQualifiedName))
+                          c.Properties.Add(
+                              Environment.SqlExceptionConverter,
+                              typeof(SqlExceptionHandler).AssemblyQualifiedName))
                       .ExposeConfiguration(c => c.Properties.Add(Environment.DefaultSchema, "dbo"));
 
                 break;
             }
+
             case DbProvider.SQLiteProvider:
             {
                 cfg = Fluently.Configure().Database(SQLiteConfiguration.Standard
@@ -89,6 +84,7 @@ namespace Hexa.Core.Domain
 
                 break;
             }
+
             case DbProvider.SqlCe:
             {
                 cfg = Fluently.Configure().Database(MsSqlCeConfiguration.Standard
@@ -96,13 +92,15 @@ namespace Hexa.Core.Domain
                                                     .ConnectionString(_connectionString))
                       .ExposeConfiguration(
                           c =>
-                          c.Properties.Add(Environment.SqlExceptionConverter,
-                                           typeof(SqlExceptionHandler).AssemblyQualifiedName));
+                          c.Properties.Add(
+                              Environment.SqlExceptionConverter,
+                              typeof(SqlExceptionHandler).AssemblyQualifiedName));
 
                 _validationSupported = false;
 
                 break;
             }
+
             case DbProvider.Firebird:
             {
                 cfg = Fluently.Configure().Database(new FirebirdConfiguration()
@@ -111,6 +109,7 @@ namespace Hexa.Core.Domain
 
                 break;
             }
+
             case DbProvider.PostgreSQLProvider:
             {
                 cfg = Fluently.Configure().Database(PostgreSQLConfiguration.PostgreSQL82
@@ -123,13 +122,16 @@ namespace Hexa.Core.Domain
             }
             }
 
-            Guard.IsNotNull(cfg,
-                            string.Format("Db provider {0} is currently not supported.",
-                                          EnumExtensions.GetEnumMemberValue(_DbProvider)));
+            Guard.IsNotNull(
+                cfg,
+                string.Format(
+                    "Db provider {0} is currently not supported.",
+                    EnumExtensions.GetEnumMemberValue(_DbProvider)));
 
             PropertyInfo pinfo = typeof(FluentConfiguration)
-                                 .GetProperty("Configuration",
-                                              BindingFlags.Instance | BindingFlags.NonPublic);
+                                 .GetProperty(
+                                     "Configuration",
+                                     BindingFlags.Instance | BindingFlags.NonPublic);
 
             Configuration nhConfiguration = pinfo.GetValue(cfg, null) as Configuration;
             ServiceLocator.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
@@ -150,27 +152,32 @@ namespace Hexa.Core.Domain
             }
 
             _builtConfiguration = cfg.BuildConfiguration();
-            _builtConfiguration.SetProperty(Environment.ProxyFactoryFactoryClass,
-                                            typeof(DefaultProxyFactoryFactory).
-                                            AssemblyQualifiedName);
+            _builtConfiguration.SetProperty(
+                Environment.ProxyFactoryFactoryClass,
+                typeof(DefaultProxyFactoryFactory).
+                AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....
 
-            _builtConfiguration.SetListeners(ListenerType.Flush,
-                new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
+            _builtConfiguration.SetListeners(
+                ListenerType.Flush,
+            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
 
-            _builtConfiguration.SetListeners(ListenerType.FlushEntity,
-                new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
+            _builtConfiguration.SetListeners(
+                ListenerType.FlushEntity,
+            new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
 
-            _builtConfiguration.SetListeners(ListenerType.PreInsert,
-                                             _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-                                            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
-                                             ToArray());
+            _builtConfiguration.SetListeners(
+                ListenerType.PreInsert,
+                _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
+            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
+                ToArray());
 
-            _builtConfiguration.SetListeners(ListenerType.PreUpdate,
-                                             _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-                                            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
-                                             ToArray());
+            _builtConfiguration.SetListeners(
+                ListenerType.PreUpdate,
+                _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
+            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
+                ToArray());
 
             #endregion
         }
@@ -178,10 +185,6 @@ namespace Hexa.Core.Domain
         internal NHibernateUnitOfWorkFactory()
         {
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public ISessionFactory Create()
         {
@@ -247,7 +250,5 @@ namespace Hexa.Core.Domain
                 this._sessionFactory = _builtConfiguration.BuildSessionFactory();
             }
         }
-
-        #endregion Methods
     }
 }

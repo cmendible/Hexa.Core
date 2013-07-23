@@ -4,17 +4,11 @@
 
     public interface ISiteMapBuilderService
     {
-        #region Properties
-
         // Properties
         SiteMapNodeInfo RootNode
         {
             get;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         // Methods
         void AddNode(SiteMapNodeInfo node);
@@ -36,7 +30,5 @@
         string GetAuthorizationRule(string nodeKey);
 
         ReadOnlyCollection<SiteMapNodeInfo> GetChildren(string nodeKey);
-
-        #endregion Methods
     }
 }

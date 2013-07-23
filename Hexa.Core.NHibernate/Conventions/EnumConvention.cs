@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using FluentNHibernate.Conventions;
@@ -26,8 +22,6 @@ namespace Hexa.Core.Domain
 
     public class EnumConvention : IPropertyConvention, IPropertyConventionAcceptance
     {
-        #region Methods
-
         public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             criteria.Expect(x => x.Property.PropertyType.IsEnum);
@@ -37,7 +31,5 @@ namespace Hexa.Core.Domain
         {
             instance.CustomType(instance.Property.PropertyType);
         }
-
-        #endregion Methods
     }
 }

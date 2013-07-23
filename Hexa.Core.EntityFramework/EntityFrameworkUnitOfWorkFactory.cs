@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -30,22 +26,12 @@ namespace Hexa.Core.Domain
     public class EntityFrameworkOfWorkFactory<TContext> : IDatabaseManager
         where TContext : AuditableContext
     {
-        #region Fields
-
         private string connectionString;
-
-        #endregion Fields
-
-        #region Constructors
 
         public EntityFrameworkOfWorkFactory(string connectionString)
         {
             this.connectionString = connectionString;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public IUnitOfWork Create()
         {
@@ -88,7 +74,5 @@ namespace Hexa.Core.Domain
         {
             return Activator.CreateInstance(typeof(TContext), new object[] { this.connectionString }) as TContext;
         }
-
-        #endregion Methods
     }
 }

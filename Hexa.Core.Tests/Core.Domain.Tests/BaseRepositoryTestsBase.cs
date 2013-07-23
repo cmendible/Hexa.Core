@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -34,8 +34,6 @@ namespace Hexa.Core.Domain.Tests
     public abstract class RepositoryTestsBase<TEntity>
         where TEntity : class
     {
-        #region Properties
-
         /// <summary>
         /// Specification of filter expression for a particular type
         /// </summary>
@@ -51,10 +49,6 @@ namespace Hexa.Core.Domain.Tests
         {
             get;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public abstract TEntity CreateEntity();
 
@@ -83,7 +77,7 @@ namespace Hexa.Core.Domain.Tests
             // Act
             PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, true);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -124,6 +118,7 @@ namespace Hexa.Core.Domain.Tests
         {
             // Arrange
             IUnitOfWork unitOfWork = this.GetUnitOfWork();
+
             // Act
             var repository = new BaseRepository<TEntity>(unitOfWork);
             repository.Add(null);
@@ -189,7 +184,7 @@ namespace Hexa.Core.Domain.Tests
             // Act
             IEnumerable<TEntity> result = repository.GetBySpec(specification);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(result);
         }
 
@@ -241,10 +236,12 @@ namespace Hexa.Core.Domain.Tests
             var repository = new BaseRepository<TEntity>(unitOfWork);
 
             // Act
-            IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
-                                            true);
+            IEnumerable<TEntity> entities = repository.GetFilteredElements(
+                                                this.FilterExpression,
+                                                this.OrderByExpression,
+                                                true);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -257,10 +254,12 @@ namespace Hexa.Core.Domain.Tests
             var repository = new BaseRepository<TEntity>(unitOfWork);
 
             // Act
-            IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression, OrderByExpression,
-                                            false);
+            IEnumerable<TEntity> entities = repository.GetFilteredElements(
+                                                this.FilterExpression,
+                                                this.OrderByExpression,
+                                                false);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -288,10 +287,13 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              this.FilterExpression, true);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  this.FilterExpression, true);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -306,10 +308,13 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              this.FilterExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  this.FilterExpression, false);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -325,8 +330,11 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 0;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              this.FilterExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  this.FilterExpression, false);
         }
 
         [Test]
@@ -341,8 +349,11 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              this.FilterExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  this.FilterExpression, false);
         }
 
         [Test]
@@ -358,8 +369,11 @@ namespace Hexa.Core.Domain.Tests
 
             // Act
             Expression<Func<TEntity, bool>> filter = null;
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              filter, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  filter, false);
         }
 
         [Test]
@@ -374,8 +388,11 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements<int>(pageIndex, pageCount, null,
-                                              this.FilterExpression, false);
+            PagedElements<TEntity> entities = repository.GetPagedElements<int>(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  null,
+                                                  this.FilterExpression, false);
         }
 
         [Test]
@@ -389,7 +406,7 @@ namespace Hexa.Core.Domain.Tests
             // Act
             IEnumerable<TEntity> entities = repository.GetFilteredElements(this.FilterExpression);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -405,10 +422,13 @@ namespace Hexa.Core.Domain.Tests
             bool ascending = false;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression,
-                                              ascending);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  ascending);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(entities);
         }
 
@@ -469,8 +489,12 @@ namespace Hexa.Core.Domain.Tests
 
             // Act
             ISpecification<TEntity> spec = null;
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, spec,
-                                              false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  spec,
+                                                  false);
         }
 
         [Test]
@@ -486,8 +510,12 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 10;
 
             // Act
-            PagedElements<TEntity> entities = repository.GetPagedElements(pageIndex, pageCount, this.OrderByExpression, spec,
-                                              false);
+            PagedElements<TEntity> entities = repository.GetPagedElements(
+                                                  pageIndex,
+                                                  pageCount,
+                                                  this.OrderByExpression,
+                                                  spec,
+                                                  false);
         }
 
         [Test]
@@ -499,10 +527,8 @@ namespace Hexa.Core.Domain.Tests
             // Act
             var repository = new BaseRepository<TEntity>(unitOfWork);
 
-            //Assert
+            // Assert
             Assert.IsNotNull(repository);
         }
-
-        #endregion Methods
     }
 }

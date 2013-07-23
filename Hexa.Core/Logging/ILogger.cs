@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Logging
 {
     using System;
@@ -26,8 +22,6 @@ namespace Hexa.Core.Logging
     /// </summary>
     public interface ILogger
     {
-        #region Methods
-
         void Debug(object message);
 
         void Debug(object message, Exception exception);
@@ -67,7 +61,5 @@ namespace Hexa.Core.Logging
         void WarnFormat(string format, params object[] args);
 
         void WarnFormat(IFormatProvider provider, string format, params object[] args);
-
-        #endregion Methods
     }
 }

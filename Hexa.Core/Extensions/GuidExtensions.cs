@@ -1,4 +1,4 @@
-namespace Hexa.Core
+﻿namespace Hexa.Core
 {
     using System;
 
@@ -7,8 +7,6 @@ namespace Hexa.Core
     /// </summary>
     public static class GuidExtensions
     {
-        #region Methods
-
         /// <summary>
         /// Determines whether [is empty or null] [the specified GUID].
         /// </summary>
@@ -45,8 +43,8 @@ namespace Hexa.Core
             byte[] bits = value.ToByteArray();
 
             const int VariantShift = 6;
-            const int VariantMask = (0x3 << VariantShift);
-            const int VariantBits = (0x2 << VariantShift);
+            const int VariantMask = 0x3 << VariantShift;
+            const int VariantBits = 0x2 << VariantShift;
 
             if ((bits[8] & VariantMask) != VariantBits)
             {
@@ -54,13 +52,14 @@ namespace Hexa.Core
             }
 
             const int VersionShift = 4;
-            const int VersionMask = (0xf << VersionShift);
-            const int VersionBits = (0x4 << VersionShift);
+            const int VersionMask = 0xf << VersionShift;
+            const int VersionBits = 0x4 << VersionShift;
 
             if ((bits[7] & VersionMask) != VersionBits)
             {
                 return false;
             }
+
             return true;
         }
 
@@ -76,7 +75,7 @@ namespace Hexa.Core
 
             // Get the days and milliseconds which will be used to build the byte string
             var days = new TimeSpan(now.Ticks - baseDate.Ticks);
-            var msecs = new TimeSpan(now.Ticks - (new DateTime(now.Year, now.Month, now.Day).Ticks));
+            var msecs = new TimeSpan(now.Ticks - new DateTime(now.Year, now.Month, now.Day).Ticks);
 
             // Convert to a byte array
             // Note that SQL Server is accurate to 1/300th of a millisecond so we divide by 3.333333
@@ -127,12 +126,13 @@ namespace Hexa.Core
             // more useable.. let's say a TimeSpam objet..
             var days = new TimeSpan(BitConverter.ToInt32(dayBits, 0), 0, 0, 0);
             var date = new DateTime(new DateTime(1900, 1, 1).Ticks + days.Ticks);
+
             // This should print the year/month/day, but at 00:00:00 hours.
 
             // Now we need to get the hour.. it is encoded in milliseconds with
             // 1/300th aproximation.. so first, let's pass it to a double
             // and multiply it by 3.33333
-            double tmp = (BitConverter.ToInt32(msecBits, 0)) * 3.333333;
+            double tmp = BitConverter.ToInt32(msecBits, 0) * 3.333333;
 
             // Now we can convert this into a TimeSpan, passing milliseconds
             // as Ticks. Remeber, ticks is a "normally" a constant value
@@ -171,7 +171,5 @@ namespace Hexa.Core
 
             return false;
         }
-
-        #endregion Methods
     }
 }

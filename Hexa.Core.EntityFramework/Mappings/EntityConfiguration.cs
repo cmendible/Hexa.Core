@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -27,22 +23,18 @@ namespace Hexa.Core.Domain
         where TEntity : BaseEntity<TEntity, TKey>
         where TKey : struct, IEquatable<TKey>
     {
-        #region Constructors
-
         public EntityConfiguration()
         {
             this.HasKey(x => x.UniqueId);
 
             this.Property(x => x.UniqueId)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(x => x.Version)
-                .HasColumnName("Timestamp")
-                .IsConcurrencyToken();
+            .HasColumnName("Timestamp")
+            .IsConcurrencyToken();
 
             this.ToTable(Inflector.Underscore(typeof(TEntity).Name).ToUpper(), string.Empty);
         }
-
-        #endregion Constructors
     }
 }

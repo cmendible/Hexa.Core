@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System.ComponentModel.Composition;
@@ -26,13 +22,7 @@ namespace Hexa.Core
     [Export(typeof(NHConfiguration))]
     public class NHConfiguration
     {
-        #region Fields
-
         static Configuration _configuration;
-
-        #endregion Fields
-
-        #region Constructors
 
         public NHConfiguration()
         {
@@ -43,10 +33,6 @@ namespace Hexa.Core
             _configuration = configuration;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public Configuration Value
         {
             get
@@ -54,7 +40,5 @@ namespace Hexa.Core
                 return _configuration;
             }
         }
-
-        #endregion Properties
     }
 }

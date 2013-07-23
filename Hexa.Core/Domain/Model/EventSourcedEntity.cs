@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Hexa.Core.DynamicExtensions;
 
     public abstract class EventSourcedEntity
@@ -13,6 +14,7 @@
             get;
             protected set;
         }
+
         public int Version
         {
             get;
@@ -24,11 +26,6 @@
             return this._changes;
         }
 
-        public void MarkChangesAsCommitted()
-        {
-            this._changes.Clear();
-        }
-
         public void LoadsFromHistory(IEnumerable<Event> history)
         {
             foreach (var e in history)
@@ -36,6 +33,11 @@
                 this.ApplyChange(e, false);
                 this.Version = e.Version;
             }
+        }
+
+        public void MarkChangesAsCommitted()
+        {
+            this._changes.Clear();
         }
 
         protected void ApplyChange(Event @event)
@@ -52,5 +54,4 @@
             }
         }
     }
-
 }

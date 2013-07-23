@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -33,8 +29,6 @@ namespace Hexa.Core.Domain
     /// </summary>
     public interface IUnitOfWork : IDisposable
     {
-        #region Methods
-
         /// <summary>
         /// Adds the specified entity.
         /// </summary>
@@ -88,7 +82,5 @@ namespace Hexa.Core.Domain
         /// Starts this instance.
         /// </summary>
         void Start();
-
-        #endregion Methods
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using FluentNHibernate.Mapping;
@@ -26,17 +22,11 @@ namespace Hexa.Core.Domain
 
     public class BaseClassMap<TEntity> : ClassMap<TEntity>
     {
-        #region Constructors
-
         public BaseClassMap()
         {
             Configuration = ServiceLocator.GetInstance<NHConfiguration>();
             Dialect = Dialect.GetDialect(Configuration.Value.Properties);
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         protected NHConfiguration Configuration
         {
@@ -49,7 +39,5 @@ namespace Hexa.Core.Domain
             get;
             private set;
         }
-
-        #endregion Properties
     }
 }

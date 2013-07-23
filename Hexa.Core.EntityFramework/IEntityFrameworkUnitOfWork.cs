@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +13,15 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System.Data.Entity;
 
     public interface IEntityFrameworkUnitOfWork : IUnitOfWork
     {
-        #region Properties
-
         DbContext DbContext
         {
             get;
         }
-
-        #endregion Properties
     }
 }

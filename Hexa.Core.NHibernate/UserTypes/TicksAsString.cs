@@ -1,4 +1,4 @@
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
     using System;
     using System.Data;
@@ -13,8 +13,6 @@ namespace Hexa.Core.Domain
     /// </summary />
     public class TicksAsString : IUserVersionType
     {
-        #region Properties
-
         public bool IsMutable
         {
             get
@@ -38,10 +36,6 @@ namespace Hexa.Core.Domain
                 return new[] { new SqlType(DbType.Int64) };
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -70,7 +64,7 @@ namespace Hexa.Core.Domain
 
         bool IUserType.Equals(object x, object y)
         {
-            return (x == y);
+            return x == y;
         }
 
         public object Next(object current, ISessionImplementor session)
@@ -104,7 +98,5 @@ namespace Hexa.Core.Domain
         {
             return DateTime.UtcNow.Ticks.ToString();
         }
-
-        #endregion Methods
     }
 }

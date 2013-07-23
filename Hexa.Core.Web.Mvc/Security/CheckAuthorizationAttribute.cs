@@ -10,15 +10,14 @@ namespace Hexa.Core.Web.Mvc.Security
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
+
     using Hexa.Core.Web.Services;
 
     public class CheckAuthorizationAttribute : AuthorizeAttribute
     {
-        #region Methods
-
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            //base.OnAuthorization(filterContext);
+            // base.OnAuthorization(filterContext);
 
             // Try Get IAuthorizationService
             IAuthorizationService authorizationService = ServiceLocator.TryGetInstance<IAuthorizationService>();
@@ -46,7 +45,5 @@ namespace Hexa.Core.Web.Mvc.Security
             // The user is not allowed to execute the Action. An Unauthorized result is raised.
             filterContext.Result = new HttpUnauthorizedResult();
         }
-
-        #endregion Methods
     }
 }

@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +14,6 @@
 // ===================================================================================
 // Inspired on: https://github.com/PeteGoo/NHibernate.QueryService/blob/master/NHibernateQueryService.WebApi/ActionFilters/QueryableWithExpandsAttribute.cs
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -31,8 +27,6 @@ namespace Hexa.Core.Domain
 
     public class NHFetchProvider : IFetchProvider
     {
-        #region Methods
-
         // code adjusted to prevent horizontal overflow
         public static PropertyInfo[] GetPublicProperties(Type type)
         {
@@ -85,6 +79,7 @@ namespace Hexa.Core.Domain
             var nHibQuery = query.Provider as NHibernate.Linq.DefaultQueryProvider;
 
             IQueryable currentQueryable = query.AsQueryable<TOriginating>();
+
             // We always start with the resulting element type
             var currentType = currentQueryable.ElementType;
             var isFirstFetch = true;
@@ -95,7 +90,7 @@ namespace Hexa.Core.Domain
                 var propType = propInfo.PropertyType;
 
                 // When this is the first segment of a path, we have to use Fetch instead of ThenFetch
-                var propFetchFunctionName = (isFirstFetch ? "Fetch" : "ThenFetch");
+                var propFetchFunctionName = isFirstFetch ? "Fetch" : "ThenFetch";
 
                 // The delegateType is a type for the lambda creation to create the correct return value
                 System.Type delegateType;
@@ -107,8 +102,9 @@ namespace Hexa.Core.Domain
 
                     // We only support IList<T> or something similar
                     propType = propType.GetGenericArguments().Single();
-                    delegateType = typeof(Func<,>).MakeGenericType(currentType,
-                                   typeof(IEnumerable<>).MakeGenericType(propType));
+                    delegateType = typeof(Func<,>).MakeGenericType(
+                                       currentType,
+                                       typeof(IEnumerable<>).MakeGenericType(propType));
                 }
                 else
                 {
@@ -116,10 +112,11 @@ namespace Hexa.Core.Domain
                 }
 
                 // Get the correct extension method (Fetch, FetchMany, ThenFetch, or ThenFetchMany)
-                var fetchMethodInfo = typeof(EagerFetchingExtensionMethods).GetMethod(propFetchFunctionName,
-                                      BindingFlags.Static |
-                                      BindingFlags.Public |
-                                      BindingFlags.InvokeMethod);
+                var fetchMethodInfo = typeof(EagerFetchingExtensionMethods).GetMethod(
+                                          propFetchFunctionName,
+                                          BindingFlags.Static |
+                                          BindingFlags.Public |
+                                          BindingFlags.InvokeMethod);
                 var fetchMethodTypes = new List<System.Type>();
                 fetchMethodTypes.AddRange(currentQueryable.GetType().GetGenericArguments().Take(isFirstFetch ? 1 : 2));
                 fetchMethodTypes.Add(propType);
@@ -129,13 +126,15 @@ namespace Hexa.Core.Domain
                 Expression exprParam = System.Linq.Expressions.Expression.Parameter(propInfo.DeclaringType, "x");
 
                 Expression exprProp = System.Linq.Expressions.Expression.Property(exprParam, path);
-                var exprLambda = System.Linq.Expressions.Expression.Lambda(delegateType, exprProp,
-                                 new System.Linq.Expressions.
-                                 ParameterExpression[] { (ParameterExpression)exprParam });
+                var exprLambda = System.Linq.Expressions.Expression.Lambda(
+                                     delegateType,
+                                     exprProp,
+                                     new System.Linq.Expressions.
+                                     ParameterExpression[] { (ParameterExpression)exprParam });
 
                 // Call the *Fetch* function
                 var args = new object[] { currentQueryable, exprLambda };
-                currentQueryable = ((IQueryable)fetchMethodInfo.Invoke(null, args));
+                currentQueryable = (IQueryable)fetchMethodInfo.Invoke(null, args);
 
                 currentType = propType;
                 isFirstFetch = false;
@@ -194,7 +193,5 @@ namespace Hexa.Core.Domain
 
             return false;
         }
-
-        #endregion Methods
     }
 }

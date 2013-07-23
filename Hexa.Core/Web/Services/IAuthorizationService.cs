@@ -4,8 +4,6 @@
 
     public interface IAuthorizationService
     {
-        #region Methods
-
         string[] GetAuthorizationRules(string urlPath);
 
         bool IsAuthorized(string action);
@@ -13,7 +11,5 @@
         bool IsAuthorized(string role, string action);
 
         void RegisterAuthorizationRule(string urlPath, string action);
-
-        #endregion Methods
     }
 }

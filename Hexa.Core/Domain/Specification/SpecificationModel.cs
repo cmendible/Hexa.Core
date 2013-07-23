@@ -10,8 +10,6 @@
     [DataContract]
     public class Filter
     {
-        #region Properties
-
         [DataMember]
         public string groupOp
         {
@@ -25,10 +23,6 @@
             get;
             set;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public static Filter Create(string jsonData)
         {
@@ -46,22 +40,18 @@
                 return null;
             }
         }
-
-        #endregion Methods
     }
 
     public static class LinqExtensions
     {
-        #region Methods
-
         public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value, string operation)
-            where T : class
+        where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
         }
 
         public static ISpecification<T> CreateSpecification<T>(string column, object value, string operation)
-            where T : class
+        where T : class
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
 
@@ -92,46 +82,53 @@
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
+
                 // not equal !=
             case "ne":
                 condition = Expression.NotEqual(memberAccess, filter);
                 lambda = Expression.Lambda(condition, parameter);
                 break;
+
                 // string.Contains()
             case "cn":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("Contains"),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("Contains"),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bw":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bn":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "ew":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "en":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
@@ -158,9 +155,10 @@
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "nc":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("Contains"),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("Contains"),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
@@ -245,17 +243,14 @@
 
                 inspectedType = propertyInfo.PropertyType;
             }
+
             return memberAccess;
         }
-
-        #endregion Methods
     }
 
     [DataContract]
     public class Rule
     {
-        #region Properties
-
         [DataMember]
         public string data
         {
@@ -276,14 +271,10 @@
             get;
             set;
         }
-
-        #endregion Properties
     }
 
     public class SpecificationModel
     {
-        #region Properties
-
         public string Field
         {
             get;
@@ -337,7 +328,5 @@
             get;
             set;
         }
-
-        #endregion Properties
     }
 }

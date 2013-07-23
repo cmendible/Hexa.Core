@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Web.UI.Ajax
 {
@@ -32,8 +28,6 @@ namespace Hexa.Core.Web.UI.Ajax
     [DataContract]
     public class jqFilter
     {
-        #region Properties
-
         [DataMember]
         public string groupOp
         {
@@ -47,10 +41,6 @@ namespace Hexa.Core.Web.UI.Ajax
             get;
             set;
         }
-
-        #endregion Properties
-
-        #region Methods
 
         internal static jqFilter Create(string jsonData)
         {
@@ -68,22 +58,14 @@ namespace Hexa.Core.Web.UI.Ajax
                 return null;
             }
         }
-
-        #endregion Methods
     }
 
     public class jqGridData
     {
-        #region Fields
-
         private readonly int _pageIndex;
         private readonly int _pageSize;
         private readonly List<jqGridItem> _rows;
         private readonly int _totalRecords;
-
-        #endregion Fields
-
-        #region Constructors
 
         public jqGridData(IDictionary<string, List<string>> rows, int totalRecords, int pageIndex, int pageSize)
         {
@@ -97,10 +79,6 @@ namespace Hexa.Core.Web.UI.Ajax
                 this._rows.Add(new jqGridItem(row.Key, row.Value));
             }
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public int page
         {
@@ -130,11 +108,9 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             get
             {
-                return (int)Math.Ceiling(this._totalRecords / (decimal)_pageSize);
+                return (int)Math.Ceiling(this._totalRecords / (decimal)this._pageSize);
             }
         }
-
-        #endregion Properties
     }
 
     /// <summary>
@@ -142,8 +118,6 @@ namespace Hexa.Core.Web.UI.Ajax
     /// </summary>
     public class jqGridHelper
     {
-        #region Fields
-
         private readonly string _gridName;
 
         private string _caption;
@@ -161,18 +135,10 @@ namespace Hexa.Core.Web.UI.Ajax
         private string _sortOrder = string.Empty;
         private string _width;
 
-        #endregion Fields
-
-        #region Constructors
-
         private jqGridHelper(string gridName)
         {
             this._gridName = gridName;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public static jqGridHelper Create(string gridName)
         {
@@ -235,7 +201,7 @@ namespace Hexa.Core.Web.UI.Ajax
 
         public jqGridHelper OnSelectAll(string onSelectAll)
         {
-            _onSelectAll = onSelectAll;
+            this._onSelectAll = onSelectAll;
             return this;
         }
 
@@ -261,18 +227,18 @@ namespace Hexa.Core.Web.UI.Ajax
         {
             #region datagrid texts
 
-            //string loadtext = "Cargando datos...";
-            //string recordtext = "{0} - {1} de {2} elementos";
-            //string emptyrecords = "No hay resultados";
-            //string pgtext = "Pág: {0} de {1}"; //Paging input control text format.
+            // string loadtext = "Cargando datos...";
+            // string recordtext = "{0} - {1} de {2} elementos";
+            // string emptyrecords = "No hay resultados";
+            // string pgtext = "Pág: {0} de {1}"; // Paging input control text format.
 
             #endregion
 
             // PageSize.
-            int rowNum = 10; 
+            int rowNum = 10;
 
             // Variable PageSize DropDownList.
-            var rowList = new[] {10, 20, 30}; 
+            var rowList = new[] { 10, 20, 30 };
 
             #region script
 
@@ -290,9 +256,9 @@ namespace Hexa.Core.Web.UI.Ajax
                 script += string.Format("onSelectRow: {0}, ", this._onSelect) + "\r\n";
             }
 
-            if (!string.IsNullOrEmpty(_onSelectAll))
+            if (!string.IsNullOrEmpty(this._onSelectAll))
             {
-                script += string.Format("onSelectAll: {0}, ", _onSelectAll) + "\r\n";
+                script += string.Format("onSelectAll: {0}, ", this._onSelectAll) + "\r\n";
             }
 
             if (!string.IsNullOrEmpty(this._onComplete))
@@ -310,15 +276,16 @@ namespace Hexa.Core.Web.UI.Ajax
             }
 
             // Cant hide grids.
-            script += "hidegrid: false," + "\r\n"; 
+            script += "hidegrid: false," + "\r\n";
 
             bool closeOnEscape = true;
             bool closeAfterSearch = true;
 
-            string searhBoxOptions = string.Format("closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
-                                                   closeOnEscape.ToString().ToLower(),
-                                                   this._multiSearch,
-                                                   closeAfterSearch.ToString().ToLower());
+            string searhBoxOptions = string.Format(
+                                         "closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
+                                         closeOnEscape.ToString().ToLower(),
+                                         this._multiSearch,
+                                         closeAfterSearch.ToString().ToLower());
 
             if (!string.IsNullOrEmpty(this._sortColumn))
             {
@@ -352,14 +319,10 @@ namespace Hexa.Core.Web.UI.Ajax
             this._width = width;
             return this;
         }
-
-        #endregion Methods
     }
 
     public class jqGridItem
     {
-        #region Constructors
-
         /// <summary>
         /// Contructor.
         /// </summary>
@@ -368,10 +331,6 @@ namespace Hexa.Core.Web.UI.Ajax
             this.id = id;
             this.cell = values;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Fila del JQGrid.
@@ -390,49 +349,55 @@ namespace Hexa.Core.Web.UI.Ajax
             get;
             protected set;
         }
-
-        #endregion Properties
     }
 
     public static class jqGridSearchHelper
     {
-        #region Fields
-
         private static readonly Dictionary<string, string> _linqOperations = new Dictionary<string, string>
         {
-            {"eq", "=="},
+            { "eq", "==" },
+
             // equal
-            {"ne", "!="},
+            { "ne", "!=" },
+
             // not equal
-            {"lt", "<"},
+            { "lt", "<" },
+
             // less than
-            {"le", "<="},
+            { "le", "<=" },
+
             // less than or equal
-            {"gt", ">"},
+            { "gt", ">" },
+
             // greater than
-            {"ge", ">="},
+            { "ge", ">=" },
+
             // greater than or equal
-            {"bw", "{0}.StartsWith({1})"},
+            { "bw", " { 0 } .StartsWith( { 1 })" },
+
             // begins with
-            {"bn", "!{0}.StartsWith({1})"},
+            { "bn", "! { 0 } .StartsWith( { 1 })" },
+
             // doesn"t begin with
-            {"in", "{0}.Contains({1})"},
+            { "in", " { 0 } .Contains( { 1 })" },
+
             // is in
-            {"ni", "!{0}.Contains({1})"},
+            { "ni", "! { 0 } .Contains( { 1 })" },
+
             // is not in
-            {"ew", "{0}.EndsWith({1})"},
+            { "ew", " { 0 } .EndsWith( { 1 })" },
+
             // ends with
-            {"en", "!{0}.EndsWith({1})"},
+            { "en", "! { 0 } .EndsWith( { 1 })" },
+
             // doesn"t end with
-            {"cn", "{0}.Contains({1})"},
+            { "cn", " { 0 } .Contains( { 1 })" },
+
             // contains
-            {"nc", "!{0}.Contains({1})"}
+            { "nc", "! { 0 } .Contains( { 1 })" }
+
             // doesn"t contain
         };
-
-        #endregion Fields
-
-        #region Methods
 
         public static jqFilter DeserializeFilters(string filters)
         {
@@ -454,15 +419,11 @@ namespace Hexa.Core.Web.UI.Ajax
                 return string.Format("{0} {1} {2}", column, _linqOperations[operation], value);
             }
         }
-
-        #endregion Methods
     }
 
     [DataContract]
     public class jqRule
     {
-        #region Properties
-
         [DataMember]
         public string data
         {
@@ -483,18 +444,17 @@ namespace Hexa.Core.Web.UI.Ajax
             get;
             set;
         }
-
-        #endregion Properties
     }
 
     [Obsolete]
     public static class LinqExtensions
     {
-        #region Methods
-
         [Obsolete]
-        public static ISpecification<T> AndAlso<T>(this ISpecification<T> query, string column, object value,
-                string operation)
+        public static ISpecification<T> AndAlso<T>(
+            this ISpecification<T> query,
+            string column,
+            object value,
+            string operation)
         where T : class
         {
             return query.AndAlso(CreateSpecification<T>(column, value, operation));
@@ -514,60 +474,67 @@ namespace Hexa.Core.Web.UI.Ajax
                 memberAccess = _GetMemberAccess(column, parameter);
             }
 
-            //change param value type
-            //necessary to getting bool from string
+            // change param value type
+            // necessary to getting bool from string
             ConstantExpression filter = Expression.Constant(Convert.ChangeType(value, memberAccess.Type));
 
             Expression condition = null;
             LambdaExpression lambda = null;
             switch (operation)
             {
-                //equal ==
+                // equal ==
             case "eq":
                 condition = Expression.Equal(memberAccess, filter);
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
-                //not equal !=
+
+                // not equal !=
             case "ne":
                 condition = Expression.NotEqual(memberAccess, filter);
                 lambda = Expression.Lambda(condition, parameter);
                 break;
-                //string.Contains()
+
+                // string.Contains()
             case "cn":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("Contains"),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("Contains"),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bw":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "bn":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("StartsWith", new[] {typeof(string)}),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("StartsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "ew":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "en":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("EndsWith", new[] {typeof(string)}),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("EndsWith", new[] { typeof(string) }),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
@@ -594,9 +561,10 @@ namespace Hexa.Core.Web.UI.Ajax
                 lambda = Expression.Lambda(condition, parameter);
                 break;
             case "nc":
-                condition = Expression.Call(memberAccess,
-                                            typeof(string).GetMethod("Contains"),
-                                            Expression.Constant(value));
+                condition = Expression.Call(
+                                memberAccess,
+                                typeof(string).GetMethod("Contains"),
+                                Expression.Constant(value));
 
                 condition = Expression.Not(condition);
 
@@ -613,8 +581,11 @@ namespace Hexa.Core.Web.UI.Ajax
         }
 
         [Obsolete]
-        public static ISpecification<T> OrElse<T>(this ISpecification<T> query, string column, object value,
-                string operation)
+        public static ISpecification<T> OrElse<T>(
+            this ISpecification<T> query,
+            string column,
+            object value,
+            string operation)
         where T : class
         {
             return query.OrElse(CreateSpecification<T>(column, value, operation));
@@ -629,9 +600,8 @@ namespace Hexa.Core.Web.UI.Ajax
                 memberAccess = Expression.Property
                                (memberAccess ?? (parameter as Expression), property);
             }
+
             return memberAccess;
         }
-
-        #endregion Methods
     }
 }

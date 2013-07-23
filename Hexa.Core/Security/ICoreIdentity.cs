@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,21 +13,15 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Security
 {
     using System.Security.Principal;
 
     public interface ICoreIdentity : IIdentity
     {
-        #region Properties
-
         string Id
         {
             get;
         }
-
-        #endregion Properties
     }
 }

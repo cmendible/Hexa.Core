@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,16 +26,10 @@ namespace Hexa.Core.Web.Services
     /// </summary>
     public class SeoSiteMapBuilderService : ISeoSiteMapBuilderService
     {
-        #region Fields
-
         private readonly Dictionary<string, List<SeoUrlInfo>> _childurls;
         private readonly Dictionary<string, SeoUrlInfo> _keyIndex;
         private readonly SeoUrlInfo _rooturl;
         private readonly Dictionary<string, int> _urlPreferredOrder;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initialize a new instance of <see cref="SeoSiteMapBuilderService"/>.
@@ -50,10 +44,6 @@ namespace Hexa.Core.Web.Services
             this._childurls.Add(this._rooturl.Key, new List<SeoUrlInfo>());
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Gets the current root url.
         /// </summary>
@@ -65,10 +55,6 @@ namespace Hexa.Core.Web.Services
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
         /// <summary>
         /// Adds a url as child of the root url.
         /// </summary>
@@ -76,7 +62,8 @@ namespace Hexa.Core.Web.Services
         public void AddUrl(SeoUrlInfo url)
         {
             this.AddUrl(url, int.MaxValue);
-            //this._childurls[Rooturl.Key].Add(url);
+
+            // this._childurls[Rooturl.Key].Add(url);
         }
 
         /// <summary>
@@ -135,13 +122,13 @@ namespace Hexa.Core.Web.Services
 
         public string SeoXml()
         {
-            //instantiate the XML Text Writer for writing the SiteMap document
+            // instantiate the XML Text Writer for writing the SiteMap document
             using (StringWriter stringWriter = new StringWriter())
             {
                 using (XmlTextWriter writer = new XmlTextWriter(stringWriter))
                 {
-                    //write out the header
-                    //start off the site map
+                    // write out the header
+                    // start off the site map
                     writer.WriteProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
                     writer.WriteStartElement("urlset");
                     writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
@@ -151,7 +138,7 @@ namespace Hexa.Core.Web.Services
                     SeoUrlInfo rooturl = this.RootUrl;
                     this.AddChildurls(writer, rooturl, this.GetChildren(rooturl.Key));
 
-                    //write the footer and close.
+                    // write the footer and close.
                     writer.WriteEndElement();
                     return stringWriter.ToString();
                 }
@@ -167,12 +154,14 @@ namespace Hexa.Core.Web.Services
             {
                 sb.Append("0");
             }
+
             sb.Append(date.Month);
             sb.Append("-");
             if (date.Day < 10)
             {
                 sb.Append("0");
             }
+
             sb.Append(date.Day);
 
             return sb.ToString();
@@ -229,7 +218,5 @@ namespace Hexa.Core.Web.Services
 
             this._keyIndex.Add(url.Key, url);
         }
-
-        #endregion Methods
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 
 #if !MONO
@@ -32,8 +28,6 @@ namespace Hexa.Core.Tests.Sql
     [TestFixture]
     public class FirebirdTests : SqlTest
     {
-        #region Methods
-
         protected override string ConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["Firebird.Connection"].ConnectionString;
@@ -43,8 +37,6 @@ namespace Hexa.Core.Tests.Sql
         {
             return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, typeof(Entity).Assembly);
         }
-
-        #endregion Methods
     }
 }
 

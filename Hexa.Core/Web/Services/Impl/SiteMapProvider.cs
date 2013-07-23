@@ -9,18 +9,12 @@
 
     public class SiteMapProvider : StaticSiteMapProvider
     {
-        #region Fields
-
         // Fields
         private IAuthorizationService _authorizationService;
         private bool _isInitialized;
         private object _lockObject = new object();
         private SiteMapNode _rootNode;
         private ISiteMapBuilderService _siteMapBuilder;
-
-        #endregion Fields
-
-        #region Properties
 
         // Properties
         public IAuthorizationService AuthorizationService
@@ -34,6 +28,7 @@
 
                 return this._authorizationService;
             }
+
             set
             {
                 this._authorizationService = value;
@@ -51,15 +46,12 @@
 
                 return this._siteMapBuilder;
             }
+
             set
             {
                 this._siteMapBuilder = value;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public override SiteMapNode BuildSiteMap()
         {
@@ -76,6 +68,7 @@
                     }
                 }
             }
+
             return this._rootNode;
         }
 
@@ -104,6 +97,7 @@
                     flag = this.AuthorizationService.IsAuthorized(node.Key);    // If no auth rule was defined then use node.Key as rule name.
                 }
             }
+
             return flag;
         }
 
@@ -123,12 +117,13 @@
 
         private SiteMapNode CreateSiteMapNode(SiteMapNodeInfo nodeInfo)
         {
-            return new SiteMapNode(this, nodeInfo.Key, nodeInfo.Url, nodeInfo.Title,
-                                   nodeInfo.Description, nodeInfo.Roles, nodeInfo.Attributes,
-                                   nodeInfo.ExplicitResourcesKey, nodeInfo.ImplicitResourceKey
-                                  );
+            return new SiteMapNode(
+                       this,
+                       nodeInfo.Key,
+                       nodeInfo.Url,
+                       nodeInfo.Title,
+                       nodeInfo.Description, nodeInfo.Roles, nodeInfo.Attributes,
+                       nodeInfo.ExplicitResourcesKey, nodeInfo.ImplicitResourceKey);
         }
-
-        #endregion Methods
     }
 }

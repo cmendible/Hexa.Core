@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using NHibernate.Cfg;
@@ -26,17 +22,11 @@ namespace Hexa.Core.Domain
 
     public sealed class ValidateEventListener : IPreInsertEventListener, IPreUpdateEventListener, IInitializable
     {
-        #region Fields
-
         private bool isInitialized;
-
-        #endregion Fields
-
-        #region Methods
 
         public void Initialize(Configuration cfg)
         {
-            if (!isInitialized && (cfg != null))
+            if (!this.isInitialized && (cfg != null))
             {
                 this.isInitialized = true;
             }
@@ -62,7 +52,5 @@ namespace Hexa.Core.Domain
                 validatable.AssertValidation();
             }
         }
-
-        #endregion Methods
     }
 }

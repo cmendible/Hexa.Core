@@ -1,4 +1,4 @@
-// ===================================================================================
+﻿// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -21,8 +21,6 @@ namespace Hexa.Core.Domain.Specification
     /// </summary>
     public static class ExpressionBuilder
     {
-        #region Methods
-
         /// <summary>
         /// And operator
         /// </summary>
@@ -30,8 +28,9 @@ namespace Hexa.Core.Domain.Specification
         /// <param name="first">Right Expression in AND operation</param>
         /// <param name="second">Left Expression in And operation</param>
         /// <returns>New AND expression</returns>
-        public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> first,
-                Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> AndAlso<T>(
+            this Expression<Func<T, bool>> first,
+            Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.AndAlso);
         }
@@ -68,7 +67,5 @@ namespace Hexa.Core.Domain.Specification
         {
             return first.Compose(second, Expression.OrElse);
         }
-
-        #endregion Methods
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using System;
@@ -29,8 +25,6 @@ namespace Hexa.Core.Domain
     public class AuditableEntityMap<TEntity, TUserKey> : EntityMap<TEntity, Guid>
         where TEntity : AuditableEntity<TEntity>
     {
-        #region Constructors
-
         public AuditableEntityMap()
         {
             Map(x => x.CreatedAt)
@@ -60,7 +54,5 @@ namespace Hexa.Core.Domain
                 .CustomType<StringToInt>();
             }
         }
-
-        #endregion Constructors
     }
 }

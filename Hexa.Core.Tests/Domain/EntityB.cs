@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Tests.Domain
 {
     using System;
@@ -28,22 +24,12 @@ namespace Hexa.Core.Tests.Domain
     [Serializable]
     public class EntityB : AuditableEntity<EntityB>
     {
-        #region Fields
-
         private IList<EntityA> entitiesOfA;
-
-        #endregion Fields
-
-        #region Constructors
 
         public EntityB()
         {
             this.entitiesOfA = new List<EntityA>();
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public virtual IEnumerable<EntityA> EntitiesOfA
         {
@@ -59,7 +45,5 @@ namespace Hexa.Core.Tests.Domain
             get;
             set;
         }
-
-        #endregion Properties
     }
 }

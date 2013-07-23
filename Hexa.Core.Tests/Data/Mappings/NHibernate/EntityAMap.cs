@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Tests.Data
 {
     using Core.Domain;
@@ -25,8 +21,6 @@ namespace Hexa.Core.Tests.Data
 
     public class EntityAMap : AuditableEntityMap<EntityA>
     {
-        #region Constructors
-
         public EntityAMap()
         {
             Map(h => h.Name);
@@ -37,7 +31,5 @@ namespace Hexa.Core.Tests.Data
             .ParentKeyColumn("EntityAUniqueId")
             .ChildKeyColumn("EntityBUniqueId");
         }
-
-        #endregion Constructors
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System;
@@ -27,16 +23,10 @@ namespace Hexa.Core
 
     public static class ServiceLocator
     {
-        #region Fields
-
         private static Action<Type, object> registerInstanceCallback;
         private static Action<Type, Type> registerTypeCallback;
         private static Func<Type, IEnumerable<object>> resolveAllCallback;
         private static Func<Type, object> resolveCallback;
-
-        #endregion Fields
-
-        #region Methods
 
         public static TDependency[] GetAllInstances<TDependency>()
         {
@@ -148,7 +138,5 @@ namespace Hexa.Core
 
             return default(TDependency);
         }
-
-        #endregion Methods
     }
 }

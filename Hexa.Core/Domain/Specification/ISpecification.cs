@@ -25,15 +25,11 @@ namespace Hexa.Core.Domain.Specification
     public interface ISpecification<TEntity>
         where TEntity : class
         {
-            #region Methods
-
             /// <summary>
             /// Check if this specification is satisfied by a
             /// specific expression lambda
             /// </summary>
             /// <returns></returns>
             Expression<Func<TEntity, bool>> SatisfiedBy();
-
-            #endregion Methods
         }
 }

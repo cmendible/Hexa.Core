@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,16 +13,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Data
 {
     using System.Data.Common;
 
     public static class DbProviderExtensions
     {
-        #region Methods
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public static void ExecuteNonQuery(this DbProviderFactory provider, string connectionString, string command)
         {
@@ -57,7 +51,5 @@ namespace Hexa.Core.Data
                 }
             }
         }
-
-        #endregion Methods
     }
 }

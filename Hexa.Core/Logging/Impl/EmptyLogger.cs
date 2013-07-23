@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +13,12 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Logging
 {
     using System;
 
     public class EmptyLogger : ILogger
     {
-        #region Methods
-
         public void Debug(object message)
         {
         }
@@ -104,7 +98,5 @@ namespace Hexa.Core.Logging
         public void WarnFormat(IFormatProvider provider, string format, params object[] args)
         {
         }
-
-        #endregion Methods
     }
 }

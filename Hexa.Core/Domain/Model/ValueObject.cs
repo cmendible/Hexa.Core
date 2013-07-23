@@ -1,4 +1,4 @@
-// Copyright (c) 2009, Codai, Inc.
+﻿// Copyright (c) 2009, Codai, Inc.
 // All rights reserved.
 namespace Hexa.Core.Domain
 {
@@ -18,8 +18,6 @@ namespace Hexa.Core.Domain
     [Serializable]
     public abstract class ValueObject
     {
-        #region Fields
-
         /// <summary>
         /// Flags used to reflect over Generic Equeatable
         /// </summary>
@@ -33,10 +31,6 @@ namespace Hexa.Core.Domain
         /// for more information.
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
-
-        #endregion Fields
-
-        #region Methods
 
         public static bool operator !=(ValueObject x, ValueObject y)
         {
@@ -106,7 +100,7 @@ namespace Hexa.Core.Domain
             {
                 object value = field.GetValue(this);
 
-                if (value != null)
+                if (value != null) 
                     unchecked
                 {
                     hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
@@ -115,8 +109,6 @@ namespace Hexa.Core.Domain
 
             return hashCode;
         }
-
-        #endregion Methods
     }
 
     /// <summary>
@@ -127,8 +119,6 @@ namespace Hexa.Core.Domain
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>
     {
-        #region Fields
-
         /// <summary>
         /// Flags used to reflect over Generic Equeatable
         /// </summary>
@@ -142,10 +132,6 @@ namespace Hexa.Core.Domain
         /// for more information.
         /// </summary>
         private const int HASH_MULTIPLIER = 31;
-
-        #endregion Fields
-
-        #region Methods
 
         public static bool operator !=(ValueObject<T> x, ValueObject<T> y)
         {
@@ -263,7 +249,5 @@ namespace Hexa.Core.Domain
 
             return fields;
         }
-
-        #endregion Methods
     }
 }

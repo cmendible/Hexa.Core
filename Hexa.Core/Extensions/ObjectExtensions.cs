@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core
 {
     using System;
@@ -25,8 +21,6 @@ namespace Hexa.Core
 
     public static class ObjectExtensions
     {
-        #region Methods
-
         /// <summary>
         /// Perform a deep Copy of the object.
         /// </summary>
@@ -54,7 +48,5 @@ namespace Hexa.Core
                 return (T)formatter.Deserialize(stream);
             }
         }
-
-        #endregion Methods
     }
 }

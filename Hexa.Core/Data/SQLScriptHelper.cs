@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Data
 {
     using System;
@@ -28,15 +24,9 @@ namespace Hexa.Core.Data
     /// </summary>
     public sealed class SqlScriptHelper
     {
-        #region Constructors
-
         private SqlScriptHelper()
         {
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Executes the specified script.
@@ -90,7 +80,5 @@ namespace Hexa.Core.Data
         {
             return Regex.Split(script, "GO\r\n", RegexOptions.IgnoreCase);
         }
-
-        #endregion Methods
     }
 }

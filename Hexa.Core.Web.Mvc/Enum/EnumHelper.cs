@@ -20,13 +20,7 @@ namespace Hexa.Core.Web.Mvc.Helpers
     /// </summary>
     public static class EnumHelper
     {
-        #region Fields
-
         private static readonly SelectListItem[] SingleEmptyItem = new[] { new SelectListItem { Text = "", Value = "" } };
-
-        #endregion Fields
-
-        #region Methods
 
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
         {
@@ -81,9 +75,8 @@ namespace Hexa.Core.Web.Mvc.Helpers
             {
                 realModelType = underlyingType;
             }
+
             return realModelType;
         }
-
-        #endregion Methods
     }
 }

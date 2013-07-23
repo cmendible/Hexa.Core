@@ -1,4 +1,4 @@
-namespace Hexa.Core.Domain
+﻿namespace Hexa.Core.Domain
 {
     using System;
     using System.Data;
@@ -9,8 +9,6 @@ namespace Hexa.Core.Domain
 
     public class StringToInt : IUserType
     {
-        #region Properties
-
         public bool IsMutable
         {
             get
@@ -31,13 +29,9 @@ namespace Hexa.Core.Domain
         {
             get
             {
-                return new[] {NHibernateUtil.Int32.SqlType};
+                return new[] { NHibernateUtil.Int32.SqlType };
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         public object Assemble(object cached, object owner)
         {
@@ -71,7 +65,7 @@ namespace Hexa.Core.Domain
 
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            Int32 index = rs.GetOrdinal(names[0]);
+            int index = rs.GetOrdinal(names[0]);
             if (rs.IsDBNull(index))
             {
                 return null;
@@ -103,7 +97,5 @@ namespace Hexa.Core.Domain
         {
             return original;
         }
-
-        #endregion Methods
     }
 }

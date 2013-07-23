@@ -9,13 +9,7 @@ namespace Hexa.Core.Domain
     public abstract class ValidatableObject<TEntity> : IValidatable<TEntity>
         where TEntity : ValidatableObject<TEntity>
     {
-        #region Fields
-
         private IValidator<TEntity> validator;
-
-        #endregion Fields
-
-        #region Properties
 
         /// <summary>
         /// Gets the validator.
@@ -34,10 +28,6 @@ namespace Hexa.Core.Domain
                 return this.validator;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Validates this instance.
@@ -82,7 +72,5 @@ namespace Hexa.Core.Domain
         {
             return validator.Validate((TEntity)this);
         }
-
-        #endregion Methods
     }
 }

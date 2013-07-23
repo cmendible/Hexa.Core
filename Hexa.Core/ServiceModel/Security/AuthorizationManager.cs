@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.ServiceModel.Security
 {
@@ -38,28 +34,18 @@ namespace Hexa.Core.ServiceModel.Security
     //    </serviceAuthorization>
     //  </behaviors>
     // </system.serviceModel>
-    //</configuration>
+    // </configuration>
     public class ServiceAuthorizationManager : System.ServiceModel.ServiceAuthorizationManager
     {
-        #region Fields
-
         protected static readonly ILogger Log =
             LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected static List<string> AnonymousActions = new List<string> {"http://schemas.xmlsoap.org/ws/2004/09/transfer/Get"};
-
-        #endregion Fields
-
-        #region Constructors
+        protected static List<string> AnonymousActions = new List<string> { "http://schemas.xmlsoap.org/ws/2004/09/transfer/Get" };
 
         public ServiceAuthorizationManager()
         {
             Log.Debug("New instance constructed.");
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
@@ -92,7 +78,5 @@ namespace Hexa.Core.ServiceModel.Security
                 return false;
             }
         }
-
-        #endregion Methods
     }
 }

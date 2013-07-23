@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.ServiceModel.Security
 {
@@ -32,13 +28,7 @@ namespace Hexa.Core.ServiceModel.Security
     /// </summary>
     public abstract class BaseAuthorizationPolicy : IAuthorizationPolicy
     {
-        #region Fields
-
         private static readonly ILogger _Log = LoggerManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseAuthorizationPolicy"/> class.
@@ -48,10 +38,6 @@ namespace Hexa.Core.ServiceModel.Security
             this.Id = Guid.NewGuid().ToString();
             _Log.DebugFormat("New instance {0} created.", this.Id);
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public string Id
         {
@@ -66,10 +52,6 @@ namespace Hexa.Core.ServiceModel.Security
                 return ClaimSet.System;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Evaluates whether a user meets the requirements for this authorization policy.
@@ -93,7 +75,5 @@ namespace Hexa.Core.ServiceModel.Security
             _Log.DebugFormat("User: {0} was authorized", principal.Identity.Name);
             context.Properties["Principal"] = principal;
         }
-
-        #endregion Methods
     }
 }

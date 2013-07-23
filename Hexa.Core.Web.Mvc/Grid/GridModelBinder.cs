@@ -9,10 +9,9 @@
 
     public class GridModelBinder : IModelBinder
     {
-        #region Methods
-
-        public object BindModel(ControllerContext controllerContext,
-                                ModelBindingContext bindingContext)
+        public object BindModel(
+            ControllerContext controllerContext,
+            ModelBindingContext bindingContext)
         {
             try
             {
@@ -35,8 +34,6 @@
                 return null;
             }
         }
-
-        #endregion Methods
     }
 
     [ModelBinder(typeof(GridModelBinder))]

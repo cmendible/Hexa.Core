@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Logging
 {
     using System;
@@ -29,13 +25,7 @@ namespace Hexa.Core.Logging
     [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class Log4NetLogger : ILogger
     {
-        #region Fields
-
         private readonly ILog log;
-
-        #endregion Fields
-
-        #region Constructors
 
         public Log4NetLogger(Type type)
         {
@@ -46,10 +36,6 @@ namespace Hexa.Core.Logging
         {
             this.log = LogManager.GetLogger(typeName);
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public void Debug(object message)
         {
@@ -150,7 +136,5 @@ namespace Hexa.Core.Logging
         {
             this.log.WarnFormat(provider, format, args);
         }
-
-        #endregion Methods
     }
 }

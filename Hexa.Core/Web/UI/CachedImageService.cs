@@ -14,8 +14,6 @@ namespace Hexa.Core.Web.UI.Controls
     /// </summary>
     public class CachedImageService : IHttpHandler
     {
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
         /// </summary>
@@ -28,10 +26,6 @@ namespace Hexa.Core.Web.UI.Controls
                 return true;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
@@ -102,7 +96,5 @@ namespace Hexa.Core.Web.UI.Controls
             HttpContext.Current.Response.ContentType = "image/jpeg";
             HttpContext.Current.Response.OutputStream.Write(img, 0, img.Length);
         }
-
-        #endregion Methods
     }
 }

@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Domain
 {
     using FluentNHibernate.Conventions;
@@ -24,8 +20,6 @@ namespace Hexa.Core.Domain
 
     public class ForeignKeyConstraintNames : IReferenceConvention, IHasManyConvention
     {
-        #region Methods
-
         public void Apply(IOneToManyCollectionInstance instance)
         {
             string entity = instance.EntityType.Name;
@@ -42,7 +36,5 @@ namespace Hexa.Core.Domain
 
             instance.ForeignKey(string.Format("FK_{0}_{1}", entity, member));
         }
-
-        #endregion Methods
     }
 }

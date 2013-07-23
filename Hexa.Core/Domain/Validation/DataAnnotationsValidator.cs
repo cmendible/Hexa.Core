@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Validation
 {
     using System;
@@ -29,8 +25,6 @@ namespace Hexa.Core.Validation
     [Serializable]
     public class DataAnnotationsValidator<TEntity> : IValidator<TEntity>
     {
-        #region Methods
-
         public void AssertValidation(TEntity instance)
         {
             ValidationResult result = this.Validate(instance);
@@ -54,8 +48,10 @@ namespace Hexa.Core.Validation
                 from attribute in prop.Attributes.OfType<ValidationAttribute>()
                 where !attribute.IsValid(prop.GetValue(instance))
                 select
-                new ValidationError(entityType, attribute.FormatErrorMessage(string.Empty),
-                                    DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
+                new ValidationError(
+                    entityType,
+                    attribute.FormatErrorMessage(string.Empty),
+                    DataAnnotationHelper.ParseDisplayName(entityType, prop.Name));
 
             if (errors.Any())
             {
@@ -66,7 +62,5 @@ namespace Hexa.Core.Validation
                 return new ValidationResult();
             }
         }
-
-        #endregion Methods
     }
 }

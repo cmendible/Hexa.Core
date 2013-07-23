@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 
 #if MONO
@@ -35,8 +31,6 @@ namespace Hexa.Core.Mono.Tests
     [TestFixture]
     public class PostgreSQLTest
     {
-        #region Methods
-
         [SetUp]
         public void FixtureSetup()
         {
@@ -92,8 +86,6 @@ namespace Hexa.Core.Mono.Tests
         {
             Assert.IsTrue(true);
         }
-
-        #endregion Methods
     }
 }
 

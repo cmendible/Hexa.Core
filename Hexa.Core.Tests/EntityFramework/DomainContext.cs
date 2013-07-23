@@ -1,6 +1,4 @@
-﻿#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Tests.Domain
 {
@@ -32,16 +28,10 @@ namespace Hexa.Core.Tests.Domain
     /// </summary>
     public class DomainContext : AuditableContext
     {
-        #region Constructors
-
         public DomainContext(string nameOrConnectionString)
         : base(nameOrConnectionString)
         {
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public DbSet<EntityA> EntitiesOfA
         {
@@ -49,17 +39,11 @@ namespace Hexa.Core.Tests.Domain
             set;
         }
 
-        #endregion Properties
-
-        #region Methods
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.EntityAConfiguration());
         }
-
-        #endregion Methods
     }
 }

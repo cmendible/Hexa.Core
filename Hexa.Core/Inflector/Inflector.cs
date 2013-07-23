@@ -1,6 +1,4 @@
-#region Header
-
-// Copyright 2010 Ritesh Rao
+﻿// Copyright 2010 Ritesh Rao
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,8 +8,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
-
-#endregion Header
 
 namespace Hexa.Core.Domain
 {
@@ -25,15 +21,9 @@ namespace Hexa.Core.Domain
     /// </summary>
     public static class Inflector
     {
-        #region Fields
-
         private static readonly List<Rule> Plurals = new List<Rule>();
         private static readonly List<Rule> Singulars = new List<Rule>();
         private static readonly List<string> Uncountables = new List<string>();
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Class Constructor.
@@ -100,10 +90,6 @@ namespace Hexa.Core.Domain
             AddUncountable("fish");
             AddUncountable("sheep");
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Formats the string in Camel case.
@@ -182,12 +168,13 @@ namespace Hexa.Core.Domain
         /// <returns>The word in Pascal case.</returns>
         public static string Pascalize(string lowercaseAndUnderscoredWord)
         {
-            return Regex.Replace(lowercaseAndUnderscoredWord, 
-                "(?:^|_)(.)",
-                delegate(Match match)
-                {
-                    return match.Groups[1].Value.ToUpper();
-                });
+            return Regex.Replace(
+                       lowercaseAndUnderscoredWord,
+                       "(?:^|_)(.)",
+                       delegate(Match match)
+            {
+                return match.Groups[1].Value.ToUpper();
+            });
         }
 
         /// <summary>
@@ -217,7 +204,9 @@ namespace Hexa.Core.Domain
         /// <returns>The titlized word.</returns>
         public static string Titleize(string word)
         {
-            return Regex.Replace(Humanize(Underscore(word)), @"\b([a-z])",
+            return Regex.Replace(Humanize(Underscore(
+                                              word)),
+                                 @"\b([a-z])",
                                  delegate(Match match)
             {
                 return match.Captures[0].Value.ToUpper();
@@ -283,30 +272,16 @@ namespace Hexa.Core.Domain
             return result;
         }
 
-        #endregion Methods
-
-        #region Nested Types
-
         private class Rule
         {
-            #region Fields
-
             private readonly Regex _regex;
             private readonly string _replacement;
-
-            #endregion Fields
-
-            #region Constructors
 
             public Rule(string pattern, string replacement)
             {
                 this._regex = new Regex(pattern, RegexOptions.IgnoreCase);
                 this._replacement = replacement;
             }
-
-            #endregion Constructors
-
-            #region Methods
 
             public string Apply(string word)
             {
@@ -317,10 +292,6 @@ namespace Hexa.Core.Domain
 
                 return this._regex.Replace(word, this._replacement);
             }
-
-            #endregion Methods
         }
-
-        #endregion Nested Types
     }
 }

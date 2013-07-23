@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // ===================================================================================
 
-#endregion Header
-
 namespace Hexa.Core.Security
 {
     using System;
@@ -30,14 +26,8 @@ namespace Hexa.Core.Security
     [Serializable]
     public class CorePrincipal : MarshalByRefObject, IPrincipal
     {
-        #region Fields
-
         private readonly IIdentity identity;
         private readonly string[] roles;
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CorePrincipal"/> class.
@@ -50,6 +40,7 @@ namespace Hexa.Core.Security
             {
                 throw new ArgumentNullException(Resource.IdentityCanNotBeNull);
             }
+
             this.identity = identity;
             if (roles != null)
             {
@@ -60,10 +51,6 @@ namespace Hexa.Core.Security
                 }
             }
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         /// <summary>
         /// Gets the identity of the current principal.
@@ -77,10 +64,6 @@ namespace Hexa.Core.Security
                 return this.identity;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Determines whether the current principal belongs to the specified role.
@@ -102,9 +85,8 @@ namespace Hexa.Core.Security
                     }
                 }
             }
+
             return false;
         }
-
-        #endregion Methods
     }
 }

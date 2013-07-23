@@ -12,8 +12,6 @@ namespace Hexa.Core.Validation
     [Serializable]
     public class ValidationException : CoreException
     {
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationException"/> class.
         /// </summary>
@@ -52,10 +50,6 @@ namespace Hexa.Core.Validation
             EntityType = entityType;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the type of the entity.
         /// </summary>
@@ -76,10 +70,6 @@ namespace Hexa.Core.Validation
             private set;
         }
 
-        #endregion Properties
-
-        #region Methods
-
         /// <summary>
         /// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with information about the exception.
         /// </summary>
@@ -97,7 +87,5 @@ namespace Hexa.Core.Validation
         {
             base.GetObjectData(info, context);
         }
-
-        #endregion Methods
     }
 }

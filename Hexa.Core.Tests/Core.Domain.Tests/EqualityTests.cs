@@ -12,8 +12,6 @@
     [TestFixture]
     public class EqualityTests
     {
-        #region Methods
-
         [Test]
         public void EqualsWithDifferentIdsInDisparateClassesReturnsFalse()
         {
@@ -129,32 +127,22 @@
 
             Assert.AreEqual(true, equality);
         }
-
-        #endregion Methods
     }
 
     public class OtherSimpleDomainObject : BaseEntity<OtherSimpleDomainObject, int>
     {
-        #region Methods
-
         public void SetId(int ident)
         {
             UniqueId = ident;
         }
-
-        #endregion Methods
     }
 
     public class SimpleDomainObject : BaseEntity<SimpleDomainObject, int>
     {
-        #region Methods
-
         public void SetId(int ident)
         {
             UniqueId = ident;
         }
-
-        #endregion Methods
     }
 
     public class SubSimpleDomainObject : SimpleDomainObject

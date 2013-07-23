@@ -1,4 +1,4 @@
-/* GNU gettext for C#
+﻿/* GNU gettext for C#
  * Copyright (C) 2003, 2005 Free Software Foundation, Inc.
  * Written by Bruno Haible <bruno@clisp.org>, 2003.
  *
@@ -70,18 +70,12 @@ namespace GNU.Gettext
                      MessageId = "Gettext")]
     public class GettextResourceManager : ResourceManager
     {
-        #region Fields
-
         // ======================== Public Constructors ========================
         private static readonly GettextResourceSet[] EmptyResourceSetArray = new GettextResourceSet[0];
 
         // Cache for already loaded GettextResourceSet cascades.
         /* CultureInfo -> GettextResourceSet[] */
         private readonly Hashtable Loaded = new Hashtable();
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Constructor.
@@ -102,10 +96,6 @@ namespace GNU.Gettext
         : base(baseName, assembly, typeof(GettextResourceSet))
         {
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         /// <summary>
         /// Returns the translation of <paramref name="msgid"/> and
@@ -133,8 +123,9 @@ namespace GNU.Gettext
                     return translation;
                 }
             }
+
             // Fallback: Germanic plural form.
-            return (n == 1 ? msgid : msgidPlural);
+            return n == 1 ? msgid : msgidPlural;
         }
 
         /// <summary>
@@ -177,6 +168,7 @@ namespace GNU.Gettext
                     return translation;
                 }
             }
+
             // Fallback.
             return msgid;
         }
@@ -208,7 +200,7 @@ namespace GNU.Gettext
             // assuming that every assembly will only ever contain one
             // GettextResourceSet subclass, but this assumption would break the day
             // we want to support multi-domain PO files in the same format...
-            bool valid = (resourceName.Length > 0);
+            bool valid = resourceName.Length > 0;
             for (int i = 0; valid && i < resourceName.Length; i++)
             {
                 char c = resourceName[i];
@@ -218,6 +210,7 @@ namespace GNU.Gettext
                     valid = false;
                 }
             }
+
             if (valid)
             {
                 return resourceName;
@@ -266,6 +259,7 @@ namespace GNU.Gettext
                         b.Append(c);
                     }
                 }
+
                 return b.ToString();
             }
         }
@@ -313,12 +307,15 @@ namespace GNU.Gettext
         /// <exception cref="NullReferenceException">
         /// The type has no no-arguments constructor.
         /// </exception>
-        private static GettextResourceSet InstantiateResourceSet(Assembly satelliteAssembly, string resourceName,
-                CultureInfo culture)
+        private static GettextResourceSet InstantiateResourceSet(
+            Assembly satelliteAssembly,
+            string resourceName,
+            CultureInfo culture)
         {
             // We expect a class with a culture dependent class name.
             Type clazz =
                 satelliteAssembly.GetType(ConstructClassName(resourceName) + "_" + culture.Name.Replace('-', '_'));
+
             // We expect it has a no-argument constructor, and invoke it.
             ConstructorInfo constructor = clazz.GetConstructor(Type.EmptyTypes);
             return (GettextResourceSet)constructor.Invoke(null);
@@ -344,7 +341,7 @@ namespace GNU.Gettext
                     if (result == null)
                     {
                         // Determine the GettextResourceSets for the given culture.
-                        if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture)) 
+                        if (culture.Parent == null || culture.Equals(CultureInfo.InvariantCulture))
                         {
                             // Invariant culture.
                             result = EmptyResourceSetArray;
@@ -363,6 +360,7 @@ namespace GNU.Gettext
                             {
                                 satelliteAssembly = null;
                             }
+
                             if (satelliteAssembly != null)
                             {
                                 GettextResourceSet satelliteResourceSet;
@@ -376,6 +374,7 @@ namespace GNU.Gettext
                                     Console.Error.WriteLine(e.StackTrace);
                                     satelliteResourceSet = null;
                                 }
+
                                 if (satelliteResourceSet != null)
                                 {
                                     result = new GettextResourceSet[1 + parentResult.Length];
@@ -392,11 +391,13 @@ namespace GNU.Gettext
                                 result = parentResult;
                             }
                         }
+
                         // Put the result into the cache.
                         Loaded.Add(culture, result);
                     }
                 }
             }
+
             // Console.WriteLine("<< GetResourceSetsFor "+culture);
             return result;
         }
@@ -408,8 +409,6 @@ namespace GNU.Gettext
         {
             return GetSatelliteAssembly(MainAssembly, BaseName, culture);
         }
-
-        #endregion Methods
     }
 
     /// <summary>
@@ -425,17 +424,11 @@ namespace GNU.Gettext
     // from the same ResourceSet as the object containing the plural forms.
     public class GettextResourceSet : ResourceSet
     {
-        #region Fields
-
         /// <summary>
         /// A trivial instance of <c>IResourceReader</c> that does nothing.
         /// </summary>
         // Needed by the no-arguments constructor.
         private static readonly IResourceReader DummyResourceReader = new DummyIResourceReader();
-
-        #endregion Fields
-
-        #region Constructors
 
         /// <summary>
         /// Creates a new message catalog, by reading the string/value pairs from
@@ -484,10 +477,6 @@ namespace GNU.Gettext
         {
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         /// <summary>
         /// Returns the keys of this resource set, i.e. the strings for which
         /// <c>GetObject()</c> can return a non-null value.
@@ -499,10 +488,6 @@ namespace GNU.Gettext
                 return Table.Keys;
             }
         }
-
-        #endregion Properties
-
-        #region Methods
 
         /// <summary>
         /// Returns the translation of <paramref name="msgid"/> and
@@ -595,10 +580,8 @@ namespace GNU.Gettext
         /// </summary>
         protected virtual long PluralEval(long n)
         {
-            return (n == 1 ? 0 : 1);
+            return n == 1 ? 0 : 1;
         }
-
-        #endregion Methods
     }
 
     /// <summary>
@@ -606,8 +589,6 @@ namespace GNU.Gettext
     /// </summary>
     internal class DummyIResourceReader : IResourceReader
     {
-        #region Methods
-
         void IDisposable.Dispose()
         {
         }
@@ -628,12 +609,6 @@ namespace GNU.Gettext
             return null;
         }
 
-        #endregion Methods
-
-        #region Other
-
         // Implementation of IDisposable.
-
-        #endregion Other
     }
 }

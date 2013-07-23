@@ -1,5 +1,3 @@
-#region Header
-
 // ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 namespace Hexa.Core.Validation
 {
@@ -34,8 +30,6 @@ namespace Hexa.Core.Validation
     /// </summary>
     internal static class DataAnnotationHelper
     {
-        #region Methods
-
         public static string ParseDisplayName(Type entityType, string propertyName)
         {
             string displayName = propertyName;
@@ -52,8 +46,5 @@ namespace Hexa.Core.Validation
 
             return GettextHelper.t(displayName, entityType.Assembly);
         }
-
-        #endregion Methods
-
     }
 }

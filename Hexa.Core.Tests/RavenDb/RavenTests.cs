@@ -1,6 +1,4 @@
-#region Header
-
-// ===================================================================================
+﻿// ===================================================================================
 // Copyright 2010 HexaSystems Corporation
 // ===================================================================================
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
-#endregion Header
 
 
 #if !MONO
@@ -49,14 +45,8 @@ namespace Hexa.Core.Tests.RavenTests
     [TestFixture]
     public class RavenTests
     {
-        #region Fields
-
         UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
         UnityContainer unityContainer;
-
-        #endregion Fields
-
-        #region Methods
 
         [Test]
         public void Add_EntityA()
@@ -64,14 +54,15 @@ namespace Hexa.Core.Tests.RavenTests
             EntityA entityA = this._Add_EntityA();
 
             Assert.IsNotNull(entityA);
-            //Assert.IsNotNull(entityA.Version);
+
+            // Assert.IsNotNull(entityA.Version);
             Assert.IsFalse(entityA.UniqueId == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
         }
 
         public void Commit()
         {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Commit();
         }
 
@@ -88,7 +79,7 @@ namespace Hexa.Core.Tests.RavenTests
 
             repo.Remove(entityA2Delete);
 
-            Commit();
+            this.Commit();
 
             repo = ServiceLocator.GetInstance<IEntityARepository>();
             Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Count());
@@ -97,25 +88,24 @@ namespace Hexa.Core.Tests.RavenTests
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            unityContainer = new UnityContainer();
+            this.unityContainer = new UnityContainer();
             ServiceLocator.Initialize(
-                (x, y) => unityContainer.RegisterType(x, y),
-                (x, y) => unityContainer.RegisterInstance(x, y),
+                (x, y) => this.unityContainer.RegisterType(x, y),
+                (x, y) => this.unityContainer.RegisterInstance(x, y),
                 (x) => { return unityContainer.Resolve(x); },
-                (x) => { return unityContainer.ResolveAll(x); }
-            );
+                (x) => { return unityContainer.ResolveAll(x); });
 
             // Context Factory
             RavenUnitOfWorkFactory ctxFactory = new RavenUnitOfWorkFactory();
             Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.Create();
 
-            unityContainer.RegisterInstance<Raven.Client.Document.DocumentStore>(sessionFactory);
+            this.unityContainer.RegisterInstance<Raven.Client.Document.DocumentStore>(sessionFactory);
             ServiceLocator.RegisterInstance<IDatabaseManager>(ctxFactory);
 
-            unityContainer.RegisterType<IUnitOfWork, RavenUnitOfWork>(unitOfWorkPerTestLifeTimeManager);
+            this.unityContainer.RegisterType<IUnitOfWork, RavenUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
-            unityContainer.RegisterType<IEntityARepository, EntityARepository>();
+            this.unityContainer.RegisterType<IEntityARepository, EntityARepository>();
 
             // Services
 
@@ -147,16 +137,16 @@ namespace Hexa.Core.Tests.RavenTests
         [NUnit.Framework.SetUp]
         public void Setup()
         {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Start();
         }
 
         [TearDown]
         public void TearDown()
         {
-            IUnitOfWork unitOfWork = unityContainer.Resolve<IUnitOfWork>();
+            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Dispose();
-            unitOfWorkPerTestLifeTimeManager.RemoveValue();
+            this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]
@@ -172,14 +162,15 @@ namespace Hexa.Core.Tests.RavenTests
             entityA2Update.Name = "Maria";
             repo.Modify(entityA2Update);
 
-            Commit();
+            this.Commit();
 
             Thread.Sleep(1000);
 
             repo = ServiceLocator.GetInstance<IEntityARepository>();
             EntityA entityA2 = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
             Assert.AreEqual("Maria", entityA2.Name);
-            //Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);
+
+            // Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);
         }
 
         private EntityA _Add_EntityA()
@@ -190,12 +181,10 @@ namespace Hexa.Core.Tests.RavenTests
             var repo = ServiceLocator.GetInstance<IEntityARepository>();
             repo.Add(entityA);
 
-            Commit();
+            this.Commit();
 
             return entityA;
         }
-
-        #endregion Methods
     }
 }
 

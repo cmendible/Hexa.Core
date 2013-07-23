@@ -1,4 +1,4 @@
-namespace Hexa.Core.ServiceModel
+﻿namespace Hexa.Core.ServiceModel
 {
     using System;
     using System.Collections.ObjectModel;
@@ -10,22 +10,12 @@ namespace Hexa.Core.ServiceModel
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class ErrorBehaviorAttribute : Attribute, IServiceBehavior
     {
-        #region Fields
-
         private readonly Type errorHandlerType;
-
-        #endregion Fields
-
-        #region Constructors
 
         public ErrorBehaviorAttribute(Type errorHandlerType)
         {
             this.errorHandlerType = errorHandlerType;
         }
-
-        #endregion Constructors
-
-        #region Properties
 
         public Type ErrorHandlerType
         {
@@ -35,19 +25,17 @@ namespace Hexa.Core.ServiceModel
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
-        void IServiceBehavior.AddBindingParameters(ServiceDescription serviceDescription,
-                ServiceHostBase serviceHostBase,
-                Collection<ServiceEndpoint> endpoints,
-                BindingParameterCollection bindingParameters)
+        void IServiceBehavior.AddBindingParameters(
+            ServiceDescription serviceDescription,
+            ServiceHostBase serviceHostBase,
+            Collection<ServiceEndpoint> endpoints,
+            BindingParameterCollection bindingParameters)
         {
         }
 
-        void IServiceBehavior.ApplyDispatchBehavior(ServiceDescription serviceDescription,
-                ServiceHostBase serviceHostBase)
+        void IServiceBehavior.ApplyDispatchBehavior(
+            ServiceDescription serviceDescription,
+            ServiceHostBase serviceHostBase)
         {
             IErrorHandler errorHandler;
 
@@ -78,7 +66,5 @@ namespace Hexa.Core.ServiceModel
         void IServiceBehavior.Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
         }
-
-        #endregion Methods
     }
 }
