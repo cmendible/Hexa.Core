@@ -1,8 +1,8 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="AuditFlushEntityEventListener.cs" company="Microsoft">
-// TODO: Update copyright text.
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="AuditFlushEntityEventListener.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
 // </copyright>
-// -----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
     using System;

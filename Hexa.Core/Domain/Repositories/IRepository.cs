@@ -1,14 +1,8 @@
-﻿// ===================================================================================
-// Microsoft Developer & Platform Evangelism
-// ===================================================================================
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-// ===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license,
-// http://microsoftnlayerapp.codeplex.com/license
-// ===================================================================================
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="IRepository.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
+// </copyright>
+//-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
     using System;

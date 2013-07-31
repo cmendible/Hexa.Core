@@ -1,4 +1,9 @@
-﻿// ===================================================================================
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="NotSpecification.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -60,6 +65,7 @@ namespace Hexa.Core.Domain.Specification
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
             return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(
+
                         this.originalCriteria.Body),
                     this.originalCriteria.Parameters.Single());
         }

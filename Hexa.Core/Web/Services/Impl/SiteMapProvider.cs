@@ -1,4 +1,9 @@
-﻿namespace Hexa.Core.Web.Services
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="SiteMapProvider.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+namespace Hexa.Core.Web.Services
 {
     using System;
     using System.Collections.Generic;

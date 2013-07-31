@@ -1,4 +1,9 @@
-﻿namespace Hexa.Core.Web.UI.Controls
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="DynamicImage.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
+// </copyright>
+//-----------------------------------------------------------------------------------------------
+namespace Hexa.Core.Web.UI.Controls
 {
     using System;
     using System.ComponentModel;

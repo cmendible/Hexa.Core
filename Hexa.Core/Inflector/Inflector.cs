@@ -1,4 +1,9 @@
-﻿// Copyright 2010 Ritesh Rao
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="Inflector.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+// Copyright 2010 Ritesh Rao
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -8,7 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // CREDIT -  Originaly adapted from Inflector.Net (http://andrewpeters.net/inflectornet/)
-
 namespace Hexa.Core.Domain
 {
     using System.Collections.Generic;
@@ -205,6 +209,7 @@ namespace Hexa.Core.Domain
         public static string Titleize(string word)
         {
             return Regex.Replace(Humanize(Underscore(
+
                                               word)),
                                  @"\b([a-z])",
                                  delegate(Match match)

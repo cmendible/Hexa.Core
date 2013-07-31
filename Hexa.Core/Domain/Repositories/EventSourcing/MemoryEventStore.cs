@@ -1,4 +1,9 @@
-﻿namespace Hexa.Core.Domain
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="MemoryEventStore.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -20,6 +25,7 @@
             {
                 return new EventDescriptor[] { };
             }
+
             return this.current[aggregateId];
         }
 

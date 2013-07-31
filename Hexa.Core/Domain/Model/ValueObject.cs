@@ -1,5 +1,8 @@
-﻿// Copyright (c) 2009, Codai, Inc.
-// All rights reserved.
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="ValidatableObject.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
+// </copyright>
+//-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
     using System;
@@ -100,8 +103,7 @@ namespace Hexa.Core.Domain
             {
                 object value = field.GetValue(this);
 
-                if (value != null) 
-                    unchecked
+                if (value != null) unchecked
                 {
                     hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
                 }
@@ -225,9 +227,8 @@ namespace Hexa.Core.Domain
             {
                 object value = field.GetValue(this);
 
-                if (value != null)
-                    unchecked
-                {
+                if (value != null) unchecked
+                {                   
                     hashCode = hashCode * HASH_MULTIPLIER + value.GetHashCode();
                 }
             }

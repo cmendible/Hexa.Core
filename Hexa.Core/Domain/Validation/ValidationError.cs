@@ -1,4 +1,9 @@
-﻿namespace Hexa.Core.Validation
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="ValidationError.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+namespace Hexa.Core.Validation
 {
     using System;
 
@@ -16,9 +21,11 @@
         public ValidationError(string message, string property)
         {
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(
+
                     message),
                                                  "Please provide a valid non null string as the validation error message");
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(
+
                     property),
                                                  "Please provide a valid non null string as the validation property name");
 
@@ -39,9 +46,11 @@
                 entityType == null,
                 "Please provide a valid non null Type as the validated Entity");
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(
+
                     "message"),
                                                  "Please provide a valid non null string as the validation error message");
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(
+
                     "property"),
                                                  "Please provide a valid non null string as the validation property name");
             this.EntityType = entityType;

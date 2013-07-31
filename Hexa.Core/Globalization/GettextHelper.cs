@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // See the License for the specific language governing permissions and
 // ===================================================================================
-
 namespace GNU.Gettext
 {
     using System.Collections.Generic;

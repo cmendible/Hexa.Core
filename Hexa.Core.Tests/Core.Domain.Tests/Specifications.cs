@@ -1,4 +1,9 @@
-﻿// ===================================================================================
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="Specifications.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+// ===================================================================================
 // Microsoft Developer & Platform Evangelism
 // ===================================================================================
 // THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
@@ -299,6 +304,7 @@ namespace Hexa.Core.Domain.Tests
 
             InvocationExpression invokedExpr = Expression.Invoke(rightSpec, leftSpec.Parameters.Cast<Expression>());
             expected = Expression.Lambda<Func<Entity, bool>>(Expression.AndAlso(
+
                            leftSpec.Body, invokedExpr),
                        leftSpec.Parameters);
 
@@ -329,6 +335,7 @@ namespace Hexa.Core.Domain.Tests
 
             InvocationExpression invokedExpr = Expression.Invoke(rightSpec, leftSpec.Parameters.Cast<Expression>());
             expected = Expression.Lambda<Func<Entity, bool>>(Expression.Or(
+
                            leftSpec.Body, invokedExpr),
                        leftSpec.Parameters);
 

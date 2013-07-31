@@ -1,4 +1,9 @@
-﻿/* GNU gettext for C#
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="Gettext.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc.  All rights reserved.
+// </copyright>
+//-------------------------------------------------------------------------------------------------
+/* GNU gettext for C#
  * Copyright (C) 2003, 2005 Free Software Foundation, Inc.
  * Written by Bruno Haible <bruno@clisp.org>, 2003.
  *

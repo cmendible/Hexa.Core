@@ -1,4 +1,9 @@
-﻿using System;
+﻿//----------------------------------------------------------------------------------------------
+// <copyright file="Experiment.cs" company="HexaSystems Inc">
+// Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
+// </copyright>
+//-----------------------------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -9,7 +9,6 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-
 namespace Hexa.Core.Domain.Tests
 {
     using System;
