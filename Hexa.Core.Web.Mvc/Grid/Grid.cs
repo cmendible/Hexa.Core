@@ -94,25 +94,25 @@
 
     public class Column
     {
-        private Align? _align;
-        private List<string> _classes = new List<string>();
-        private string _columnName;
-        private string _customFormatter;
-        private SortOrder? _firstSortOrder;
-        private bool? _fixedWidth;
-        private KeyValuePair<Formatters, string>? _formatter;
-        private bool? _hidden;
-        private string _index;
-        private bool? _key;
-        private string _label;
-        private bool? _resizeable;
-        private bool? _search;
-        private string _searchDateFormat;
-        private string[] _searchTerms;
-        private Searchtype? _searchType;
-        private bool? _sortable;
-        private bool? _title;
-        private int? _width;
+        private Align? align;
+        private List<string> classes = new List<string>();
+        private string columnName;
+        private string customFormatter;
+        private SortOrder? firstSortOrder;
+        private bool? fixedWidth;
+        private KeyValuePair<Formatters, string>? formatter;
+        private bool? hidden;
+        private string index;
+        private bool? key;
+        private string label;
+        private bool? resizeable;
+        private bool? search;
+        private string searchDateFormat;
+        private string[] searchTerms;
+        private Searchtype? searchType;
+        private bool? sortable;
+        private bool? title;
+        private int? width;
 
         /// <summary>
         /// Constructor
@@ -135,10 +135,10 @@
             }
 
             // Set columnname
-            this._columnName = columnName;
+            this.columnName = columnName;
 
             // Set index equal to columnname by default, can be overriden by setter
-            this._index = columnName;
+            this.index = columnName;
         }
 
         /// <summary>
@@ -148,9 +148,9 @@
         /// Multiple calls to this function are allowed to set multiple classes
         /// </summary>
         /// <param name="className">Classname</param>
-        public Column addClass(string className)
+        public Column AddClass(string className)
         {
-            this._classes.Add(className);
+            this.classes.Add(className);
             return this;
         }
 
@@ -159,9 +159,9 @@
         /// Possible values: left, center, right. (default: left)
         /// </summary>
         /// <param name="align">Alignment of column (center, right, left</param>
-        public Column setAlign(Align align)
+        public Column SetAlign(Align align)
         {
-            this._align = align;
+            this.align = align;
             return this;
         }
 
@@ -180,14 +180,14 @@
         /// </summary>
         /// <param name="customFormatter"></param>
         /// <returns></returns>
-        public Column setCustomFormatter(string customFormatter)
+        public Column SetCustomFormatter(string customFormatter)
         {
-            if (this._formatter.HasValue)
+            if (this.formatter.HasValue)
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
 
-            this._customFormatter = customFormatter;
+            this.customFormatter = customFormatter;
             return this;
         }
 
@@ -196,9 +196,9 @@
         /// sort.Subsequent sorts of the column will toggle as usual (default: null)
         /// </summary>
         /// <param name="firstSortOrder">First sort order</param>
-        public Column setFirstSortOrder(SortOrder firstSortOrder)
+        public Column SetFirstSortOrder(SortOrder firstSortOrder)
         {
-            this._firstSortOrder = firstSortOrder;
+            this.firstSortOrder = firstSortOrder;
             return this;
         }
 
@@ -208,9 +208,9 @@
         /// if a setGridWidth method is used to change the grid width. (default: false)
         /// </summary>
         /// <param name="fixedWidth">Indicates if width of column is fixed</param>
-        public Column setFixed(bool fixedWidth)
+        public Column SetFixed(bool fixedWidth)
         {
-            this._fixedWidth = fixedWidth;
+            this.fixedWidth = fixedWidth;
             return this;
         }
 
@@ -218,14 +218,14 @@
         /// Sets formatter with default formatoptions (as set in language file)
         /// </summary>
         /// <param name="formatter">Formatter</param>
-        public Column setFormatter(Formatters formatter)
+        public Column SetFormatter(Formatters formatter)
         {
-            if (!string.IsNullOrWhiteSpace(this._customFormatter))
+            if (!string.IsNullOrWhiteSpace(this.customFormatter))
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
 
-            this._formatter = new KeyValuePair<Formatters, string>(formatter, "");
+            this.formatter = new KeyValuePair<Formatters, string>(formatter, "");
             return this;
         }
 
@@ -234,14 +234,14 @@
         /// </summary>
         /// <param name="formatter">Formatter</param>
         /// <param name="formatOptions">Formatoptions</param>
-        public Column setFormatter(Formatters formatter, string formatOptions)
+        public Column SetFormatter(Formatters formatter, string formatOptions)
         {
-            if (!string.IsNullOrWhiteSpace(this._customFormatter))
+            if (!string.IsNullOrWhiteSpace(this.customFormatter))
             {
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
 
-            this._formatter = new KeyValuePair<Formatters, string>(formatter, formatOptions);
+            this.formatter = new KeyValuePair<Formatters, string>(formatter, formatOptions);
             return this;
         }
 
@@ -249,9 +249,9 @@
         /// Defines if this column is hidden at initialization. (default: false)
         /// </summary>
         /// <param name="hidden">Boolean indicating if column is hidden</param>
-        public Column setHidden(bool hidden)
+        public Column SetHidden(bool hidden)
         {
-            this._hidden = hidden;
+            this.hidden = hidden;
             return this;
         }
 
@@ -259,9 +259,9 @@
         /// Set the index name when sorting. Passed as sidx parameter. (default: Same as columnname)
         /// </summary>
         /// <param name="index">Name of index</param>
-        public Column setIndex(string index)
+        public Column SetIndex(string index)
         {
-            this._index = index;
+            this.index = index;
             return this;
         }
 
@@ -271,9 +271,9 @@
         /// the first one and the second is ignored. (default: false)
         /// </summary>
         /// <param name="key">Indicates if key is set</param>
-        public Column setKey(bool key)
+        public Column SetKey(bool key)
         {
-            this._key = key;
+            this.key = key;
             return this;
         }
 
@@ -281,9 +281,9 @@
         /// Defines the heading for this column. If empty, the heading for this column comes from the name property.
         /// </summary>
         /// <param name="label">Label name of column</param>
-        public Column setLabel(string label)
+        public Column SetLabel(string label)
         {
-            this._label = label;
+            this.label = label;
             return this;
         }
 
@@ -291,9 +291,9 @@
         /// Defines if the column can be resized (default: true)
         /// </summary>
         /// <param name="resizeable">Indicates if the column is resizable</param>
-        public Column setResizeable(bool resizeable)
+        public Column SetResizeable(bool resizeable)
         {
-            this._resizeable = resizeable;
+            this.resizeable = resizeable;
             return this;
         }
 
@@ -301,9 +301,9 @@
         /// When used in search modules, disables or enables searching on that column. (default: true)
         /// </summary>
         /// <param name="search">Indicates if searching for this column is enabled</param>
-        public Column setSearch(bool search)
+        public Column SetSearch(bool search)
         {
-            this._search = search;
+            this.search = search;
             return this;
         }
 
@@ -311,9 +311,9 @@
         /// Set dateformat of datepicker when searchtype is set to datepicker (default: dd-mm-yy)
         /// </summary>
         /// <param name="searchDateFormat">Dateformat</param>
-        public Column setSearchDateFormat(string searchDateFormat)
+        public Column SetSearchDateFormat(string searchDateFormat)
         {
-            this._searchDateFormat = searchDateFormat;
+            this.searchDateFormat = searchDateFormat;
             return this;
         }
 
@@ -321,9 +321,9 @@
         /// Set searchterms if search type of this column is set to type select
         /// </summary>
         /// <param name="searchTerms">Searchterm to add to dropdownlist</param>
-        public Column setSearchTerms(string[] searchTerms)
+        public Column SetSearchTerms(string[] searchTerms)
         {
-            this._searchTerms = searchTerms;
+            this.searchTerms = searchTerms;
             return this;
         }
 
@@ -332,9 +332,9 @@
         /// Note: To use datepicker jQueryUI javascript should be included
         /// </summary>
         /// <param name="searchType">Search type</param>
-        public Column setSearchType(Searchtype searchType)
+        public Column SetSearchType(Searchtype searchType)
         {
-            this._searchType = searchType;
+            this.searchType = searchType;
             return this;
         }
 
@@ -342,9 +342,9 @@
         /// Indicates if column is sortable (default: true)
         /// </summary>
         /// <param name="sortable">Indicates if column is sortable</param>
-        public Column setSortable(bool sortable)
+        public Column SetSortable(bool sortable)
         {
-            this._sortable = sortable;
+            this.sortable = sortable;
             return this;
         }
 
@@ -352,9 +352,9 @@
         /// If this option is false the title is not displayed in that column when we hover over a cell (default: true)
         /// </summary>
         /// <param name="title">Indicates if title is displayed when hovering over cell</param>
-        public Column setTitle(bool title)
+        public Column SetTitle(bool title)
         {
-            this._title = title;
+            this.title = title;
             return this;
         }
 
@@ -362,9 +362,9 @@
         /// Set the initial width of the column, in pixels. This value currently can not be set as percentage (default: 150)
         /// </summary>
         /// <param name="width">Width in pixels</param>
-        public Column setWidth(int width)
+        public Column SetWidth(int width)
         {
-            this._width = width;
+            this.width = width;
             return this;
         }
 
@@ -380,88 +380,88 @@
             script.Append("{").AppendLine();
 
             // Align
-            if (this._align.HasValue)
+            if (this.align.HasValue)
             {
-                script.AppendFormat("align: '{0}',", this._align).AppendLine();
+                script.AppendFormat("align: '{0}',", this.align).AppendLine();
             }
 
             // Classes
-            if (this._classes.Count > 0)
+            if (this.classes.Count > 0)
             {
-                script.AppendFormat("classes: '{0}',", string.Join(" ", (from c in this._classes select c).ToArray())).AppendLine();
+                script.AppendFormat("classes: '{0}',", string.Join(" ", (from c in this.classes select c).ToArray())).AppendLine();
             }
 
             // Columnname
-            script.AppendFormat("name:'{0}',", this._columnName).AppendLine();
+            script.AppendFormat("name:'{0}',", this.columnName).AppendLine();
 
             // FirstSortOrder
-            if (this._firstSortOrder.HasValue)
+            if (this.firstSortOrder.HasValue)
             {
-                script.AppendFormat("firstsortorder: '{0}',", this._firstSortOrder).AppendLine();
+                script.AppendFormat("firstsortorder: '{0}',", this.firstSortOrder).AppendLine();
             }
 
             // FixedWidth
-            if (this._fixedWidth.HasValue)
+            if (this.fixedWidth.HasValue)
             {
-                script.AppendFormat("fixed: {0},", this._fixedWidth.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("fixed: {0},", this.fixedWidth.Value.ToString().ToLower()).AppendLine();
             }
 
             // Formatters
-            if (this._formatter.HasValue && string.IsNullOrWhiteSpace(this._formatter.Value.Value))
+            if (this.formatter.HasValue && string.IsNullOrWhiteSpace(this.formatter.Value.Value))
             {
-                script.AppendFormat("formatter: '{0}',", this._formatter.Value.Key).AppendLine();
+                script.AppendFormat("formatter: '{0}',", this.formatter.Value.Key).AppendLine();
             }
 
-            if (this._formatter.HasValue && !string.IsNullOrWhiteSpace(this._formatter.Value.Value))
+            if (this.formatter.HasValue && !string.IsNullOrWhiteSpace(this.formatter.Value.Value))
             {
-                script.AppendLine("formatter: '" + this._formatter.Value.Key + "', formatoption: {" + this._formatter.Value.Value + "} ,");
+                script.AppendLine("formatter: '" + this.formatter.Value.Key + "', formatoption: {" + this.formatter.Value.Value + "} ,");
             }
 
             // Custom formatter
-            if (!string.IsNullOrWhiteSpace(this._customFormatter))
+            if (!string.IsNullOrWhiteSpace(this.customFormatter))
             {
-                script.AppendFormat("formatter: {0},", this._customFormatter).AppendLine();
+                script.AppendFormat("formatter: {0},", this.customFormatter).AppendLine();
             }
 
             // Hidden
-            if (this._hidden.HasValue)
+            if (this.hidden.HasValue)
             {
-                script.AppendFormat("hidden: {0},", this._hidden.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("hidden: {0},", this.hidden.Value.ToString().ToLower()).AppendLine();
             }
 
             // Key
-            if (this._key.HasValue)
+            if (this.key.HasValue)
             {
-                script.AppendFormat("key: {0},", this._key.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("key: {0},", this.key.Value.ToString().ToLower()).AppendLine();
             }
 
             // Label
-            if (!string.IsNullOrWhiteSpace(this._label))
+            if (!string.IsNullOrWhiteSpace(this.label))
             {
-                script.AppendFormat("label: '{0}',", this._label).AppendLine();
+                script.AppendFormat("label: '{0}',", this.label).AppendLine();
             }
 
             // Resizable
-            if (this._resizeable.HasValue)
+            if (this.resizeable.HasValue)
             {
-                script.AppendFormat("resizable: {0},", this._resizeable.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("resizable: {0},", this.resizeable.Value.ToString().ToLower()).AppendLine();
             }
 
             // Search
-            if (this._search.HasValue)
+            if (this.search.HasValue)
             {
-                script.AppendFormat("search: {0},", this._search.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("search: {0},", this.search.Value.ToString().ToLower()).AppendLine();
             }
 
             // SearchType
-            if (this._searchType.HasValue)
+            if (this.searchType.HasValue)
             {
-                if (this._searchType.Value == Searchtype.text)
+                if (this.searchType.Value == Searchtype.text)
                 {
                     script.AppendLine("stype:'text',");
                 }
 
-                if (this._searchType.Value == Searchtype.select)
+                if (this.searchType.Value == Searchtype.select)
                 {
                     script.AppendLine("stype:'select',");
                 }
@@ -469,16 +469,16 @@
             }
 
             // Searchoptions
-            if (this._searchType == Searchtype.select || this._searchType == Searchtype.datepicker || this._searchType == Searchtype.text)
+            if (this.searchType == Searchtype.select || this.searchType == Searchtype.datepicker || this.searchType == Searchtype.text)
             {
                 script.Append("searchoptions: {");
 
                 // Searchtype select
-                if (this._searchType == Searchtype.select || this._searchType == Searchtype.text)
+                if (this.searchType == Searchtype.select || this.searchType == Searchtype.text)
                 {
-                    if (this._searchTerms != null)
+                    if (this.searchTerms != null)
                     {
-                        script.AppendFormat("sopt: [{0}]", string.Join(",", from s in this._searchTerms select "'" + s + "'"));
+                        script.AppendFormat("sopt: [{0}]", string.Join(",", from s in this.searchTerms select "'" + s + "'"));
                     }
                     else
                     {
@@ -487,20 +487,20 @@
                 }
 
                 // Searchtype datepicker
-                if (this._searchType == Searchtype.datepicker)
+                if (this.searchType == Searchtype.datepicker)
                 {
-                    if (this._searchTerms != null)
+                    if (this.searchTerms != null)
                     {
-                        script.AppendFormat("sopt: [{0}],", string.Join(",", from s in this._searchTerms select "'" + s + "'"));
+                        script.AppendFormat("sopt: [{0}],", string.Join(",", from s in this.searchTerms select "'" + s + "'"));
                     }
 
-                    if (string.IsNullOrWhiteSpace(this._searchDateFormat))
+                    if (string.IsNullOrWhiteSpace(this.searchDateFormat))
                     {
                         script.Append("dataInit:function(el){$(el).datepicker({changeYear:true, onChange: function(formated, dates){ $(el).val(formated);},dateFormat:'dd-mm-yy'});}");
                     }
                     else
                     {
-                        script.Append("dataInit:function(el){$(el).datepicker({changeYear:true, onChange: function(formated, dates){ $(el).val(formated);},dateFormat:'" + this._searchDateFormat + "'});}");
+                        script.Append("dataInit:function(el){$(el).datepicker({changeYear:true, onChange: function(formated, dates){ $(el).val(formated);},dateFormat:'" + this.searchDateFormat + "'});}");
                     }
                 }
 
@@ -508,25 +508,25 @@
             }
 
             // Sortable
-            if (this._sortable.HasValue)
+            if (this.sortable.HasValue)
             {
-                script.AppendFormat("sortable: {0},", this._sortable.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("sortable: {0},", this.sortable.Value.ToString().ToLower()).AppendLine();
             }
 
             // Title
-            if (this._title.HasValue)
+            if (this.title.HasValue)
             {
-                script.AppendFormat("title: {0},", this._title.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("title: {0},", this.title.Value.ToString().ToLower()).AppendLine();
             }
 
             // Width
-            if (this._width.HasValue)
+            if (this.width.HasValue)
             {
-                script.AppendFormat("width:{0},", this._width.Value).AppendLine();
+                script.AppendFormat("width:{0},", this.width.Value).AppendLine();
             }
 
             // Index
-            script.AppendFormat("index:'{0}'", this._index).AppendLine();
+            script.AppendFormat("index:'{0}'", this.index).AppendLine();
 
             // End column
             script.Append("}");
@@ -540,87 +540,87 @@
     /// </summary>
     public class Grid
     {
-        private string _altClass;
-        private bool? _altRows;
-        private bool? _autoEncode;
-        private bool? _autoWidth;
-        private string _caption;
-        private bool _closeAfterSearch;
-        private bool _closeOnEscape;
-        private List<Column> _columns = new List<Column>();
-        private DataType _dataType = DataType.json;
-        private string _emptyRecords;
-        private bool? _footerRow;
-        private bool? _forceFit;
-        private bool? _gridView;
-        private bool? _headerTitles;
-        private int? _height;
-        private bool? _hiddenGrid;
-        private bool? _hideGrid;
-        private bool? _hoverRows;
-        private string _id;
-        private bool? _loadOnce;
-        private string _loadText;
-        private LoadUi? _loadUi;
-        private bool? _multiBoxOnly;
-        private MultiKey? _multiKey;
-        private bool _multipleSearch;
-        private bool? _multiSelect;
-        private int? _multiSelectWidth;
-        private string _onAfterInsertRow;
-        private string _onBeforeRequest;
-        private string _onBeforeSelectRow;
-        private string _onCellSelect;
-        private string _onDblClickRow;
-        private string _onGridComplete;
-        private string _onHeaderClick;
-        private string _onLoadBeforeSend;
-        private string _onLoadComplete;
-        private string _onLoadError;
-        private string _onPaging;
-        private string _onResizeStart;
-        private string _onResizeStop;
-        private string _onRightClickRow;
-        private string _onSelectAll;
-        private string _onSelectRow;
-        private string _onSerializeGridData;
-        private string _onSortCol;
-        private int? _page;
-        private string _pager;
-        private PagerPos? _pagerPos;
-        private bool? _pgButtons;
-        private bool? _pgInput;
-        private string _pgText;
-        private RecordPos? _recordPos;
-        private string _recordText;
-        private RequestType? _requestType;
-        private string _resizeClass;
-        private int[] _rowList;
-        private int? _rowNum;
-        private bool? _rowNumbers;
-        private int? _rowNumWidth;
-        private bool? _scroll;
-        private int? _scrollInt;
-        private int? _scrollOffset;
-        private bool? _scrollRows;
-        private int? _scrollTimeout;
-        private bool _search;
-        private bool? _searchClearButton;
-        private bool? _searchOnEnter;
-        private bool? _searchToggleButton;
-        private bool? _searchToolbar;
-        private bool? _showAllSortIcons;
-        private bool? _shrinkToFit;
-        private Direction? _sortIconDirection;
-        private string _sortName;
-        private bool? _sortOnHeaderClick;
-        private SortOrder? _sortOrder;
-        private bool? _toolbar;
-        private ToolbarPosition _toolbarPosition = ToolbarPosition.top;
-        private bool? _topPager;
-        private string _url;
-        private bool? _viewRecords;
-        private int? _width;
+        private string altClass;
+        private bool? altRows;
+        private bool? autoEncode;
+        private bool? autoWidth;
+        private string caption;
+        private bool closeAfterSearch;
+        private bool closeOnEscape;
+        private List<Column> columns = new List<Column>();
+        private DataType dataType = DataType.json;
+        private string emptyRecords;
+        private bool? footerRow;
+        private bool? forceFit;
+        private bool? gridView;
+        private bool? headerTitles;
+        private int? height;
+        private bool? hiddenGrid;
+        private bool? hideGrid;
+        private bool? hoverRows;
+        private string id;
+        private bool? loadOnce;
+        private string loadText;
+        private LoadUi? loadUI;
+        private bool? multiBoxOnly;
+        private MultiKey? multiKey;
+        private bool multipleSearch;
+        private bool? multiSelect;
+        private int? multiSelectWidth;
+        private string onAfterInsertRow;
+        private string onBeforeRequest;
+        private string onBeforeSelectRow;
+        private string onCellSelect;
+        private string onDblClickRow;
+        private string onGridComplete;
+        private string onHeaderClick;
+        private string onLoadBeforeSend;
+        private string onLoadComplete;
+        private string onLoadError;
+        private string onPaging;
+        private string onResizeStart;
+        private string onResizeStop;
+        private string onRightClickRow;
+        private string onSelectAll;
+        private string onSelectRow;
+        private string onSerializeGridData;
+        private string onSortCol;
+        private int? page;
+        private string pager;
+        private PagerPos? pagerPos;
+        private bool? pgButtons;
+        private bool? pgInput;
+        private string pgText;
+        private RecordPos? recordPos;
+        private string recordText;
+        private RequestType? requestType;
+        private string resizeClass;
+        private int[] rowList;
+        private int? rowNum;
+        private bool? rowNumbers;
+        private int? rowNumWidth;
+        private bool? scroll;
+        private int? scrollInt;
+        private int? scrollOffset;
+        private bool? scrollRows;
+        private int? scrollTimeout;
+        private bool search;
+        private bool? searchClearButton;
+        private bool? searchOnEnter;
+        private bool? searchToggleButton;
+        private bool? searchToolbar;
+        private bool? showAllSortIcons;
+        private bool? shrinkToFit;
+        private Direction? sortIconDirection;
+        private string sortName;
+        private bool? sortOnHeaderClick;
+        private SortOrder? sortOrder;
+        private bool? toolbar;
+        private ToolbarPosition toolbarPosition = ToolbarPosition.top;
+        private bool? topPager;
+        private string url;
+        private bool? viewRecords;
+        private int? width;
 
         /// <summary>
         /// Constructor
@@ -633,16 +633,16 @@
                 throw new ArgumentException("Id must contain a value to identify the grid");
             }
 
-            this._id = id;
+            this.id = id;
         }
 
         /// <summary>
         /// Adds columns to grid
         /// </summary>
         /// <param name="column">Colomn object</param>
-        public Grid addColumn(Column column)
+        public Grid AddColumn(Column column)
         {
-            this._columns.Add(column);
+            this.columns.Add(column);
             return this;
         }
 
@@ -657,9 +657,9 @@
         /// Note: this event does not fire if gridview option is set to true
         /// </summary>
         /// <param name="onAfterInsertRow">Script to be executed</param>
-        public Grid onAfterInsertRow(string onAfterInsertRow)
+        public Grid OnAfterInsertRow(string onAfterInsertRow)
         {
-            this._onAfterInsertRow = onAfterInsertRow;
+            this.onAfterInsertRow = onAfterInsertRow;
             return this;
         }
 
@@ -668,9 +668,9 @@
         /// Variables available in call: None
         /// </summary>
         /// <param name="onBeforeRequest">Script to be executed</param>
-        public Grid onBeforeRequest(string onBeforeRequest)
+        public Grid OnBeforeRequest(string onBeforeRequest)
         {
-            this._onBeforeRequest = onBeforeRequest;
+            this.onBeforeRequest = onBeforeRequest;
             return this;
         }
 
@@ -684,9 +684,9 @@
         /// does not occur.
         /// </summary>
         /// <param name="onBeforeSelectRow">Script to be executed</param>
-        public Grid onBeforeSelectRow(string onBeforeSelectRow)
+        public Grid OnBeforeSelectRow(string onBeforeSelectRow)
         {
-            this._onBeforeSelectRow = onBeforeSelectRow;
+            this.onBeforeSelectRow = onBeforeSelectRow;
             return this;
         }
 
@@ -701,9 +701,9 @@
         /// and is disabled when using cell editing).
         /// </summary>
         /// <param name="onCellSelect">Script to be executed</param>
-        public Grid onCellSelect(string onCellSelect)
+        public Grid OnCellSelect(string onCellSelect)
         {
-            this._onCellSelect = onCellSelect;
+            this.onCellSelect = onCellSelect;
             return this;
         }
 
@@ -716,9 +716,9 @@
         /// 'e': The event object
         /// </summary>
         /// <param name="onDblClickRow">Script to be executed</param>
-        public Grid onDblClickRow(string onDblClickRow)
+        public Grid OnDblClickRow(string onDblClickRow)
         {
-            this._onDblClickRow = onDblClickRow;
+            this.onDblClickRow = onDblClickRow;
             return this;
         }
 
@@ -728,9 +728,9 @@
         /// Variables available in call: None
         /// </summary>
         /// <param name="onGridComplete">Script to be executed</param>
-        public Grid onGridComplete(string onGridComplete)
+        public Grid OnGridComplete(string onGridComplete)
         {
-            this._onGridComplete = onGridComplete;
+            this.onGridComplete = onGridComplete;
             return this;
         }
 
@@ -740,9 +740,9 @@
         /// 'gridstate': The state of the grid - can have two values - visible or hidden
         /// </summary>
         /// <param name="onHeaderClick">Script to be executed</param>
-        public Grid onHeaderClick(string onHeaderClick)
+        public Grid OnHeaderClick(string onHeaderClick)
         {
-            this._onHeaderClick = onHeaderClick;
+            this.onHeaderClick = onHeaderClick;
             return this;
         }
 
@@ -753,9 +753,9 @@
         /// 'xhr': The XMLHttpRequest
         /// </summary>
         /// <param name="onLoadBeforeSend">Script to be executed</param>
-        public Grid onLoadBeforeSend(string onLoadBeforeSend)
+        public Grid OnLoadBeforeSend(string onLoadBeforeSend)
         {
-            this._onLoadBeforeSend = onLoadBeforeSend;
+            this.onLoadBeforeSend = onLoadBeforeSend;
             return this;
         }
 
@@ -765,9 +765,9 @@
         /// 'xhr': The XMLHttpRequest
         /// </summary>
         /// <param name="onLoadComplete">Script to be executed</param>
-        public Grid onLoadComplete(string onLoadComplete)
+        public Grid OnLoadComplete(string onLoadComplete)
         {
-            this._onLoadComplete = onLoadComplete;
+            this.onLoadComplete = onLoadComplete;
             return this;
         }
 
@@ -779,9 +779,9 @@
         ///  'error': Optional exception object, if one occurred
         /// </summary>
         /// <param name="onLoadError">Script to be executed</param>
-        public Grid onLoadError(string onLoadError)
+        public Grid OnLoadError(string onLoadError)
         {
-            this._onLoadError = onLoadError;
+            this.onLoadError = onLoadError;
             return this;
         }
 
@@ -797,9 +797,9 @@
         /// a number of requested rows is changed and user when the user change the number of the requested page
         /// </summary>
         /// <param name="onPaging">Script to be executed</param>
-        public Grid onPaging(string onPaging)
+        public Grid OnPaging(string onPaging)
         {
-            this._onPaging = onPaging;
+            this.onPaging = onPaging;
             return this;
         }
 
@@ -810,9 +810,9 @@
         /// 'index': The index of the column in colModel.
         /// </summary>
         /// <param name="onResizeStart">Script to be executed</param>
-        public Grid onResizeStart(string onResizeStart)
+        public Grid OnResizeStart(string onResizeStart)
         {
-            this._onResizeStart = onResizeStart;
+            this.onResizeStart = onResizeStart;
             return this;
         }
 
@@ -823,9 +823,9 @@
         /// 'index': The index of the column in colModel.
         /// </summary>
         /// <param name="onResizeStop">Script to be executed</param>
-        public Grid onResizeStop(string onResizeStop)
+        public Grid OnResizeStop(string onResizeStop)
         {
-            this._onResizeStop = onResizeStop;
+            this.onResizeStop = onResizeStop;
             return this;
         }
 
@@ -839,9 +839,9 @@
         /// Note - this event does not work in Opera browsers, since Opera does not support oncontextmenu event
         /// </summary>
         /// <param name="onRightClickRow">Script to be executed</param>
-        public Grid onRightClickRow(string onRightClickRow)
+        public Grid OnRightClickRow(string onRightClickRow)
         {
-            this._onRightClickRow = onRightClickRow;
+            this.onRightClickRow = onRightClickRow;
             return this;
         }
 
@@ -853,9 +853,9 @@
         /// Note that the aRowids alway contain the ids when header checkbox is checked or unchecked.
         /// </summary>
         /// <param name="onSelectAll">Script to be executed</param>
-        public Grid onSelectAll(string onSelectAll)
+        public Grid OnSelectAll(string onSelectAll)
         {
-            this._onSelectAll = onSelectAll;
+            this.onSelectAll = onSelectAll;
             return this;
         }
 
@@ -867,9 +867,9 @@
         /// true if the row is selected, false if the row is deselected.
         /// <param name="onSelectRow">Script to be executed</param>
         /// </summary>
-        public Grid onSelectRow(string onSelectRow)
+        public Grid OnSelectRow(string onSelectRow)
         {
-            this._onSelectRow = onSelectRow;
+            this.onSelectRow = onSelectRow;
             return this;
         }
 
@@ -881,9 +881,9 @@
         /// 'postData': Posted data
         /// </summary>
         /// <param name="onSerializeGridData">Script to be executed</param>
-        public Grid onSerializeGridData(string onSerializeGridData)
+        public Grid OnSerializeGridData(string onSerializeGridData)
         {
-            this._onSerializeGridData = onSerializeGridData;
+            this.onSerializeGridData = onSerializeGridData;
             return this;
         }
 
@@ -896,9 +896,9 @@
         /// If this event returns 'stop' the sort processing is stopped and you can define your own custom sorting
         /// </summary>
         /// <param name="onSortCol">Script to be executed</param>
-        public Grid onSortCol(string onSortCol)
+        public Grid OnSortCol(string onSortCol)
         {
-            this._onSortCol = onSortCol;
+            this.onSortCol = onSortCol;
             return this;
         }
 
@@ -916,9 +916,9 @@
         /// This option is valid only if altRows options is set to true (default: ui-priority-secondary)
         /// </summary>
         /// <param name="altClass">Classname for alternate rows</param>
-        public Grid setAltClass(string altClass)
+        public Grid SetAltClass(string altClass)
         {
-            this._altClass = altClass;
+            this.altClass = altClass;
             return this;
         }
 
@@ -926,9 +926,9 @@
         /// Set a zebra-striped grid (default: false)
         /// </summary>
         /// <param name="altRows">Boolean indicating if zebra-striped grid is used</param>
-        public Grid setAltRows(bool altRows)
+        public Grid SetAltRows(bool altRows)
         {
-            this._altRows = altRows;
+            this.altRows = altRows;
             return this;
         }
 
@@ -937,9 +937,9 @@
         /// data (from editing modules). For example < will be converted to &lt (default: false)
         /// </summary>
         /// <param name="autoEncode">Boolean indicating if autoencode is used</param>
-        public Grid setAutoEncode(bool autoEncode)
+        public Grid SetAutoEncode(bool autoEncode)
         {
-            this._autoEncode = autoEncode;
+            this.autoEncode = autoEncode;
             return this;
         }
 
@@ -950,9 +950,9 @@
         /// and use a setGridWidth method for this purpose. (default: false)
         /// </summary>
         /// <param name="autoWidth">Boolean indicating if autowidth is used</param>
-        public Grid setAutoWidth(bool autoWidth)
+        public Grid SetAutoWidth(bool autoWidth)
         {
-            this._autoWidth = autoWidth;
+            this.autoWidth = autoWidth;
             return this;
         }
 
@@ -961,9 +961,9 @@
         /// If the string is empty the caption does not appear. (default: empty)
         /// </summary>
         /// <param name="caption">Caption of grid</param>
-        public Grid setCaption(string caption)
+        public Grid SetCaption(string caption)
         {
-            this._caption = caption;
+            this.caption = caption;
             return this;
         }
 
@@ -972,9 +972,9 @@
         /// </summary>
         /// <param name="closeAfterSearch">if set to <c>true</c> [close after search].</param>
         /// <returns></returns>
-        public Grid setCloseAfterSearch(bool closeAfterSearch)
+        public Grid SetCloseAfterSearch(bool closeAfterSearch)
         {
-            this._closeAfterSearch = closeAfterSearch;
+            this.closeAfterSearch = closeAfterSearch;
             return this;
         }
 
@@ -983,9 +983,9 @@
         /// </summary>
         /// <param name="closeOnEscape">if set to <c>true</c> [close on escape].</param>
         /// <returns></returns>
-        public Grid setCloseOnEscape(bool closeOnEscape)
+        public Grid SetCloseOnEscape(bool closeOnEscape)
         {
-            this._closeOnEscape = closeOnEscape;
+            this.closeOnEscape = closeOnEscape;
             return this;
         }
 
@@ -994,9 +994,9 @@
         /// options are json (default) and xml
         /// </summary>
         /// <param name="dataType">Data type</param>
-        public Grid setDataType(DataType dataType)
+        public Grid SetDataType(DataType dataType)
         {
-            this._dataType = dataType;
+            this.dataType = dataType;
             return this;
         }
 
@@ -1006,9 +1006,9 @@
         /// set in language file)
         /// </summary>
         /// <param name="emptyRecords">Display string</param>
-        public Grid setEmptyRecords(string emptyRecords)
+        public Grid SetEmptyRecords(string emptyRecords)
         {
-            this._emptyRecords = emptyRecords;
+            this.emptyRecords = emptyRecords;
             return this;
         }
 
@@ -1018,9 +1018,9 @@
         /// (default: false)
         /// </summary>
         /// <param name="footerRow">Boolean indicating whether footerrow is displayed</param>
-        public Grid setFooterRow(bool footerRow)
+        public Grid SetFooterRow(bool footerRow)
         {
-            this._footerRow = footerRow;
+            this.footerRow = footerRow;
             return this;
         }
 
@@ -1033,9 +1033,9 @@
         /// shrinkToFit is set to false, forceFit is ignored.
         /// </summary>
         /// <param name="forceFit">Boolean indicating if forcefit is enforced</param>
-        public Grid setForceFit(bool forceFit)
+        public Grid SetForceFit(bool forceFit)
         {
-            this._forceFit = forceFit;
+            this.forceFit = forceFit;
             return this;
         }
 
@@ -1052,9 +1052,9 @@
         /// set this option to true and enjoy the speed. (default: false)
         /// </summary>
         /// <param name="gridView">Boolean indicating gridview is enabled</param>
-        public Grid setGridView(bool gridView)
+        public Grid SetGridView(bool gridView)
         {
-            this._gridView = gridView;
+            this.gridView = gridView;
             return this;
         }
 
@@ -1062,9 +1062,9 @@
         /// If the option is set to true the title attribute is added to the column headers (default: false)
         /// </summary>
         /// <param name="headerTitles">Boolean indicating if headertitles are enabled</param>
-        public Grid setHeaderTitles(bool headerTitles)
+        public Grid SetHeaderTitles(bool headerTitles)
         {
-            this._headerTitles = headerTitles;
+            this.headerTitles = headerTitles;
             return this;
         }
 
@@ -1072,9 +1072,9 @@
         /// The height of the grid in pixels (default: 100%, which is the only acceptable percentage for jqGrid)
         /// </summary>
         /// <param name="height">Height in pixels</param>
-        public Grid setHeight(int height)
+        public Grid SetHeight(int height)
         {
-            this._height = height;
+            this.height = height;
             return this;
         }
 
@@ -1085,9 +1085,9 @@
         /// This option has effect only if the caption property is not empty. (default: false)
         /// </summary>
         /// <param name="hiddenGrid">Boolean indicating if hiddengrid is enforced</param>
-        public Grid setHiddenGrid(bool hiddenGrid)
+        public Grid SetHiddenGrid(bool hiddenGrid)
         {
-            this._hiddenGrid = hiddenGrid;
+            this.hiddenGrid = hiddenGrid;
             return this;
         }
 
@@ -1096,9 +1096,9 @@
         /// Takes effect only if the caption property is not an empty string. (default: true)
         /// </summary>
         /// <param name="hideGrid">Boolean indicating if show/hide button is enabled</param>
-        public Grid setHideGrid(bool hideGrid)
+        public Grid SetHideGrid(bool hideGrid)
         {
-            this._hideGrid = hideGrid;
+            this.hideGrid = hideGrid;
             return this;
         }
 
@@ -1106,9 +1106,9 @@
         /// When set to false the mouse hovering is disabled in the grid data rows. (default: true)
         /// </summary>
         /// <param name="hoverRows">Indicates whether hoverrows is enabled</param>
-        public Grid setHoverRows(bool hoverRows)
+        public Grid SetHoverRows(bool hoverRows)
         {
-            this._hoverRows = hoverRows;
+            this.hoverRows = hoverRows;
             return this;
         }
 
@@ -1119,9 +1119,9 @@
         /// of the pager (if present) are disabled. (default: false)
         /// </summary>
         /// <param name="loadOnce">Boolean indicating if loadonce is enforced</param>
-        public Grid setLoadOnce(bool loadOnce)
+        public Grid SetLoadOnce(bool loadOnce)
         {
-            this._loadOnce = loadOnce;
+            this.loadOnce = loadOnce;
             return this;
         }
 
@@ -1130,9 +1130,9 @@
         /// in the language file
         /// </summary>
         /// <param name="loadText">Loadtext</param>
-        public Grid setLoadText(string loadText)
+        public Grid SetLoadText(string loadText)
         {
-            this._loadText = loadText;
+            this.loadText = loadText;
             return this;
         }
 
@@ -1143,10 +1143,10 @@
         /// 'block' - enables the “Loading” message and blocks all actions in the grid until the ajax request
         /// is finished. Note that this disables paging, sorting and all actions on toolbar, if any.
         /// </summary>
-        /// <param name="loadUi">Load ui mode</param>
-        public Grid setLoadUi(LoadUi loadUi)
+        /// <param name="loadUI">Load ui mode</param>
+        public Grid SetLoadUI(LoadUi loadUI)
         {
-            this._loadUi = loadUi;
+            this.loadUI = loadUI;
             return this;
         }
 
@@ -1157,9 +1157,9 @@
         /// not clicked) deselects all rows and the current row is selected. (default: false)
         /// </summary>
         /// <param name="multiBoxOnly">Boolean indicating if multiboxonly is enforced</param>
-        public Grid setMultiBoxOnly(bool multiBoxOnly)
+        public Grid SetMultiBoxOnly(bool multiBoxOnly)
         {
-            this._multiBoxOnly = multiBoxOnly;
+            this.multiBoxOnly = multiBoxOnly;
             return this;
         }
 
@@ -1172,9 +1172,9 @@
         /// 'ctrlKey' - the user should press Ctrl Key
         /// </summary>
         /// <param name="multiKey">Key to multiselect</param>
-        public Grid setMultiKey(MultiKey multiKey)
+        public Grid SetMultiKey(MultiKey multiKey)
         {
-            this._multiKey = multiKey;
+            this.multiKey = multiKey;
             return this;
         }
 
@@ -1183,9 +1183,9 @@
         /// </summary>
         /// <param name="multipleSearch">if set to <c>true</c> [multiple search].</param>
         /// <returns></returns>
-        public Grid setMultipleSearch(bool multipleSearch)
+        public Grid SetMultipleSearch(bool multipleSearch)
         {
-            this._multipleSearch = multipleSearch;
+            this.multipleSearch = multipleSearch;
             return this;
         }
 
@@ -1194,9 +1194,9 @@
         /// at the left side is added. Can be used with any datatype option. (default: false)
         /// </summary>
         /// <param name="multiSelect">Boolean indicating if multiselect is enabled</param>
-        public Grid setMultiSelect(bool multiSelect)
+        public Grid SetMultiSelect(bool multiSelect)
         {
-            this._multiSelect = multiSelect;
+            this.multiSelect = multiSelect;
             return this;
         }
 
@@ -1204,9 +1204,9 @@
         /// Determines the width of the multiselect column if multiselect is set to true. (default: 20)
         /// </summary>
         /// <param name="multiSelectWidth"></param>
-        public Grid setMultiSelectWidth(int multiSelectWidth)
+        public Grid SetMultiSelectWidth(int multiSelectWidth)
         {
-            this._multiSelectWidth = multiSelectWidth;
+            this.multiSelectWidth = multiSelectWidth;
             return this;
         }
 
@@ -1215,9 +1215,9 @@
         /// for use by the server routine retrieving the data (default: 1)
         /// </summary>
         /// <param name="page">Number of page</param>
-        public Grid setPage(int page)
+        public Grid SetPage(int page)
         {
-            this._page = page;
+            this.page = page;
             return this;
         }
 
@@ -1225,9 +1225,9 @@
         /// If pagername is specified a pagerelement is automatically added to the grid
         /// </summary>
         /// <param name="pager">Id/name of pager</param>
-        public Grid setPager(string pager)
+        public Grid SetPager(string pager)
         {
-            this._pager = pager;
+            this.pager = pager;
             return this;
         }
 
@@ -1237,9 +1237,9 @@
         /// buttons and one part for record information) (default: center)
         /// </summary>
         /// <param name="pagerPos">Position of pager</param>
-        public Grid setPagerPos(PagerPos pagerPos)
+        public Grid SetPagerPos(PagerPos pagerPos)
         {
-            this._pagerPos = pagerPos;
+            this.pagerPos = pagerPos;
             return this;
         }
 
@@ -1248,9 +1248,9 @@
         /// only if pager is set correctly. The buttons are placed in the pager bar. (default: true)
         /// </summary>
         /// <param name="pgButtons">Boolean indicating if pager buttons are displayed</param>
-        public Grid setPgButtons(bool pgButtons)
+        public Grid SetPgButtons(bool pgButtons)
         {
-            this._pgButtons = pgButtons;
+            this.pgButtons = pgButtons;
             return this;
         }
 
@@ -1259,9 +1259,9 @@
         /// should be available. The input box appears in the pager bar. (default: true)
         /// </summary>
         /// <param name="pgInput">Boolean indicating if pager input is available</param>
-        public Grid setPgInput(bool pgInput)
+        public Grid SetPgInput(bool pgInput)
         {
-            this._pgInput = pgInput;
+            this.pgInput = pgInput;
             return this;
         }
 
@@ -1271,9 +1271,9 @@
         /// Example: "Page {0} of {1}"
         /// </summary>
         /// <param name="pgText">Current page status text</param>
-        public Grid setPgText(string pgText)
+        public Grid SetPgText(string pgText)
         {
-            this._pgText = pgText;
+            this.pgText = pgText;
             return this;
         }
 
@@ -1283,9 +1283,9 @@
         /// Warning: When pagerpos en recordpos are equally set, pager is hidden.
         /// </summary>
         /// <param name="recordPos">Position of record information</param>
-        public Grid setRecordPos(RecordPos recordPos)
+        public Grid SetRecordPos(RecordPos recordPos)
         {
-            this._recordPos = recordPos;
+            this.recordPos = recordPos;
             return this;
         }
 
@@ -1298,9 +1298,9 @@
         /// {1} - the end position {2} - total records returned from the data (default defined in language file)
         /// </summary>
         /// <param name="recordText">Record Text</param>
-        public Grid setRecordText(string recordText)
+        public Grid SetRecordText(string recordText)
         {
-            this._recordText = recordText;
+            this.recordText = recordText;
             return this;
         }
 
@@ -1308,9 +1308,9 @@
         /// Defines the type of request to make (“POST” or “GET”) (default: GET)
         /// </summary>
         /// <param name="requestType">Request type</param>
-        public Grid setRequestType(RequestType requestType)
+        public Grid SetRequestType(RequestType requestType)
         {
-            this._requestType = requestType;
+            this.requestType = requestType;
             return this;
         }
 
@@ -1320,9 +1320,9 @@
         /// </summary>
         /// <param name="resizeClass"></param>
         /// <returns></returns>
-        public Grid setResizeClass(string resizeClass)
+        public Grid SetResizeClass(string resizeClass)
         {
-            this._resizeClass = resizeClass;
+            this.resizeClass = resizeClass;
             return this;
         }
 
@@ -1337,9 +1337,9 @@
         /// setRowList(new int[]{10,20,50})
         /// </example>
         /// <param name="rowList">List of rows per page</param>
-        public Grid setRowList(int[] rowList)
+        public Grid SetRowList(int[] rowList)
         {
-            this._rowList = rowList;
+            this.rowList = rowList;
             return this;
         }
 
@@ -1350,9 +1350,9 @@
         /// loaded. Set this parameter to -1 (unlimited) to disable this checking. (default: 20)
         /// </summary>
         /// <param name="rowNum">Number of rows per page</param>
-        public Grid setRowNum(int rowNum)
+        public Grid SetRowNum(int rowNum)
         {
-            this._rowNum = rowNum;
+            this.rowNum = rowNum;
             return this;
         }
 
@@ -1363,9 +1363,9 @@
         /// not to use the name 'rn' in colModel
         /// </summary>
         /// <param name="rowNumbers">Boolean indicating if rownumbers are enabled</param>
-        public Grid setRowNumbers(bool rowNumbers)
+        public Grid SetRowNumbers(bool rowNumbers)
         {
-            this._rowNumbers = rowNumbers;
+            this.rowNumbers = rowNumbers;
             return this;
         }
 
@@ -1373,9 +1373,9 @@
         /// Determines the width of the row number column if rownumbers option is set to true. (default: 25)
         /// </summary>
         /// <param name="rowNumWidth">Width of rownumbers column</param>
-        public Grid setRowNumWidth(int rowNumWidth)
+        public Grid SetRowNumWidth(int rowNumWidth)
         {
-            this._rowNumWidth = rowNumWidth;
+            this.rowNumWidth = rowNumWidth;
             return this;
         }
 
@@ -1387,10 +1387,10 @@
         /// load the data at portions whitout to care about the memory leaks. (default: false)
         /// </summary>
         /// <param name="scroll">Boolean indicating if scroll is enforced</param>
-        public Grid setScroll(bool scroll)
+        public Grid SetScroll(bool scroll)
         {
-            this._scroll = scroll;
-            if (this._scrollInt.HasValue)
+            this.scroll = scroll;
+            if (this.scrollInt.HasValue)
             {
                 throw new InvalidOperationException("You can't set scroll to both a boolean and an integer at the same time, please choose one.");
             }
@@ -1406,10 +1406,10 @@
         /// load the data at portions whitout to care about the memory leaks. (default: false)
         /// </summary>
         /// <param name="scroll">When integer value is set (eg 1) scroll is enforced</param>
-        public Grid setScroll(int scroll)
+        public Grid SetScroll(int scroll)
         {
-            this._scrollInt = scroll;
-            if (this._scroll.HasValue)
+            this.scrollInt = scroll;
+            if (this.scroll.HasValue)
             {
                 throw new InvalidOperationException("You can't set scroll to both a boolean and an integer at the same time, please choose one.");
             }
@@ -1422,9 +1422,9 @@
         /// differently (and it is difficult to calculate it in all browsers) this can be changed. (default: 18)
         /// </summary>
         /// <param name="scrollOffset">Scroll offset</param>
-        public Grid setScrollOffset(int scrollOffset)
+        public Grid SetScrollOffset(int scrollOffset)
         {
-            this._scrollOffset = scrollOffset;
+            this.scrollOffset = scrollOffset;
             return this;
         }
 
@@ -1435,9 +1435,9 @@
         /// selected row becomes visible. (default: false)
         /// </summary>
         /// <param name="scrollRows">Boolean indicating if scrollrows is enabled</param>
-        public Grid setScrollRows(bool scrollRows)
+        public Grid SetScrollRows(bool scrollRows)
         {
-            this._scrollRows = scrollRows;
+            this.scrollRows = scrollRows;
             return this;
         }
 
@@ -1446,9 +1446,9 @@
         /// </summary>
         /// <param name="scrollTimeout">Scroll timeout in milliseconds</param>
         /// <returns></returns>
-        public Grid setScrollTimeout(int scrollTimeout)
+        public Grid SetScrollTimeout(int scrollTimeout)
         {
-            this._scrollTimeout = scrollTimeout;
+            this.scrollTimeout = scrollTimeout;
             return this;
         }
 
@@ -1456,9 +1456,9 @@
         /// When set to true adds search button to the grid. (default: false)
         /// </summary>
         /// <param name="searchToggleButton">Indicates if toggle button is displayed</param>
-        public Grid setSearch(bool search)
+        public Grid SetSearch(bool search)
         {
-            this._search = search;
+            this.search = search;
             return this;
         }
 
@@ -1467,9 +1467,9 @@
         /// </summary>
         /// <param name="searchClearButton"></param>
         /// <returns></returns>
-        public Grid setSearchClearButton(bool searchClearButton)
+        public Grid SetSearchClearButton(bool searchClearButton)
         {
-            this._searchClearButton = searchClearButton;
+            this.searchClearButton = searchClearButton;
             return this;
         }
 
@@ -1479,9 +1479,9 @@
         /// the user presses some character. (default: true
         /// </summary>
         /// <param name="searchOnEnter">Indicates if search is started on enter</param>
-        public Grid setSearchOnEnter(bool searchOnEnter)
+        public Grid SetSearchOnEnter(bool searchOnEnter)
         {
-            this._searchOnEnter = searchOnEnter;
+            this.searchOnEnter = searchOnEnter;
             return this;
         }
 
@@ -1489,9 +1489,9 @@
         /// When set to true adds toggle button to toggle search toolbar (default: false)
         /// </summary>
         /// <param name="searchToggleButton">Indicates if toggle button is displayed</param>
-        public Grid setSearchToggleButton(bool searchToggleButton)
+        public Grid SetSearchToggleButton(bool searchToggleButton)
         {
-            this._searchToggleButton = searchToggleButton;
+            this.searchToggleButton = searchToggleButton;
             return this;
         }
 
@@ -1499,9 +1499,9 @@
         /// Enables toolbar searching / filtering
         /// </summary>
         /// <param name="searchToolbar">Indicates if toolbar searching is enabled</param>
-        public Grid setSearchToolbar(bool searchToolbar)
+        public Grid SetSearchToolbar(bool searchToolbar)
         {
-            this._searchToolbar = searchToolbar;
+            this.searchToolbar = searchToolbar;
             return this;
         }
 
@@ -1511,7 +1511,7 @@
         /// <param name="showAllSortIcons">Boolean indicating if all sorting icons should be displayed</param>
         public Grid setShowAllSortIcons(bool showAllSortIcons)
         {
-            this._showAllSortIcons = showAllSortIcons;
+            this.showAllSortIcons = showAllSortIcons;
             return this;
         }
 
@@ -1527,9 +1527,9 @@
         /// The column width are not recalculated and have the values defined in colModel. (default: true)
         /// </summary>
         /// <param name="shrinkToFit">Boolean indicating if shrink to fit is enforced</param>
-        public Grid setShrinkToFit(bool shrinkToFit)
+        public Grid SetShrinkToFit(bool shrinkToFit)
         {
-            this._shrinkToFit = shrinkToFit;
+            this.shrinkToFit = shrinkToFit;
             return this;
         }
 
@@ -1537,9 +1537,9 @@
         /// Sets direction in which sort icons are displayed (default: vertical)
         /// </summary>
         /// <param name="sortIconDirection">Direction in which sort icons are displayed</param>
-        public Grid setSortIconDirection(Direction sortIconDirection)
+        public Grid SetSortIconDirection(Direction sortIconDirection)
         {
-            this._sortIconDirection = sortIconDirection;
+            this.sortIconDirection = sortIconDirection;
             return this;
         }
 
@@ -1550,9 +1550,9 @@
         /// the parameter sortorder.
         /// </summary>
         /// <param name="sortName"></param>
-        public Grid setSortName(string sortName)
+        public Grid SetSortName(string sortName)
         {
-            this._sortName = sortName;
+            this.sortName = sortName;
             return this;
         }
 
@@ -1563,9 +1563,9 @@
         /// </summary>
         /// <param name="sortOnHeaderClick">Boolean indicating if columns will sort on headerclick</param>
         /// <returns></returns>
-        public Grid setSortOnHeaderClick(bool sortOnHeaderClick)
+        public Grid SetSortOnHeaderClick(bool sortOnHeaderClick)
         {
-            this._sortOnHeaderClick = sortOnHeaderClick;
+            this.sortOnHeaderClick = sortOnHeaderClick;
             return this;
         }
 
@@ -1574,9 +1574,9 @@
         /// This parameter is added to the url. Two possible values - asc or desc. (default: asc)
         /// </summary>
         /// <param name="sortOrder">Sortorder</param>
-        public Grid setSortOrder(SortOrder sortOrder)
+        public Grid SetSortOrder(SortOrder sortOrder)
         {
-            this._sortOrder = sortOrder;
+            this.sortOrder = sortOrder;
             return this;
         }
 
@@ -1588,9 +1588,9 @@
         /// this toolbar is created (top or bottom). You can use jquery to add elements to the toolbars.
         /// </summary>
         /// <param name="toolbar">Boolean indicating if toolbar is enabled</param>
-        public Grid setToolbar(bool toolbar)
+        public Grid SetToolbar(bool toolbar)
         {
-            this._toolbar = toolbar;
+            this.toolbar = toolbar;
             return this;
         }
 
@@ -1598,9 +1598,9 @@
         /// Sets toolbarposition (default: top)
         /// </summary>
         /// <param name="toolbarPosition">Position of toolbar</param>
-        public Grid setToolbarPosition(ToolbarPosition toolbarPosition)
+        public Grid SetToolbarPosition(ToolbarPosition toolbarPosition)
         {
-            this._toolbarPosition = toolbarPosition;
+            this.toolbarPosition = toolbarPosition;
             return this;
         }
 
@@ -1610,9 +1610,9 @@
         /// (default: false)
         /// </summary>
         /// <param name="topPager">Boolean indicating if toppager is enabled</param>
-        public Grid setTopPager(bool topPager)
+        public Grid SetTopPager(bool topPager)
         {
-            this._topPager = topPager;
+            this.topPager = topPager;
             return this;
         }
 
@@ -1620,9 +1620,9 @@
         /// The url of the file that holds the request
         /// </summary>
         /// <param name="url">Data url</param>
-        public Grid setUrl(string url)
+        public Grid SetUrl(string url)
         {
-            this._url = url;
+            this.url = url;
             return this;
         }
 
@@ -1635,9 +1635,9 @@
         /// including 'emptyrecords' and 'recordtext'. (default: false)
         /// </summary>
         /// <param name="viewRecords">Boolean indicating if recordnumbers are shown in grid</param>
-        public Grid setViewRecords(bool viewRecords)
+        public Grid SetViewRecords(bool viewRecords)
         {
-            this._viewRecords = viewRecords;
+            this.viewRecords = viewRecords;
             return this;
         }
 
@@ -1647,9 +1647,9 @@
         /// column is set according to the value of shrinkToFit option.
         /// </summary>
         /// <param name="width">Width in pixels</param>
-        public Grid setWidth(int width)
+        public Grid SetWidth(int width)
         {
-            this._width = width;
+            this.width = width;
             return this;
         }
 
@@ -1665,438 +1665,438 @@
             // Start script
             script.AppendLine("<script type=\"text/javascript\">");
             script.AppendLine("jQuery(document).ready(function () {");
-            script.AppendLine("jQuery('#" + this._id + "').jqGrid({");
+            script.AppendLine("jQuery('#" + this.id + "').jqGrid({");
 
             // Altrows
-            if (this._altRows.HasValue)
+            if (this.altRows.HasValue)
             {
-                script.AppendFormat("altRows: {0},", this._altRows.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("altRows: {0},", this.altRows.Value.ToString().ToLower()).AppendLine();
             }
 
             // Altclass
-            if (!string.IsNullOrWhiteSpace(this._altClass))
+            if (!string.IsNullOrWhiteSpace(this.altClass))
             {
-                script.AppendFormat("altclass: '{0}',", this._altClass).AppendLine();
+                script.AppendFormat("altclass: '{0}',", this.altClass).AppendLine();
             }
 
             // Autoencode
-            if (this._autoEncode.HasValue)
+            if (this.autoEncode.HasValue)
             {
-                script.AppendFormat("autoencode: {0},", this._autoEncode.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("autoencode: {0},", this.autoEncode.Value.ToString().ToLower()).AppendLine();
             }
 
             // Autowidth
-            if (this._autoWidth.HasValue)
+            if (this.autoWidth.HasValue)
             {
-                script.AppendFormat("autowidth: {0},", this._autoWidth.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("autowidth: {0},", this.autoWidth.Value.ToString().ToLower()).AppendLine();
             }
 
             // Caption
-            if (!string.IsNullOrWhiteSpace(this._caption))
+            if (!string.IsNullOrWhiteSpace(this.caption))
             {
-                script.AppendFormat("caption: '{0}',", this._caption).AppendLine();
+                script.AppendFormat("caption: '{0}',", this.caption).AppendLine();
             }
 
             // Datatype
-            script.AppendLine(string.Format("datatype:'{0}',", this._dataType.ToString()));
+            script.AppendLine(string.Format("datatype:'{0}',", this.dataType.ToString()));
 
             // Emptyrecords
-            if (!string.IsNullOrWhiteSpace(this._emptyRecords))
+            if (!string.IsNullOrWhiteSpace(this.emptyRecords))
             {
-                script.AppendFormat("emptyrecords: '{0}',", this._emptyRecords).AppendLine();
+                script.AppendFormat("emptyrecords: '{0}',", this.emptyRecords).AppendLine();
             }
 
             // FooterRow
-            if (this._footerRow.HasValue)
+            if (this.footerRow.HasValue)
             {
-                script.AppendFormat("footerrow: {0},", this._footerRow.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("footerrow: {0},", this.footerRow.Value.ToString().ToLower()).AppendLine();
             }
 
             // Forcefit
-            if (this._forceFit.HasValue)
+            if (this.forceFit.HasValue)
             {
-                script.AppendFormat("forceFit: {0},", this._forceFit.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("forceFit: {0},", this.forceFit.Value.ToString().ToLower()).AppendLine();
             }
 
             // Gridview
-            if (this._gridView.HasValue)
+            if (this.gridView.HasValue)
             {
-                script.AppendFormat("gridview: {0},", this._gridView.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("gridview: {0},", this.gridView.Value.ToString().ToLower()).AppendLine();
             }
 
             // HeaderTitles
-            if (this._headerTitles.HasValue)
+            if (this.headerTitles.HasValue)
             {
-                script.AppendFormat("headertitles: {0},", this._headerTitles.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("headertitles: {0},", this.headerTitles.Value.ToString().ToLower()).AppendLine();
             }
 
             // Height (set 100% if no value is specified except when scroll is set to true otherwise layout is not as it is supposed to be)
-            if (!this._height.HasValue)
+            if (!this.height.HasValue)
             {
-                if ((!this._scroll.HasValue || this._scroll.Value == false) && !this._scrollInt.HasValue)
+                if ((!this.scroll.HasValue || this.scroll.Value == false) && !this.scrollInt.HasValue)
                 {
                     script.AppendFormat("height: '{0}',", "100%").AppendLine();
                 }
             }
             else
             {
-                script.AppendFormat("height: {0},", this._height).AppendLine();
+                script.AppendFormat("height: {0},", this.height).AppendLine();
             }
 
             // Hiddengrid
-            if (this._hiddenGrid.HasValue)
+            if (this.hiddenGrid.HasValue)
             {
-                script.AppendFormat("hiddengrid: {0},", this._hiddenGrid.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("hiddengrid: {0},", this.hiddenGrid.Value.ToString().ToLower()).AppendLine();
             }
 
             // Hidegrid
-            if (this._hideGrid.HasValue)
+            if (this.hideGrid.HasValue)
             {
-                script.AppendFormat("hidegrid: {0},", this._hideGrid.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("hidegrid: {0},", this.hideGrid.Value.ToString().ToLower()).AppendLine();
             }
 
             // HoverRows
-            if (this._hoverRows.HasValue)
+            if (this.hoverRows.HasValue)
             {
-                script.AppendFormat("hoverrows: {0},", this._hoverRows.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("hoverrows: {0},", this.hoverRows.Value.ToString().ToLower()).AppendLine();
             }
 
             // Loadonce
-            if (this._loadOnce.HasValue)
+            if (this.loadOnce.HasValue)
             {
-                script.AppendFormat("loadonce: {0},", this._loadOnce.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("loadonce: {0},", this.loadOnce.Value.ToString().ToLower()).AppendLine();
             }
 
             // Loadtext
-            if (!string.IsNullOrWhiteSpace(this._loadText))
+            if (!string.IsNullOrWhiteSpace(this.loadText))
             {
-                script.AppendFormat("loadtext: '{0}',", this._loadText).AppendLine();
+                script.AppendFormat("loadtext: '{0}',", this.loadText).AppendLine();
             }
 
             // LoadUi
-            if (this._loadUi.HasValue)
+            if (this.loadUI.HasValue)
             {
-                script.AppendFormat("loadui: '{0}',", this._loadUi.Value.ToString()).AppendLine();
+                script.AppendFormat("loadui: '{0}',", this.loadUI.Value.ToString()).AppendLine();
             }
 
             // MultiBoxOnly
-            if (this._multiBoxOnly.HasValue)
+            if (this.multiBoxOnly.HasValue)
             {
-                script.AppendFormat("multiboxonly: {0},", this._multiBoxOnly.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("multiboxonly: {0},", this.multiBoxOnly.Value.ToString().ToLower()).AppendLine();
             }
 
             // MultiKey
-            if (this._multiKey.HasValue)
+            if (this.multiKey.HasValue)
             {
-                script.AppendFormat("multikey: '{0}',", this._multiKey.Value.ToString()).AppendLine();
+                script.AppendFormat("multikey: '{0}',", this.multiKey.Value.ToString()).AppendLine();
             }
 
             // MultiSelect
-            if (this._multiSelect.HasValue)
+            if (this.multiSelect.HasValue)
             {
-                script.AppendFormat("multiselect: {0},", this._multiSelect.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("multiselect: {0},", this.multiSelect.Value.ToString().ToLower()).AppendLine();
             }
 
             // MultiSelectWidth
-            if (this._multiSelectWidth.HasValue)
+            if (this.multiSelectWidth.HasValue)
             {
-                script.AppendFormat("multiselectWidth: {0},", this._multiSelectWidth.Value.ToString()).AppendLine();
+                script.AppendFormat("multiselectWidth: {0},", this.multiSelectWidth.Value.ToString()).AppendLine();
             }
 
             // Page
-            if (this._page.HasValue)
+            if (this.page.HasValue)
             {
-                script.AppendFormat("page:{0},", this._page.Value).AppendLine();
+                script.AppendFormat("page:{0},", this.page.Value).AppendLine();
             }
 
             // Pager
-            if (!string.IsNullOrWhiteSpace(this._pager))
+            if (!string.IsNullOrWhiteSpace(this.pager))
             {
-                script.AppendFormat("pager:'#{0}',", this._pager).AppendLine();
+                script.AppendFormat("pager:'#{0}',", this.pager).AppendLine();
             }
 
             // PagerPos
-            if (this._pagerPos.HasValue)
+            if (this.pagerPos.HasValue)
             {
-                script.AppendFormat("pagerpos: '{0}',", this._pagerPos.ToString()).AppendLine();
+                script.AppendFormat("pagerpos: '{0}',", this.pagerPos.ToString()).AppendLine();
             }
 
             // PgButtons
-            if (this._pgButtons.HasValue)
+            if (this.pgButtons.HasValue)
             {
-                script.AppendFormat("pgbuttons:{0},", this._pgButtons.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("pgbuttons:{0},", this.pgButtons.Value.ToString().ToLower()).AppendLine();
             }
 
             // PgInput
-            if (this._pgInput.HasValue)
+            if (this.pgInput.HasValue)
             {
-                script.AppendFormat("pginput: {0},", this._pgInput.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("pginput: {0},", this.pgInput.Value.ToString().ToLower()).AppendLine();
             }
 
             // PGText
-            if (!string.IsNullOrWhiteSpace(this._pgText))
+            if (!string.IsNullOrWhiteSpace(this.pgText))
             {
-                script.AppendFormat("pgtext: '{0}',", this._pgText).AppendLine();
+                script.AppendFormat("pgtext: '{0}',", this.pgText).AppendLine();
             }
 
             // RecordPos
-            if (this._recordPos.HasValue)
+            if (this.recordPos.HasValue)
             {
-                script.AppendFormat("recordpos: '{0}',", this._recordPos.Value).AppendLine();
+                script.AppendFormat("recordpos: '{0}',", this.recordPos.Value).AppendLine();
             }
 
             // RecordText
-            if (!string.IsNullOrWhiteSpace(this._recordText))
+            if (!string.IsNullOrWhiteSpace(this.recordText))
             {
-                script.AppendFormat("recordtext: '{0}',", this._recordText).AppendLine();
+                script.AppendFormat("recordtext: '{0}',", this.recordText).AppendLine();
             }
 
             // Request Type
-            if (this._requestType.HasValue)
+            if (this.requestType.HasValue)
             {
-                script.AppendFormat("mtype: '{0}',", this._requestType.ToString()).AppendLine();
+                script.AppendFormat("mtype: '{0}',", this.requestType.ToString()).AppendLine();
             }
 
             // ResizeClass
-            if (!string.IsNullOrWhiteSpace(this._resizeClass))
+            if (!string.IsNullOrWhiteSpace(this.resizeClass))
             {
-                script.AppendFormat("resizeclass: '{0}',", this._resizeClass).AppendLine();
+                script.AppendFormat("resizeclass: '{0}',", this.resizeClass).AppendLine();
             }
 
             // Rowlist
-            if (this._rowList != null)
+            if (this.rowList != null)
             {
-                script.AppendFormat("rowList: [{0}],", string.Join(",", (from p in this._rowList select p.ToString()).ToArray())).AppendLine();
+                script.AppendFormat("rowList: [{0}],", string.Join(",", (from p in this.rowList select p.ToString()).ToArray())).AppendLine();
             }
 
             // Rownum
-            if (this._rowNum.HasValue)
+            if (this.rowNum.HasValue)
             {
-                script.AppendFormat("rowNum:{0},", this._rowNum.Value).AppendLine();
+                script.AppendFormat("rowNum:{0},", this.rowNum.Value).AppendLine();
             }
 
             // Rownumbers
-            if (this._rowNumbers.HasValue)
+            if (this.rowNumbers.HasValue)
             {
-                script.AppendFormat("rownumbers: {0},", this._rowNumbers.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("rownumbers: {0},", this.rowNumbers.Value.ToString().ToLower()).AppendLine();
             }
 
             // RowNumWidth
-            if (this._rowNumWidth.HasValue)
+            if (this.rowNumWidth.HasValue)
             {
-                script.AppendFormat("rownumWidth: {0},", this._rowNumWidth.Value.ToString()).AppendLine();
+                script.AppendFormat("rownumWidth: {0},", this.rowNumWidth.Value.ToString()).AppendLine();
             }
 
             // Scroll (setters make sure either scroll or scrollint is set, never both)
-            if (this._scroll.HasValue)
+            if (this.scroll.HasValue)
             {
-                script.AppendFormat("scroll:{0},", this._scroll.ToString().ToLower()).AppendLine();
+                script.AppendFormat("scroll:{0},", this.scroll.ToString().ToLower()).AppendLine();
             }
 
-            if (this._scrollInt.HasValue)
+            if (this.scrollInt.HasValue)
             {
-                script.AppendFormat("scroll:{0},", this._scrollInt.Value).AppendLine();
+                script.AppendFormat("scroll:{0},", this.scrollInt.Value).AppendLine();
             }
 
             // ScrollOffset
-            if (this._scrollOffset.HasValue)
+            if (this.scrollOffset.HasValue)
             {
-                script.AppendFormat("scrollOffset: {0},", this._scrollOffset.Value).AppendLine();
+                script.AppendFormat("scrollOffset: {0},", this.scrollOffset.Value).AppendLine();
             }
 
             // ScrollRows
-            if (this._scrollRows.HasValue)
+            if (this.scrollRows.HasValue)
             {
-                script.AppendFormat("scrollrows: {0},", this._scrollRows.ToString().ToLower()).AppendLine();
+                script.AppendFormat("scrollrows: {0},", this.scrollRows.ToString().ToLower()).AppendLine();
             }
 
             // ScrollTimeout
-            if (this._scrollTimeout.HasValue)
+            if (this.scrollTimeout.HasValue)
             {
-                script.AppendFormat("scrollTimeout: {0},", this._scrollTimeout.Value).AppendLine();
+                script.AppendFormat("scrollTimeout: {0},", this.scrollTimeout.Value).AppendLine();
             }
 
             // Sortname
-            if (!string.IsNullOrWhiteSpace(this._sortName))
+            if (!string.IsNullOrWhiteSpace(this.sortName))
             {
-                script.AppendFormat("sortname: '{0}',", this._sortName).AppendLine();
+                script.AppendFormat("sortname: '{0}',", this.sortName).AppendLine();
             }
 
             // Sorticons
-            if (this._showAllSortIcons.HasValue || this._sortIconDirection.HasValue || this._sortOnHeaderClick.HasValue)
+            if (this.showAllSortIcons.HasValue || this.sortIconDirection.HasValue || this.sortOnHeaderClick.HasValue)
             {
                 // Set defaults
-                if (!this._showAllSortIcons.HasValue)
+                if (!this.showAllSortIcons.HasValue)
                 {
-                    this._showAllSortIcons = false;
+                    this.showAllSortIcons = false;
                 }
 
-                if (!this._sortIconDirection.HasValue)
+                if (!this.sortIconDirection.HasValue)
                 {
-                    this._sortIconDirection = Direction.vertical;
+                    this.sortIconDirection = Direction.vertical;
                 }
 
-                if (!this._sortOnHeaderClick.HasValue)
+                if (!this.sortOnHeaderClick.HasValue)
                 {
-                    this._sortOnHeaderClick = true;
+                    this.sortOnHeaderClick = true;
                 }
 
-                script.AppendFormat("viewsortcols: [{0},'{1}',{2}],", this._showAllSortIcons.Value.ToString().ToLower(), this._sortIconDirection.ToString(), this._sortOnHeaderClick.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("viewsortcols: [{0},'{1}',{2}],", this.showAllSortIcons.Value.ToString().ToLower(), this.sortIconDirection.ToString(), this.sortOnHeaderClick.Value.ToString().ToLower()).AppendLine();
             }
 
             // Shrink to fit
-            if (this._shrinkToFit.HasValue)
+            if (this.shrinkToFit.HasValue)
             {
-                script.AppendFormat("shrinkToFit: {0},", this._shrinkToFit.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("shrinkToFit: {0},", this.shrinkToFit.Value.ToString().ToLower()).AppendLine();
             }
 
             // Sortorder
-            if (this._sortOrder.HasValue)
+            if (this.sortOrder.HasValue)
             {
-                script.AppendFormat("sortorder: '{0}',", this._sortOrder.Value.ToString()).AppendLine();
+                script.AppendFormat("sortorder: '{0}',", this.sortOrder.Value.ToString()).AppendLine();
             }
 
             // Toolbar
-            if (this._toolbar.HasValue)
+            if (this.toolbar.HasValue)
             {
-                script.AppendFormat("toolbar: [{0},\"{1}\"],", this._toolbar.Value.ToString().ToLower(), this._toolbarPosition.ToString()).AppendLine();
+                script.AppendFormat("toolbar: [{0},\"{1}\"],", this.toolbar.Value.ToString().ToLower(), this.toolbarPosition.ToString()).AppendLine();
             }
 
             // Toppager
-            if (this._topPager.HasValue)
+            if (this.topPager.HasValue)
             {
-                script.AppendFormat("toppager: {0},", this._topPager.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("toppager: {0},", this.topPager.Value.ToString().ToLower()).AppendLine();
             }
 
             // Url
-            if (!string.IsNullOrWhiteSpace(this._url))
+            if (!string.IsNullOrWhiteSpace(this.url))
             {
-                script.AppendFormat("url:'{0}',", this._url).AppendLine();
+                script.AppendFormat("url:'{0}',", this.url).AppendLine();
             }
 
             // View records
-            if (this._viewRecords.HasValue)
+            if (this.viewRecords.HasValue)
             {
-                script.AppendFormat("viewrecords: {0},", this._viewRecords.Value.ToString().ToLower()).AppendLine();
+                script.AppendFormat("viewrecords: {0},", this.viewRecords.Value.ToString().ToLower()).AppendLine();
             }
 
             // Width
-            if (this._width.HasValue)
+            if (this.width.HasValue)
             {
-                script.AppendFormat("width:'{0}',", this._width.Value).AppendLine();
+                script.AppendFormat("width:'{0}',", this.width.Value).AppendLine();
             }
 
             // onAfterInsertRow
-            if (!string.IsNullOrWhiteSpace(this._onAfterInsertRow))
+            if (!string.IsNullOrWhiteSpace(this.onAfterInsertRow))
             {
-                script.AppendFormat("afterInsertRow: function(rowid, rowdata, rowelem) {{{0}}},", this._onAfterInsertRow).AppendLine();
+                script.AppendFormat("afterInsertRow: function(rowid, rowdata, rowelem) {{{0}}},", this.onAfterInsertRow).AppendLine();
             }
 
             // onBeforeRequest
-            if (!string.IsNullOrWhiteSpace(this._onBeforeRequest))
+            if (!string.IsNullOrWhiteSpace(this.onBeforeRequest))
             {
-                script.AppendFormat("beforeRequest: function() {{{0}}},", this._onBeforeRequest).AppendLine();
+                script.AppendFormat("beforeRequest: function() {{{0}}},", this.onBeforeRequest).AppendLine();
             }
 
             // onBeforeSelectRow
-            if (!string.IsNullOrWhiteSpace(this._onBeforeSelectRow))
+            if (!string.IsNullOrWhiteSpace(this.onBeforeSelectRow))
             {
-                script.AppendFormat("beforeSelectRow: function(rowid, e) {{{0}}},", this._onBeforeSelectRow).AppendLine();
+                script.AppendFormat("beforeSelectRow: function(rowid, e) {{{0}}},", this.onBeforeSelectRow).AppendLine();
             }
 
             // onGridComplete
-            if (!string.IsNullOrWhiteSpace(this._onGridComplete))
+            if (!string.IsNullOrWhiteSpace(this.onGridComplete))
             {
-                script.AppendFormat("gridComplete: function() {{{0}}},", this._onGridComplete).AppendLine();
+                script.AppendFormat("gridComplete: function() {{{0}}},", this.onGridComplete).AppendLine();
             }
 
             // onLoadBeforeSend
-            if (!string.IsNullOrWhiteSpace(this._onLoadBeforeSend))
+            if (!string.IsNullOrWhiteSpace(this.onLoadBeforeSend))
             {
-                script.AppendFormat("loadBeforeSend: function(xhr) {{{0}}},", this._onLoadBeforeSend).AppendLine();
+                script.AppendFormat("loadBeforeSend: function(xhr) {{{0}}},", this.onLoadBeforeSend).AppendLine();
             }
 
             // onLoadComplete
-            if (!string.IsNullOrWhiteSpace(this._onLoadComplete))
+            if (!string.IsNullOrWhiteSpace(this.onLoadComplete))
             {
-                script.AppendFormat("loadComplete: function(xhr) {{{0}}},", this._onLoadComplete).AppendLine();
+                script.AppendFormat("loadComplete: function(xhr) {{{0}}},", this.onLoadComplete).AppendLine();
             }
 
             // onLoadError
-            if (!string.IsNullOrWhiteSpace(this._onLoadError))
+            if (!string.IsNullOrWhiteSpace(this.onLoadError))
             {
-                script.AppendFormat("loadError: function(xhr, status, error) {{{0}}},", this._onLoadError).AppendLine();
+                script.AppendFormat("loadError: function(xhr, status, error) {{{0}}},", this.onLoadError).AppendLine();
             }
 
             // onCellSelect
-            if (!string.IsNullOrWhiteSpace(this._onCellSelect))
+            if (!string.IsNullOrWhiteSpace(this.onCellSelect))
             {
-                script.AppendFormat("onCellSelect: function(rowid, iCol, cellcontent, e) {{{0}}},", this._onCellSelect).AppendLine();
+                script.AppendFormat("onCellSelect: function(rowid, iCol, cellcontent, e) {{{0}}},", this.onCellSelect).AppendLine();
             }
 
             // onDblClickRow
-            if (!string.IsNullOrWhiteSpace(this._onDblClickRow))
+            if (!string.IsNullOrWhiteSpace(this.onDblClickRow))
             {
-                script.AppendFormat("ondblClickRow: function(rowid, iRow, iCol, e) {{{0}}},", this._onDblClickRow).AppendLine();
+                script.AppendFormat("ondblClickRow: function(rowid, iRow, iCol, e) {{{0}}},", this.onDblClickRow).AppendLine();
             }
 
             // onHeaderClick
-            if (!string.IsNullOrWhiteSpace(this._onHeaderClick))
+            if (!string.IsNullOrWhiteSpace(this.onHeaderClick))
             {
-                script.AppendFormat("onHeaderClick: function(gridstate) {{{0}}},", this._onHeaderClick).AppendLine();
+                script.AppendFormat("onHeaderClick: function(gridstate) {{{0}}},", this.onHeaderClick).AppendLine();
             }
 
             // onPaging
-            if (!string.IsNullOrWhiteSpace(this._onPaging))
+            if (!string.IsNullOrWhiteSpace(this.onPaging))
             {
-                script.AppendFormat("onPaging: function(pgButton) {{{0}}},", this._onPaging).AppendLine();
+                script.AppendFormat("onPaging: function(pgButton) {{{0}}},", this.onPaging).AppendLine();
             }
 
             // onRightClickRow
-            if (!string.IsNullOrWhiteSpace(this._onRightClickRow))
+            if (!string.IsNullOrWhiteSpace(this.onRightClickRow))
             {
-                script.AppendFormat("onRightClickRow: function(rowid, iRow, iCol, e) {{{0}}},", this._onRightClickRow).AppendLine();
+                script.AppendFormat("onRightClickRow: function(rowid, iRow, iCol, e) {{{0}}},", this.onRightClickRow).AppendLine();
             }
 
             // onSelectAll
-            if (!string.IsNullOrWhiteSpace(this._onSelectAll))
+            if (!string.IsNullOrWhiteSpace(this.onSelectAll))
             {
-                script.AppendFormat("onSelectAll: function(aRowids, status) {{{0}}},", this._onSelectAll).AppendLine();
+                script.AppendFormat("onSelectAll: function(aRowids, status) {{{0}}},", this.onSelectAll).AppendLine();
             }
 
             // onSelectRow event
-            if (!string.IsNullOrWhiteSpace(this._onSelectRow))
+            if (!string.IsNullOrWhiteSpace(this.onSelectRow))
             {
-                script.AppendFormat("onSelectRow: function(rowid, status) {{{0}}},", this._onSelectRow).AppendLine();
+                script.AppendFormat("onSelectRow: function(rowid, status) {{{0}}},", this.onSelectRow).AppendLine();
             }
 
             // onSortCol
-            if (!string.IsNullOrWhiteSpace(this._onSortCol))
+            if (!string.IsNullOrWhiteSpace(this.onSortCol))
             {
-                script.AppendFormat("onSortCol: function(index, iCol, sortorder) {{{0}}},", this._onSortCol).AppendLine();
+                script.AppendFormat("onSortCol: function(index, iCol, sortorder) {{{0}}},", this.onSortCol).AppendLine();
             }
 
             // onResizeStart
-            if (!string.IsNullOrWhiteSpace(this._onResizeStart))
+            if (!string.IsNullOrWhiteSpace(this.onResizeStart))
             {
-                script.AppendFormat("resizeStart: function(event, index) {{{0}}},", this._onResizeStart).AppendLine();
+                script.AppendFormat("resizeStart: function(event, index) {{{0}}},", this.onResizeStart).AppendLine();
             }
 
             // onResizeStop
-            if (!string.IsNullOrWhiteSpace(this._onResizeStop))
+            if (!string.IsNullOrWhiteSpace(this.onResizeStop))
             {
-                script.AppendFormat("resizeStop: function(newwidth, index) {{{0}}},", this._onResizeStop).AppendLine();
+                script.AppendFormat("resizeStop: function(newwidth, index) {{{0}}},", this.onResizeStop).AppendLine();
             }
 
             // onSerializeGridData
-            if (!string.IsNullOrWhiteSpace(this._onSerializeGridData))
+            if (!string.IsNullOrWhiteSpace(this.onSerializeGridData))
             {
-                script.AppendFormat("serializeGridData: function(postData) {{{0}}},", this._onSerializeGridData).AppendLine();
+                script.AppendFormat("serializeGridData: function(postData) {{{0}}},", this.onSerializeGridData).AppendLine();
             }
 
             // Colmodel
             script.AppendLine("colModel: [");
-            string colModel = string.Join(",", (from c in this._columns select c.ToString()).ToArray());
+            string colModel = string.Join(",", (from c in this.columns select c.ToString()).ToArray());
             script.AppendLine(colModel);
             script.AppendLine("]");
 
@@ -2104,19 +2104,19 @@
             script.AppendLine("});");
 
             // Search clear button
-            if (this._searchToolbar == true && this._searchClearButton.HasValue && !string.IsNullOrWhiteSpace(this._pager) && this._searchClearButton.Value == true)
+            if (this.searchToolbar == true && this.searchClearButton.HasValue && !string.IsNullOrWhiteSpace(this.pager) && this.searchClearButton.Value == true)
             {
-                script.AppendLine("jQuery('#" + this._id + "').jqGrid('navButtonAdd',\"#" +
-                                  this._pager + "\",{caption:\"Clear\",title:\"Clear Search\",buttonicon :'ui-icon-refresh', onClickButton:function(){mygrid[0].clearToolbar(); }}); ");
+                script.AppendLine("jQuery('#" + this.id + "').jqGrid('navButtonAdd',\"#" +
+                                  this.pager + "\",{caption:\"Clear\",title:\"Clear Search\",buttonicon :'ui-icon-refresh', onClickButton:function(){mygrid[0].clearToolbar(); }}); ");
             }
 
             // Search toolbar
-            if (this._searchToolbar == true)
+            if (this.searchToolbar == true)
             {
-                script.Append("jQuery('#" + this._id + "').jqGrid('filterToolbar', {stringResult:true");
-                if (this._searchOnEnter.HasValue)
+                script.Append("jQuery('#" + this.id + "').jqGrid('filterToolbar', {stringResult:true");
+                if (this.searchOnEnter.HasValue)
                 {
-                    script.AppendFormat(", searchOnEnter:{0}", this._searchOnEnter.Value.ToString().ToLower());
+                    script.AppendFormat(", searchOnEnter:{0}", this.searchOnEnter.Value.ToString().ToLower());
                 }
 
                 script.AppendLine("});");
@@ -2124,14 +2124,14 @@
 
             var searhBoxOptions = string.Format(
                                       "closeOnEscape: {0}, multipleSearch: {1}, closeAfterSearch: {2} ",
-                                      this._closeOnEscape.ToString().ToLower(),
-                                      this._multipleSearch.ToString().ToLower(),
-                                      this._closeAfterSearch.ToString().ToLower());
+                                      this.closeOnEscape.ToString().ToLower(),
+                                      this.multipleSearch.ToString().ToLower(),
+                                      this.closeAfterSearch.ToString().ToLower());
 
             // CFM
-            script.AppendLine("jQuery('#" + this._id + "').jqGrid('navGrid',\"#"
-                              + this._pager + "\",{edit:false,add:false,del:false,search:"
-                              + this._search.ToString().ToLower() + ",refresh:true},{},{},{},{" +
+            script.AppendLine("jQuery('#" + this.id + "').jqGrid('navGrid',\"#"
+                              + this.pager + "\",{edit:false,add:false,del:false,search:"
+                              + this.search.ToString().ToLower() + ",refresh:true},{},{},{},{" +
                               searhBoxOptions + "},{}); ");
 
             // End script
@@ -2140,24 +2140,24 @@
 
             // Create table which is used to render grid
             var table = new StringBuilder();
-            table.AppendFormat("<table id=\"{0}\"></table>", this._id);
+            table.AppendFormat("<table id=\"{0}\"></table>", this.id);
 
             // Create pager element if is set
             var pager = new StringBuilder();
-            if (!string.IsNullOrWhiteSpace(this._pager))
+            if (!string.IsNullOrWhiteSpace(this.pager))
             {
-                pager.AppendFormat("<div id=\"{0}\"></div>", this._pager);
+                pager.AppendFormat("<div id=\"{0}\"></div>", this.pager);
             }
 
             // Create toppager element if is set
             var topPager = new StringBuilder();
-            if (this._topPager == true)
+            if (this.topPager == true)
             {
-                topPager.AppendFormat("<div id=\"{0}_toppager\"></div>", this._id);
+                topPager.AppendFormat("<div id=\"{0}_toppager\"></div>", this.id);
             }
 
             // Insert grid id where needed (in columns)
-            script.Replace("##gridid##", this._id);
+            script.Replace("##gridid##", this.id);
 
             // Return script + required elements
             return script.ToString() + table.ToString() + pager.ToString() + topPager.ToString();
