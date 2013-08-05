@@ -6,13 +6,9 @@
 namespace Hexa.Core.Logging
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Globalization;
-
     using log4net;
 
-    [Export(typeof(ILogger))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class Log4NetLogger : ILogger
     {
         private readonly ILog log;

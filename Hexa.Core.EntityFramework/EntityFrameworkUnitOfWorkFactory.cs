@@ -6,13 +6,11 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Data.Entity;
     using System.Data.Objects;
 
     using Data;
 
-    [Export(typeof(IDatabaseManager))]
     public class EntityFrameworkUnitOfWorkFactory<TContext> : IDatabaseManager
         where TContext : AuditableContext
     {

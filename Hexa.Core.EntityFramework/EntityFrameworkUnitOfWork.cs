@@ -6,11 +6,8 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Data.Entity;
 
-    [Export(typeof(IUnitOfWork))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EntityFrameworkUnitOfWork : IEntityFrameworkUnitOfWork
     {
         private DbContext dbContext;

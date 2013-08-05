@@ -5,11 +5,8 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core
 {
-    using System.ComponentModel.Composition;
-
     using NHibernate.Cfg;
 
-    [Export(typeof(NHConfiguration))]
     public class NHConfiguration
     {
         static Configuration _configuration;

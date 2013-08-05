@@ -7,7 +7,6 @@ namespace Hexa.Core.Tests.EntityFramework
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition.Hosting;
     using System.Configuration;
     using System.Data.Entity;
     using System.Linq;

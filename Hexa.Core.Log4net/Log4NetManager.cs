@@ -6,12 +6,10 @@
 namespace Hexa.Core.Logging
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.IO;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.Web;
-
     using log4net;
     using log4net.Config;
 

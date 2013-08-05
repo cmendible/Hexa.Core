@@ -5,19 +5,12 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Tests.Data
 {
-    using System.ComponentModel.Composition;
-
     using Core.Domain;
-
     using Domain;
-
     using Logging;
 
-    [Export(typeof(IEntityARepository))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EntityARepository : BaseRepository<EntityA>, IEntityARepository
     {
-        [ImportingConstructor]
         public EntityARepository(IUnitOfWork unitOfWork)
         : base(unitOfWork)
         {

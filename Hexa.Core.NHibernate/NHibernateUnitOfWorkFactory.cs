@@ -6,26 +6,20 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Reflection;
-
     using Data;
-
     using FluentNHibernate.Cfg;
     using FluentNHibernate.Cfg.Db;
-
     using NHibernate;
     using NHibernate.Bytecode;
     using NHibernate.Cfg;
     using NHibernate.Event;
     using NHibernate.Tool.hbm2ddl;
-
     using Environment = NHibernate.Cfg.Environment;
 
-    [Export(typeof(IDatabaseManager))]
     public sealed class NHibernateUnitOfWorkFactory : IDatabaseManager
     {
         private static Configuration _builtConfiguration;

@@ -13,7 +13,6 @@ namespace Hexa.Core.Domain
     /// <summary>
     ///
     /// </summary>
-    [Obsolete]
     public class UnitOfWorkScope
     {
         public static IUnitOfWork Start()

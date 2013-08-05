@@ -6,14 +6,10 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.ComponentModel.Composition;
-
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
 
-    [Export(typeof(IUnitOfWork))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class RavenUnitOfWork : IRavenUnitOfWork
     {
         private bool disposed;

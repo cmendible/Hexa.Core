@@ -7,7 +7,6 @@ namespace Hexa.Core.Tests.Sql
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition.Hosting;
     using System.Configuration;
     using System.Linq;
     using System.Threading;
@@ -98,22 +97,6 @@ namespace Hexa.Core.Tests.Sql
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            // AggregateCatalog catalog = new AggregateCatalog();
-            // AssemblyCatalog thisAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
-            // catalog.Catalogs.Add(thisAssembly);
-            // catalog.Catalogs.Add(new DirectoryCatalog(@"C:\Dev\hexa\Hexa.Core\Hexa.Core.Tests\bin\Release"));
-
-            // CompositionContainer compositionContainer = new CompositionContainer(catalog);
-
-            // Microsoft.Practices.ServiceLocation.ServiceLocator.SetLocatorProvider(() => new Microsoft.Mef.CommonServiceLocator.MefServiceLocator(compositionContainer));
-
-            // IoCContainer containerWrapper = new IoCContainer(
-            //    (x, y) => { },
-            //    (x, y) => { }
-            // );
-
-            // ApplicationContext.Start(containerWrapper, this.ConnectionString());
-
             this.unityContainer = new UnityContainer();
             ServiceLocator.Initialize(
                 (x, y) => this.unityContainer.RegisterType(x, y),
@@ -141,10 +124,6 @@ namespace Hexa.Core.Tests.Sql
             // Repositories
             this.unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
             this.unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
-
-            // Services
-
-            // ctxFactory.RegisterSessionFactory(container);
 
             ApplicationContext.User =
                 new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
