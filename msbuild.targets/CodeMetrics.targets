@@ -49,6 +49,7 @@
 
         <MSBuild.ExtensionPack.CodeQuality.FxCop
 			TaskAction="Analyse"
+			FxCopPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\FxCopCmd.exe"
 			SearchGac="True"
 			Files="@(FilesToAnalyze)"
 			DependencyDirectories="@(DependencyDirectories)"
