@@ -35,7 +35,7 @@
 	</Target>
 
     <!-- This is needed by MSBuild to locate the FxCop task -->
-    <UsingTask AssemblyFile="$(SolutionDir)\packages\MSBuildTasks.1.4.0.56\tools\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FxCop"
+    <UsingTask AssemblyFile="$(SolutionDir)\libs\MSBuild.ExtensionPack\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.CodeQuality.FxCop"
 		Condition="'$(EnableFxCop)' == 'true'"/>
 
     <Target Name="RunFxCop" Condition="'$(EnableFxCop)' == 'true'">
@@ -44,20 +44,23 @@
         <ItemGroup>
             <FilesToAnalyze Include="$(OutDir)$(AssemblyName)$(TargetExt)" />
             <DependencyDirectories Include="$(SolutionDir)\packages\**\*.dll"/>
+			<CodeAnalysisDictionary Include="$(SolutionDir)\msbuild.targets\CodeAnalysisDictionary.xml"/>
         </ItemGroup>
 
-        <FxCop
-			ToolPath = "$(MSBuildProgramFiles32)\Microsoft Fxcop 10.0\"
+        <MSBuild.ExtensionPack.CodeQuality.FxCop
+			TaskAction="Analyse"
 			SearchGac="True"
-			TargetAssemblies="@(FilesToAnalyze)"
+			Files="@(FilesToAnalyze)"
 			DependencyDirectories="@(DependencyDirectories)"
-			RuleLibraries="@(FxCopRuleAssemblies)"
-			Rules="-Microsoft.Usage#CA2214;-Microsoft.Design#CA1006;-Microsoft.Design#CA1040;-Microsoft.Design#CA1031;-Microsoft.Design#CA1020"
-			AnalysisReportFileName="$(OutDir)$(AssemblyName)$(TargetExt).CodeAnalysis.xml"
-			CustomDictionary="$(SolutionDir)\msbuild.targets\CodeAnalysisDictionary.xml"
+			Ruleset="=$(SolutionDir)\msbuild.targets\CodeAnalysisRules.ruleset"
+			OutputFile="$(OutDir)$(AssemblyName)$(TargetExt).CodeAnalysis.xml"
+			Dictionary="@(CodeAnalysisDictionary)"
 			Verbose="True"
-			FailOnError="False"
-		/>
+			IgnoreGeneratedCode="True">
+			<Output TaskParameter="AnalysisFailed" PropertyName="Result"/>
+			<Output TaskParameter="OutputText" PropertyName="Text"/>
+		</MSBuild.ExtensionPack.CodeQuality.FxCop>
+		<Message Text="CODE ANALYSIS FAILED: $(Text)" Condition="$(Result) == 'true'"/>
     </Target>
 	
 	<PropertyGroup Condition="'$(EnableSimian)' == 'true'">
