@@ -158,7 +158,6 @@
     <Compile Include="EntityFramework\DomainContext.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
-    <Compile Include="Core.Domain.Tests\BaseRepositoryTestsBase.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
     <Compile Include="NHibernate\FirebirdTests.cs" />
     <Compile Include="NHibernate\PostgreSQLTest.cs" />

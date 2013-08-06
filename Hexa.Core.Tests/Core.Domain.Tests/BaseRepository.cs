@@ -220,8 +220,8 @@ namespace Hexa.Core.Domain.Tests
             PagedElements<Entity> result = target.GetPagedElements<int>(
                                                pageIndex,
                                                pageCount,
-                                               null,
                                                e => e.Id == 1,
+                                               null,
                                                false);
         }
 
@@ -241,8 +241,8 @@ namespace Hexa.Core.Domain.Tests
             PagedElements<Entity> result = target.GetPagedElements<int>(
                                                pageIndex,
                                                pageCount,
-                                               null,
                                                e => e.Id == 1,
+                                               null,
                                                false);
         }
 
@@ -262,8 +262,8 @@ namespace Hexa.Core.Domain.Tests
             PagedElements<Entity> result = target.GetPagedElements<int>(
                                                pageIndex,
                                                pageCount,
-                                               null,
                                                e => e.Id == 1,
+                                               null,
                                                false);
         }
 
@@ -386,8 +386,8 @@ namespace Hexa.Core.Domain.Tests
             PagedElements<Entity> result = target.GetPagedElements(
                                                pageIndex,
                                                pageCount,
-                                               e => e.Id,
                                                e => e.Id == 1,
+                                               e => e.Id,
                                                true);
 
             // Assert
@@ -410,8 +410,8 @@ namespace Hexa.Core.Domain.Tests
             PagedElements<Entity> result = target.GetPagedElements(
                                                pageIndex,
                                                pageCount,
-                                               e => e.Id,
                                                e => e.Id == 1,
+                                               e => e.Id,
                                                false);
 
             // Assert
@@ -431,7 +431,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => e.Id, true);
+            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => true, e => e.Id, true);
 
             // Assert
             Assert.IsNotNull(result);
@@ -450,7 +450,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => e.Id, false);
+            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => true, e => e.Id, false);
 
             // Assert
             Assert.IsNotNull(result);

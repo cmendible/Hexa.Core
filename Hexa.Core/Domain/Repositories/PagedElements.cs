@@ -7,20 +7,21 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
 
     [DataContract]
     public class PagedElements<TEntity>
         where TEntity : class
     {
-        public PagedElements(IEnumerable<TEntity> elements, int totalElements)
+        public PagedElements(IQueryable<TEntity> elements, int totalElements)
         {
             this.Elements = elements;
             this.TotalElements = totalElements;
         }
 
         [DataMember]
-        public IEnumerable<TEntity> Elements
+        public IQueryable<TEntity> Elements
         {
             get;
             private set;
