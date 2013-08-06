@@ -40,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4F194D
 		Build.msbuild = Build.msbuild
 		Build.proj = Build.proj
 		msbuild.targets\CodeAnalysisDictionary.xml = msbuild.targets\CodeAnalysisDictionary.xml
+		msbuild.targets\CodeAnalysisRules.ruleset = msbuild.targets\CodeAnalysisRules.ruleset
 		msbuild.targets\CodeMetrics.targets = msbuild.targets\CodeMetrics.targets
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		msbuild.targets\CopyFirebird.targets = msbuild.targets\CopyFirebird.targets
@@ -91,10 +92,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Hexa.Core
-		IsWCSFSolutionWAP = True
-		IsWCSFSolution = True
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+		IsWCSFSolution = True
+		IsWCSFSolutionWAP = True
+		RootNamespace = Hexa.Core
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj

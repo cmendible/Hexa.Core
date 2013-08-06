@@ -64,10 +64,9 @@ namespace Hexa.Core.Domain.Specification
         /// <returns><see cref="Hexa.Core.Domain.Specification.ISpecification{TEntity}"/></returns>
         public override Expression<Func<TEntity, bool>> SatisfiedBy()
         {
-            return Expression.Lambda<Func<TEntity, bool>>(Expression.Not(
-
-                        this.originalCriteria.Body),
-                    this.originalCriteria.Parameters.Single());
+            return Expression.Lambda<Func<TEntity, bool>>(
+                Expression.Not(this.originalCriteria.Body),
+                this.originalCriteria.Parameters.Single());
         }
     }
 }

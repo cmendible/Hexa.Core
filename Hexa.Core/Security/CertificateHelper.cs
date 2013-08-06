@@ -24,8 +24,7 @@
                                                      col,
                                                      "Certificates",
                                                      "Select one to sign",
-                                                     X509SelectionFlag.
-                                                     SingleSelection);
+                                                     X509SelectionFlag.SingleSelection);
                 if (sel.Count > 0)
                 {
                     X509Certificate2Enumerator en = sel.GetEnumerator();

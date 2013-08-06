@@ -588,8 +588,7 @@ namespace Hexa.Core.Web.UI.Ajax
             MemberExpression memberAccess = null;
             foreach (string property in column.Split('.'))
             {
-                memberAccess = Expression.Property
-                               (memberAccess ?? (parameter as Expression), property);
+                memberAccess = Expression.Property(memberAccess ?? (parameter as Expression), property);
             }
 
             return memberAccess;

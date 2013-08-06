@@ -13,6 +13,7 @@ namespace Hexa.Core.Domain
     {
         private static EmbeddableDocumentStore _documenFactory;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification="Object can't be disposed here.")]
         public RavenUnitOfWorkFactory()
         {
             if (_documenFactory == null)

@@ -10,24 +10,15 @@ namespace Hexa.Core.Tests.Sql
     using System.Configuration;
     using System.Linq;
     using System.Threading;
-
     using Core.Data;
     using Core.Domain;
-
     using Data;
-
     using Domain;
-
-    using Logging;
-
     using Microsoft.Practices.Unity;
-
     using NUnit.Framework;
-
     using Security;
 
-    using Validation;
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]
     public class SqlTest
     {

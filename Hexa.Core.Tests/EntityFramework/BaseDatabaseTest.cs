@@ -31,6 +31,7 @@ namespace Hexa.Core.Tests.EntityFramework
 
     using Validation;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]
     public class SqlTest
     {

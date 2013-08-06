@@ -208,14 +208,13 @@ namespace Hexa.Core.Domain
         /// <returns>The titlized word.</returns>
         public static string Titleize(string word)
         {
-            return Regex.Replace(Humanize(Underscore(
-
-                                              word)),
-                                 @"\b([a-z])",
-                                 delegate(Match match)
-            {
-                return match.Captures[0].Value.ToUpper();
-            });
+            return Regex.Replace(
+                                Humanize(Underscore(word)),
+                                @"\b([a-z])",
+                                delegate(Match match)
+                                {
+                                    return match.Captures[0].Value.ToUpper();
+                                });
         }
 
         /// <summary>

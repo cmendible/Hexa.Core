@@ -138,8 +138,7 @@ namespace Hexa.Core.Domain
             _builtConfiguration = cfg.BuildConfiguration();
             _builtConfiguration.SetProperty(
                 Environment.ProxyFactoryFactoryClass,
-                typeof(DefaultProxyFactoryFactory).
-                AssemblyQualifiedName);
+                typeof(DefaultProxyFactoryFactory).AssemblyQualifiedName);
 
             #region Add Listeners to NHibernate pipeline....
 
@@ -154,14 +153,12 @@ namespace Hexa.Core.Domain
             _builtConfiguration.SetListeners(
                 ListenerType.PreInsert,
                 _builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
-                ToArray());
+            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
 
             _builtConfiguration.SetListeners(
                 ListenerType.PreUpdate,
                 _builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).
-                ToArray());
+            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
 
             #endregion
         }

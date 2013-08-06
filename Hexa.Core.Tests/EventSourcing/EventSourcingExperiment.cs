@@ -3,6 +3,9 @@
 // Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
 // </copyright>
 //-----------------------------------------------------------------------------------------------
+
+#if false
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -245,3 +248,4 @@ namespace Hexa.Core.Tests.Domain
         }
     }
 }
+#endif

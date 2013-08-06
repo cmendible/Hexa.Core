@@ -119,8 +119,7 @@ namespace Hexa.Core.Domain
                 var exprLambda = System.Linq.Expressions.Expression.Lambda(
                                      delegateType,
                                      exprProp,
-                                     new System.Linq.Expressions.
-                                     ParameterExpression[] { (ParameterExpression)exprParam });
+                                     new System.Linq.Expressions.ParameterExpression[] { (ParameterExpression)exprParam });
 
                 // Call the *Fetch* function
                 var args = new object[] { currentQueryable, exprLambda };

@@ -111,6 +111,7 @@ namespace Hexa.Core.Web.Services
             return new List<SeoUrlInfo>().AsReadOnly();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification="Can't get rid of this issue.")]
         public string SeoXml()
         {
             // instantiate the XML Text Writer for writing the SiteMap document
