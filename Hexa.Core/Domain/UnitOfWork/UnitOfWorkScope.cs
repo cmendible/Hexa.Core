@@ -23,7 +23,9 @@ namespace Hexa.Core.Domain
         public static IUnitOfWork Start<TUnitOfWork>()
         where TUnitOfWork : IUnitOfWork
         {
-            return ServiceLocator.GetInstance<TUnitOfWork>();
+            IUnitOfWork unitOfWork = ServiceLocator.GetInstance<TUnitOfWork>();
+            unitOfWork.Start();
+            return unitOfWork;
         }
     }
 }
