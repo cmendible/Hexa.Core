@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
@@ -533,6 +534,7 @@
 
             return script.ToString();
         }
+
     }
 
     /// <summary>
@@ -553,6 +555,13 @@
         private bool? footerRow;
         private bool? forceFit;
         private bool? gridView;
+        private bool groupCollapse;
+        private List<bool> groupColumnShow = new List<bool>();
+        private List<string> groupFields = new List<string>();
+        private bool grouping;
+        private List<string> groupOrder = new List<string>();
+        private List<bool> groupSummary = new List<bool>();
+        private string groupText;
         private bool? headerTitles;
         private int? height;
         private bool? hiddenGrid;
@@ -643,6 +652,82 @@
         public Grid AddColumn(Column column)
         {
             this.columns.Add(column);
+            return this;
+        }
+
+        /// <summary>
+        /// Tells if the group must be or not collapsed
+        /// </summary>
+        /// <param name="collapse">if set to <c>true</c> [collapse].</param>
+        /// <returns></returns>
+        public Grid GroupCollapse(bool collapse)
+        {
+            this.groupCollapse = collapse;
+            return this;
+        }
+
+        /// <summary>
+        /// Tells if the grouping column must be shown.
+        /// </summary>
+        /// <param name="show">if set to <c>true</c> [show].</param>
+        /// <returns></returns>
+        public Grid GroupColumnShow(bool show)
+        {
+            this.groupColumnShow.Add(show);
+            return this;
+        }
+
+        /// <summary>
+        /// Enables grouping
+        /// </summary>
+        /// <returns></returns>
+        public Grid Grouping()
+        {
+            this.grouping = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Tell what field will be used for grouping
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <returns></returns>
+        public Grid GroupingField(string field)
+        {
+            this.groupFields.Add(field);
+            return this;
+        }
+
+        /// <summary>
+        /// Tells if the group must be orderded asc or desc.
+        /// </summary>
+        /// <param name="order">The order.</param>
+        /// <returns></returns>
+        public Grid GroupOrder(string order)
+        {
+            this.groupOrder.Add(order);
+            return this;
+        }
+
+        /// <summary>
+        /// Tells if the group must show or not a summary.
+        /// </summary>
+        /// <param name="summary">if set to <c>true</c> [summary].</param>
+        /// <returns></returns>
+        public Grid GroupSummary(bool summary)
+        {
+            this.groupSummary.Add(summary);
+            return this;
+        }
+
+        /// <summary>
+        /// The text format for the gruuping. i.e. (['<b></b>'])
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        public Grid GroupText(string text)
+        {
+            this.groupText = text;
             return this;
         }
 
@@ -2100,6 +2185,41 @@
             script.AppendLine(colModel);
             script.AppendLine("]");
 
+            if (this.grouping)
+            {
+                script.Append(",");
+                script.AppendLine("grouping: true,");
+                script.AppendLine("groupingView: {");
+                script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupField: ['{0}'],", string.Join("', '", this.groupFields.ToArray())));
+
+                if (groupColumnShow.Any())
+                {
+                    script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupColumnShow: [{0}],", string.Join(", ", this.groupColumnShow.Select(g => g.ToString().ToLower()).ToArray())));
+                }
+
+                if (!string.IsNullOrEmpty(groupText))
+                {
+                    script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupText: {0},", this.groupText));
+                }
+
+                if (this.groupCollapse)
+                {
+                    script.AppendLine("groupCollapse: true,");
+                }
+
+                if (groupOrder.Any())
+                {
+                    script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupOrder: ['{0}'],", string.Join("', '", this.groupOrder.ToArray())));
+                }
+
+                if (groupSummary.Any())
+                {
+                    script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupSummary: [{0}],", string.Join(", ", this.groupSummary.Select(g => g.ToString().ToLower()).ToArray())));
+                }
+
+                script.AppendLine("}");
+            }
+
             // End jqGrid call
             script.AppendLine("});");
 
@@ -2164,8 +2284,17 @@
         }
     }
 
+    /// <summary>
+    /// jqGrid HtmlHelper extension methods.
+    /// </summary>
     public static class GridHelper
     {
+        /// <summary>
+        /// Extends HtmlHelper so we can crerate jqGrids.
+        /// </summary>
+        /// <param name="helper">The helper.</param>
+        /// <param name="id">The id of the grid</param>
+        /// <returns></returns>
         public static Grid Grid(this System.Web.Mvc.HtmlHelper helper, string id)
         {
             return new Grid(id);
