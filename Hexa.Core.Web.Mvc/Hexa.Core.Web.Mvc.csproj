@@ -87,7 +87,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Enum\EnumHelper.cs" />
-    <Compile Include="Grid\GridData.cs" />
+    <Compile Include="Grid\GridData.cs">
+		<ExcludeFromStyleCop>true</ExcludeFromStyleCop>
+	</Compile>
     <Compile Include="Security\CheckAuthorizationAttribute.cs" />
     <Compile Include="Security\Extensions\AuthorizeActionLinkExtensions.cs" />
     <Compile Include="Grid\Grid.cs" />
