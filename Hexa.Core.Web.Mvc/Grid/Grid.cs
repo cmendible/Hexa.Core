@@ -115,6 +115,9 @@
         private bool? sortable;
         private bool? title;
         private int? width;
+        private bool editable;
+        private string editType;
+        private string editOptions;
 
         /// <summary>
         /// Constructor
@@ -190,6 +193,36 @@
             }
 
             this.customFormatter = customFormatter;
+            return this;
+        }
+
+        /// <summary>
+        /// Marks the columns as editable.
+        /// </summary>
+        /// <returns>the current column</returns>
+        public Column SetEditable()
+        {
+            this.editable = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the edit type of the column
+        /// </summary>
+        /// <returns>the current column</returns>
+        public Column SetEditType(string editType)
+        {
+            this.editType = editType;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the edit options of the column
+        /// </summary>
+        /// <returns>the current column</returns>
+        public Column SetEditOptions(string options)
+        {
+            this.editOptions= options;
             return this;
         }
 
@@ -526,6 +559,19 @@
                 script.AppendFormat("width:{0},", this.width.Value).AppendLine();
             }
 
+            if (this.editable)
+            {
+                script.AppendLine("editable:true,").AppendLine();
+                if (!string.IsNullOrWhiteSpace(this.editType))
+                {
+                    script.AppendFormat("edittype:'{0}',", this.editType).AppendLine();
+                }
+                if (!string.IsNullOrWhiteSpace(this.editOptions))
+                {
+                    script.AppendFormat("editoptions:{0},", this.editOptions).AppendLine();
+                }
+            }
+
             // Index
             script.AppendFormat("index:'{0}'", this.index).AppendLine();
 
@@ -653,7 +699,7 @@
         /// </summary>
         /// <returns>Current Grid instance</returns>
         public Grid Add()
-        {
+        { 
             this.add = true;
             return this;
         }
@@ -2239,7 +2285,7 @@
                 script.AppendLine("grouping: true,");
                 script.AppendLine("groupingView: {");
                 script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupField: ['{0}'],", string.Join("', '", this.groupFields.ToArray())));
-
+                
                 if (this.groupColumnShow.Any())
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupColumnShow: [{0}],", string.Join(", ", this.groupColumnShow.Select(g => g.ToString().ToLower()).ToArray())));
@@ -2264,7 +2310,7 @@
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupSummary: [{0}],", string.Join(", ", this.groupSummary.Select(g => g.ToString().ToLower()).ToArray())));
                 }
-
+                
                 script.AppendLine("}");
             }
 
