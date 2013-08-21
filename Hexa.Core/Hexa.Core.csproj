@@ -143,6 +143,7 @@
     <Compile Include="Domain\Repositories\EventSourcing\IEventSourcedRepository.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\IEventStore.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\MemoryEventStore.cs" />
+    <Compile Include="Extensions\JSONExtensions.cs" />
     <Compile Include="Extensions\PrivateReflectionDynamicObjectExtensions.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
@@ -228,7 +229,6 @@
     <Compile Include="Web\Services\Impl\SiteMapBuilderService.cs" />
     <Compile Include="Web\Services\Impl\SiteMapNodeInfo.cs" />
     <Compile Include="Web\Services\Impl\SiteMapProvider.cs" />
-    <Compile Include="Web\UI\jqGridHelper.cs" />
     <Compile Include="Web\UI\CachedImageService.cs" />
     <Compile Include="Web\UI\DynamicImage.cs" />
     <Compile Include="Domain\Validation\DataAnnotationHelper.cs" />

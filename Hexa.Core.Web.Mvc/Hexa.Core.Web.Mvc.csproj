@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <CodeAnalysisRuleSet>..\msbuild.targets\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
@@ -37,7 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <CodeAnalysisRuleSet>..\msbuild.targets\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>
@@ -87,6 +87,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Enum\EnumHelper.cs" />
+    <Compile Include="Grid\GridData.cs" />
     <Compile Include="Security\CheckAuthorizationAttribute.cs" />
     <Compile Include="Security\Extensions\AuthorizeActionLinkExtensions.cs" />
     <Compile Include="Grid\Grid.cs" />

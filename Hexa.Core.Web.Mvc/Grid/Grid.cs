@@ -17,6 +17,7 @@
     public enum DataType
     {
         json,
+        local,
         xml
     }
 
@@ -226,7 +227,7 @@
                 throw new Exception("You cannot set a formatter and a customformatter at the same time, please choose one.");
             }
 
-            this.formatter = new KeyValuePair<Formatters, string>(formatter, "");
+            this.formatter = new KeyValuePair<Formatters, string>(formatter, string.Empty);
             return this;
         }
 
@@ -466,7 +467,6 @@
                 {
                     script.AppendLine("stype:'select',");
                 }
-
             }
 
             // Searchoptions
@@ -534,7 +534,6 @@
 
             return script.ToString();
         }
-
     }
 
     /// <summary>
@@ -630,6 +629,10 @@
         private string url;
         private bool? viewRecords;
         private int? width;
+        private bool edit;
+        private bool add;
+        private bool delete;
+        private string data;
 
         /// <summary>
         /// Constructor
@@ -646,12 +649,42 @@
         }
 
         /// <summary>
+        /// Enables the Add button
+        /// </summary>
+        /// <returns>Current Grid instance</returns>
+        public Grid Add()
+        {
+            this.add = true;
+            return this;
+        }
+
+        /// <summary>
         /// Adds columns to grid
         /// </summary>
         /// <param name="column">Colomn object</param>
         public Grid AddColumn(Column column)
         {
             this.columns.Add(column);
+            return this;
+        }
+
+        /// <summary>
+        /// Enables the Delete button
+        /// </summary>
+        /// <returns>Current Grid instance</returns>
+        public Grid Delete()
+        {
+            this.delete = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Enables the Edit button
+        /// </summary>
+        /// <returns>Current Grid instance</returns>
+        public Grid Edit()
+        {
+            this.edit = true;
             return this;
         }
 
@@ -1071,6 +1104,16 @@
         public Grid SetCloseOnEscape(bool closeOnEscape)
         {
             this.closeOnEscape = closeOnEscape;
+            return this;
+        }
+
+        /// <summary>
+        /// Gives the grid the data when the data type is local
+        /// </summary>
+        /// <param name="data">the data</param>
+        public Grid SetData(string data)
+        {
+            this.data = data;
             return this;
         }
 
@@ -1594,7 +1637,7 @@
         /// If enabled all sort icons are visible for all columns which are sortable (default: false)
         /// </summary>
         /// <param name="showAllSortIcons">Boolean indicating if all sorting icons should be displayed</param>
-        public Grid setShowAllSortIcons(bool showAllSortIcons)
+        public Grid SetShowAllSortIcons(bool showAllSortIcons)
         {
             this.showAllSortIcons = showAllSortIcons;
             return this;
@@ -1784,6 +1827,11 @@
 
             // Datatype
             script.AppendLine(string.Format("datatype:'{0}',", this.dataType.ToString()));
+
+            if (this.dataType == DataType.local)
+            {
+                script.AppendLine(string.Format("data: {0},", this.data));
+            }
 
             // Emptyrecords
             if (!string.IsNullOrWhiteSpace(this.emptyRecords))
@@ -2192,12 +2240,12 @@
                 script.AppendLine("groupingView: {");
                 script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupField: ['{0}'],", string.Join("', '", this.groupFields.ToArray())));
 
-                if (groupColumnShow.Any())
+                if (this.groupColumnShow.Any())
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupColumnShow: [{0}],", string.Join(", ", this.groupColumnShow.Select(g => g.ToString().ToLower()).ToArray())));
                 }
 
-                if (!string.IsNullOrEmpty(groupText))
+                if (!string.IsNullOrEmpty(this.groupText))
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupText: {0},", this.groupText));
                 }
@@ -2207,12 +2255,12 @@
                     script.AppendLine("groupCollapse: true,");
                 }
 
-                if (groupOrder.Any())
+                if (this.groupOrder.Any())
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupOrder: ['{0}'],", string.Join("', '", this.groupOrder.ToArray())));
                 }
 
-                if (groupSummary.Any())
+                if (this.groupSummary.Any())
                 {
                     script.AppendLine(string.Format(CultureInfo.InvariantCulture, "groupSummary: [{0}],", string.Join(", ", this.groupSummary.Select(g => g.ToString().ToLower()).ToArray())));
                 }
@@ -2250,9 +2298,12 @@
 
             // CFM
             script.AppendLine("jQuery('#" + this.id + "').jqGrid('navGrid',\"#"
-                              + this.pager + "\",{edit:false,add:false,del:false,search:"
-                              + this.search.ToString().ToLower() + ",refresh:true},{},{},{},{" +
-                              searhBoxOptions + "},{}); ");
+                + this.pager + "\", { edit: "
+                + this.edit.ToString().ToLower() + ", add: "
+                + this.add.ToString().ToLower() + ", del: "
+                + this.delete.ToString().ToLower() + ", search:"
+                + this.search.ToString().ToLower() + ", refresh: true }, {}, {},{}, {"
+                + searhBoxOptions + "}, {}); ");
 
             // End script
             script.AppendLine("});");
