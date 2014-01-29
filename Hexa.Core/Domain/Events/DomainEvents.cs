@@ -6,8 +6,10 @@
 namespace Hexa.Core.Domain
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
 
     public static class DomainEvents
     {
@@ -15,43 +17,96 @@ namespace Hexa.Core.Domain
         [ThreadStatic]
         private static List<Delegate> actions;
 
-        // Clears callbacks passed to Register on the current thread
+        /// <summary>
+        /// The publish method
+        /// </summary>
+        private static MethodInfo publishMethod = typeof(DomainEvents).GetMethods()
+            .Where(m => m.Name == "Raise")
+            .Select(m => new
+            {
+                Method = m,
+                Params = m.GetParameters(),
+                Args = m.GetGenericArguments()
+            })
+            .Where(x => x.Params.Length == 1
+                        && x.Args.Length == 1
+                        && x.Params[0].ParameterType == x.Args[0])
+            .Select(x => x.Method)
+            .First();
+
+        /// <summary>
+        /// Clears the callbacks.
+        /// </summary>
         public static void ClearCallbacks()
         {
-            actions = null;
+            DomainEvents.actions = null;
         }
 
-        // Raises the given domain event
-        public static void Raise<T>(T args)
-        where T : IDomainEvent
+        /// <summary>
+        /// Raises the specified event.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="@event">The args.</param>
+        public static void Raise<T>(T @event)
+        where T : class
         {
             foreach (var handler in ServiceLocator.GetAllInstances<IDomainEventHandler<T>>())
             {
-                handler.Handle(args);
+                handler.Handle(@event);
             }
 
-            if (actions != null)
+            if (DomainEvents.actions != null)
             {
-                foreach (var action in actions)
+                foreach (Action action in DomainEvents.actions)
                 {
-                    if (action.GetType().FullName.Contains(args.GetType().FullName))
+                    Action<T> typedAction = action as Action<T>;
+                    if (typedAction != null)
                     {
-                        action.DynamicInvoke(args);
+                        typedAction(@event);
                     }
                 }
             }
         }
 
-        // Registers a callback for the given domain event
+        /// <summary>
+        /// Registers a callback for the given domain event.
+        /// Used for unit testing.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="callback">The callback.</param>
         public static void Register<T>(Action<T> callback)
-        where T : IDomainEvent
+        where T : class
         {
-            if (actions == null)
+            if (DomainEvents.actions == null)
             {
-                actions = new List<Delegate>();
+                DomainEvents.actions = new List<Delegate>();
             }
 
-            actions.Add(callback);
+            DomainEvents.actions.Add(callback);
+        }
+
+        /// <summary>
+        /// Publishes the specified @event.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="event">The @event.</param>
+        public static void Publish<T>(T @event)
+        where T : class
+        {
+            DomainEvents.Publish(new { @event });
+        }
+
+        /// <summary>
+        /// Publishes the specified events.
+        /// </summary>
+        /// <param name="events">The events.</param>
+        public static void Publish(ICollection events)
+        {
+            foreach (object @event in events)
+            {
+                MethodInfo method = DomainEvents.publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
+                method.Invoke(null, new object[] { @event });
+            }
         }
     }
 }
