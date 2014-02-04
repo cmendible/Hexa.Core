@@ -51,19 +51,19 @@ namespace Hexa.Core.Domain
 
             foreach (DbEntityEntry<IAuditableEntity> entry in ChangeTracker.Entries<IAuditableEntity>())
             {
-                if (entry.State == System.Data.EntityState.Added || entry.State == System.Data.EntityState.Modified)
+                if (entry.State == System.Data.Entity.EntityState.Added || entry.State == System.Data.Entity.EntityState.Modified)
                 {
                     entry.Entity.GetType().GetProperty("Version").SetValue(entry.Entity, DateTime.UtcNow.Ticks.ToString(), null);
                 }
 
-                if (entry.State == System.Data.EntityState.Added)
+                if (entry.State == System.Data.Entity.EntityState.Added)
                 {
                     entry.Entity.CreatedBy = userUniqueId;
                     entry.Entity.UpdatedBy = userUniqueId;
                     entry.Entity.CreatedAt = now;
                     entry.Entity.UpdatedAt = now;
                 }
-                else if (entry.State == System.Data.EntityState.Modified)
+                else if (entry.State == System.Data.Entity.EntityState.Modified)
                 {
                     entry.Entity.UpdatedBy = userUniqueId;
                     entry.Entity.UpdatedAt = now;

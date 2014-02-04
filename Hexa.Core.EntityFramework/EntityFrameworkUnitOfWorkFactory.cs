@@ -7,8 +7,6 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Objects;
-
     using Data;
 
     public class EntityFrameworkUnitOfWorkFactory<TContext> : IDatabaseManager

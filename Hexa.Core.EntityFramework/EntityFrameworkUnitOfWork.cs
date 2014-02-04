@@ -69,7 +69,7 @@ namespace Hexa.Core.Domain
         {
             var entry = this.dbContext.Entry(entity);
 
-            entry.State = System.Data.EntityState.Modified;
+            entry.State = System.Data.Entity.EntityState.Modified;
         }
 
         public System.Linq.IQueryable<TEntity> Query<TEntity>()
