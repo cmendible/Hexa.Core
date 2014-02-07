@@ -16,6 +16,13 @@ namespace Hexa.Core.Tests.Data
         public EntityAConfiguration()
         {
             this.Property(h => h.Name);
+
+            this.HasMany<EntityB>(h => h.EntitiesOfB)
+                .WithMany(h =>  h.EntitiesOfA).Map((c) => {
+                    c.ToTable("EntityA_EntityB");
+                    c.MapLeftKey("EntityAUniqueId");
+                    c.MapRightKey("EntityBUniqueId");
+                });
         }
     }
 }

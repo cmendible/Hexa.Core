@@ -23,17 +23,11 @@ namespace Hexa.Core.Tests.Domain
         {
         }
 
-        public DbSet<EntityA> EntitiesOfA
-        {
-            get;
-            set;
-        }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Configurations.Add(new Hexa.Core.Tests.Data.EntityAConfiguration());
+            modelBuilder.Configurations.AddFromAssembly(typeof(Hexa.Core.Tests.Data.EntityAConfiguration).Assembly);
         }
     }
 }

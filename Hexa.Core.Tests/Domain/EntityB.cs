@@ -21,7 +21,7 @@ namespace Hexa.Core.Tests.Domain
             this.entitiesOfA = new List<EntityA>();
         }
 
-        public virtual IEnumerable<EntityA> EntitiesOfA
+        public virtual ICollection<EntityA> EntitiesOfA
         {
             get
             {

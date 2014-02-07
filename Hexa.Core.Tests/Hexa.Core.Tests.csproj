@@ -149,6 +149,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
+    <Compile Include="Data\Mappings\EntityFramework\EntityBConfiguration.cs" />
     <Compile Include="Data\Mappings\EntityFramework\EntityAConfiguration.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityBMap .cs" />
@@ -159,8 +160,8 @@
     <Compile Include="Domain\EntityC.cs" />
     <Compile Include="Domain\Repositories\IEntityARepository.cs" />
     <Compile Include="Domain\Repositories\IEntityBRepository.cs" />
-    <Compile Include="EntityFramework\BaseDatabaseTest.cs" />
     <Compile Include="EntityFramework\DomainContext.cs" />
+    <Compile Include="EntityFramework\SqlTests.cs" />
     <Compile Include="Extensions\ObjectExtensionsTests.cs" />
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
     <Compile Include="NHibernate\SqlTests.cs" />
     <Compile Include="RavenDb\RavenTests.cs" />
+    <Compile Include="Unity\UnitOfWorkPerTestLifeTimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">
