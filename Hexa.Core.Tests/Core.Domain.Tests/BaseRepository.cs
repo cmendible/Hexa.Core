@@ -458,51 +458,6 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetPagedElements
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetPagedElements_InvalidOrderExpressionThrowArgumentNullException_Test()
-        {
-            // Act
-            var target = new BaseRepository<Entity>(this._MockUnitOfWork());
-            int pageIndex = 0;
-            int pageCount = 1;
-
-            target.GetPagedElements<int>(pageIndex, pageCount, null, false);
-        }
-
-        /// <summary>
-        /// A test for GetPagedElements
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetPagedElements_InvalidPageCountThrowArgumentException_Test()
-        {
-            // Act
-            var target = new BaseRepository<Entity>(this._MockUnitOfWork());
-            int pageIndex = 0;
-            int pageCount = 0;
-
-            target.GetPagedElements<int>(pageIndex, pageCount, null, false);
-        }
-
-        /// <summary>
-        /// A test for GetPagedElements
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetPagedElements_InvalidPageIndexThrowArgumentException_Test()
-        {
-            // Act
-            var target = new BaseRepository<Entity>(this._MockUnitOfWork());
-            int pageIndex = -1;
-            int pageCount = 0;
-
-            target.GetPagedElements<int>(pageIndex, pageCount, null, false);
-        }
-
-        /// <summary>
         /// A test for Container
         /// </summary>
         public void unitOfWorkTestHelper<T>()

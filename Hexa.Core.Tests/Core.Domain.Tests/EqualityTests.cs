@@ -1,4 +1,4 @@
-﻿namespace Hexa.Core.Tests
+﻿namespace Hexa.Core.Domain.Tests
 {
     using System;
     using System.Collections.Generic;

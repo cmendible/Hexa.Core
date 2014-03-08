@@ -45,7 +45,7 @@ namespace Hexa.Core.Domain
             /// Get all elements of type {T} in repository
             /// </summary>
             /// <returns>List of selected elements</returns>
-            IQueryable<TEntity> GetAll();
+            IEnumerable<TEntity> GetAll();
 
             /// <summary>
             /// Get all elements of type {T} that matching a
@@ -53,32 +53,26 @@ namespace Hexa.Core.Domain
             /// </summary>
             /// <param name="specification">Specification that result meet</param>
             /// <returns></returns>
-            IQueryable<TEntity> GetBySpec(ISpecification<TEntity> specification);
+            IEnumerable<TEntity> GetBySpec(ISpecification<TEntity> specification);
 
             /// <summary>
             /// Get  elements of type {T} in repository
             /// </summary>
             /// <param name="filter">Filter that each element do match</param>
             /// <returns>List of selected elements</returns>
-            IQueryable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter);
+            IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter);
 
-            IQueryable<TEntity> GetFilteredElements<S>(
+            IEnumerable<TEntity> GetFilteredElements<S>(
                 Expression<Func<TEntity, bool>> filter,
                 Expression<Func<TEntity, S>> orderByExpression,
-                bool ascending);
-
-            PagedElements<TEntity> GetPagedElements<S>(
-                int pageIndex,
-                int pageCount,
-                Expression<Func<TEntity, bool>> filter,
-                bool ascending);
+                bool ascending = true);
 
             PagedElements<TEntity> GetPagedElements<S>(
                 int pageIndex,
                 int pageCount,
                 Expression<Func<TEntity, bool>> filter,
                 Expression<Func<TEntity, S>> orderByExpression,
-                bool ascending);
+                bool ascending = true);
 
             PagedElements<TEntity> GetPagedElements(
                 int pageIndex,

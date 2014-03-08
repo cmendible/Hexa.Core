@@ -15,7 +15,7 @@ namespace Hexa.Core.Tests.RavenTests
     using Core.Domain;
     using Data;
     using Domain;
-    using Hexa.Core.Tests.Unity;
+    using Hexa.Core.Tests.Sql;
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
 

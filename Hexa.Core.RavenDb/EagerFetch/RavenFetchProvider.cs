@@ -9,12 +9,12 @@ namespace Hexa.Core.Domain
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class RavenFetchProvider : IFetchProvider
+    public class RavenFetchProvider : IEagerLoadProvider
     {
-        public IFetchRequest<TOriginating, TRelated> Fetch<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
+        public IEagerLoadRequest<TOriginating, TRelated> With<TOriginating, TRelated>(IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
         where TOriginating : class
         {
-            return new BaseFetchRequest<TOriginating, TRelated>(query);
+            return new BaseEagerLoadRequest<TOriginating, TRelated>(query);
         }
     }
 }

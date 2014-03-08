@@ -130,12 +130,12 @@
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
     <Compile Include="Domain\Repositories\BaseRepository.cs" />
-    <Compile Include="Domain\Repositories\EagerFetch\EagerFetch.cs" />
-    <Compile Include="Domain\Repositories\EagerFetch\IFetchProvider.cs" />
-    <Compile Include="Domain\Repositories\EagerFetch\IFetchRequest.cs" />
+    <Compile Include="Domain\Repositories\EagerLoad\EagerLoad.cs" />
+    <Compile Include="Domain\Repositories\EagerLoad\IEagerLoadProvider.cs" />
+    <Compile Include="Domain\Repositories\EagerLoad\IEagerLoadRequest.cs" />
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\DatabaseQuery.cs" />
     <Compile Include="Domain\Repositories\DatabaseQueryProvider\IDatabaseQueryProvider.cs" />
-    <Compile Include="Domain\Repositories\EagerFetch\BaseFetchRequest.cs" />
+    <Compile Include="Domain\Repositories\EagerLoad\BaseEagerLoadRequest.cs" />
     <Compile Include="Exceptions\AggregateNotFoundException.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\BaseEventStore.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\EventDescriptor.cs" />

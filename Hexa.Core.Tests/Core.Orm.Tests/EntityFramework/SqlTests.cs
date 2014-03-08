@@ -3,7 +3,7 @@
 // Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
 // </copyright>
 //-----------------------------------------------------------------------------------------------
-namespace Hexa.Core.Tests.EntityFramework
+namespace Hexa.Core.Orm.Tests.EF
 {
     using System;
     using System.Collections.Generic;
@@ -19,6 +19,8 @@ namespace Hexa.Core.Tests.EntityFramework
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
     using Security;
+    using Hexa.Core.Tests.Domain;
+    using Hexa.Core.Tests.Data;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]

@@ -14,7 +14,6 @@ namespace Hexa.Core.Tests.Sql
     using Core.Domain;
     using Data;
     using Domain;
-    using Hexa.Core.Tests.Unity;
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
     using Security;
@@ -219,6 +218,26 @@ namespace Hexa.Core.Tests.Sql
             repoA.Add(a);
 
             return a;
+        }
+    }
+
+    public class UnitOfWorkPerTestLifeTimeManager : LifetimeManager
+    {
+        IUnitOfWork unitOfWork;
+
+        public override object GetValue()
+        {
+            return unitOfWork;
+        }
+
+        public override void RemoveValue()
+        {
+            unitOfWork = null;
+        }
+
+        public override void SetValue(object newValue)
+        {
+            unitOfWork = newValue as IUnitOfWork;
         }
     }
 }

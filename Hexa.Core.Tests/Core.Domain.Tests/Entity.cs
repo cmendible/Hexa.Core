@@ -3,7 +3,7 @@
 // Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
 // </copyright>
 //-----------------------------------------------------------------------------------------------
-namespace Hexa.Core.Tests
+namespace Hexa.Core.Domain.Tests
 {
     using Hexa.Core.Domain;
 

@@ -14,14 +14,14 @@ namespace Hexa.Core.Domain
     public class PagedElements<TEntity>
         where TEntity : class
     {
-        public PagedElements(IQueryable<TEntity> elements, int totalElements)
+        public PagedElements(IEnumerable<TEntity> elements, int totalElements)
         {
             this.Elements = elements;
             this.TotalElements = totalElements;
         }
 
         [DataMember]
-        public IQueryable<TEntity> Elements
+        public IEnumerable<TEntity> Elements
         {
             get;
             private set;
