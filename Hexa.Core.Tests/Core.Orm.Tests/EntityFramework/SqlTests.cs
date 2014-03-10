@@ -26,7 +26,8 @@ namespace Hexa.Core.Orm.Tests.EF
     [TestFixture]
     public class SqlTest
     {
-        UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+        PerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new PerTestLifeTimeManager();
+        PerTestLifeTimeManager contextPerTestLifeTimeManager = new PerTestLifeTimeManager();
         UnityContainer unityContainer;
 
         [Test]
@@ -113,12 +114,13 @@ namespace Hexa.Core.Orm.Tests.EF
 
             this.unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
 
-            this.unityContainer.RegisterType<DbContext, DomainContext>(new InjectionConstructor(this.ConnectionString()));
+            this.unityContainer.RegisterType<DbContext, DomainContext>(this.contextPerTestLifeTimeManager, new InjectionConstructor(this.ConnectionString()));
+
             this.unityContainer.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
-            this.unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
-            this.unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityARepository, EntityAEFRepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityBRepository, EntityBEFRepository>(new PerResolveLifetimeManager());
 
             ApplicationContext.User =
                 new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
@@ -143,19 +145,13 @@ namespace Hexa.Core.Orm.Tests.EF
             unitOfWork.Commit();
         }
 
-        [NUnit.Framework.SetUp]
-        public void Setup()
-        {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Start();
-        }
-
         [TearDown]
         public void TearDown()
         {
             IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Dispose();
             this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
+            this.contextPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]

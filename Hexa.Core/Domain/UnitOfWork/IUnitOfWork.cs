@@ -20,22 +20,6 @@ namespace Hexa.Core.Domain
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
-        /// Adds the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        void Add<TEntity>(TEntity entity)
-        where TEntity : class;
-
-        /// <summary>
-        /// Attaches the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        void Attach<TEntity>(TEntity entity)
-        where TEntity : class;
-
-        /// <summary>
         /// Commit all changes made in  a container.
         /// </summary>
         /// <remarks>
@@ -45,32 +29,8 @@ namespace Hexa.Core.Domain
         void Commit();
 
         /// <summary>
-        /// Deletes the specified entity.
+        /// Rollbacks the changes.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        void Delete<TEntity>(TEntity entity)
-        where TEntity : class;
-
-        /// <summary>
-        /// Modifies the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        void Modify<TEntity>(TEntity entity)
-        where TEntity : class;
-
-        /// <summary>
-        /// Returns an IQueryable
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns></returns>
-        IQueryable<TEntity> Query<TEntity>()
-        where TEntity : class;
-
-        /// <summary>
-        /// Starts this instance.
-        /// </summary>
-        void Start();
+        void RollbackChanges();
     }
 }

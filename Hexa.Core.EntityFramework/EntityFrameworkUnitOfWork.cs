@@ -18,35 +18,9 @@ namespace Hexa.Core.Domain
             this.dbContext = context;
         }
 
-        public DbContext DbContext
-        {
-            get
-            {
-                return this.dbContext;
-            }
-        }
-
-        public void Add<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-            this.dbContext.Set<TEntity>().Add(entity);
-        }
-
-        public void Attach<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-            this.dbContext.Set<TEntity>().Attach(entity);
-        }
-
         public void Commit()
         {
             this.dbContext.SaveChanges();
-        }
-
-        public void Delete<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-            this.dbContext.Set<TEntity>().Remove(entity);
         }
 
         // Implement IDisposable.
@@ -64,22 +38,9 @@ namespace Hexa.Core.Domain
             GC.SuppressFinalize(this);
         }
 
-        public void Modify<TEntity>(TEntity entity)
-        where TEntity : class
+        public void RollbackChanges()
         {
-            var entry = this.dbContext.Entry(entity);
-
-            entry.State = System.Data.Entity.EntityState.Modified;
-        }
-
-        public System.Linq.IQueryable<TEntity> Query<TEntity>()
-        where TEntity : class
-        {
-            return this.dbContext.Set<TEntity>();
-        }
-
-        public void Start()
-        {
+            
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -106,5 +67,6 @@ namespace Hexa.Core.Domain
 
             }
         }
+        
     }
 }

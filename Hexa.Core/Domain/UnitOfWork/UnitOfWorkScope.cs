@@ -5,11 +5,6 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     ///
     /// </summary>
@@ -24,7 +19,6 @@ namespace Hexa.Core.Domain
         where TUnitOfWork : IUnitOfWork
         {
             IUnitOfWork unitOfWork = ServiceLocator.GetInstance<TUnitOfWork>();
-            unitOfWork.Start();
             return unitOfWork;
         }
     }

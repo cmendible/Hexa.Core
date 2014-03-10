@@ -95,8 +95,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="EagerFetch\RavenFetchProvider.cs" />
     <Compile Include="IRavenUnitOfWork.cs" />
+    <Compile Include="RavenRepository.cs" />
     <Compile Include="RavenUnitOfWorkFactory.cs" />
     <Compile Include="RavenUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

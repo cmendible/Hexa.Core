@@ -26,24 +26,18 @@ namespace Hexa.Core.Domain
     /// in that case, just simply do not use this base class on your Repository.
     /// </summary>
     /// <typeparam name="TEntity">Type of elements in repostory</typeparam>
-    public class BaseRepository<TEntity> : IRepository<TEntity>
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
         private readonly ILogger logger;
-        private readonly IUnitOfWork unitOfWork;
 
         /// <summary>
         /// Default constructor for GenericRepository
         /// </summary>
         /// <param name="traceManager">Trace Manager dependency</param>
         /// <param name="context">A context for this repository</param>
-        public BaseRepository(IUnitOfWork unitOfWork)
+        protected BaseRepository()
         {
-            // check preconditions
-            Guard.IsNotNull(unitOfWork, "No unitOfWork in scope.");
-
-            // set internal values
-            this.unitOfWork = unitOfWork;
             this.logger = LoggerManager.GetLogger(GetType());
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
         }
@@ -62,11 +56,9 @@ namespace Hexa.Core.Domain
         /// <param name="entity"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         public virtual void Add(TEntity entity)
         {
-            // check entity
             Guard.IsNotNull(entity, "entity");
 
-            // add object to IObjectSet for this type
-            this.unitOfWork.Add<TEntity>(entity);
+            this.InternalAdd(entity);
 
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Added a {0} entity", typeof(TEntity).Name));
         }
@@ -79,7 +71,7 @@ namespace Hexa.Core.Domain
         {
             Guard.IsNotNull(entity, "entity");
 
-            this.unitOfWork.Attach<TEntity>(entity);
+            this.InternalAttach(entity);
 
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Attached {0} to context", typeof(TEntity).Name));
         }
@@ -90,7 +82,7 @@ namespace Hexa.Core.Domain
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
         public IEnumerable<TEntity> GetAll()
         {
-            return this.unitOfWork.Query<TEntity>().ToList();
+            return this.Query().ToList();
         }
 
         /// <summary>
@@ -104,7 +96,7 @@ namespace Hexa.Core.Domain
 
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
 
-            return (this.unitOfWork.Query<TEntity>()
+            return (this.Query()
                     .Where(specification.SatisfiedBy()))
                     .ToList();
         }
@@ -122,7 +114,7 @@ namespace Hexa.Core.Domain
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet and perform query
-            return this.unitOfWork.Query<TEntity>()
+            return this.Query()
                    .Where(filter)
                    .ToList();
         }
@@ -146,7 +138,7 @@ namespace Hexa.Core.Domain
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
             // Create IObjectSet for this type and perform query
-            var objectSet = this.unitOfWork.Query<TEntity>();
+            var objectSet = this.Query();
 
             return ascending
                    ? objectSet
@@ -181,7 +173,7 @@ namespace Hexa.Core.Domain
                     pageSize,
                     orderByExpression.ToString()));
 
-            var objectSet = this.unitOfWork.Query<TEntity>();
+            var objectSet = this.Query();
 
             IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
@@ -224,7 +216,7 @@ namespace Hexa.Core.Domain
                     orderBySpecification.ToString()));
 
             // Create associated IObjectSet and perform query
-            var objectSet = this.unitOfWork.Query<TEntity>();
+            var objectSet = this.Query();
 
             IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
             int total = query.Count();
@@ -240,9 +232,9 @@ namespace Hexa.Core.Domain
 
         public virtual void Modify(TEntity entity)
         {
-            // check arguments
             Guard.IsNotNull(entity, "entity");
-            this.unitOfWork.Modify<TEntity>(entity);
+
+            this.InternalModify(entity);
 
             this.logger.Info(string.Format(CultureInfo.InvariantCulture, "Applied changes to: {0}", typeof(TEntity).Name));
         }
@@ -255,9 +247,21 @@ namespace Hexa.Core.Domain
         {
             // check entity
             Guard.IsNotNull(entity, "entity");
-            this.unitOfWork.Delete<TEntity>(entity);
+
+            this.InternalRemove(entity);
 
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Deleted a {0} entity", typeof(TEntity).Name));
         }
+
+        protected abstract void InternalAdd(TEntity entity);
+
+        protected abstract void InternalAttach(TEntity entity);
+
+        protected abstract void InternalModify(TEntity entity);
+
+        protected abstract void InternalRemove(TEntity entity);
+
+        protected abstract IQueryable<TEntity> Query();
+
     }
 }

@@ -19,12 +19,14 @@ namespace Hexa.Core.Orm.Tests.NH
     using Hexa.Core.Tests.Domain;
     using Hexa.Core.Tests.Data;
     using System.Reflection;
+    using NHibernate;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]
     public class SqlTest
     {
-        UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+        PerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new PerTestLifeTimeManager();
+        PerTestLifeTimeManager sessionPerTestLifeTimeManager = new PerTestLifeTimeManager();
         UnityContainer unityContainer;
 
         [Test]
@@ -112,11 +114,18 @@ namespace Hexa.Core.Orm.Tests.NH
             this.unityContainer.RegisterInstance<NHibernate.ISessionFactory>(sessionFactory);
             this.unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
 
+            this.unityContainer.RegisterType<ISession, ISession>(this.sessionPerTestLifeTimeManager, new InjectionFactory((c) =>
+            {
+                ISession session = sessionFactory.OpenSession();
+                session.Transaction.Begin();
+                return session;
+            }));
+
             this.unityContainer.RegisterType<IUnitOfWork, NHibernateUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
-            this.unityContainer.RegisterType<IEntityARepository, EntityARepository>(new PerResolveLifetimeManager());
-            this.unityContainer.RegisterType<IEntityBRepository, EntityBRepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityARepository, EntityANHRepository>(new PerResolveLifetimeManager());
+            this.unityContainer.RegisterType<IEntityBRepository, EntityBNHRepository>(new PerResolveLifetimeManager());
 
             ApplicationContext.User =
                 new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
@@ -145,20 +154,14 @@ namespace Hexa.Core.Orm.Tests.NH
             Assert.IsTrue(results.Count() > 0);
         }
 
-        [NUnit.Framework.SetUp]
-        public void Setup()
-        {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Start();
-        }
-
         [TearDown]
         public void TearDown()
         {
             IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-
             unitOfWork.Dispose();
+
             this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
+            this.sessionPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]

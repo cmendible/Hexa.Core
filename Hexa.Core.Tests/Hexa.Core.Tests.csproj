@@ -184,8 +184,11 @@
     <Compile Include="Data\Mappings\EntityFramework\EntityAConfiguration.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityBMap .cs" />
-    <Compile Include="Data\Repositories\EntityARepository.cs" />
-    <Compile Include="Data\Repositories\EntityBRepository.cs" />
+    <Compile Include="Data\Repositories\RavenDb\EntityARavenRepository.cs" />
+    <Compile Include="Data\Repositories\EF\EntityAEFRepository.cs" />
+    <Compile Include="Data\Repositories\EF\EntityBEFRepository.cs" />
+    <Compile Include="Data\Repositories\NH\EntityANHRepository.cs" />
+    <Compile Include="Data\Repositories\NH\EntityBNHRepository.cs" />
     <Compile Include="Domain\EntityA.cs" />
     <Compile Include="Domain\EntityB.cs" />
     <Compile Include="Domain\EntityC.cs" />
@@ -203,7 +206,7 @@
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
     <Compile Include="Core.Orm.Tests\NHibernate\SqlTests.cs" />
     <Compile Include="Core.RavenDb.Tests\RavenTests.cs" />
-    <Compile Include="Unity\UnitOfWorkPerTestLifeTimeManager.cs" />
+    <Compile Include="Unity\PerTestLifeTimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">

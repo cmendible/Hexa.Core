@@ -5,13 +5,8 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
-    using System.Data.Entity;
-
     public interface IEntityFrameworkUnitOfWork : IUnitOfWork
     {
-        DbContext DbContext
-        {
-            get;
-        }
+
     }
 }

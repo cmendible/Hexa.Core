@@ -5,13 +5,7 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
-    using Raven.Client;
-
     public interface IRavenUnitOfWork : IUnitOfWork
     {
-        IDocumentSession Session
-        {
-            get;
-        }
     }
 }

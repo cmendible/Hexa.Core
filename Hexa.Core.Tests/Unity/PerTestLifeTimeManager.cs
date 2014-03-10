@@ -4,11 +4,11 @@
     using Microsoft.Practices.Unity;
 
     /// <summary>
-    /// UnitOfWork Per Test LifeTimeManager
+    /// Per Test LifeTimeManager
     /// </summary>
-    public class UnitOfWorkPerTestLifeTimeManager : LifetimeManager
+    public class PerTestLifeTimeManager : LifetimeManager
     {
-        IUnitOfWork unitOfWork;
+        private object value;
 
         /// <summary>
         /// Retrieve a value from the backing store associated with this Lifetime policy.
@@ -18,7 +18,7 @@
         /// </returns>
         public override object GetValue()
         {
-            return unitOfWork;
+            return value;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@
         /// </summary>
         public override void RemoveValue()
         {
-            unitOfWork = null;
+            value = null;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// <param name="newValue">The object being stored.</param>
         public override void SetValue(object newValue)
         {
-            unitOfWork = newValue as IUnitOfWork;
+            value = newValue;
         }
     }
 }

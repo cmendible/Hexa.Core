@@ -20,12 +20,14 @@ namespace Hexa.Core.RavenDb.Tests
     using NUnit.Framework;
     using Hexa.Core.Tests.Domain;
     using Hexa.Core.Tests.Data;
+    using Raven.Client;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification="This is a Test")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]
     public class RavenTests
     {
-        UnitOfWorkPerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new UnitOfWorkPerTestLifeTimeManager();
+        PerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new PerTestLifeTimeManager();
+        PerTestLifeTimeManager sessionPerTestLifeTimeManager = new PerTestLifeTimeManager();
         UnityContainer unityContainer;
 
         [Test]
@@ -82,10 +84,16 @@ namespace Hexa.Core.RavenDb.Tests
             this.unityContainer.RegisterInstance<Raven.Client.Document.DocumentStore>(sessionFactory);
             ServiceLocator.RegisterInstance<IDatabaseManager>(ctxFactory);
 
+            this.unityContainer.RegisterType<IDocumentSession, IDocumentSession>(this.sessionPerTestLifeTimeManager, new InjectionFactory((c) =>
+            {
+                IDocumentSession session = sessionFactory.OpenSession();
+                return session;
+            }));
+
             this.unityContainer.RegisterType<IUnitOfWork, RavenUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
-            this.unityContainer.RegisterType<IEntityARepository, EntityARepository>();
+            this.unityContainer.RegisterType<IEntityARepository, EntityARavenRepository>();
 
             // Services
 
@@ -114,19 +122,13 @@ namespace Hexa.Core.RavenDb.Tests
             Assert.IsTrue(results.Count() > 0);
         }
 
-        [NUnit.Framework.SetUp]
-        public void Setup()
-        {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Start();
-        }
-
         [TearDown]
         public void TearDown()
         {
             IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
             unitOfWork.Dispose();
             this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
+            this.sessionPerTestLifeTimeManager.RemoveValue();
         }
 
         [Test]

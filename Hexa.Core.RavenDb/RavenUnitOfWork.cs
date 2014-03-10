@@ -13,37 +13,11 @@ namespace Hexa.Core.Domain
     public class RavenUnitOfWork : IRavenUnitOfWork
     {
         private bool disposed;
-        DocumentStore documentStore;
         private IDocumentSession session;
 
-        public RavenUnitOfWork(DocumentStore documentStore)
+        public RavenUnitOfWork(IDocumentSession session)
         {
-            this.documentStore = documentStore;
-        }
-
-        public IDocumentSession Session
-        {
-            get
-            {
-                return this.session;
-            }
-        }
-
-        /// <summary>
-        /// Adds the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        public void Add<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-            Guard.IsNotNull(entity, "entity");
-            this.Session.Store(entity);
-        }
-
-        public void Attach<TEntity>(TEntity entity)
-        where TEntity : class
-        {
+            this.session = session;
         }
 
         /// <summary>
@@ -52,18 +26,6 @@ namespace Hexa.Core.Domain
         public void Commit()
         {
             this.session.SaveChanges();
-        }
-
-        /// <summary>
-        /// Deletes the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        public void Delete<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-            Guard.IsNotNull(entity, "entity");
-            this.Session.Delete(entity);
         }
 
         // Implement IDisposable.
@@ -79,37 +41,6 @@ namespace Hexa.Core.Domain
             // and prevent finalization code for this object
             // from executing a second time.
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Modifies the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entity">The entity.</param>
-        public void Modify<TEntity>(TEntity entity)
-        where TEntity : class
-        {
-        }
-
-        /// <summary>
-        /// Queries this instance.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns></returns>
-        public System.Linq.IQueryable<TEntity> Query<TEntity>()
-        where TEntity : class
-        {
-            return this.Session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
-        }
-
-        public void Start()
-        {
-            this.session = this.documentStore.OpenSession();
-        }
-
-        public void Start(System.Data.IsolationLevel isolationLevel)
-        {
-            this.session = this.documentStore.OpenSession();
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -134,6 +65,13 @@ namespace Hexa.Core.Domain
                 // Note disposing has been done.
                 this.disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Rollbacks the changes.
+        /// </summary>
+        public void RollbackChanges()
+        {
         }
     }
 }
