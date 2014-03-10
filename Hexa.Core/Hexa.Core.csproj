@@ -118,10 +118,11 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
-    <Compile Include="Domain\Events\IDomainEvent.cs" />
-    <Compile Include="Domain\Events\IDomainEventHandler.cs" />
+    <Compile Include="Domain\Events\Publisher\EmptyEventPublisher.cs" />
+    <Compile Include="Domain\Events\Publisher\ConsumeEventPublisher.cs" />
+    <Compile Include="Domain\Events\Publisher\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\DomainEvents.cs" />
-    <Compile Include="Domain\Events\IEventPublisher.cs" />
+    <Compile Include="Domain\Events\Publisher\IEventPublisher.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableEntity.cs" />
     <Compile Include="Domain\Model\EventSourcedEntity.cs" />

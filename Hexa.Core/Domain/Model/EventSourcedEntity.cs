@@ -7,8 +7,17 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections.Generic;
-
     using Hexa.Core.DynamicExtensions;
+
+    [Serializable]
+    public class Event
+    {
+        public int Version
+        {
+            get;
+            set;
+        }
+    }
 
     public abstract class EventSourcedEntity
     {

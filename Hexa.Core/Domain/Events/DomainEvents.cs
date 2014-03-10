@@ -8,34 +8,50 @@ namespace Hexa.Core.Domain
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
+    /// <summary>
+    /// Domain Event Publisher 
+    /// </summary>
     public static class DomainEvents
     {
-        // so that each thread has its own callbacks
+        /// <summary>
+        /// The callback actions
+        /// </summary>
         [ThreadStatic]
         private static List<Delegate> actions;
 
         /// <summary>
+        /// The event publisher
+        /// </summary>
+        private static Func<IEventPublisher> eventPublisher = () => new EmptyEventPublisher();
+
+        /// <summary>
         /// The publish method
         /// </summary>
-        private static MethodInfo publishMethod = typeof(DomainEvents).GetMethods()
-            .Where(m => m.Name == "Raise")
-            .Select(m => new
+        private static MethodInfo publishMethod = typeof(IEventPublisher).GetMethod("Publish");
+
+        /// <summary>
+        /// Gets or sets the event publisher.
+        /// </summary>
+        /// <value>
+        /// The event publisher.
+        /// </value>
+        public static Func<IEventPublisher> EventPublisher
+        {
+            get
             {
-                Method = m,
-                Params = m.GetParameters(),
-                Args = m.GetGenericArguments()
-            })
-            .Where(x => x.Params.Length == 1
-                        && x.Args.Length == 1
-                        && x.Params[0].ParameterType == x.Args[0])
-            .Select(x => x.Method)
-            .First();
+                return DomainEvents.eventPublisher;
+            }
+            set
+            {
+                DomainEvents.eventPublisher = value;
+            }
+        }
 
         /// <summary>
         /// Clears the callbacks.
+        /// Used for unit testing.
         /// </summary>
         public static void ClearCallbacks()
         {
@@ -50,10 +66,7 @@ namespace Hexa.Core.Domain
         public static void Raise<T>(T @event)
         where T : class
         {
-            foreach (var handler in ServiceLocator.GetAllInstances<IDomainEventHandler<T>>())
-            {
-                handler.Handle(@event);
-            }
+            DomainEvents.eventPublisher.Invoke().Publish<T>(@event);
 
             if (DomainEvents.actions != null)
             {
@@ -65,6 +78,20 @@ namespace Hexa.Core.Domain
                         typedAction(@event);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Publishes the specified events.
+        /// </summary>
+        /// <param name="events">The events.</param>
+        public static void Raise(object[] events)
+        {
+            IEventPublisher publisher = DomainEvents.eventPublisher.Invoke();
+            foreach (var @event in events)
+            {
+                MethodInfo method = publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
+                method.Invoke(publisher, new object[] { @event });
             }
         }
 
@@ -83,30 +110,6 @@ namespace Hexa.Core.Domain
             }
 
             DomainEvents.actions.Add(callback);
-        }
-
-        /// <summary>
-        /// Publishes the specified @event.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="event">The @event.</param>
-        public static void Publish<T>(T @event)
-        where T : class
-        {
-            DomainEvents.Publish(new { @event });
-        }
-
-        /// <summary>
-        /// Publishes the specified events.
-        /// </summary>
-        /// <param name="events">The events.</param>
-        public static void Publish(ICollection events)
-        {
-            foreach (object @event in events)
-            {
-                MethodInfo method = DomainEvents.publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
-                method.Invoke(null, new object[] { @event });
-            }
         }
     }
 }
