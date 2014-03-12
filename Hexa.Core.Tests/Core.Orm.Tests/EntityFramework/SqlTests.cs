@@ -13,14 +13,12 @@ namespace Hexa.Core.Orm.Tests.EF
     using System.Threading;
     using Core.Data;
     using Core.Domain;
-    using Data;
-    using Domain;
+    using Hexa.Core.Tests.Data;
+    using Hexa.Core.Tests.Domain;
     using Hexa.Core.Tests.Unity;
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
     using Security;
-    using Hexa.Core.Tests.Domain;
-    using Hexa.Core.Tests.Data;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]

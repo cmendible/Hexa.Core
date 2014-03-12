@@ -9,17 +9,17 @@ namespace Hexa.Core.Orm.Tests.NH
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
-    using Core.Data;
-    using Core.Domain;
+    using Hexa.Core.Data;
+    using Hexa.Core.Domain;
+    using Hexa.Core.Security;
+    using Hexa.Core.Tests.Data;
+    using Hexa.Core.Tests.Domain;
     using Hexa.Core.Tests.Unity;
     using Microsoft.Practices.Unity;
-    using NUnit.Framework;
-    using Security;
-    using Hexa.Core.Tests.Domain;
-    using Hexa.Core.Tests.Data;
-    using System.Reflection;
     using NHibernate;
+    using NUnit.Framework;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
     [TestFixture]
@@ -118,6 +118,7 @@ namespace Hexa.Core.Orm.Tests.NH
             {
                 ISession session = sessionFactory.OpenSession();
                 session.Transaction.Begin();
+
                 return session;
             }));
 
@@ -192,7 +193,7 @@ namespace Hexa.Core.Orm.Tests.NH
 
         protected virtual NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, this.ConnectionString(), string.Empty, Assembly.GetExecutingAssembly());
+            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, this.ConnectionString(), string.Empty, new Assembly[] { Assembly.GetExecutingAssembly() });
         }
 
         private EntityA _Add_EntityA()

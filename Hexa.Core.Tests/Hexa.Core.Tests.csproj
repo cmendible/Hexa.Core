@@ -200,7 +200,7 @@
     <Compile Include="Core.Domain.Tests\BaseRepository.cs" />
     <Compile Include="Core.Domain.Tests\Entity.cs" />
     <Compile Include="Core.Orm.Tests\NHibernate\FirebirdTests.cs" />
-    <Compile Include="Core.Orm.Tests\NHibernate\PostgreSQLTest.cs" />
+    <Compile Include="Core.Orm.Tests\NHibernate\PostgreSqlTest.cs" />
     <Compile Include="Core.EventSourcing.Tests\EventSourcingExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core.Domain.Tests\Specifications.cs" />

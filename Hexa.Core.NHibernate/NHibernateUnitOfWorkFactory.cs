@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
-    using System;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
@@ -34,7 +33,7 @@ namespace Hexa.Core.Domain
             DbProvider provider,
             string connectionString,
             string cacheProvider,
-            Assembly mappingsAssembly)
+            Assembly[] mappingAssemblies)
         {
             _DbProvider = provider;
             _connectionString = connectionString;
@@ -118,13 +117,32 @@ namespace Hexa.Core.Domain
                                      BindingFlags.Instance | BindingFlags.NonPublic);
 
             Configuration nhConfiguration = pinfo.GetValue(cfg, null) as Configuration;
-            ServiceLocator.RegisterInstance<NHConfiguration>(new NHConfiguration(nhConfiguration));
+            ServiceLocator.RegisterInstance<Configuration>(nhConfiguration);
 
-            cfg.Mappings(m => m.FluentMappings.Conventions.AddAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
-            .Mappings(m => m.FluentMappings.Conventions.AddAssembly(mappingsAssembly))
-            .Mappings(m => m.FluentMappings.AddFromAssembly(mappingsAssembly))
-            .Mappings(m => m.HbmMappings.AddFromAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly))
-            .Mappings(m => m.HbmMappings.AddFromAssembly(mappingsAssembly))
+            cfg.Mappings(m =>
+            {
+                m.FluentMappings.Conventions.AddAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly);
+                foreach (Assembly mappingAssembly in mappingAssemblies)
+                {
+                    m.FluentMappings.Conventions.AddAssembly(mappingAssembly);
+                }
+            })
+            .Mappings(m =>
+            {
+                 m.FluentMappings.AddFromAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly);
+                foreach (Assembly mappingAssembly in mappingAssemblies)
+                {
+                    m.FluentMappings.AddFromAssembly(mappingAssembly);
+                }
+            })
+            .Mappings(m =>
+            {
+                m.HbmMappings.AddFromAssembly(typeof(NHibernateUnitOfWorkFactory).Assembly);
+                foreach (Assembly mappingAssembly in mappingAssemblies)
+                {
+                    m.HbmMappings.AddFromAssembly(mappingAssembly);
+                }
+            })
             .ExposeConfiguration(c => c.Properties.Add(Environment.BatchSize, "100"))
             .ExposeConfiguration(c => c.Properties.Add(Environment.UseProxyValidator, "true"));
 

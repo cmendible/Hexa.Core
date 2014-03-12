@@ -14,11 +14,11 @@ namespace Hexa.Core.Domain
     {
         public BaseClassMap()
         {
-            Configuration = ServiceLocator.GetInstance<NHConfiguration>();
-            Dialect = Dialect.GetDialect(Configuration.Value.Properties);
+            Configuration = ServiceLocator.GetInstance<Configuration>();
+            Dialect = Dialect.GetDialect(Configuration.Properties);
         }
 
-        protected NHConfiguration Configuration
+        protected Configuration Configuration
         {
             get;
             private set;

@@ -26,7 +26,7 @@ namespace Hexa.Core.Orm.Tests.NH
 
         protected override NHibernateUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, Assembly.GetExecutingAssembly());
+            return new NHibernateUnitOfWorkFactory(DbProvider.Firebird, ConnectionString(), string.Empty, new Assembly[] { Assembly.GetExecutingAssembly() });
         }
     }
 }

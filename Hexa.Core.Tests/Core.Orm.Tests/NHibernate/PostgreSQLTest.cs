@@ -1,7 +1,7 @@
 #if MONO
 
 //----------------------------------------------------------------------------------------------
-// <copyright file="PostgreSQLTest.cs" company="HexaSystems Inc">
+// <copyright file="PostgreSqlTest.cs" company="HexaSystems Inc">
 // Copyright (c) HexaSystems Inc. Licensed under the Apache License, Version 2.0 (the "License")
 // </copyright>
 //-----------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ namespace Hexa.Core.Orm.Tests.NH
     using Validation;
 
     [TestFixture]
-    public class PostgreSQLTest
+    public class PostgreSqlTest
     {
         [SetUp]
         public void FixtureSetup()

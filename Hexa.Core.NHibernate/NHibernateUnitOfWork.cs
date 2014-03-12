@@ -6,12 +6,8 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.Runtime.Remoting.Messaging;
-    using System.ServiceModel;
     using System.Transactions;
-    using System.Web;
     using NHibernate;
-    using NHibernate.Linq;
 
     public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
