@@ -180,6 +180,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Core.Domain.Tests\EqualityTests.cs" />
+    <Compile Include="Core.Domain.Tests\ListRepository.cs" />
     <Compile Include="Data\Mappings\EntityFramework\EntityBConfiguration.cs" />
     <Compile Include="Data\Mappings\EntityFramework\EntityAConfiguration.cs" />
     <Compile Include="Data\Mappings\NHibernate\EntityAMap.cs" />
