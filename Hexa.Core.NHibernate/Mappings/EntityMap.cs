@@ -6,7 +6,6 @@
 namespace Hexa.Core.Domain
 {
     using System;
-
     using NHibernate.Dialect;
 
     public class EntityMap<TEntity, TKey> : BaseClassMap<TEntity>
@@ -37,19 +36,8 @@ namespace Hexa.Core.Domain
             // Create Update statements dynamically.
             this.DynamicUpdate();
 
-            // Setup timestamp..
-            if (Dialect is SQLiteDialect)
-            {
-                this.Version(x => x.Version)
-                    .Column("Timestamp")
-                    .CustomType<TicksAsString>();
-            }
-            else
-            {
-                this.Version(x => x.Version)
-                    .Column("`Timestamp`")
-                    .CustomType<TicksAsString>();
-            }
+            this.Version(x => x.Version)
+                .CustomType<TicksAsString>();
         }
     }
 }
