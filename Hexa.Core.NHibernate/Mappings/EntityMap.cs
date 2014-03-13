@@ -17,38 +17,38 @@ namespace Hexa.Core.Domain
         {
             if (typeof(TKey).Equals(typeof(int)))
             {
-                Id(x => x.UniqueId)
-                .UnsavedValue(0)
-                .GeneratedBy.Native();
+                this.Id(x => x.UniqueId)
+                    .UnsavedValue(0)
+                    .GeneratedBy.Native();
             }
 
             if (typeof(TKey).Equals(typeof(Guid)))
             {
-                Id(x => x.UniqueId)
-                .GeneratedBy.GuidComb();
+                this.Id(x => x.UniqueId)
+                    .GeneratedBy.GuidComb();
             }
 
             // Use versioned timestamp as optimistick lock mechanism.
-            OptimisticLock.Version();
+            this.OptimisticLock.Version();
 
             // Create Insert statements dynamically.
-            DynamicInsert();
+            this.DynamicInsert();
 
             // Create Update statements dynamically.
-            DynamicUpdate();
+            this.DynamicUpdate();
 
             // Setup timestamp..
             if (Dialect is SQLiteDialect)
             {
-                Version(x => x.Version)
-                .Column("Timestamp")
-                .CustomType<TicksAsString>();
+                this.Version(x => x.Version)
+                    .Column("Timestamp")
+                    .CustomType<TicksAsString>();
             }
             else
             {
-                Version(x => x.Version)
-                .Column("`Timestamp`")
-                .CustomType<TicksAsString>();
+                this.Version(x => x.Version)
+                    .Column("`Timestamp`")
+                    .CustomType<TicksAsString>();
             }
         }
     }

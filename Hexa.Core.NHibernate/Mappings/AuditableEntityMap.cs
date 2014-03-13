@@ -17,31 +17,31 @@ namespace Hexa.Core.Domain
     {
         public AuditableEntityMap()
         {
-            Map(x => x.CreatedAt)
-            .Not.Nullable();
+            this.Map(x => x.CreatedAt)
+                .Not.Nullable();
 
-            Map(x => x.UpdatedAt)
-            .Not.Nullable();
+            this.Map(x => x.UpdatedAt)
+                .Not.Nullable();
 
             Type keyType = typeof(TUserKey);
             if (keyType.Equals(typeof(string)))
             {
-                Map(x => x.CreatedBy);
-                Map(x => x.UpdatedBy);
+                this.Map(x => x.CreatedBy);
+                this.Map(x => x.UpdatedBy);
             }
             else if (keyType.Equals(typeof(Guid)))
             {
-                Map(x => x.CreatedBy)
-                .CustomType<StringToGuid>();
-                Map(x => x.UpdatedBy)
-                .CustomType<StringToGuid>();
+                this.Map(x => x.CreatedBy)
+                    .CustomType<StringToGuid>();
+                this.Map(x => x.UpdatedBy)
+                    .CustomType<StringToGuid>();
             }
             else if (keyType.Equals(typeof(int)))
             {
-                Map(x => x.CreatedBy)
-                .CustomType<StringToInt>();
-                Map(x => x.UpdatedBy)
-                .CustomType<StringToInt>();
+                this.Map(x => x.CreatedBy)
+                    .CustomType<StringToInt>();
+                this.Map(x => x.UpdatedBy)
+                    .CustomType<StringToInt>();
             }
         }
     }

@@ -131,7 +131,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EventSourcing\LoadEventDescriptors.hbm.xml" />
+    <EmbeddedResource Include="EventSourcing\LoadEventDescriptors.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />
