@@ -96,11 +96,6 @@ namespace Hexa.Core.Domain
             }
 
             return HasSameNonDefaultIdAs(compareTo);
-
-            // Since the Ids aren't the same, both of them must be transient to
-            // compare domain signatures; because if one is transient and the
-            // other is a persisted entity, then they cannot be the same object.
-            return this.IsTransient() && compareTo.IsTransient();
         }
 
         /// <summary>
