@@ -7,12 +7,7 @@ namespace Hexa.Core.Domain
 {
     using System;
 
-    public class AuditableEntityMap<TEntity> : AuditableEntityMap<TEntity, string>
-        where TEntity : AuditableEntity<TEntity>
-    {
-    }
-
-    public class AuditableEntityMap<TEntity, TUserKey> : EntityMap<TEntity, Guid>
+    public class AuditableEntityMap<TEntity> : EntityMap<TEntity, Guid>
         where TEntity : AuditableEntity<TEntity>
     {
         public AuditableEntityMap()
@@ -23,26 +18,8 @@ namespace Hexa.Core.Domain
             this.Map(x => x.UpdatedAt)
                 .Not.Nullable();
 
-            Type keyType = typeof(TUserKey);
-            if (keyType.Equals(typeof(string)))
-            {
-                this.Map(x => x.CreatedBy);
-                this.Map(x => x.UpdatedBy);
-            }
-            else if (keyType.Equals(typeof(Guid)))
-            {
-                this.Map(x => x.CreatedBy)
-                    .CustomType<StringToGuid>();
-                this.Map(x => x.UpdatedBy)
-                    .CustomType<StringToGuid>();
-            }
-            else if (keyType.Equals(typeof(int)))
-            {
-                this.Map(x => x.CreatedBy)
-                    .CustomType<StringToInt>();
-                this.Map(x => x.UpdatedBy)
-                    .CustomType<StringToInt>();
-            }
+            this.Map(x => x.CreatedBy);
+            this.Map(x => x.UpdatedBy);
         }
     }
 }
