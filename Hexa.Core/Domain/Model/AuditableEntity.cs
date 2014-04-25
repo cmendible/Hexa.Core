@@ -8,8 +8,9 @@ namespace Hexa.Core.Domain
     using System;
 
     [Serializable]
-    public abstract class AuditableEntity<TEntity> : BaseEntity<TEntity, Guid>, IAuditableEntity
-        where TEntity : BaseEntity<TEntity, Guid>
+    public abstract class AuditableEntity<TEntity, TKey> : BaseEntity<TEntity, TKey>, IAuditableEntity
+        where TEntity : BaseEntity<TEntity, TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         /// <summary>
         /// Gets or sets the date on which object was created.
@@ -56,5 +57,12 @@ namespace Hexa.Core.Domain
             get;
             set;
         }
+    }
+
+    [Serializable]
+    public abstract class AuditableEntity<TEntity> : AuditableEntity<TEntity, Guid>
+        where TEntity : BaseEntity<TEntity, Guid>
+    { 
+    
     }
 }

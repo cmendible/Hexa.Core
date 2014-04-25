@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Tests.Domain
 {
+    using System;
     using Core.Domain;
 
     public interface IEntityBRepository : IRepository<EntityB>

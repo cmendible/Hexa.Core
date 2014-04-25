@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Tests.Data
 {
+    using System;
     using System.Data.Entity;
     using Core.Domain;
     using Domain;
 
-    public class EntityBEFRepository : EFRepository<EntityB>, IEntityBRepository
+    public class EntityBEFRepository : EFRepository<EntityB, Guid>, IEntityBRepository
     {
         public EntityBEFRepository(DbContext dbContext)
             : base(dbContext)

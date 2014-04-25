@@ -5,13 +5,15 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using Hexa.Core.Logging;
     using Raven.Client;
 
-    public class RavenRepository<TEntity> : BaseRepository<TEntity>
-        where TEntity : class
+    public class RavenRepository<TEntity, TKey> : BaseRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         private readonly ILogger logger;
         private IDocumentSession session;
@@ -45,6 +47,11 @@ namespace Hexa.Core.Domain
         protected override IQueryable<TEntity> Query()
         {
             return this.session.Query<TEntity>().Customize(x => x.WaitForNonStaleResultsAsOfNow());
+        }
+
+        protected override TEntity Load(TKey id)
+        {
+            return this.session.Load<TEntity>(id);
         }
     }
 }

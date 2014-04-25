@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata >
     <id>Hexa.Core.NHibernate</id>
-    <version>4.1.0.0</version>
+    <version>4.2.0.0</version>
     <authors>HexaSystems Inc.</authors>
 	<owners>HexaSystems Inc.</owners>
 	<dependencies>
-		<dependency id="Hexa.Core" version="4.1.0.0" />
+		<dependency id="Hexa.Core" version="4.2.0.0" />
 		<dependency id="FluentNHibernate" version="1.4.0.0" />
 		<dependency id="Iesi.Collections" version="3.2.0.4000" />
 		<dependency id="NHibernate" version="3.3.3.4001" />

@@ -5,18 +5,21 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
+    using System;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
     using Logging;
 
-    public class EFRepository<TEntity> : BaseRepository<TEntity>
-        where TEntity : class
+    public class EFRepository<TEntity, TKey> : BaseRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         private readonly ILogger logger;
         private DbContext dbContext;
 
-        public EFRepository(DbContext dbContext) : base()
+        public EFRepository(DbContext dbContext)
+            : base()
         {
             this.logger = LoggerManager.GetLogger(GetType());
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
@@ -47,6 +50,11 @@ namespace Hexa.Core.Domain
         protected override IQueryable<TEntity> Query()
         {
             return this.dbContext.Set<TEntity>();
+        }
+
+        protected override TEntity Load(TKey id)
+        {
+            return this.dbContext.Set<TEntity>().Find(id);
         }
     }
 }

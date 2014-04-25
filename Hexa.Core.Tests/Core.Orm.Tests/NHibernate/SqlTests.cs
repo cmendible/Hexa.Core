@@ -36,7 +36,7 @@ namespace Hexa.Core.Orm.Tests.NH
 
             Assert.IsNotNull(entityA);
             Assert.IsNotNull(entityA.Version);
-            Assert.IsFalse(entityA.UniqueId == Guid.Empty);
+            Assert.IsFalse(entityA.Id == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
         }
 
@@ -69,7 +69,7 @@ namespace Hexa.Core.Orm.Tests.NH
             //--> org.hibernate.AssertionFailure: collection
             // was not processed by flush()
             var repo = this.unityContainer.Resolve<IEntityARepository>();
-            a = repo.GetFilteredElements(u => u.UniqueId == a.UniqueId).Single();
+            a = repo.GetFiltered(u => u.Id == a.Id).Single();
 
             a.Name = "AA";
             repo.Modify(a);
@@ -81,7 +81,7 @@ namespace Hexa.Core.Orm.Tests.NH
             EntityA entityA = this._Add_EntityA();
 
             IEntityARepository repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
 
             EntityA entityA2Delete = results.First();
@@ -151,7 +151,7 @@ namespace Hexa.Core.Orm.Tests.NH
             EntityA entityA = this._Add_EntityA();
 
             var repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
         }
 
@@ -173,7 +173,7 @@ namespace Hexa.Core.Orm.Tests.NH
             Thread.Sleep(1000);
 
             var repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
 
             EntityA entityA2Update = results.First();
@@ -181,7 +181,7 @@ namespace Hexa.Core.Orm.Tests.NH
             repo.Modify(entityA2Update);
 
             repo = this.unityContainer.Resolve<IEntityARepository>();
-            entityA = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
+            entityA = repo.GetFiltered(u => u.Id == entityA.Id).Single();
             Assert.AreEqual("Maria", entityA.Name);
             Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
         }

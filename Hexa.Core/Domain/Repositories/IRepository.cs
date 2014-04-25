@@ -23,8 +23,9 @@ namespace Hexa.Core.Domain
     /// of ignorance within our domain model
     /// </remarks>
     /// <typeparam name="TEntity">Type of entity for this repository </typeparam>
-    public interface IRepository<TEntity>
-        where TEntity : class
+    public interface IRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
         {
             /// <summary>
             /// Add item into repository
@@ -47,38 +48,19 @@ namespace Hexa.Core.Domain
             /// <returns>List of selected elements</returns>
             IEnumerable<TEntity> GetAll();
 
-            /// <summary>
-            /// Get all elements of type {T} that matching a
-            /// Specification <paramref name="specification"/>
-            /// </summary>
-            /// <param name="specification">Specification that result meet</param>
-            /// <returns></returns>
-            IEnumerable<TEntity> GetBySpec(ISpecification<TEntity> specification);
+            TEntity GetById(TKey id);
 
-            /// <summary>
-            /// Get  elements of type {T} in repository
-            /// </summary>
-            /// <param name="filter">Filter that each element do match</param>
-            /// <returns>List of selected elements</returns>
-            IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter);
-
-            IEnumerable<TEntity> GetFilteredElements<S>(
+            IEnumerable<TEntity> GetFiltered(
                 Expression<Func<TEntity, bool>> filter,
-                Expression<Func<TEntity, S>> orderByExpression,
+                Expression<Func<TEntity, object>> orderByExpression = null,
                 bool ascending = true);
 
-            PagedElements<TEntity> GetPagedElements<S>(
+            PagedElements<TEntity> GetPaged(
                 int pageIndex,
                 int pageCount,
                 Expression<Func<TEntity, bool>> filter,
-                Expression<Func<TEntity, S>> orderByExpression,
+                Expression<Func<TEntity, object>> orderByExpression = null,
                 bool ascending = true);
-
-            PagedElements<TEntity> GetPagedElements(
-                int pageIndex,
-                int pageCount,
-                ISpecification<TEntity> specification,
-                IOrderBySpecification<TEntity> orderBySpecification);
 
             /// <summary>
             /// Sets modified entity into the repository.
@@ -97,4 +79,9 @@ namespace Hexa.Core.Domain
             /// <param name="item">Item to delete</param>
             void Remove(TEntity item);
         }
+
+    public interface IRepository<TEntity> : IRepository<TEntity, Guid>
+        where TEntity : class, IEntity<Guid>
+    { 
+    }
 }

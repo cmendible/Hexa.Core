@@ -5,14 +5,16 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using Logging;
     using NHibernate;
     using NHibernate.Linq;
 
-    public class NHRepository<TEntity> : BaseRepository<TEntity>
-        where TEntity : class
+    public class NHRepository<TEntity, TKey> : BaseRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         private readonly ILogger logger;
         private readonly ISession session;
@@ -51,6 +53,11 @@ namespace Hexa.Core.Domain
         protected override IQueryable<TEntity> Query()
         {
             return this.session.Query<TEntity>();
+        }
+
+        protected override TEntity Load(TKey id)
+        {
+            return this.session.Get<TEntity>(id);
         }
     }
 }

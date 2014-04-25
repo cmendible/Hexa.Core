@@ -13,7 +13,7 @@ namespace Hexa.Core.Domain.Tests
     {
     }
 
-    public class Entity
+    public class Entity : IEntity<int>
     {
         public int Id
         {

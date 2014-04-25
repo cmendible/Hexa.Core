@@ -16,14 +16,14 @@ namespace Hexa.Core.Domain
         {
             if (typeof(TKey).Equals(typeof(int)))
             {
-                this.Id(x => x.UniqueId)
+                this.Id(x => x.Id)
                     .UnsavedValue(0)
                     .GeneratedBy.Native();
             }
 
             if (typeof(TKey).Equals(typeof(Guid)))
             {
-                this.Id(x => x.UniqueId)
+                this.Id(x => x.Id)
                     .GeneratedBy.GuidComb();
             }
 

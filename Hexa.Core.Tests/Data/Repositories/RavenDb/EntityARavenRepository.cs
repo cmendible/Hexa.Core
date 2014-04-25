@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Tests.Data
 {
+    using System;
     using Core.Domain;
     using Domain;
     using Raven.Client;
 
-    public class EntityARavenRepository : RavenRepository<EntityA>, IEntityARepository
+    public class EntityARavenRepository : RavenRepository<EntityA, Guid>, IEntityARepository
     {
         public EntityARavenRepository(IDocumentSession session)
         : base(session)

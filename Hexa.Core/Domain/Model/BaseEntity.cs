@@ -16,7 +16,7 @@ namespace Hexa.Core.Domain
     /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
     /// </remarks>
     [Serializable]
-    public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>
+    public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>, IEntity<TKey>
         where TEntity : BaseEntity<TEntity, TKey>
         where TKey : struct, IEquatable<TKey>
     {
@@ -40,7 +40,7 @@ namespace Hexa.Core.Domain
         /// This is ignored for XML serialization because it does not have a public setter (which is very much by design).
         /// See the FAQ within the documentation if you'd like to have the Id XML serialized.
         /// </summary>
-        public virtual TKey UniqueId
+        public virtual TKey Id
         {
             get;
             protected set;
@@ -127,7 +127,7 @@ namespace Hexa.Core.Domain
                     // identically valued properties, even if they're of two different types,
                     // so we include the object's type in the hash calculation
                     int hashCode = this.GetType().GetHashCode();
-                    this.cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ this.UniqueId.GetHashCode();
+                    this.cachedHashcode = (hashCode * HASH_MULTIPLIER) ^ this.Id.GetHashCode();
                 }
             }
 
@@ -141,7 +141,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         public virtual bool IsTransient()
         {
-            return this.UniqueId.Equals(default(TKey));
+            return this.Id.Equals(default(TKey));
         }
 
         protected virtual Type TypeWithoutProxy()
@@ -157,7 +157,7 @@ namespace Hexa.Core.Domain
         {
             return !this.IsTransient() &&
                    !compareTo.IsTransient() &&
-                   this.UniqueId.Equals(compareTo.UniqueId);
+                   this.Id.Equals(compareTo.Id);
         }
     }
 }

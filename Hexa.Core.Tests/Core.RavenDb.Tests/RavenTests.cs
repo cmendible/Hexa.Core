@@ -38,7 +38,7 @@ namespace Hexa.Core.RavenDb.Tests
             Assert.IsNotNull(entityA);
 
             // Assert.IsNotNull(entityA.Version);
-            Assert.IsFalse(entityA.UniqueId == Guid.Empty);
+            Assert.IsFalse(entityA.Id == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
         }
 
@@ -54,7 +54,7 @@ namespace Hexa.Core.RavenDb.Tests
             EntityA entityA = this._Add_EntityA();
 
             var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
 
             EntityA entityA2Delete = results.First();
@@ -64,7 +64,7 @@ namespace Hexa.Core.RavenDb.Tests
             this.Commit();
 
             repo = ServiceLocator.GetInstance<IEntityARepository>();
-            Assert.AreEqual(0, repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Count());
+            Assert.AreEqual(0, repo.GetFiltered(u => u.Id == entityA.Id).Count());
         }
 
         [TestFixtureSetUp]
@@ -118,7 +118,7 @@ namespace Hexa.Core.RavenDb.Tests
             EntityA entityA = this._Add_EntityA();
 
             var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
         }
 
@@ -137,7 +137,7 @@ namespace Hexa.Core.RavenDb.Tests
             EntityA entityA = this._Add_EntityA();
 
             var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId);
+            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.IsTrue(results.Count() > 0);
 
             EntityA entityA2Update = results.First();
@@ -149,7 +149,7 @@ namespace Hexa.Core.RavenDb.Tests
             Thread.Sleep(1000);
 
             repo = ServiceLocator.GetInstance<IEntityARepository>();
-            EntityA entityA2 = repo.GetFilteredElements(u => u.UniqueId == entityA.UniqueId).Single();
+            EntityA entityA2 = repo.GetFiltered(u => u.Id == entityA.Id).Single();
             Assert.AreEqual("Maria", entityA2.Name);
 
             // Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);

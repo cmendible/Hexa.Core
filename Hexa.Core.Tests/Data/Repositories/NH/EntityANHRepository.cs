@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Tests.Data
 {
+    using System;
     using Core.Domain;
     using Domain;
     using NHibernate;
 
-    public class EntityANHRepository : NHRepository<EntityA>, IEntityARepository
+    public class EntityANHRepository : NHRepository<EntityA, Guid>, IEntityARepository
     {
         public EntityANHRepository(ISession session)
         : base(session)

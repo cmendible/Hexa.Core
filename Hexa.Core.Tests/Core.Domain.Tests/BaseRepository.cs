@@ -121,7 +121,7 @@ namespace Hexa.Core.Domain.Tests
             target.Attach(entity);
 
             // Assert
-            Assert.IsTrue(target.GetFilteredElements(t => t.Id == 5).Count() == 1);
+            Assert.IsTrue(target.GetFiltered(t => t.Id == 5).Count() == 1);
         }
 
         /// <summary>
@@ -178,55 +178,8 @@ namespace Hexa.Core.Domain.Tests
             Assert.IsTrue(result.Count() == 1);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetBySpec_NullSpecThrowArgumentNullException_Test()
-        {
-            // Act
-            var target = new ListRepository();
-            ISpecification<Entity> spec = new DirectSpecification<Entity>(t => t.Id == 1);
-
-            // Act
-            target.GetBySpec(null);
-        }
-
-        [Test]
-        public void GetBySpec_Test()
-        {
-            // Act
-            var target = new ListRepository();
-            ISpecification<Entity> spec = new DirectSpecification<Entity>(t => t.Id == 1);
-
-            // Act
-            IEnumerable<Entity> result = target.GetBySpec(spec);
-
-            // Assert
-            Assert.IsTrue(result.Count() == 1);
-        }
-
         /// <summary>
-        /// A test for GetFilteredElements
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetFilteredAndOrderedAndPagedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
-        {
-            // Act
-            var target = new ListRepository();
-            int pageIndex = 0;
-            int pageCount = 1;
-
-            // Act
-            PagedElements<Entity> result = target.GetPagedElements<int>(
-                                               pageIndex,
-                                               pageCount,
-                                               e => e.Id == 1,
-                                               null,
-                                               false);
-        }
-
-        /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -238,7 +191,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 0;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements<int>(
+            PagedElements<Entity> result = target.GetPaged(
                                                pageIndex,
                                                pageCount,
                                                e => e.Id == 1,
@@ -247,7 +200,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -259,7 +212,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements<int>(
+            PagedElements<Entity> result = target.GetPaged(
                                                pageIndex,
                                                pageCount,
                                                e => e.Id == 1,
@@ -268,34 +221,16 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetFilteredAndOrderedElements_InvalidOrderByExpressionThrowArgumentNullException_Test()
+        public void GetFilteredTest()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            IEnumerable<Entity> result = target.GetFilteredElements<int>(e => e.Id == 1, null, false);
-
-            // Assert
-            Assert.IsTrue(result != null);
-            Assert.IsTrue(result.Count() == 1);
-        }
-
-        /// <summary>
-        /// A test for GetFilteredElements
-        /// </summary>
-        [Test]
-        public void GetFilteredElementsTest()
-        {
-            // Act
-            var target = new ListRepository();
-
-            // Act
-            IEnumerable<Entity> result = target.GetFilteredElements(e => e.Id == 1);
+            IEnumerable<Entity> result = target.GetFiltered(e => e.Id == 1);
 
             // Assert
             Assert.IsNotNull(result);
@@ -304,75 +239,75 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetFilteredElements_FilterNullThrowArgumentNullException_Test()
+        public void GetFiltered_FilterNullThrowArgumentNullException_Test()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            target.GetFilteredElements(null);
+            target.GetFiltered(null);
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetFilteredElements_SpecificKOrder_AscendingOrderAndFilterNullThrowArgumentNullException_Test()
+        public void GetFiltered_SpecificKOrder_AscendingOrderAndFilterNullThrowArgumentNullException_Test()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            target.GetFilteredElements(null, t => t.Id, true);
+            target.GetFiltered(null, t => t.Id, true);
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
-        public void GetFilteredElements_SpecificKOrder_AscendingOrder_Test()
+        public void GetFiltered_SpecificKOrder_AscendingOrder_Test()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            target.GetFilteredElements(e => e.Id == 1, t => t.Id, true);
+            target.GetFiltered(e => e.Id == 1, t => t.Id, true);
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GetFilteredElements_SpecificKOrder_DescendingOrderAndFilterNullThrowArgumentNullException_Test()
+        public void GetFiltered_SpecificKOrder_DescendingOrderAndFilterNullThrowArgumentNullException_Test()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            target.GetFilteredElements(null, t => t.Id, false);
+            target.GetFiltered(null, t => t.Id, false);
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
-        public void GetFilteredElements_SpecificKOrder_DescendingOrder_Test()
+        public void GetFiltered_SpecificKOrder_DescendingOrder_Test()
         {
             // Act
             var target = new ListRepository();
 
             // Act
-            target.GetFilteredElements(e => e.Id == 1, t => t.Id, false);
+            target.GetFiltered(e => e.Id == 1, t => t.Id, false);
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         public void GetFiltered_WithAscendingOrderedAndPagedElements_Test()
@@ -383,7 +318,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(
+            PagedElements<Entity> result = target.GetPaged(
                                                pageIndex,
                                                pageCount,
                                                e => e.Id == 1,
@@ -396,7 +331,7 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetFilteredElements
+        /// A test for GetFiltered
         /// </summary>
         [Test]
         public void GetFiltered_WithDescendingOrderedAndPagedElements_Test()
@@ -407,7 +342,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(
+            PagedElements<Entity> result = target.GetPaged(
                                                pageIndex,
                                                pageCount,
                                                e => e.Id == 1,
@@ -420,10 +355,10 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetPagedElements
+        /// A test for GetPaged
         /// </summary>
         [Test]
-        public void GetPagedElements_AscendingOrder_Test()
+        public void GetPaged_AscendingOrder_Test()
         {
             // Act
             var target = new ListRepository();
@@ -431,7 +366,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => true, e => e.Id, true);
+            PagedElements<Entity> result = target.GetPaged(pageIndex, pageCount, e => true, e => e.Id, true);
 
             // Assert
             Assert.IsNotNull(result);
@@ -439,10 +374,10 @@ namespace Hexa.Core.Domain.Tests
         }
 
         /// <summary>
-        /// A test for GetPagedElements
+        /// A test for GetPaged
         /// </summary>
         [Test]
-        public void GetPagedElements_DescendingOrder_Test()
+        public void GetPaged_DescendingOrder_Test()
         {
             // Act
             var target = new ListRepository();
@@ -450,7 +385,7 @@ namespace Hexa.Core.Domain.Tests
             int pageCount = 1;
 
             // Act
-            PagedElements<Entity> result = target.GetPagedElements(pageIndex, pageCount, e => true, e => e.Id, false);
+            PagedElements<Entity> result = target.GetPaged(pageIndex, pageCount, e => true, e => e.Id, false);
 
             // Assert
             Assert.IsNotNull(result);

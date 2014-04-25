@@ -23,7 +23,7 @@ namespace Hexa.Core.Domain
                     DataDirectory = "Data"
                 };
                 _documenFactory.Conventions.AllowQueriesOnId = true;
-                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "UniqueId";
+                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "Id";
                 _documenFactory.Initialize();
             }
         }

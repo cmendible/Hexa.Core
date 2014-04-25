@@ -133,7 +133,7 @@
     {
         public void SetId(int ident)
         {
-            UniqueId = ident;
+            Id = ident;
         }
     }
 
@@ -141,7 +141,7 @@
     {
         public void SetId(int ident)
         {
-            UniqueId = ident;
+            Id = ident;
         }
     }
 

@@ -15,9 +15,9 @@ namespace Hexa.Core.Domain
     {
         public EntityConfiguration()
         {
-            this.HasKey(x => x.UniqueId);
+            this.HasKey(x => x.Id);
 
-            this.Property(x => x.UniqueId)
+            this.Property(x => x.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(x => x.Version)

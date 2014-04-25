@@ -26,8 +26,9 @@ namespace Hexa.Core.Domain
     /// in that case, just simply do not use this base class on your Repository.
     /// </summary>
     /// <typeparam name="TEntity">Type of elements in repostory</typeparam>
-    public abstract class BaseRepository<TEntity> : IRepository<TEntity>
-        where TEntity : class
+    public abstract class BaseRepository<TEntity, TKey> : IRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         private readonly ILogger logger;
 
@@ -85,38 +86,9 @@ namespace Hexa.Core.Domain
             return this.Query().ToList();
         }
 
-        /// <summary>
-        /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
-        /// </summary>
-        /// <param name="specification"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
-        /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
-        public IEnumerable<TEntity> GetBySpec(ISpecification<TEntity> specification)
+        public TEntity GetById(TKey id)
         {
-            Guard.IsNotNull(specification, "specification");
-
-            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting {0} by specification", typeof(TEntity).Name));
-
-            return (this.Query()
-                    .Where(specification.SatisfiedBy()))
-                    .ToList();
-        }
-
-        /// <summary>
-        /// <see cref="Hexa.Core.Domain.IRepository{TEntity}"/>
-        /// </summary>
-        /// <param name="filter"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
-        /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>b
-        public IEnumerable<TEntity> GetFilteredElements(Expression<Func<TEntity, bool>> filter)
-        {
-            // checking query arguments
-            Guard.IsNotNull(filter, "filter");
-
-            this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filer: {1}", typeof(TEntity).Name, filter.ToString()));
-
-            // Create IObjectSet and perform query
-            return this.Query()
-                   .Where(filter)
-                   .ToList();
+            return this.Load(id);
         }
 
         /// <summary>
@@ -126,36 +98,33 @@ namespace Hexa.Core.Domain
         /// <param name="orderByExpression"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         /// <param name="ascending"><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></param>
         /// <returns><see cref="Hexa.Core.Domain.IRepository{TEntity}"/></returns>
-        public IEnumerable<TEntity> GetFilteredElements<S>(
+        public IEnumerable<TEntity> GetFiltered(
             Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, S>> orderByExpression,
+            Expression<Func<TEntity, object>> orderByExpression = null,
             bool ascending = true)
         {
             // Checking query arguments
             Guard.IsNotNull(filter, "filter");
-            Guard.IsNotNull(orderByExpression, "orderByExpression");
 
             this.logger.Debug(string.Format(CultureInfo.InvariantCulture, "Getting filtered elements {0} with filter: {1}", typeof(TEntity).Name, filter.ToString()));
 
-            // Create IObjectSet for this type and perform query
-            var objectSet = this.Query();
+            var query = this.Query().Where(filter);
+
+            if (orderByExpression == null)
+            {
+                return query.ToList();
+            }
 
             return ascending
-                   ? objectSet
-                   .Where(filter)
-                   .OrderBy(orderByExpression)
-                   .ToList()
-                   : objectSet
-                   .Where(filter)
-                   .OrderByDescending(orderByExpression)
-                   .ToList();
+                   ? query.OrderBy(orderByExpression).ToList()
+                   : query.OrderByDescending(orderByExpression).ToList();
         }
 
-        public PagedElements<TEntity> GetPagedElements<S>(
+        public PagedElements<TEntity> GetPaged(
             int pageIndex,
             int pageSize,
             Expression<Func<TEntity, bool>> filter, 
-            Expression<Func<TEntity, S>> orderByExpression,
+            Expression<Func<TEntity, object>> orderByExpression,
             bool ascending = true)
         {
             // checking arguments for this query
@@ -173,9 +142,8 @@ namespace Hexa.Core.Domain
                     pageSize,
                     orderByExpression.ToString()));
 
-            var objectSet = this.Query();
+            var query = this.Query().Where(filter);
 
-            IQueryable<TEntity> query = objectSet.Where(filter);
             int total = query.Count();
 
             return ascending
@@ -187,43 +155,6 @@ namespace Hexa.Core.Domain
                        total)
                    : new PagedElements<TEntity>(
                        query.OrderByDescending(orderByExpression)
-                       .Skip(pageIndex * pageSize)
-                       .Take(pageSize)
-                       .ToList(),
-                       total);
-        }
-
-        public PagedElements<TEntity> GetPagedElements(
-            int pageIndex,
-            int pageSize,
-            ISpecification<TEntity> specification,
-            IOrderBySpecification<TEntity> orderBySpecification
-            )
-        {
-            // checking arguments for this query
-            Guard.Against<ArgumentException>(pageIndex < 0, "pageIndex");
-            Guard.Against<ArgumentException>(pageSize <= 0, "pageSize");
-            Guard.IsNotNull(orderBySpecification, "orderBySpecification");
-            Guard.IsNotNull(specification, "specification");
-
-            this.logger.Debug(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    "Getting paged elements {0}, pageIndex: {1}, pageSize {2}, oderBy {3}",
-                    typeof(TEntity).Name,
-                    pageIndex,
-                    pageSize,
-                    orderBySpecification.ToString()));
-
-            // Create associated IObjectSet and perform query
-            var objectSet = this.Query();
-
-            IQueryable<TEntity> query = objectSet.Where(specification.SatisfiedBy());
-            int total = query.Count();
-
-            return new PagedElements<TEntity>(
-                       query
-                       .OrderBySpecification(orderBySpecification)
                        .Skip(pageIndex * pageSize)
                        .Take(pageSize)
                        .ToList(),
@@ -262,6 +193,8 @@ namespace Hexa.Core.Domain
         protected abstract void InternalRemove(TEntity entity);
 
         protected abstract IQueryable<TEntity> Query();
+
+        protected abstract TEntity Load(TKey id);
 
     }
 }

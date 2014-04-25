@@ -10,7 +10,7 @@
     /// <summary>
     /// 
     /// </summary>
-    internal class ListRepository : BaseRepository<Entity>
+    internal class ListRepository : BaseRepository<Entity, int>
     {
         List<Entity> list = new List<Entity>();
 
@@ -49,6 +49,11 @@
         protected override IQueryable<Entity> Query()
         {
             return this.list.AsQueryable();
+        }
+
+        protected override Entity Load(int id)
+        {
+            return this.list.Where(l => l.Id == id).First();
         }
     }
 }
