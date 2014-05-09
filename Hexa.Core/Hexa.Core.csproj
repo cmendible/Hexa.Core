@@ -118,7 +118,6 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
-    <Compile Include="Domain\Events\Publisher\EmptyEventPublisher.cs" />
     <Compile Include="Domain\Events\Publisher\ConsumeEventPublisher.cs" />
     <Compile Include="Domain\Events\Publisher\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\DomainEvents.cs" />

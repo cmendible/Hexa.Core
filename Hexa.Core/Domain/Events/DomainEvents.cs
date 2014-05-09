@@ -7,6 +7,7 @@ namespace Hexa.Core.Domain
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -21,33 +22,18 @@ namespace Hexa.Core.Domain
         [ThreadStatic]
         private static List<Delegate> actions;
 
+        [ThreadStatic]
+        private static ConcurrentQueue<Action> events;
+
         /// <summary>
         /// The event publisher
         /// </summary>
-        private static Func<IEventPublisher> eventPublisher = () => new EmptyEventPublisher();
+        private static Func<IEventPublisher> eventPublisher = () => new ConsumeEventPublisher();
 
         /// <summary>
         /// The publish method
         /// </summary>
         private static MethodInfo publishMethod = typeof(IEventPublisher).GetMethod("Publish");
-
-        /// <summary>
-        /// Gets or sets the event publisher.
-        /// </summary>
-        /// <value>
-        /// The event publisher.
-        /// </value>
-        public static Func<IEventPublisher> EventPublisher
-        {
-            get
-            {
-                return DomainEvents.eventPublisher;
-            }
-            set
-            {
-                DomainEvents.eventPublisher = value;
-            }
-        }
 
         /// <summary>
         /// Clears the callbacks.
@@ -63,10 +49,15 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="@event">The args.</param>
-        public static void Raise<T>(T @event)
+        public static void Dispatch<T>(T @event)
         where T : class
         {
-            DomainEvents.eventPublisher.Invoke().Publish<T>(@event);
+            if (DomainEvents.events == null)
+            {
+                DomainEvents.events = new ConcurrentQueue<Action>();
+            }
+
+            DomainEvents.events.Enqueue(() => eventPublisher().Publish<T>(@event));
 
             if (DomainEvents.actions != null)
             {
@@ -78,20 +69,6 @@ namespace Hexa.Core.Domain
                         typedAction(@event);
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Publishes the specified events.
-        /// </summary>
-        /// <param name="events">The events.</param>
-        public static void Raise(object[] events)
-        {
-            IEventPublisher publisher = DomainEvents.eventPublisher.Invoke();
-            foreach (var @event in events)
-            {
-                MethodInfo method = publishMethod.MakeGenericMethod(new Type[] { @event.GetType() });
-                method.Invoke(publisher, new object[] { @event });
             }
         }
 
@@ -110,6 +87,15 @@ namespace Hexa.Core.Domain
             }
 
             DomainEvents.actions.Add(callback);
+        }
+
+        public static void Raise()
+        {
+            Action dispatch;
+            while (DomainEvents.events.TryDequeue(out dispatch))
+            {
+                dispatch();
+            }
         }
     }
 }
