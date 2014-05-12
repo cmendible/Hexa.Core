@@ -22,7 +22,14 @@
         {
             if (OperationContext.Current != null)
             {
-                return (T)OperationContextState[key];
+                if (OperationContextState.ContainsKey(key))
+                {
+                    return (T)OperationContextState[key];
+                }
+                else
+                {
+                    return default(T);
+                }
             }
             else if (HttpContext.Current != null)
             {
