@@ -8,9 +8,6 @@ namespace Hexa.Core.Domain
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Runtime.Remoting.Messaging;
-    using System.ServiceModel;
-    using System.Web;
 
     /// <summary>
     /// Domain Event Publisher
@@ -73,7 +70,7 @@ namespace Hexa.Core.Domain
 
                     if (DomainEvents.actions != null)
                     {
-                        foreach (Action action in DomainEvents.actions)
+                        foreach (Delegate action in DomainEvents.actions)
                         {
                             Action<T> typedAction = action as Action<T>;
                             if (typedAction != null)
