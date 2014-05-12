@@ -6,34 +6,51 @@
 namespace Hexa.Core.Domain
 {
     using System;
-    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Reflection;
+    using System.Runtime.Remoting.Messaging;
+    using System.ServiceModel;
+    using System.Web;
 
     /// <summary>
-    /// Domain Event Publisher 
+    /// Domain Event Publisher
     /// </summary>
     public static class DomainEvents
     {
+        /// <summary>
+        /// The domain events key
+        /// </summary>
+        private const string DomainEventsKey = "Hexa.Core.DomainEvents.Events";
+
         /// <summary>
         /// The callback actions
         /// </summary>
         [ThreadStatic]
         private static List<Delegate> actions;
 
-        [ThreadStatic]
-        private static ConcurrentQueue<Action> events;
+        /// <summary>
+        /// Gets the events.
+        /// </summary>
+        /// <value>
+        /// The events.
+        /// </value>
+        private static ConcurrentQueue<Action> Events
+        {
+            get
+            {
+                if (ContextState.Get<ConcurrentQueue<Action>>(DomainEvents.DomainEventsKey) == null)
+                {
+                    ContextState.Store(DomainEvents.DomainEventsKey, new ConcurrentQueue<Action>());
+                }
+
+                return ContextState.Get<ConcurrentQueue<Action>>(DomainEvents.DomainEventsKey);
+            }
+        }
 
         /// <summary>
         /// The event publisher
         /// </summary>
-        private static Func<IEventPublisher> eventPublisher = () => new ConsumeEventPublisher();
-
-        /// <summary>
-        /// The publish method
-        /// </summary>
-        private static MethodInfo publishMethod = typeof(IEventPublisher).GetMethod("Publish");
+        private static IEventPublisher eventPublisher = new ConsumeEventPublisher();
 
         /// <summary>
         /// Clears the callbacks.
@@ -52,12 +69,7 @@ namespace Hexa.Core.Domain
         public static void Dispatch<T>(T @event)
         where T : class
         {
-            if (DomainEvents.events == null)
-            {
-                DomainEvents.events = new ConcurrentQueue<Action>();
-            }
-
-            DomainEvents.events.Enqueue(() => eventPublisher().Publish<T>(@event));
+            DomainEvents.Events.Enqueue(() => eventPublisher.Publish<T>(@event));
 
             if (DomainEvents.actions != null)
             {
@@ -89,10 +101,13 @@ namespace Hexa.Core.Domain
             DomainEvents.actions.Add(callback);
         }
 
+        /// <summary>
+        /// Raises the queued events.
+        /// </summary>
         public static void Raise()
         {
             Action dispatch;
-            while (DomainEvents.events.TryDequeue(out dispatch))
+            while (DomainEvents.Events.TryDequeue(out dispatch))
             {
                 dispatch();
             }

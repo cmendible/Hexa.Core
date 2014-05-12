@@ -115,11 +115,13 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ContextState\ContextState.cs" />
+    <Compile Include="ContextState\OperationContextExtension.cs" />
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
     <Compile Include="Domain\Events\Publisher\ConsumeEventPublisher.cs" />
-    <Compile Include="Domain\Events\Publisher\IConsumeEvent.cs" />
+    <Compile Include="Domain\Events\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\DomainEvents.cs" />
     <Compile Include="Domain\Events\Publisher\IEventPublisher.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
