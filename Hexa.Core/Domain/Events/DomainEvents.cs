@@ -48,11 +48,6 @@ namespace Hexa.Core.Domain
         }
 
         /// <summary>
-        /// The event publisher
-        /// </summary>
-        private static IEventPublisher eventPublisher = new ConsumeEventPublisher();
-
-        /// <summary>
         /// Clears the callbacks.
         /// Used for unit testing.
         /// </summary>
@@ -69,19 +64,25 @@ namespace Hexa.Core.Domain
         public static void Dispatch<T>(T @event)
         where T : class
         {
-            DomainEvents.Events.Enqueue(() => eventPublisher.Publish<T>(@event));
-
-            if (DomainEvents.actions != null)
-            {
-                foreach (Action action in DomainEvents.actions)
+            DomainEvents.Events.Enqueue(() =>
                 {
-                    Action<T> typedAction = action as Action<T>;
-                    if (typedAction != null)
+                    foreach (var consumer in ServiceLocator.GetAllInstances<IConsumeEvent<T>>())
                     {
-                        typedAction(@event);
+                        consumer.Consume(@event);
                     }
-                }
-            }
+
+                    if (DomainEvents.actions != null)
+                    {
+                        foreach (Action action in DomainEvents.actions)
+                        {
+                            Action<T> typedAction = action as Action<T>;
+                            if (typedAction != null)
+                            {
+                                typedAction(@event);
+                            }
+                        }
+                    }
+                });
         }
 
         /// <summary>
