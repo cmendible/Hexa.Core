@@ -120,8 +120,8 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
-    <Compile Include="Domain\Events\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\DomainEvents.cs" />
+    <Compile Include="Domain\Events\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\IEventPublisher.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableEntity.cs" />
@@ -247,9 +247,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Events\Publisher\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />
   <PropertyGroup>
