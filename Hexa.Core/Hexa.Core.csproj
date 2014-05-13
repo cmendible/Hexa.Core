@@ -120,10 +120,9 @@
     <Compile Include="Data\DbProviders.cs" />
     <Compile Include="Data\IDatabaseManager.cs" />
     <Compile Include="Data\SQLScriptHelper.cs" />
-    <Compile Include="Domain\Events\Publisher\ConsumeEventPublisher.cs" />
-    <Compile Include="Domain\Events\IConsumeEvent.cs" />
     <Compile Include="Domain\Events\DomainEvents.cs" />
-    <Compile Include="Domain\Events\Publisher\IEventPublisher.cs" />
+    <Compile Include="Domain\Events\IConsumeEvent.cs" />
+    <Compile Include="Domain\Events\IEventPublisher.cs" />
     <Compile Include="Domain\Model\BaseEntity.cs" />
     <Compile Include="Domain\Model\AuditableEntity.cs" />
     <Compile Include="Domain\Model\EventSourcedEntity.cs" />

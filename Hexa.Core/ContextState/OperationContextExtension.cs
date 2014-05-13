@@ -6,7 +6,7 @@
     /// <summary>
     /// OperationContext Extension
     /// </summary>
-    public class OperationContextExtension : IExtension<OperationContext>
+    internal class OperationContextExtension : IExtension<OperationContext>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationContextExtension"/> class.

@@ -8,7 +8,6 @@ namespace Hexa.Core
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public static class ServiceLocator
@@ -20,14 +19,17 @@ namespace Hexa.Core
 
         public static TDependency[] GetAllInstances<TDependency>()
         {
-            IEnumerable<object> services = resolveAllCallback(typeof(TDependency));
-
-            if (services != null)
+            if (resolveAllCallback != null)
             {
-                return services.Cast<TDependency>().ToArray();
+                IEnumerable<object> services = resolveAllCallback(typeof(TDependency));
+
+                if (services != null)
+                {
+                    return services.Cast<TDependency>().ToArray();
+                }
             }
 
-            return default(TDependency[]);
+            return new List<TDependency>().ToArray();
         }
 
         public static TDependency GetInstance<TDependency>()
