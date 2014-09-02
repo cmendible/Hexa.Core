@@ -6,31 +6,43 @@
 namespace Hexa.Core.Domain
 {
     using Data;
+    using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
 
-    public class RavenUnitOfWorkFactory : IDatabaseManager
+    public class RavenUnitOfWorkFactory : BaseUnitOfWorkFactory, IDatabaseManager
     {
-        private static EmbeddableDocumentStore _documenFactory;
+        private static EmbeddableDocumentStore documenFactory;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification="Object can't be disposed here.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Object can't be disposed here.")]
         public RavenUnitOfWorkFactory()
         {
-            if (_documenFactory == null)
+            if (documenFactory == null)
             {
-                _documenFactory = new EmbeddableDocumentStore
+                documenFactory = new EmbeddableDocumentStore
                 {
                     DataDirectory = "Data"
                 };
-                _documenFactory.Conventions.AllowQueriesOnId = true;
-                _documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "Id";
-                _documenFactory.Initialize();
+                documenFactory.Conventions.AllowQueriesOnId = true;
+                documenFactory.Conventions.FindIdentityProperty = prop => prop.Name == "Id";
+                documenFactory.Initialize();
             }
         }
 
-        public DocumentStore Create()
+        public IDocumentSession CurrentDocumentSession
         {
-            return _documenFactory;
+            get
+            {
+                IRavenUnitOfWork unitOfWork = this.Current as IRavenUnitOfWork;
+                Guard.IsNotNull(unitOfWork, "No UnitOfWork in scope!!!");
+
+                return unitOfWork.DocumentSession;
+            }
+        }
+
+        public DocumentStore CreateDocumentStore()
+        {
+            return documenFactory;
         }
 
         public void CreateDatabase()
@@ -48,6 +60,12 @@ namespace Hexa.Core.Domain
 
         public void ValidateDatabaseSchema()
         {
+        }
+
+        protected override INestableUnitOfWork InternalCreate(IUnitOfWork previousUnitOfWork)
+        {
+            IDocumentSession session = RavenUnitOfWorkFactory.documenFactory.OpenSession();
+            return new RavenUnitOfWork(session, previousUnitOfWork, this);
         }
     }
 }

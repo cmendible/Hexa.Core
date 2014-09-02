@@ -28,7 +28,7 @@ namespace Hexa.Core.Web.Services
             {
                 if (this._authorizationService == null)
                 {
-                    this._authorizationService = ServiceLocator.GetInstance<IAuthorizationService>();
+                    this._authorizationService = IoC.GetInstance<IAuthorizationService>();
                 }
 
                 return this._authorizationService;
@@ -46,7 +46,7 @@ namespace Hexa.Core.Web.Services
             {
                 if (this._siteMapBuilder == null)
                 {
-                    this._siteMapBuilder = ServiceLocator.GetInstance<ISiteMapBuilderService>();
+                    this._siteMapBuilder = IoC.GetInstance<ISiteMapBuilderService>();
                 }
 
                 return this._siteMapBuilder;

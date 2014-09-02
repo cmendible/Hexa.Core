@@ -15,7 +15,6 @@ namespace Hexa.Core.RavenDb.Tests
     using Core.Domain;
     using Data;
     using Domain;
-    using Hexa.Core.Tests.Unity;
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
     using Hexa.Core.Tests.Domain;
@@ -26,52 +25,49 @@ namespace Hexa.Core.RavenDb.Tests
     [TestFixture]
     public class RavenTests
     {
-        PerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new PerTestLifeTimeManager();
-        PerTestLifeTimeManager sessionPerTestLifeTimeManager = new PerTestLifeTimeManager();
         UnityContainer unityContainer;
 
         [Test]
         public void Add_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
             Assert.IsNotNull(entityA);
-
-            // Assert.IsNotNull(entityA.Version);
+            //Assert.IsNotNull(entityA.Version);
             Assert.IsFalse(entityA.Id == Guid.Empty);
             Assert.AreEqual("Martin", entityA.Name);
-        }
-
-        public void Commit()
-        {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Commit();
         }
 
         [Test]
         public void Delete_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
-            var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = IoC.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
 
-            EntityA entityA2Delete = results.First();
+                EntityA entityA2Delete = results.First();
 
-            repo.Remove(entityA2Delete);
+                repo.Remove(entityA2Delete);
 
-            this.Commit();
+                unitOfWork.Commit();
+            }
 
-            repo = ServiceLocator.GetInstance<IEntityARepository>();
-            Assert.AreEqual(0, repo.GetFiltered(u => u.Id == entityA.Id).Count());
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = IoC.GetInstance<IEntityARepository>();
+                Assert.AreEqual(0, repo.GetFiltered(u => u.Id == entityA.Id).Count());
+            }
         }
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             this.unityContainer = new UnityContainer();
-            ServiceLocator.Initialize(
+            IoC.Initialize(
                 (x, y) => this.unityContainer.RegisterType(x, y),
                 (x, y) => this.unityContainer.RegisterInstance(x, y),
                 (x) => { return unityContainer.Resolve(x); },
@@ -79,24 +75,20 @@ namespace Hexa.Core.RavenDb.Tests
 
             // Context Factory
             RavenUnitOfWorkFactory ctxFactory = new RavenUnitOfWorkFactory();
-            Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.Create();
+            Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.CreateDocumentStore();
 
-            this.unityContainer.RegisterInstance<Raven.Client.Document.DocumentStore>(sessionFactory);
-            ServiceLocator.RegisterInstance<IDatabaseManager>(ctxFactory);
+            IoC.RegisterInstance<IDatabaseManager>(ctxFactory);
+            IoC.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
 
-            this.unityContainer.RegisterType<IDocumentSession, IDocumentSession>(this.sessionPerTestLifeTimeManager, new InjectionFactory((c) =>
+            this.unityContainer.RegisterType<IDocumentSession, IDocumentSession>(new InjectionFactory((c) =>
             {
-                IDocumentSession session = sessionFactory.OpenSession();
-                return session;
+                return ctxFactory.CurrentDocumentSession;
             }));
-
-            this.unityContainer.RegisterType<IUnitOfWork, RavenUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
             this.unityContainer.RegisterType<IEntityARepository, EntityARavenRepository>();
 
             // Services
-
             if (!ctxFactory.DatabaseExists())
             {
                 ctxFactory.CreateDatabase();
@@ -108,64 +100,67 @@ namespace Hexa.Core.RavenDb.Tests
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            var dbManager = ServiceLocator.GetInstance<IDatabaseManager>();
+            var dbManager = IoC.GetInstance<IDatabaseManager>();
             dbManager.DeleteDatabase();
         }
 
         [Test]
         public void Query_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
-            var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Dispose();
-            this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
-            this.sessionPerTestLifeTimeManager.RemoveValue();
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = IoC.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
+            }
         }
 
         [Test]
         public void Update_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
-            var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = IoC.GetInstance<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
 
-            EntityA entityA2Update = results.First();
-            entityA2Update.Name = "Maria";
-            repo.Modify(entityA2Update);
+                EntityA entityA2Update = results.First();
+                entityA2Update.Name = "Maria";
+                repo.Modify(entityA2Update);
 
-            this.Commit();
+                unitOfWork.Commit();
+            }
 
             Thread.Sleep(1000);
 
-            repo = ServiceLocator.GetInstance<IEntityARepository>();
-            EntityA entityA2 = repo.GetFiltered(u => u.Id == entityA.Id).Single();
-            Assert.AreEqual("Maria", entityA2.Name);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = IoC.GetInstance<IEntityARepository>();
+                EntityA entityA2 = repo.GetFiltered(u => u.Id == entityA.Id).Single();
+                Assert.AreEqual("Maria", entityA2.Name);
 
-            // Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);
+                //Assert.Greater(entityA2.UpdatedAt, entityA2.CreatedAt);
+            }
         }
 
-        private EntityA _Add_EntityA()
+        private EntityA AddEntityA()
         {
-            var entityA = new EntityA();
-            entityA.Name = "Martin";
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var entityA = new EntityA();
+                entityA.Name = "Martin";
 
-            var repo = ServiceLocator.GetInstance<IEntityARepository>();
-            repo.Add(entityA);
+                var repo = IoC.GetInstance<IEntityARepository>();
+                repo.Add(entityA);
 
-            this.Commit();
+                unitOfWork.Commit();
 
-            return entityA;
+                return entityA;
+            }
         }
     }
 }

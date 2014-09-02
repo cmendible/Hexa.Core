@@ -68,7 +68,7 @@ namespace Hexa.Core.Domain
                     entry.Entity.UpdatedBy = userUniqueId;
                     entry.Entity.UpdatedAt = now;
 
-                    var auditTrailFactory = ServiceLocator.TryGetInstance<IAuditTrailFactory>();
+                    var auditTrailFactory = IoC.TryGetInstance<IAuditTrailFactory>();
                     if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(entry.Entity.GetType().Name))
                     {
                         string tableName = entry.Entity.GetType().Name;

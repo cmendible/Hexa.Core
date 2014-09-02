@@ -132,6 +132,10 @@
     <Compile Include="Domain\Model\ValidatableObject.cs" />
     <Compile Include="Domain\Model\ValueObject.cs" />
     <Compile Include="Domain\Repositories\BaseRepository.cs" />
+    <Compile Include="Domain\UnitOfWork\BaseUnitOfWorkFactory.cs" />
+    <Compile Include="Domain\UnitOfWork\INestableUnitOfWork.cs" />
+    <Compile Include="Domain\UnitOfWork\IUnitOfWorkFactory.cs" />
+    <Compile Include="Domain\UnitOfWork\UnitOfWorkOption.cs" />
     <Compile Include="Exceptions\AggregateNotFoundException.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\BaseEventStore.cs" />
     <Compile Include="Domain\Repositories\EventSourcing\EventDescriptor.cs" />
@@ -143,7 +147,7 @@
     <Compile Include="Extensions\PrivateReflectionDynamicObjectExtensions.cs" />
     <Compile Include="Domain\Services\IAuditTrailFactory.cs" />
     <Compile Include="Domain\Specification\SpecificationModel.cs" />
-    <Compile Include="Domain\UnitOfWork\UnitOfWorkScope.cs" />
+    <Compile Include="Domain\UnitOfWork\UnitOfWork.cs" />
     <Compile Include="Extensions\PrivateReflectionDynamicObject.cs" />
     <Compile Include="Globalization\Gettext.cs" />
     <Compile Include="Globalization\GettextHelper.cs" />
@@ -180,7 +184,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IoC\ServiceLocator.cs" />
+    <Compile Include="IoC\IoC.cs" />
     <Compile Include="Extensions\PagingExtensions.cs" />
     <Compile Include="Resources\Resource.es.Designer.cs">
       <DependentUpon>Resource.es.resx</DependentUpon>

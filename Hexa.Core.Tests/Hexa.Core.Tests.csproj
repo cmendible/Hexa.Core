@@ -205,7 +205,6 @@
     <Compile Include="Core.Domain.Tests\Specifications.cs" />
     <Compile Include="Core.Orm.Tests\NHibernate\SqlTests.cs" />
     <Compile Include="Core.RavenDb.Tests\RavenTests.cs" />
-    <Compile Include="Unity\PerTestLifeTimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Hexa.Core.snk">

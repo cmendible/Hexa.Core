@@ -14,7 +14,7 @@ namespace Hexa.Core.Domain
     {
         public BaseClassMap()
         {
-            Configuration = ServiceLocator.GetInstance<Configuration>();
+            Configuration = IoC.GetInstance<Configuration>();
             Dialect = Dialect.GetDialect(Configuration.Properties);
         }
 

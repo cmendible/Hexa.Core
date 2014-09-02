@@ -16,7 +16,6 @@ namespace Hexa.Core.Orm.Tests.NH
     using Hexa.Core.Security;
     using Hexa.Core.Tests.Data;
     using Hexa.Core.Tests.Domain;
-    using Hexa.Core.Tests.Unity;
     using Microsoft.Practices.Unity;
     using NHibernate;
     using NUnit.Framework;
@@ -25,14 +24,12 @@ namespace Hexa.Core.Orm.Tests.NH
     [TestFixture]
     public class SqlTest
     {
-        PerTestLifeTimeManager unitOfWorkPerTestLifeTimeManager = new PerTestLifeTimeManager();
-        PerTestLifeTimeManager sessionPerTestLifeTimeManager = new PerTestLifeTimeManager();
         UnityContainer unityContainer;
 
         [Test]
         public void Add_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
             Assert.IsNotNull(entityA);
             Assert.IsNotNull(entityA.Version);
@@ -61,46 +58,54 @@ namespace Hexa.Core.Orm.Tests.NH
             * create an instance of entity A and an instance of entity B, then link
             * both with each other via an m:n relationship
             */
-            EntityA a = this._Create_EntityA_EntityB_And_Many_To_Many_Relation();
+            EntityA a = this.Create_EntityA_EntityB_And_Many_To_Many_Relation();
 
             // now update a simple property of EntityA, due to this the
             // MyPostUpdateListener will be called, which iterates through all
             // properties of EntityA (and also the Collection of the m:n relation)
             //--> org.hibernate.AssertionFailure: collection
             // was not processed by flush()
-            var repo = this.unityContainer.Resolve<IEntityARepository>();
-            a = repo.GetFiltered(u => u.Id == a.Id).Single();
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                a = repo.GetFiltered(u => u.Id == a.Id).Single();
 
-            a.Name = "AA";
-            repo.Modify(a);
+                a.Name = "AA";
+                repo.Modify(a);
+                unitOfWork.Commit();
+            }
         }
 
         [Test]
         public void Delete_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = this.AddEntityA();
 
-            IEntityARepository repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                IEntityARepository repo = this.unityContainer.Resolve<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
 
-            EntityA entityA2Delete = results.First();
+                EntityA entityA2Delete = results.First();
 
-            repo.Remove(entityA2Delete);
+                repo.Remove(entityA2Delete);
+                unitOfWork.Commit();
+            }
         }
 
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             this.unityContainer = new UnityContainer();
-            ServiceLocator.Initialize(
+            IoC.Initialize(
                 (x, y) => this.unityContainer.RegisterType(x, y),
                 (x, y) => this.unityContainer.RegisterInstance(x, y),
                 (x) => { return unityContainer.Resolve(x); },
                 (x) => { return unityContainer.ResolveAll(x); });
 
             // Context Factory
-            NHibernateUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
+            NHUnitOfWorkFactory ctxFactory = this.CreateNHContextFactory();
 
             if (!ctxFactory.DatabaseExists())
             {
@@ -109,20 +114,16 @@ namespace Hexa.Core.Orm.Tests.NH
 
             ctxFactory.ValidateDatabaseSchema();
 
-            NHibernate.ISessionFactory sessionFactory = ctxFactory.Create();
+            NHibernate.ISessionFactory sessionFactory = ctxFactory.CreateSessionFactory();
 
             this.unityContainer.RegisterInstance<NHibernate.ISessionFactory>(sessionFactory);
             this.unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
+            this.unityContainer.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
 
-            this.unityContainer.RegisterType<ISession, ISession>(this.sessionPerTestLifeTimeManager, new InjectionFactory((c) =>
+            this.unityContainer.RegisterType<ISession, ISession>(new InjectionFactory((c) =>
             {
-                ISession session = sessionFactory.OpenSession();
-                session.Transaction.Begin();
-
-                return session;
+                return ctxFactory.CurrentSession;
             }));
-
-            this.unityContainer.RegisterType<IUnitOfWork, NHibernateUnitOfWork>(this.unitOfWorkPerTestLifeTimeManager);
 
             // Repositories
             this.unityContainer.RegisterType<IEntityARepository, EntityANHRepository>(new PerResolveLifetimeManager());
@@ -146,44 +147,69 @@ namespace Hexa.Core.Orm.Tests.NH
         }
 
         [Test]
-        public void Query_EntityA()
+        public void RequireNewAndNestedUnitOfWork()
         {
-            EntityA entityA = this._Add_EntityA();
+            EntityA entityA = default(EntityA);
 
-            var repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                entityA = new EntityA();
+                entityA.Name = "Martin";
+
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                repo.Add(entityA);
+
+                using (IUnitOfWork nestesUnitOfWork = UnitOfWork.Start(UnitOfWorkOption.NewAndNested))
+                {
+                    nestesUnitOfWork.RollbackChanges();
+                }
+                unitOfWork.Commit();
+            }
+
+            Assert.IsNotNull(entityA);
+            Assert.IsNotNull(entityA.Version);
+            Assert.IsFalse(entityA.Id == Guid.Empty);
+            Assert.AreEqual("Martin", entityA.Name);
         }
 
-        [TearDown]
-        public void TearDown()
+        [Test]
+        public void Query_EntityA()
         {
-            IUnitOfWork unitOfWork = this.unityContainer.Resolve<IUnitOfWork>();
-            unitOfWork.Dispose();
+            EntityA entityA = this.AddEntityA();
 
-            this.unitOfWorkPerTestLifeTimeManager.RemoveValue();
-            this.sessionPerTestLifeTimeManager.RemoveValue();
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
+            }
         }
 
         [Test]
         public void Update_EntityA()
         {
-            EntityA entityA = this._Add_EntityA();
-
+            EntityA entityA = this.AddEntityA();
             Thread.Sleep(1000);
 
-            var repo = this.unityContainer.Resolve<IEntityARepository>();
-            IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
-            Assert.IsTrue(results.Count() > 0);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
+                Assert.IsTrue(results.Count() > 0);
 
-            EntityA entityA2Update = results.First();
-            entityA2Update.Name = "Maria";
-            repo.Modify(entityA2Update);
+                EntityA entityA2Update = results.First();
+                entityA2Update.Name = "Maria";
+                repo.Modify(entityA2Update);
+                unitOfWork.Commit();
+            }
 
-            repo = this.unityContainer.Resolve<IEntityARepository>();
-            entityA = repo.GetFiltered(u => u.Id == entityA.Id).Single();
-            Assert.AreEqual("Maria", entityA.Name);
-            Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                entityA = repo.GetFiltered(u => u.Id == entityA.Id).Single();
+                Assert.AreEqual("Maria", entityA.Name);
+                Assert.Greater(entityA.UpdatedAt, entityA.CreatedAt);
+            }
         }
 
         protected virtual string ConnectionString()
@@ -191,39 +217,49 @@ namespace Hexa.Core.Orm.Tests.NH
             return ConfigurationManager.ConnectionStrings["Sql.Connection"].ConnectionString;
         }
 
-        protected virtual NHibernateUnitOfWorkFactory CreateNHContextFactory()
+        protected virtual NHUnitOfWorkFactory CreateNHContextFactory()
         {
-            return new NHibernateUnitOfWorkFactory(DbProvider.MsSqlProvider, this.ConnectionString(), string.Empty, new Assembly[] { Assembly.GetExecutingAssembly() });
+            return new NHUnitOfWorkFactory(DbProvider.MsSqlProvider, this.ConnectionString(), string.Empty, new Assembly[] { Assembly.GetExecutingAssembly() });
         }
 
-        private EntityA _Add_EntityA()
+        private EntityA AddEntityA()
         {
-            var entityA = new EntityA();
-            entityA.Name = "Martin";
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var entityA = new EntityA();
+                entityA.Name = "Martin";
 
-            var repo = this.unityContainer.Resolve<IEntityARepository>();
-            repo.Add(entityA);
+                var repo = this.unityContainer.Resolve<IEntityARepository>();
+                repo.Add(entityA);
 
-            return entityA;
+                unitOfWork.Commit();
+
+                return entityA;
+            }
         }
 
-        private EntityA _Create_EntityA_EntityB_And_Many_To_Many_Relation()
+        private EntityA Create_EntityA_EntityB_And_Many_To_Many_Relation()
         {
-            var a = new EntityA();
-            a.Name = "A";
+            using (IUnitOfWork unitOfWork = UnitOfWork.Start())
+            {
+                var a = new EntityA();
+                a.Name = "A";
 
-            var b = new EntityB();
-            b.Name = "B";
+                var b = new EntityB();
+                b.Name = "B";
 
-            a.AddB(b);
+                a.AddB(b);
 
-            var repoA = this.unityContainer.Resolve<IEntityARepository>();
-            var repoB = this.unityContainer.Resolve<IEntityBRepository>();
+                var repoA = this.unityContainer.Resolve<IEntityARepository>();
+                var repoB = this.unityContainer.Resolve<IEntityBRepository>();
 
-            repoB.Add(b);
-            repoA.Add(a);
+                repoB.Add(b);
+                repoA.Add(a);
 
-            return a;
+                unitOfWork.Commit();
+
+                return a;
+            }
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Hexa.Core.Domain
         {
             DomainEvents.Events.Enqueue(() =>
                 {
-                    foreach (var consumer in ServiceLocator.GetAllInstances<IConsumeEvent<T>>())
+                    foreach (var consumer in IoC.GetAllInstances<IConsumeEvent<T>>())
                     {
                         consumer.Consume(@event);
                     }

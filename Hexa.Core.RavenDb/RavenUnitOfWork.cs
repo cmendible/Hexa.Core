@@ -14,11 +14,18 @@ namespace Hexa.Core.Domain
     {
         private bool disposed;
         private IDocumentSession session;
+        private RavenUnitOfWorkFactory factory;
 
-        public RavenUnitOfWork(IDocumentSession session)
+        public RavenUnitOfWork(IDocumentSession session, IUnitOfWork previous, RavenUnitOfWorkFactory factory)
         {
             this.session = session;
+            this.Previous = previous;
+            this.factory = factory;
         }
+
+        public IUnitOfWork Previous { get; private set; }
+
+        public IDocumentSession DocumentSession { get { return this.session; } }
 
         /// <summary>
         /// Commit all changes made in  a container.
@@ -61,6 +68,8 @@ namespace Hexa.Core.Domain
 
                     this.session = null;
                 }
+
+                this.factory.UpdateCurrent(this);
 
                 // Note disposing has been done.
                 this.disposed = true;

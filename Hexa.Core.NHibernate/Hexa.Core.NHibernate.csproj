@@ -83,7 +83,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EventSourcing\EventDescriptorMap.cs" />
-    <Compile Include="INHibernateUnitOfWork.cs" />
+    <Compile Include="INHUnitOfWork.cs" />
     <Compile Include="NHRepository.cs" />
     <Compile Include="EventSourcing\NHEventStore.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
@@ -100,8 +100,8 @@
     <Compile Include="Mappings\AuditableEntityMap.cs" />
     <Compile Include="Mappings\EntityMap.cs" />
     <Compile Include="Mappings\Extensions\MappingExtensions.cs" />
-    <Compile Include="NHibernateUnitOfWorkFactory.cs" />
-    <Compile Include="NHibernateUnitOfWork.cs" />
+    <Compile Include="NHUnitOfWorkFactory.cs" />
+    <Compile Include="NHUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlExceptionHandlers\SqlExceptionHandler.cs" />
     <Compile Include="UserTypes\JsonType.cs" />
