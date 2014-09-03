@@ -10,7 +10,7 @@ namespace Hexa.Core.Domain
     /// </summary>
     public static class UnitOfWork
     {
-        public static IUnitOfWork Start(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.NewOrReuse)
+        public static IUnitOfWork Start(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.Reuse)
         {
             IUnitOfWorkFactory factory = IoC.GetInstance<IUnitOfWorkFactory>();
             return factory.Create(unitOfWorkOption);

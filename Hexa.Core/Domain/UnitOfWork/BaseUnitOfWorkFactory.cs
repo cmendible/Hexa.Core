@@ -19,11 +19,11 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public IUnitOfWork Create(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.NewOrReuse)
+        public IUnitOfWork Create(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.Reuse)
         {
             IUnitOfWork previousUnitOfWork = this.Current;
 
-            if (unitOfWorkOption == UnitOfWorkOption.NewOrReuse && previousUnitOfWork != null)
+            if (unitOfWorkOption == UnitOfWorkOption.Reuse && previousUnitOfWork != null)
             {
                 return previousUnitOfWork;
             }

@@ -7,7 +7,7 @@ namespace Hexa.Core.Domain
 {
     public enum UnitOfWorkOption
     {
-        NewOrReuse = 0,
-        NewAndNested = 1
+        Reuse = 0,
+        RequireNew = 1
     }
 }

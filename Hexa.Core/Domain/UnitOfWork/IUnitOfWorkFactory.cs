@@ -7,6 +7,6 @@ namespace Hexa.Core.Domain
 {
     public interface IUnitOfWorkFactory
     {
-        IUnitOfWork Create(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.NewOrReuse);
+        IUnitOfWork Create(UnitOfWorkOption unitOfWorkOption = UnitOfWorkOption.Reuse);
     }
 }

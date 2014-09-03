@@ -159,7 +159,7 @@ namespace Hexa.Core.Orm.Tests.NH
                 var repo = this.unityContainer.Resolve<IEntityARepository>();
                 repo.Add(entityA);
 
-                using (IUnitOfWork nestesUnitOfWork = UnitOfWork.Start(UnitOfWorkOption.NewAndNested))
+                using (IUnitOfWork nestesUnitOfWork = UnitOfWork.Start(UnitOfWorkOption.RequireNew))
                 {
                     nestesUnitOfWork.RollbackChanges();
                 }
