@@ -120,6 +120,12 @@ namespace Hexa.Core.Orm.Tests.NH
             this.unityContainer.RegisterInstance<IDatabaseManager>(ctxFactory);
             this.unityContainer.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
 
+            var configuration = IoC.GetInstance<NHibernate.Cfg.Configuration>();
+
+            AuditFlushEntityEventListener.OverrideIn(configuration);
+            ValidateEventListener.AppendTo(configuration);
+            AuditEventListener.AppendTo(configuration);
+
             this.unityContainer.RegisterType<ISession, ISession>(new InjectionFactory((c) =>
             {
                 return ctxFactory.CurrentSession;

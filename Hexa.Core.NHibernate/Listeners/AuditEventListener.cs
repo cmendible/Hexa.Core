@@ -8,13 +8,11 @@ namespace Hexa.Core.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Hexa.Core;
-
+    using NHibernate.Cfg;
     using NHibernate.Event;
     using NHibernate.Event.Default;
     using NHibernate.Persister.Entity;
-
     using Security;
 
     public class AuditEventListener : IPreUpdateEventListener, IPreInsertEventListener
@@ -122,6 +120,17 @@ namespace Hexa.Core.Domain
             }
 
             state[index] = value;
+        }
+
+        public static void AppendTo(Configuration configuration)
+        {
+            configuration.SetListeners(
+                ListenerType.PreInsert,
+                configuration.EventListeners.PreInsertEventListeners.Concat(new IPreInsertEventListener[] { new AuditEventListener() }).ToArray());
+
+            configuration.SetListeners(
+                ListenerType.PreUpdate,
+                configuration.EventListeners.PreUpdateEventListeners.Concat(new IPreUpdateEventListener[] { new AuditEventListener() }).ToArray());
         }
     }
 }

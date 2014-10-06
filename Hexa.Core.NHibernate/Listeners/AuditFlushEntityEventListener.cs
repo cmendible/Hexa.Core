@@ -9,8 +9,8 @@ namespace Hexa.Core.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-
     using NHibernate;
+    using NHibernate.Cfg;
     using NHibernate.Event;
     using NHibernate.Event.Default;
     using NHibernate.Persister.Entity;
@@ -35,17 +35,24 @@ namespace Hexa.Core.Domain
         private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)
         {
             yield return Array.IndexOf(
-                             @event.EntityEntry.Persister.PropertyNames,
-                             "UpdatedAt");
+                @event.EntityEntry.Persister.PropertyNames,
+                "CreatedBy");
             yield return Array.IndexOf(
-                             @event.EntityEntry.Persister.PropertyNames,
-                             "UpdatedBy");
+                @event.EntityEntry.Persister.PropertyNames,
+                "CreatedAt");
             yield return Array.IndexOf(
-                             @event.EntityEntry.Persister.PropertyNames,
-                             "CreatedBy");
+                @event.EntityEntry.Persister.PropertyNames,
+                "UpdatedAt");
             yield return Array.IndexOf(
-                             @event.EntityEntry.Persister.PropertyNames,
-                             "CreatedAt");
+                @event.EntityEntry.Persister.PropertyNames,
+                "UpdatedBy");
+        }
+
+        public static void OverrideIn(Configuration configuration)
+        {
+            configuration.SetListeners(
+                ListenerType.FlushEntity,
+                new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
         }
     }
 }

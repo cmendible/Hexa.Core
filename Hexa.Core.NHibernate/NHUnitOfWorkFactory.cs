@@ -157,28 +157,6 @@ namespace Hexa.Core.Domain
             NHUnitOfWorkFactory.builtConfiguration.SetProperty(
                 Environment.ProxyFactoryFactoryClass,
                 typeof(DefaultProxyFactoryFactory).AssemblyQualifiedName);
-
-            #region Add Listeners to NHibernate pipeline....
-
-            NHUnitOfWorkFactory.builtConfiguration.SetListeners(
-                ListenerType.Flush,
-            new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
-
-            NHUnitOfWorkFactory.builtConfiguration.SetListeners(
-                ListenerType.FlushEntity,
-            new IFlushEntityEventListener[] { new AuditFlushEntityEventListener() });
-
-            NHUnitOfWorkFactory.builtConfiguration.SetListeners(
-                ListenerType.PreInsert,
-                builtConfiguration.EventListeners.PreInsertEventListeners.Concat(
-            new IPreInsertEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
-
-            NHUnitOfWorkFactory.builtConfiguration.SetListeners(
-                ListenerType.PreUpdate,
-                NHUnitOfWorkFactory.builtConfiguration.EventListeners.PreUpdateEventListeners.Concat(
-            new IPreUpdateEventListener[] { new ValidateEventListener(), new AuditEventListener() }).ToArray());
-
-            #endregion
         }
 
         internal NHUnitOfWorkFactory()

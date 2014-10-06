@@ -6,6 +6,7 @@
 namespace Hexa.Core.Domain
 {
     using NHibernate;
+    using NHibernate.Cfg;
     using NHibernate.Event;
     using NHibernate.Event.Default;
 
@@ -35,6 +36,13 @@ namespace Hexa.Core.Domain
                 session.PersistenceContext.Flushing = false;
                 session.ConnectionManager.FlushEnding();
             }
+        }
+
+        public static void OverrideIn(Configuration configuration)
+        {
+            configuration.SetListeners(
+                ListenerType.Flush,
+                new IFlushEventListener[] { new FixedDefaultFlushEventListener() });
         }
     }
 }
