@@ -20,7 +20,7 @@ namespace Hexa.Core.Domain
     public class AuditableContext : DbContext
     {
         public AuditableContext(string nameOrConnectionString)
-        : base(nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 
@@ -67,31 +67,6 @@ namespace Hexa.Core.Domain
                 {
                     entry.Entity.UpdatedBy = userUniqueId;
                     entry.Entity.UpdatedAt = now;
-
-                    var auditTrailFactory = IoC.TryGetInstance<IAuditTrailFactory>();
-                    if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(entry.Entity.GetType().Name))
-                    {
-                        string tableName = entry.Entity.GetType().Name;
-                        IEnumerable<string> changedProperties = entry.CurrentValues.PropertyNames.Where(p => entry.Property(p).IsModified);
-
-                        Guid changeSetUniqueId = GuidExtensions.NewCombGuid();
-
-                        foreach (string property in changedProperties)
-                        {
-                            string propertyName = property;
-                            object oldValue = entry.OriginalValues[property];
-                            object newValue = entry.CurrentValues[property];
-                            IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(
-                                                               changeSetUniqueId,
-                                                               tableName,
-                                                               this.GetEntityUniqueId(entry.Entity),
-                                                               propertyName, oldValue, newValue,
-                                                               userUniqueId,
-                                                               now);
-
-                            this.Set(auditTrail.GetType()).Add(auditTrail);
-                        }
-                    }
                 }
             }
         }

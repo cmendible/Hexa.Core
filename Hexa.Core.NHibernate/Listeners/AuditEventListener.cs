@@ -74,35 +74,6 @@ namespace Hexa.Core.Domain
 
             DateTime updatedAt = DateTime.Now;
 
-            var auditTrailFactory = IoC.TryGetInstance<IAuditTrailFactory>();
-            if (auditTrailFactory != null && auditTrailFactory.IsEntityRegistered(@event.Persister.EntityName))
-            {
-                string tableName = @event.Persister.EntityName;
-                int[] changedPropertiesIdx = @event.Persister.FindDirty(
-                                                 @event.State,
-                                                 @event.OldState,
-                                                 @event.Entity,
-                                                 @event.Session.GetSessionImplementation());
-
-                Guid changeSetUniqueId = GuidExtensions.NewCombGuid();
-
-                foreach (int idx in changedPropertiesIdx)
-                {
-                    string propertyName = @event.Persister.PropertyNames[idx];
-                    object oldValue = @event.OldState[idx];
-                    object newValue = @event.State[idx];
-                    IEntityAuditTrail auditTrail = auditTrailFactory.CreateAuditTrail(
-                                                       changeSetUniqueId,
-                                                       tableName,
-                                                       @event.Id.ToString(),
-                                                       propertyName, oldValue, newValue,
-                                                       userUniqueId,
-                                                       updatedAt);
-
-                    @event.Session.Save(auditTrail);
-                }
-            }
-
             this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
             this._Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
             auditable.UpdatedBy = userUniqueId;

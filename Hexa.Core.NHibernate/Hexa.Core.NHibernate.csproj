@@ -82,10 +82,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="EventSourcing\EventDescriptorMap.cs" />
     <Compile Include="INHUnitOfWork.cs" />
     <Compile Include="NHRepository.cs" />
-    <Compile Include="EventSourcing\NHEventStore.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />
     <Compile Include="Conventions\ForeignKeyConstraintNames.cs" />
@@ -129,9 +127,6 @@
       <Project>{F25CB899-7469-4870-82C8-939989F60322}</Project>
       <Name>Hexa.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EventSourcing\LoadEventDescriptors.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\msbuild.targets\CodeMetrics.targets" />

@@ -27,14 +27,14 @@ namespace Hexa.Core.Security
         // Fields
         private readonly string id;
         private readonly string name;
-        private readonly string type;
+        private readonly string authenticationType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreIdentity"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public CoreIdentity(string name)
-        : this(name, "Unknown", name)
+            : this(name, "Unknown", name)
         {
         }
 
@@ -43,8 +43,8 @@ namespace Hexa.Core.Security
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
-        public CoreIdentity(string name, string type)
-        : this(name, type, name)
+        public CoreIdentity(string name, string authenticationType)
+            : this(name, authenticationType, name)
         {
         }
 
@@ -54,14 +54,14 @@ namespace Hexa.Core.Security
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
         /// <param name="id">The id.</param>
-        public CoreIdentity(string name, string type, string id)
+        public CoreIdentity(string name, string authenticationType, string id)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(Resource.NameCannotBeNull);
             }
 
-            if (type == null)
+            if (authenticationType == null)
             {
                 throw new ArgumentNullException(Resource.TypeCannotBeNull);
             }
@@ -72,7 +72,7 @@ namespace Hexa.Core.Security
             }
 
             this.name = name;
-            this.type = type;
+            this.authenticationType = authenticationType;
             this.id = id;
         }
 
@@ -85,7 +85,7 @@ namespace Hexa.Core.Security
         {
             get
             {
-                return this.type;
+                return this.authenticationType;
             }
         }
 

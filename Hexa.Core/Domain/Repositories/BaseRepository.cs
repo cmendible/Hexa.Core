@@ -123,7 +123,7 @@ namespace Hexa.Core.Domain
         public PagedElements<TEntity> GetPaged(
             int pageIndex,
             int pageSize,
-            Expression<Func<TEntity, bool>> filter, 
+            Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, object>> orderByExpression,
             bool ascending = true)
         {
@@ -149,14 +149,12 @@ namespace Hexa.Core.Domain
             return ascending
                    ? new PagedElements<TEntity>(
                        query.OrderBy(orderByExpression)
-                       .Skip(pageIndex * pageSize)
-                       .Take(pageSize)
+                       .Page(pageIndex, pageSize)
                        .ToList(),
                        total)
                    : new PagedElements<TEntity>(
                        query.OrderByDescending(orderByExpression)
-                       .Skip(pageIndex * pageSize)
-                       .Take(pageSize)
+                       .Page(pageIndex, pageSize)
                        .ToList(),
                        total);
         }

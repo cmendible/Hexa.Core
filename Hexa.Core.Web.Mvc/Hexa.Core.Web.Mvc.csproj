@@ -88,10 +88,9 @@
     </Compile>
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Grid\GridData.cs">
-		<ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-	</Compile>
-    <Compile Include="Security\CheckAuthorizationAttribute.cs" />
-    <Compile Include="Security\Extensions\AuthorizeActionLinkExtensions.cs" />
+      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Security\AuthorizeActionLinkExtensions.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridModelBinder.cs" />
     <Compile Include="MvcCustomControllerFactory.cs" />

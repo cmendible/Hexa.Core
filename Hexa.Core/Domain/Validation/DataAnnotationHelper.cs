@@ -13,8 +13,6 @@ namespace Hexa.Core.Validation
     using System.Globalization;
     using System.Linq;
 
-    using GNU.Gettext;
-
     /// <summary>
     /// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.
     /// </summary>
@@ -34,7 +32,7 @@ namespace Hexa.Core.Validation
                 displayName = displayAttribute.Name;
             }
 
-            return GettextHelper.t(displayName, entityType.Assembly);
+            return displayName;
         }
     }
 }
