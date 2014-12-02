@@ -77,6 +77,7 @@ namespace Hexa.Core.Orm.Tests.NH
         }
 
         [Test]
+
         public void Delete_EntityA()
         {
             EntityA entityA = this.AddEntityA();
@@ -125,18 +126,24 @@ namespace Hexa.Core.Orm.Tests.NH
             AuditFlushEntityEventListener.OverrideIn(configuration);
             ValidateEventListener.AppendTo(configuration);
             AuditEventListener.AppendTo(configuration);
+            TenantEventListener.AppendTo(configuration);
+
+            var tenantId = Guid.NewGuid();
+
+            ApplicationContext.User =
+                new TenantPrincipal(new CoreIdentity("fake", "hexa.auth", "fake@gmail.com"), new string[] { }, tenantId);
 
             this.unityContainer.RegisterType<ISession, ISession>(new InjectionFactory((c) =>
             {
-                return ctxFactory.CurrentSession;
+                var session = ctxFactory.CurrentSession;
+                var filter = session.EnableFilter("TenantFilter");
+                filter.SetParameter("tenantId", tenantId);
+                return session;
             }));
 
             // Repositories
             this.unityContainer.RegisterType<IEntityARepository, EntityANHRepository>(new PerResolveLifetimeManager());
             this.unityContainer.RegisterType<IEntityBRepository, EntityBNHRepository>(new PerResolveLifetimeManager());
-
-            ApplicationContext.User =
-                new CorePrincipal(new CoreIdentity("cmendible", "hexa.auth", "cmendible@gmail.com"), new string[] { });
         }
 
         [TestFixtureTearDown]

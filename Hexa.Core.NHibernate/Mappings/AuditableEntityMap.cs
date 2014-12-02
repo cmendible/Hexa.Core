@@ -7,8 +7,9 @@ namespace Hexa.Core.Domain
 {
     using System;
 
-    public class AuditableEntityMap<TEntity> : EntityMap<TEntity, Guid>
-        where TEntity : AuditableEntity<TEntity>
+    public class AuditableEntityMap<TEntity, TKey> : EntityMap<TEntity, TKey>
+        where TEntity : AuditableEntity<TEntity, TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         public AuditableEntityMap()
         {
@@ -21,5 +22,11 @@ namespace Hexa.Core.Domain
             this.Map(x => x.CreatedBy);
             this.Map(x => x.UpdatedBy);
         }
+    }
+
+    public class AuditableEntityMap<TEntity> : AuditableEntityMap<TEntity, Guid>
+        where TEntity : AuditableEntity<TEntity>
+    {
+
     }
 }

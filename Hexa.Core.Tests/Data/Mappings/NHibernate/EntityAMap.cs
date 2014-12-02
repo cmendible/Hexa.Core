@@ -9,7 +9,7 @@ namespace Hexa.Core.Tests.Data
 
     using Domain;
 
-    public class EntityAMap : AuditableEntityMap<EntityA>
+    public class EntityAMap : TenantScopedEntityMap<EntityA>
     {
         public EntityAMap()
         {

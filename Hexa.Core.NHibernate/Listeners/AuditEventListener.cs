@@ -39,10 +39,10 @@ namespace Hexa.Core.Domain
 
             DateTime createdAt = DateTime.Now;
 
-            this._Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
-            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
-            this._Set(@event.Persister, @event.State, "CreatedAt", createdAt);
-            this._Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
+            this.Set(@event.Persister, @event.State, "CreatedBy", userUniqueId);
+            this.Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this.Set(@event.Persister, @event.State, "CreatedAt", createdAt);
+            this.Set(@event.Persister, @event.State, "UpdatedAt", createdAt);
 
             auditable.CreatedBy = userUniqueId;
             auditable.UpdatedBy = userUniqueId;
@@ -74,15 +74,15 @@ namespace Hexa.Core.Domain
 
             DateTime updatedAt = DateTime.Now;
 
-            this._Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
-            this._Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
+            this.Set(@event.Persister, @event.State, "UpdatedBy", userUniqueId);
+            this.Set(@event.Persister, @event.State, "UpdatedAt", updatedAt);
             auditable.UpdatedBy = userUniqueId;
             auditable.UpdatedAt = updatedAt;
 
             return false;
         }
 
-        private void _Set(IEntityPersister persister, object[] state, string propertyName, object value)
+        private void Set(IEntityPersister persister, object[] state, string propertyName, object value)
         {
             int index = Array.IndexOf(persister.PropertyNames, propertyName);
             if (index == -1)

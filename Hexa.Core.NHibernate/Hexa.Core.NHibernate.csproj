@@ -82,7 +82,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Filters\TenantFilter.cs" />
     <Compile Include="INHUnitOfWork.cs" />
+    <Compile Include="Listeners\TenantEventListener.cs" />
+    <Compile Include="Mappings\TenantScopedEntityMap.cs" />
     <Compile Include="NHRepository.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\ForeignKeyColumnNames.cs" />

@@ -11,14 +11,15 @@ namespace Hexa.Core.Tests.Data
 
     using Domain;
 
-    public class EntityAConfiguration : AuditableEntityConfiguration<EntityA>
+    public class EntityAConfiguration : TenantScopedEntityConfiguration<EntityA>
     {
         public EntityAConfiguration()
         {
             this.Property(h => h.Name);
 
             this.HasMany<EntityB>(h => h.EntitiesOfB)
-                .WithMany(h =>  h.EntitiesOfA).Map((c) => {
+                .WithMany(h => h.EntitiesOfA).Map((c) =>
+                {
                     c.ToTable("EntityA_EntityB");
                     c.MapLeftKey("EntityAUniqueId");
                     c.MapRightKey("EntityBUniqueId");

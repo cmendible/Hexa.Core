@@ -12,7 +12,7 @@ namespace Hexa.Core.Tests.Domain
     using Core.Domain;
 
     [Serializable]
-    public class EntityA : AuditableEntity<EntityA>
+    public class EntityA : TenantScopedEntity<EntityA>
     {
         private IList<EntityB> entitiesOfB;
 

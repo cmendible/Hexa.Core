@@ -28,11 +28,11 @@ namespace Hexa.Core.Domain
                 @event.DirtyProperties.Any() &&
                 @event.Entity is IAuditableEntity)
             {
-                @event.DirtyProperties = @event.DirtyProperties.Concat(_GetAdditionalDirtyProperties(@event)).ToArray();
+                @event.DirtyProperties = @event.DirtyProperties.Concat(GetAdditionalDirtyProperties(@event)).ToArray();
             }
         }
 
-        private static IEnumerable<int> _GetAdditionalDirtyProperties(FlushEntityEvent @event)
+        private static IEnumerable<int> GetAdditionalDirtyProperties(FlushEntityEvent @event)
         {
             yield return Array.IndexOf(
                 @event.EntityEntry.Persister.PropertyNames,

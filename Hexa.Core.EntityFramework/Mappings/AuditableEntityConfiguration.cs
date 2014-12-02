@@ -23,4 +23,22 @@ namespace Hexa.Core.Domain
             this.Property(x => x.UpdatedBy);
         }
     }
+
+    public class TenantScopedEntityConfiguration<TEntity> : EntityConfiguration<TEntity, Guid>
+        where TEntity : TenantScopedEntity<TEntity>
+    {
+        public TenantScopedEntityConfiguration()
+        {
+            this.Property(x => x.CreatedAt)
+                .IsRequired();
+
+            this.Property(x => x.UpdatedAt)
+                .IsRequired();
+
+            this.Property(x => x.CreatedBy);
+            this.Property(x => x.UpdatedBy);
+
+            this.Property(x => x.TenantId);
+        }
+    }
 }

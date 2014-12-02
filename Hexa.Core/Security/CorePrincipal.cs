@@ -88,4 +88,24 @@ namespace Hexa.Core.Security
             return false;
         }
     }
+
+    [Serializable]
+    public class TenantPrincipal : CorePrincipal
+    {
+        private readonly Guid tenantId;
+
+        public TenantPrincipal(IIdentity identity, string[] roles, Guid tenantId)
+            : base(identity, roles)
+        {
+            this.tenantId = tenantId;
+        }
+
+        public virtual Guid TenantId
+        {
+            get
+            {
+                return this.tenantId;
+            }
+        }
+    }
 }

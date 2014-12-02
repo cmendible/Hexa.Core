@@ -19,7 +19,7 @@ namespace Hexa.Core.Orm.Tests.EF
     public class DomainContext : AuditableContext
     {
         public DomainContext(string nameOrConnectionString)
-        : base(nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 
