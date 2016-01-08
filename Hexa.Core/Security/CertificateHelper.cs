@@ -1,6 +1,7 @@
 ﻿namespace Hexa.Core.Security
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Security.Cryptography.X509Certificates;
     using Resources;
@@ -11,6 +12,10 @@
         /// Gets a X509 certificate from windows store. Asks the user for the correct certificate.
         /// </summary>
         /// <returns></returns>
+        [SuppressMessage(
+            "Microsoft.Reliability",
+            "CA2000:DisposeObjectsBeforeLosingScope",
+            Justification = "The Close method calls the Dispose method.")]
         public static X509Certificate2 GetCertificate()
         {
             var st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
@@ -54,6 +59,10 @@
         /// Gets a X509 specific certificate from windows store withoit asking the user.
         /// </summary>
         /// <returns></returns>
+        [SuppressMessage(
+            "Microsoft.Reliability",
+            "CA2000:DisposeObjectsBeforeLosingScope",
+            Justification = "The Close method calls the Dispose method.")]
         public static X509Certificate2 GetCertificate(StoreLocation location, string subjectName)
         {
             X509Certificate2 cert = null;

@@ -40,7 +40,7 @@ namespace Hexa.Core.Domain
             }
         }
 
-        public DocumentStore CreateDocumentStore()
+        public IDocumentStore CreateDocumentStore()
         {
             return documenFactory;
         }

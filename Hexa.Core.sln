@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{AB2FC350-3CC5-4122-AE8D-FAD9A5E5F108}"
 	ProjectSection(SolutionItems) = preProject
 		licenses\license.txt = licenses\license.txt
@@ -38,7 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{4F194D
 	ProjectSection(SolutionItems) = preProject
 		Build.bat = Build.bat
 		Build.msbuild = Build.msbuild
-		Build.proj = Build.proj
 		msbuild.targets\CodeAnalysisDictionary.xml = msbuild.targets\CodeAnalysisDictionary.xml
 		msbuild.targets\CodeAnalysisRules.ruleset = msbuild.targets\CodeAnalysisRules.ruleset
 		msbuild.targets\CodeMetrics.targets = msbuild.targets\CodeMetrics.targets
@@ -90,12 +91,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		RootNamespace = Hexa.Core
-		IsWCSFSolutionWAP = True
-		IsWCSFSolution = True
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hexa.Core\Hexa.Core.csproj
