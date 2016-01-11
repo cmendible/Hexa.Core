@@ -13,12 +13,10 @@ namespace Hexa.Core.RavenDb.Tests
     using System.Threading;
     using Core.Data;
     using Core.Domain;
-    using Data;
-    using Domain;
+    using Hexa.Core.Tests.Data;
+    using Hexa.Core.Tests.Domain;
     using Microsoft.Practices.Unity;
     using NUnit.Framework;
-    using Hexa.Core.Tests.Domain;
-    using Hexa.Core.Tests.Data;
     using Raven.Client;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "This is a Test")]
@@ -75,7 +73,7 @@ namespace Hexa.Core.RavenDb.Tests
 
             // Context Factory
             RavenUnitOfWorkFactory ctxFactory = new RavenUnitOfWorkFactory();
-            Raven.Client.Document.DocumentStore sessionFactory = ctxFactory.CreateDocumentStore();
+            IDocumentStore sessionFactory = ctxFactory.CreateDocumentStore();
 
             IoC.RegisterInstance<IDatabaseManager>(ctxFactory);
             IoC.RegisterInstance<IUnitOfWorkFactory>(ctxFactory);
