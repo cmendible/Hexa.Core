@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/4ux56ftkq4ypie83?svg=true)](https://ci.appveyor.com/project/cmendible/hexa-core)
+
 Hexa.Core is HexaSystems implementation of the Domain Driven Design Architecture. Also providing a set of helper classes for ASP.Net and WCF development.
 
 We attempt to combine our experience and know-how with concepts, classes, patterns and best practices found in projects such as:
