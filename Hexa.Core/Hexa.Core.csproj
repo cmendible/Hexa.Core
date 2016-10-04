@@ -151,6 +151,7 @@
     <Compile Include="Logging\Impl\ConsoleLogger.cs" />
     <Compile Include="Logging\Impl\EmptyLogger.cs" />
     <Compile Include="Logging\LoggerManager.cs" />
+    <Compile Include="Web\Services\IAuthorizationService.cs" />
     <Compile Include="ServiceModel\ErrorHandling\ServiceFaultContracts.cs" />
     <Compile Include="Exceptions\ConstraintException.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
@@ -214,6 +215,12 @@
     <Compile Include="Domain\Validation\ValidationException.cs" />
     <Compile Include="Domain\Validation\ValidationResult.cs" />
     <Compile Include="Domain\Validation\DataAnnotationHelper.cs" />
+    <Compile Include="Web\Services\Impl\SeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapNodeInfo.cs" />
+    <Compile Include="Web\Services\Impl\SiteMapProvider.cs" />
+    <Compile Include="Web\Services\ISeoSiteMapBuilderService.cs" />
+    <Compile Include="Web\Services\ISiteMapBuilderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resource.es.resx">

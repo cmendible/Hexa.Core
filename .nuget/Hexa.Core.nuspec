@@ -6,8 +6,6 @@
     <authors>HexaSystems Inc.</authors>
 	<owners>HexaSystems Inc.</owners>
 	<dependencies>
-		<dependency id="CommonServiceLocator" version="1.0" />
-		<dependency id="log4net" version="2.0.0" />
 	</dependencies> 
 	<requireLicenseAcceptance>true</requireLicenseAcceptance>
 	<summary>Hexa.Core is HexaSystems implementation of the Domain Driven Design Architecture.</summary>
