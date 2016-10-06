@@ -92,6 +92,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Security\CheckAuthorizationAttribute.cs" />
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Grid\GridData.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
