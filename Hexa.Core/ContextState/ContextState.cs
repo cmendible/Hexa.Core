@@ -1,6 +1,7 @@
 ﻿namespace Hexa.Core
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Remoting.Messaging;
     using System.ServiceModel;
     using System.Web;
@@ -33,11 +34,26 @@
             }
             else if (HttpContext.Current != null)
             {
-                return (T)HttpContext.Current.Items[key];
+                if (HttpContext.Current.Items.Keys.OfType<string>().Contains(key))
+                {
+                    return (T)HttpContext.Current.Items[key];
+                }
+                else
+                {
+                    return default(T);
+                }
             }
             else
             {
-                return (T)CallContext.GetData(key);
+                object value = CallContext.GetData(key);
+                if (value != null)
+                {
+                    return (T)value;
+                }
+                else
+                {
+                    return default(T);
+                }
             }
         }
 
