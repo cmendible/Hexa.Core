@@ -9,11 +9,12 @@
 // This code is released under the terms of the MS-LPL license,
 // http://microsoftnlayerapp.codeplex.com/license
 // ===================================================================================
-namespace Hexa.Core.Domain.Facts
+namespace Hexa.Core.Domain.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.Extensions.Logging;
     using Moq;
     using Xunit;
 
@@ -23,6 +24,8 @@ namespace Hexa.Core.Domain.Facts
     /// </summary>
     public class BaseRepositoryFacts
     {
+        ILogger<BaseRepository<Entity, int>> logger = new Mock<ILogger<BaseRepository<Entity, int>>>().Object;
+
         /// <summary>
         /// A Fact for Add
         /// </summary>
@@ -30,7 +33,7 @@ namespace Hexa.Core.Domain.Facts
         public void AddFact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             var entity = new Entity
             {
                 Id = 4,
@@ -42,7 +45,7 @@ namespace Hexa.Core.Domain.Facts
             IEnumerable<Entity> result = target.GetAll();
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
             Assert.True(result.Count() == 2);
             Assert.True(result.Contains(entity));
         }
@@ -56,7 +59,7 @@ namespace Hexa.Core.Domain.Facts
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
                 Entity entity = null;
 
                 // Act
@@ -70,7 +73,7 @@ namespace Hexa.Core.Domain.Facts
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
 
                 // Assert
                 target.Modify(null);
@@ -81,7 +84,7 @@ namespace Hexa.Core.Domain.Facts
         public void ApplyChanges_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             Entity item = target.GetAll().First();
 
             // Assert
@@ -94,7 +97,7 @@ namespace Hexa.Core.Domain.Facts
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
 
                 // Act
                 target.Attach(null);
@@ -105,7 +108,7 @@ namespace Hexa.Core.Domain.Facts
         public void Attach_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             var entity = new Entity
             {
                 Id = 5,
@@ -126,7 +129,7 @@ namespace Hexa.Core.Domain.Facts
         public void DeleteFact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
 
             // Act
             IEnumerable<Entity> result = target.GetAll();
@@ -137,8 +140,8 @@ namespace Hexa.Core.Domain.Facts
             IEnumerable<Entity> postResult = target.GetAll();
 
             // Assert
-            Assert.IsNotNull(postResult);
-            Assert.IsFalse(postResult.Contains(firstEntity));
+            Assert.NotNull(postResult);
+            Assert.False(postResult.Contains(firstEntity));
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace Hexa.Core.Domain.Facts
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
                 Entity entity = null;
 
                 // Act
@@ -165,13 +168,13 @@ namespace Hexa.Core.Domain.Facts
         public void GetAllFact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
 
             // Act
             IEnumerable<Entity> result = target.GetAll();
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
             Assert.True(result.Count() == 1);
         }
 
@@ -181,10 +184,10 @@ namespace Hexa.Core.Domain.Facts
         [Fact]
         public void GetFilteredAndOrderedAndPagedElements_InvalidPageCountThrowArgumentException_Fact()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
                 int pageIndex = 0;
                 int pageCount = 0;
 
@@ -204,10 +207,10 @@ namespace Hexa.Core.Domain.Facts
         [Fact]
         public void GetFilteredAndOrderedAndPagedElements_InvalidPageIndexThrowArgumentException_Fact()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
                 int pageIndex = -1;
                 int pageCount = 1;
 
@@ -228,13 +231,13 @@ namespace Hexa.Core.Domain.Facts
         public void GetFilteredFact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
 
             // Act
             IEnumerable<Entity> result = target.GetFiltered(e => e.Id == 1);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
             Assert.True(result.Count() == 1);
             Assert.True(result.First().Id == 1);
         }
@@ -248,7 +251,7 @@ namespace Hexa.Core.Domain.Facts
             Assert.Throws<ArgumentNullException>(() =>
             {
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
 
                 // Act
                 target.GetFiltered(null);
@@ -266,7 +269,7 @@ namespace Hexa.Core.Domain.Facts
             {
 
                 // Act
-                var target = new ListRepository();
+                var target = new ListRepository(logger);
 
                 // Act
                 target.GetFiltered(null, t => t.Id, true);
@@ -281,7 +284,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetFiltered_SpecificKOrder_AscendingOrder_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
 
             // Act
             target.GetFiltered(e => e.Id == 1, t => t.Id, true);
@@ -294,13 +297,13 @@ namespace Hexa.Core.Domain.Facts
         public void GetFiltered_SpecificKOrder_DescendingOrderAndFilterNullThrowArgumentNullException_Fact()
         {
             Assert.Throws<ArgumentNullException>(() =>
-           {
-                // Act
-                var target = new ListRepository();
+            {
+                    // Act
+                    var target = new ListRepository(logger);
 
-                // Act
-                target.GetFiltered(null, t => t.Id, false);
-           });
+                    // Act
+                    target.GetFiltered(null, t => t.Id, false);
+            });
         }
 
         /// <summary>
@@ -310,7 +313,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetFiltered_SpecificKOrder_DescendingOrder_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
 
             // Act
             target.GetFiltered(e => e.Id == 1, t => t.Id, false);
@@ -323,7 +326,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetFiltered_WithAscendingOrderedAndPagedElements_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -347,7 +350,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetFiltered_WithDescendingOrderedAndPagedElements_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -371,7 +374,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetPaged_AscendingOrder_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -379,8 +382,8 @@ namespace Hexa.Core.Domain.Facts
             PagedElements<Entity> result = target.GetPaged(pageIndex, pageCount, e => true, e => e.Id, true);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.TotalElements);
+            Assert.NotNull(result);
+            Assert.Equal(1, result.TotalElements);
         }
 
         /// <summary>
@@ -390,7 +393,7 @@ namespace Hexa.Core.Domain.Facts
         public void GetPaged_DescendingOrder_Fact()
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
             int pageIndex = 0;
             int pageCount = 1;
 
@@ -399,23 +402,22 @@ namespace Hexa.Core.Domain.Facts
 
             // Assert
             Assert.NotNull(result);
-            Assert.AreEqual(1, result.TotalElements);
+            Assert.Equal(1, result.TotalElements);
         }
 
         /// <summary>
         /// A Fact for Container
         /// </summary>
-        public void unitOfWorkFactHelper<T>()
+        public void unitOfWorkTestHelper<T>()
         where T : class
         {
             // Act
-            var target = new ListRepository();
+            var target = new ListRepository(logger);
         }
 
-        [Fact]
-        public void UoW_Creation_Fact()
+        public void UoW_Creation_Test()
         {
-            this.unitOfWorkFactHelper<Entity>();
+            this.unitOfWorkTestHelper<Entity>();
         }
     }
 }

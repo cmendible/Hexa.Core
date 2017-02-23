@@ -1,11 +1,9 @@
 namespace Hexa.Core.Domain.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Hexa.Core.Domain;
-    using Hexa.Core.Domain.Tests;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// 
@@ -14,7 +12,7 @@ namespace Hexa.Core.Domain.Tests
     {
         List<Entity> list = new List<Entity>();
 
-        public ListRepository()
+        public ListRepository(ILogger<BaseRepository<Entity, int>> logger) : base(logger)
         {
             this.list.Add(new Entity() { Id = 1, SampleProperty = "test" });
         }
