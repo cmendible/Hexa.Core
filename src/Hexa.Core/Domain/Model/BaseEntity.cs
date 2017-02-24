@@ -49,7 +49,7 @@ namespace Hexa.Core.Domain
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>The timestamp.</value>
-        public virtual string Version
+        public virtual int Version
         {
             get;
             protected set;

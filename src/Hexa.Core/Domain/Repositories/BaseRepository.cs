@@ -34,7 +34,7 @@ namespace Hexa.Core.Domain
         /// </summary>
         /// <param name="traceManager">Trace Manager dependency</param>
         /// <param name="context">A context for this repository</param>
-        protected BaseRepository(ILogger<BaseRepository<TEntity, TKey>> logger)
+        protected BaseRepository(ILogger logger)
         {
             this.logger = logger;
             this.logger.LogDebug(string.Format(CultureInfo.InvariantCulture, "Created repository for type: {0}", typeof(TEntity).Name));
