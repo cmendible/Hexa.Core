@@ -21,7 +21,7 @@ namespace Hexa.Core.Orm.Tests.EF
 
     public class SqlTest : IClassFixture<SqlTest>
     {
-        IServiceProvider serviceProvicer;
+        IServiceProvider serviceProvider;
 
         public SqlTest()
         {
@@ -41,13 +41,11 @@ namespace Hexa.Core.Orm.Tests.EF
                     return context;
                 }));
 
-            serviceProvicer = services.BuildServiceProvider();
+            serviceProvider = services.BuildServiceProvider();
 
             IoC.Initialize(
-                (x, y) => { },
-                (x, y) => { },
-                (x) => { return serviceProvicer.GetService(x); },
-                (x) => { return serviceProvicer.GetServices(x); });
+                (x) => { return serviceProvider.GetService(x); },
+                (x) => { return serviceProvider.GetServices(x); });
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
@@ -92,12 +90,12 @@ namespace Hexa.Core.Orm.Tests.EF
             // properties of EntityA (and also the Collection of the m:n relation)
             //--> org.hibernate.AssertionFailure: collection
             // was not processed by flush()
-            var repo = this.serviceProvicer.GetService<IEntityARepository>();
+            var repo = this.serviceProvider.GetService<IEntityARepository>();
             a = repo.GetFiltered(u => u.Id == a.Id).Single();
             a.Name = "AA";
             repo.Modify(a);
 
-            var context = this.serviceProvicer.GetService<DomainContext>();
+            var context = this.serviceProvider.GetService<DomainContext>();
             context.SaveChanges();
         }
 
@@ -106,7 +104,7 @@ namespace Hexa.Core.Orm.Tests.EF
         {
             EntityA entityA = this.AddEntityA();
 
-            IEntityARepository repo = this.serviceProvicer.GetService<IEntityARepository>();
+            IEntityARepository repo = this.serviceProvider.GetService<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.True(results.Count() > 0);
 
@@ -114,7 +112,7 @@ namespace Hexa.Core.Orm.Tests.EF
 
             repo.Remove(entityA2Delete);
 
-            var context = this.serviceProvicer.GetService<DomainContext>();
+            var context = this.serviceProvider.GetService<DomainContext>();
             context.SaveChanges();
         }
 
@@ -123,7 +121,7 @@ namespace Hexa.Core.Orm.Tests.EF
         {
             EntityA entityA = this.AddEntityA();
 
-            var repo = this.serviceProvicer.GetService<IEntityARepository>();
+            var repo = this.serviceProvider.GetService<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.True(results.Count() > 0);
         }
@@ -133,7 +131,7 @@ namespace Hexa.Core.Orm.Tests.EF
         {
             EntityA entityA = this.AddEntityA();
 
-            var repo = this.serviceProvicer.GetService<IEntityARepository>();
+            var repo = this.serviceProvider.GetService<IEntityARepository>();
             IEnumerable<EntityA> results = repo.GetFiltered(u => u.Id == entityA.Id);
             Assert.True(results.Count() > 0);
 
@@ -141,10 +139,10 @@ namespace Hexa.Core.Orm.Tests.EF
             entityA2Update.Name = "Maria";
             repo.Modify(entityA2Update);
 
-            var context = this.serviceProvicer.GetService<DomainContext>();
+            var context = this.serviceProvider.GetService<DomainContext>();
             context.SaveChanges();
 
-            repo = this.serviceProvicer.GetService<IEntityARepository>();
+            repo = this.serviceProvider.GetService<IEntityARepository>();
             entityA = repo.GetFiltered(u => u.Id == entityA.Id).Single();
 
             Assert.Equal("Maria", entityA.Name);
@@ -156,10 +154,10 @@ namespace Hexa.Core.Orm.Tests.EF
             var entityA = new EntityA();
             entityA.Name = "Martin";
 
-            var repo = this.serviceProvicer.GetService<IEntityARepository>();
+            var repo = this.serviceProvider.GetService<IEntityARepository>();
             repo.Add(entityA);
 
-            var context = this.serviceProvicer.GetService<DomainContext>();
+            var context = this.serviceProvider.GetService<DomainContext>();
             context.SaveChanges();
 
             return entityA;
@@ -175,13 +173,13 @@ namespace Hexa.Core.Orm.Tests.EF
 
             a.AddB(b);
 
-            var repoA = this.serviceProvicer.GetService<IEntityARepository>();
-            var repoB = this.serviceProvicer.GetService<IEntityBRepository>();
+            var repoA = this.serviceProvider.GetService<IEntityARepository>();
+            var repoB = this.serviceProvider.GetService<IEntityBRepository>();
 
             repoB.Add(b);
             repoA.Add(a);
 
-            var context = this.serviceProvicer.GetService<DomainContext>();
+            var context = this.serviceProvider.GetService<DomainContext>();
             context.SaveChanges();
 
             return a;

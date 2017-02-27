@@ -24,10 +24,10 @@
                 Operator = request.Form["searchOper"].ToString() ?? ""
             });
         }
+    }
 
-        [ModelBinder(BinderType = typeof(GridModelBinder))]
-        public class GridSettings : SpecificationModel
-        {
-        }
+    [ModelBinder(BinderType = typeof(GridModelBinder))]
+    public class GridSettings : SpecificationModel
+    {
     }
 }
