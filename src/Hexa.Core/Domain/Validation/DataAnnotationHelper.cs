@@ -9,6 +9,7 @@ namespace Hexa.Core.Validation
     using System.Linq;
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
+    using System.ComponentModel;
 
     /// <summary>
     /// Static class capable of readinng de DataAnnotations of a type and return a list of corresponding IValidationInfos.
@@ -19,9 +20,10 @@ namespace Hexa.Core.Validation
         {
             string displayName = propertyName;
 
-            DisplayAttribute displayAttribute =  entityType.GetProperties()
+            DisplayAttribute displayAttribute = TypeDescriptor.GetProperties(entityType)
+                                                .Cast<PropertyDescriptor>()
                                                 .Where(p => p.Name == propertyName)
-                                                .SelectMany(p => p.GetCustomAttributes().OfType<DisplayAttribute>()).FirstOrDefault();
+                                                .SelectMany(p => p.Attributes.OfType<DisplayAttribute>()).FirstOrDefault();
 
             if (displayAttribute != null)
             {

@@ -9,6 +9,8 @@ namespace Hexa.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    using Hexa.Core;
+
     public static class PagingExtensions
     {
         public static IQueryable<T> Page<T>(this IQueryable<T> query, int pageIndex, int pageSize)

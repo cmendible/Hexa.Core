@@ -4,7 +4,7 @@ using Hexa.Core.Domain;
 
 namespace Microsoft.EntityFrameworkCore
 {
-    public static class ModelBuilderExtenions
+    public static class ModelBuilderExtensions
     {
         public static void AddEntityConfigurationsFromAssembly(this ModelBuilder modelBuilder, Assembly[] assembly)
         {
@@ -16,7 +16,7 @@ namespace Microsoft.EntityFrameworkCore
                     var entityTypeBuilder = modelBuilder.Entity(t);
                     entityTypeBuilder.ToTable(Inflector.Underscore(t.Name).ToUpper());
 
-                    if (typeof(BaseEntity<,>).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()))
+                    if (typeof(IConcurrencyAware).IsAssignableFrom(t))
                     {
                         entityTypeBuilder.Property("Version")
                             .IsRowVersion();

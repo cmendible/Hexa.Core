@@ -6,12 +6,12 @@
     "isShellCommand": true,
     "args": [],
     "options": {
-        "cwd": "${workspaceRoot}/src/Hexa.Core.EF"
+        "cwd": "${workspaceRoot}"
     },
     "tasks": [
         {
             "taskName": "build",
-            "args": [ ],
+            "args": [],
             "isBuildCommand": true,
             "showOutput": "silent",
             "problemMatcher": "$msCompile"

@@ -19,4 +19,9 @@ namespace Hexa.Core.Domain
             get;
         }
     }
+
+    public interface IConcurrencyAware
+    {
+        byte[] Version { get; }
+    }
 }

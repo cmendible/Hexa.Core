@@ -6,6 +6,7 @@
 namespace Hexa.Core.Domain
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Base entity with an abstract key which implements IEquatable.
@@ -15,7 +16,7 @@ namespace Hexa.Core.Domain
     /// For a discussion of this object, see
     /// http://devlicio.us/blogs/billy_mccafferty/archive/2007/04/25/using-equals-gethashcode-effectively.aspx
     /// </remarks>
-    public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>, IEntity<TKey>
+    public abstract class BaseEntity<TEntity, TKey> : ValidatableObject<TEntity>, IEquatable<TEntity>, IEntity<TKey>, IConcurrencyAware
         where TEntity : BaseEntity<TEntity, TKey>
         where TKey : struct, IEquatable<TKey>
     {
@@ -49,10 +50,10 @@ namespace Hexa.Core.Domain
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>The timestamp.</value>
-        public virtual int Version
+        public virtual byte[] Version
         {
             get;
-            protected set;
+            set;
         }
 
         /// <summary>

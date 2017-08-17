@@ -7,7 +7,6 @@
 namespace Hexa.Core
 {
     using System;
-    using System.Reflection;
 
     public static class ReflectionExtensions
     {
@@ -15,13 +14,13 @@ namespace Hexa.Core
         {
             while (source != null && source != typeof(object))
             {
-                Type cur = source.GetTypeInfo().IsGenericType ? source.GetGenericTypeDefinition() : source;
+                Type cur = source.IsGenericType ? source.GetGenericTypeDefinition() : source;
                 if (generic == cur)
                 {
                     return true;
                 }
 
-                source = source.GetTypeInfo().BaseType;
+                source = source.BaseType;
             }
 
             return false;

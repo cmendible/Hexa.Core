@@ -5,6 +5,9 @@
 //-----------------------------------------------------------------------------------------------
 namespace Hexa.Core.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     using Validation;
 
     public abstract class ValidatableObject<TEntity> : IValidatable<TEntity>

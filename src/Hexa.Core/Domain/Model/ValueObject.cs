@@ -243,7 +243,7 @@ namespace Hexa.Core.Domain
             {
                 FieldInfo[] tmp = t.GetFields(this.reflectingFlags);
                 fields.AddRange(tmp);
-                t = t.GetTypeInfo().BaseType;
+                t = t.BaseType;
             }
 
             return fields;

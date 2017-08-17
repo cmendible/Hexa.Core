@@ -105,7 +105,7 @@ namespace Hexa.Core.DynamicExtensions
         internal static object WrapObjectIfNeeded(object o)
         {
             // Don't wrap primitive types, which don't have many interesting internal APIs
-            if (o == null || o.GetType().GetTypeInfo().IsPrimitive || o is string)
+            if (o == null || o.GetType().IsPrimitive || o is string)
             {
                 return o;
             }
@@ -148,9 +148,9 @@ namespace Hexa.Core.DynamicExtensions
             }
 
             // Finally, recurse on the base class to add its fields
-            if (type.GetTypeInfo().BaseType != null)
+            if (type.BaseType != null)
             {
-                foreach (IProperty prop in GetTypeProperties(type.GetTypeInfo().BaseType).Values)
+                foreach (IProperty prop in GetTypeProperties(type.BaseType).Values)
                 {
                     typeProperties[prop.Name] = prop;
                 }
@@ -167,15 +167,19 @@ namespace Hexa.Core.DynamicExtensions
             try
             {
                 // Try to invoke the method
-                MethodInfo method = type.GetTypeInfo().GetDeclaredMethod(name);
-                return method.Invoke(target, args);
+                return type.InvokeMember(
+                           name,
+                           BindingFlags.InvokeMethod | bindingFlags,
+                           null,
+                           target,
+                           args);
             }
             catch (MissingMethodException)
             {
                 // If we couldn't find the method, try on the base class
-                if (type.GetTypeInfo().BaseType != null)
+                if (type.BaseType != null)
                 {
-                    return InvokeMemberOnType(type.GetTypeInfo().BaseType, target, name, args);
+                    return InvokeMemberOnType(type.BaseType, target, name, args);
                 }
 
                 throw;

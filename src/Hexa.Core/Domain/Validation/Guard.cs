@@ -8,7 +8,6 @@ namespace Hexa.Core
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using System.Reflection;
 
     /// <summary>
     /// Provides utility methods to guard parameter and local variables.
@@ -96,7 +95,7 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void Implements<TInterface>(Type type, string message)
         {
-            if (!typeof(TInterface).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+            if (!typeof(TInterface).IsAssignableFrom(type))
             {
                 throw new InvalidOperationException(message);
             }
@@ -128,7 +127,7 @@ namespace Hexa.Core
                          "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void InheritsFrom<TBase>(Type type, string message)
         {
-            if (type.GetTypeInfo().BaseType != typeof(TBase))
+            if (type.BaseType != typeof(TBase))
             {
                 throw new InvalidOperationException(message);
             }

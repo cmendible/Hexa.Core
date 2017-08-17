@@ -34,7 +34,7 @@ namespace Hexa.Core.Orm.Tests.EF
             services.AddScoped<DomainContext>(((s) =>
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<DomainContext>();
-                    optionsBuilder.UseInMemoryDatabase();
+                    optionsBuilder.UseInMemoryDatabase("hexa.core");
 
                     var context = new DomainContext(optionsBuilder.Options, new Assembly[] { typeof(DomainContext).GetTypeInfo().Assembly });
                     context.Database.EnsureCreated();

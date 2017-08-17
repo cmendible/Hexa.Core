@@ -58,6 +58,7 @@ namespace Hexa.Core.Domain
         }
     }
 
+    [Serializable]
     public abstract class AuditableEntity<TEntity> : AuditableEntity<TEntity, Guid>
         where TEntity : BaseEntity<TEntity, Guid>
     { 

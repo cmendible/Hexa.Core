@@ -8,6 +8,7 @@ namespace Hexa.Core.Orm.Tests.EF
     using System.Reflection;
     using Hexa.Core.Domain;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Infrastructure;
 
     /// <summary>
@@ -21,12 +22,12 @@ namespace Hexa.Core.Orm.Tests.EF
         }
     }
 
-    public class DomainContextFactory : IDbContextFactory<DomainContext>
+    public class DomainContextFactory : IDesignTimeDbContextFactory<DomainContext>
     {
-        public DomainContext Create(DbContextFactoryOptions options)
+        public DomainContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<DomainContext>();
-            optionsBuilder.UseInMemoryDatabase();
+            optionsBuilder.UseInMemoryDatabase("hexa.core");
 
             var context = new DomainContext(optionsBuilder.Options, new Assembly[] { typeof(DomainContext).GetTypeInfo().Assembly });
             context.Database.EnsureCreated();

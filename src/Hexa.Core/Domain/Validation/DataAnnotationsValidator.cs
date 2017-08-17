@@ -7,9 +7,9 @@ namespace Hexa.Core.Validation
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Reflection;
 
     public class DataAnnotationsValidator<TEntity> : IValidator<TEntity>
     {
@@ -32,8 +32,8 @@ namespace Hexa.Core.Validation
             Type entityType = instance.GetType();
 
             IEnumerable<ValidationError> errors =
-                from prop in instance.GetType().GetProperties()
-                from attribute in prop.GetCustomAttributes().OfType<ValidationAttribute>()
+                from prop in TypeDescriptor.GetProperties(instance).Cast<PropertyDescriptor>()
+                from attribute in prop.Attributes.OfType<ValidationAttribute>()
                 where !attribute.IsValid(prop.GetValue(instance))
                 select
                 new ValidationError(

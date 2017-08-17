@@ -6,7 +6,6 @@
 namespace Hexa.Core
 {
     using System;
-    using System.Reflection;
     using System.Runtime.Serialization;
 
     public static class EnumExtensions
@@ -14,7 +13,7 @@ namespace Hexa.Core
         public static string GetEnumMemberValue(this Enum value)
         {
             var attributes
-            = value.GetType().GetTypeInfo().GetDeclaredField(value.ToString())
+            = value.GetType().GetField(value.ToString())
               .GetCustomAttributes(typeof(EnumMemberAttribute), false)
               as EnumMemberAttribute[];
 
