@@ -61,7 +61,6 @@ namespace Hexa.Core.Orm.Tests.EF
             EntityA entityA = this.AddEntityA();
 
             Assert.NotNull(entityA);
-            Assert.NotNull(entityA.Version);
             Assert.False(entityA.Id == Guid.Empty);
             Assert.Equal("Martin", entityA.Name);
         }
