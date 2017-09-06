@@ -12,7 +12,7 @@ namespace Hexa.Core.Web.Identity
 
     public class HttpClientFactory : IHttpClientFactory
     {
-        public const string EndUserHeaderName = "Hexa.Core-end-user";
+        public const string EndUserHeaderName = "pos-end-user";
         private readonly TokenClient tokenClient;
         private readonly string correlationId;
         private readonly string idToken;
