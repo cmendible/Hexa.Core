@@ -2,54 +2,79 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using IdentityServer4;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hexa.Core.Web.Identity
 {
+    // SAMPLE: https://github.com/rizamarhaban/IdentityServer4Demo/blob/master/MyApi/Startup.cs
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseCookieAndOpenIdConnect(this IApplicationBuilder app, string authority, string clientId, bool requireHttpsMetadata)
+        // Ment to be used by a Web App
+        public static IServiceCollection AddCookieAndOpenIdConnectAuthentication(this IServiceCollection services, string authority, string clientId, string clientSecret, bool requireHttpsMetadata)
         {
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            services.AddAuthentication(o =>
             {
-                AuthenticationScheme = "Cookies",
+                o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            })
+            .AddCookie()
+            .AddOpenIdConnect(o =>
+            {
+                o.Authority = authority;
+                o.RequireHttpsMetadata = requireHttpsMetadata;
+                o.ClientId = clientId;
+                o.ClientSecret = clientSecret;
+
+                o.ResponseType = "code id_token";
+                o.SaveTokens = true;
+
+                o.Scope.Add("openid");
+                o.Scope.Add("profile");
+
+                o.GetClaimsFromUserInfoEndpoint = true;
             });
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-            {
-                AuthenticationScheme = "oidc",
-                SignInScheme = "Cookies",
-
-                Authority = authority,
-                RequireHttpsMetadata = requireHttpsMetadata,
-
-                ClientId = clientId,
-
-                ResponseType = "id_token",
-
-                GetClaimsFromUserInfoEndpoint = true,
-                SaveTokens = true,
-            });
-
-            return app;
+            return services;
         }
 
-        public static IApplicationBuilder UseIdentityServerAuthentication(this IApplicationBuilder app, string authority, IEnumerable<string> allowedScopes, bool requireHttpsMetadata)
+        // Ment to be used by a Web API
+        public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services, string authority, string audience, bool requireHttpsMetadata)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                Authority = authority,
-                RequireHttpsMetadata = requireHttpsMetadata,
-                AllowedScopes = allowedScopes.Append(IdentityServerConstants.StandardScopes.OpenId).ToList(),
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-            });
+            // services.AddCors(o =>
+            // {
+            //     o.AddPolicy("default", policy =>
+            //     {
+            //         policy.AllowAnyOrigin();
+            //         policy.AllowAnyHeader();
+            //         policy.AllowAnyMethod();
+            //         policy.WithExposedHeaders("WWW-Authenticate");
+            //     });
+            // });
 
-            return app;
-        } 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication(o =>
+                {
+                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                })
+                .AddJwtBearer(o =>
+                    {
+                        o.Authority = authority;
+                        o.RequireHttpsMetadata = requireHttpsMetadata;
+                        o.Audience = audience;
+                        o.RequireHttpsMetadata = false;
+                    });
+
+            return services;
+        }
 
     }
 }

@@ -30,7 +30,7 @@ namespace Hexa.Core.Web.Identity
                               var httpContextAccessor = serviceProvider.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
                               string correlationToken = httpContextAccessor?.HttpContext?.Response?.Headers[CorrelationIdHeaderKey];
 
-                              var idToken = httpContextAccessor?.HttpContext.Authentication.GetTokenAsync("id_token").GetAwaiter().GetResult();
+                              var idToken = httpContextAccessor?.HttpContext.GetTokenAsync("id_token").GetAwaiter().GetResult();
                               if (string.IsNullOrEmpty(idToken))
                               {
                                   var principal = httpContextAccessor.HttpContext.User as ClaimsPrincipal;
