@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Hexa.Core.Web.Identity
 {
     // SAMPLE: https://github.com/rizamarhaban/IdentityServer4Demo/blob/master/MyApi/Startup.cs
-    public static class ApplicationBuilderExtensions
+    public static class ConfigureServicesExtensions
     {
         // Ment to be used by a Web App
         public static IServiceCollection AddCookieAndOpenIdConnectAuthentication(this IServiceCollection services, string authority, string clientId, string clientSecret, bool requireHttpsMetadata)

@@ -27,7 +27,7 @@
             }
 
             context.Response.Headers.Add(CorrelationIdHeaderKey, correlationId.ToString());
-            
+
             using (LogContext.PushProperty("CorrelationId", correlationId))
             {
                 await next(context).ConfigureAwait(false);

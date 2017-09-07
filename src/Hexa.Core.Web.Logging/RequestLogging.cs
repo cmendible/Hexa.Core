@@ -7,12 +7,11 @@ namespace Hexa.Core.Web.Logging
     public class RequestLogging
     {
         private readonly RequestDelegate next;
-        private readonly ILogger log;
+        private readonly ILogger log = Serilog.Log.ForContext<GlobalErrorLogging>();
 
-        public RequestLogging(RequestDelegate next, ILogger log)
+        public RequestLogging(RequestDelegate next, ILogger lo)
         {
             this.next = next;
-            this.log = log;
         }
 
         public async Task Invoke(HttpContext context)

@@ -27,8 +27,8 @@ namespace Hexa.Core.Orm.Tests.EF
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton(new Mock<ILogger<BaseRepository<EntityA, Guid>>>().Object);
-            services.AddSingleton(new Mock<ILogger<BaseRepository<EntityB, Guid>>>().Object);
+            services.AddSingleton(new Mock<ILogger<EntityAEFRepository>>().Object);
+            services.AddSingleton(new Mock<ILogger<EntityBEFRepository>>().Object);
             services.AddTransient<IEntityARepository, EntityAEFRepository>();
             services.AddTransient<IEntityBRepository, EntityBEFRepository>();
             services.AddScoped<DomainContext>(((s) =>

@@ -13,7 +13,7 @@ namespace Hexa.Core.Tests.Data
 
     public class EntityBEFRepository : EFRepository<EntityB, Guid>, IEntityBRepository
     {
-        public EntityBEFRepository(DomainContext dbContext, ILogger<BaseRepository<EntityB, Guid>> logger)
+        public EntityBEFRepository(DomainContext dbContext, ILogger<EntityBEFRepository> logger)
             : base(dbContext, logger)
         {
         }

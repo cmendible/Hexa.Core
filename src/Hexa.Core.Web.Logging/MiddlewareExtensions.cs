@@ -9,13 +9,12 @@
     {
         public static IApplicationBuilder UseMonitoringAndLogging(
           this IApplicationBuilder app,
-          ILogger log,
           Func<Task<bool>> serviceStatusCheck)
         {
-            app.UseMiddleware<GlobalErrorLogging>(log);
+            app.UseMiddleware<GlobalErrorLogging>();
             app.UseMiddleware<CorrelationToken>();
-            app.UseMiddleware<RequestLogging>(log);
-            app.UseMiddleware<PerformanceLogging>(log);
+            app.UseMiddleware<RequestLogging>();
+            app.UseMiddleware<PerformanceLogging>();
             app.UseMiddleware<ServiceStatusMiddleware>(serviceStatusCheck);
 
             return app;

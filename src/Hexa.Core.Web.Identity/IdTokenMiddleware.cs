@@ -1,49 +1,51 @@
 namespace Hexa.Core.Web.Identity
 {
-    using System.Collections.Generic;
+    using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.IdentityModel.Protocols;
+    using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using Microsoft.IdentityModel.Tokens;
 
     public class IdTokenMiddleware
     {
         private readonly RequestDelegate next;
-        private readonly X509Certificate2 signingCredential;
+        private readonly string stsDiscoveryEndpoint;
         private readonly string validAudience;
         private readonly string authority;
 
-        public IdTokenMiddleware(RequestDelegate next, string authority, string validAudience, X509Certificate2 signingCredential)
+        public IdTokenMiddleware(RequestDelegate next, string authority, string validAudience, string stsDiscoveryEndpoint)
         {
             this.next = next;
-            this.signingCredential = signingCredential;
+            this.stsDiscoveryEndpoint = stsDiscoveryEndpoint;
             this.validAudience = validAudience;
             this.authority = authority;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Headers.ContainsKey(HttpClientFactory.EndUserHeaderName))
+            if (!context.Request.Headers.ContainsKey(HttpClientFactory.EndUserHeaderName))
+            {
+                context.Response.StatusCode = 400; // Bad Request                
+                await context.Response.WriteAsync("pos-end-user is missing");
+                return;
+            }
+
+            try 
             {
                 var endUserToken = context.Request.Headers[HttpClientFactory.EndUserHeaderName].First();
 
                 var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenValidationParameters = await GetTokenValidationParameters(stsDiscoveryEndpoint, validAudience, authority);
 
                 SecurityToken validtoken;
-                var userPrincipal = tokenHandler.ValidateToken(
+                ClaimsPrincipal userPrincipal = tokenHandler.ValidateToken(
                     endUserToken,
-                    new TokenValidationParameters()
-                    {
-                        ValidAudience = validAudience,
-                        ValidIssuer = authority,
-                        IssuerSigningKey = new X509SecurityKey(signingCredential),
-                        // ValidateLifetime = false,
-                        IssuerSigningKeyResolver = (token, securityToken, kid, validationParameters) => new List<X509SecurityKey> { new X509SecurityKey(signingCredential) }
-                    },
+                    tokenValidationParameters,
                     out validtoken);
 
                 var identity = context.User.Identity as ClaimsIdentity;
@@ -51,23 +53,39 @@ namespace Hexa.Core.Web.Identity
 
                 context.Items["pos-end-user"] = userPrincipal;
             }
+            catch
+            {
+                context.Response.StatusCode = 401; // UnAuthorized
+                await context.Response.WriteAsync("Invalid pos-end-user");
+                return;
+            }
 
             await next(context).ConfigureAwait(false);
+        }
 
-            // // public async Task Logout()
-            // // {
-            // //     await HttpContext.Authentication.SignOutAsync("Cookies");
-            // //     await HttpContext.Authentication.SignOutAsync("oidc");
-            // // }
+        private static async Task<TokenValidationParameters> GetTokenValidationParameters(string stsDiscoveryEndpoint, string audience, string authority)
+        {
+            ConfigurationManager<OpenIdConnectConfiguration> configManager =
+                new ConfigurationManager<OpenIdConnectConfiguration>(stsDiscoveryEndpoint, new OpenIdConnectConfigurationRetriever());
 
+            OpenIdConnectConfiguration config = await configManager.GetConfigurationAsync().ConfigureAwait(false);
+
+            return new TokenValidationParameters()
+            {
+                ValidateIssuer = false,
+                IssuerSigningKeys = config.SigningKeys,
+                ValidAudience = audience,
+                ValidIssuer = authority
+            };
         }
     }
 
     public static class IdTokenMiddlewareExtensions
     {
-        public static IApplicationBuilder UseIdToken(this IApplicationBuilder app, X509Certificate2 signingCredential)
+        // string stsDiscoveryEndpoint = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
+        public static IApplicationBuilder UseIdToken(this IApplicationBuilder app, string stsDiscoveryEndpoint)
         {
-            app.UseMiddleware<IdTokenMiddleware>(signingCredential);
+            app.UseMiddleware<IdTokenMiddleware>(stsDiscoveryEndpoint);
 
             return app;
         }

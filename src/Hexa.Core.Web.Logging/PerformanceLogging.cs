@@ -8,12 +8,11 @@ namespace Hexa.Core.Web.Logging
     public class PerformanceLogging
     {
         private readonly RequestDelegate next;
-        private readonly ILogger log;
+        private readonly ILogger log = Serilog.Log.ForContext<PerformanceLogging>();
 
-        public PerformanceLogging(RequestDelegate next, ILogger log)
+        public PerformanceLogging(RequestDelegate next)
         {
             this.next = next;
-            this.log = log;
         }
 
         public async Task Invoke(HttpContext context)
