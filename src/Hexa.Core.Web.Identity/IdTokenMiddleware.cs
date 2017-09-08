@@ -15,15 +15,15 @@ namespace Hexa.Core.Web.Identity
     {
         private readonly RequestDelegate next;
         private readonly string stsDiscoveryEndpoint;
-        private readonly string validAudience;
-        private readonly string authority;
+        private readonly string audience;
+        private readonly string issuer;
 
-        public IdTokenMiddleware(RequestDelegate next, string authority, string validAudience, string stsDiscoveryEndpoint)
+        public IdTokenMiddleware(RequestDelegate next, string audience, string issuer, string stsDiscoveryEndpoint)
         {
             this.next = next;
             this.stsDiscoveryEndpoint = stsDiscoveryEndpoint;
-            this.validAudience = validAudience;
-            this.authority = authority;
+            this.audience = audience;
+            this.issuer = issuer;
         }
 
         public async Task Invoke(HttpContext context)
@@ -31,16 +31,15 @@ namespace Hexa.Core.Web.Identity
             if (!context.Request.Headers.ContainsKey(HttpClientFactory.EndUserHeaderName))
             {
                 context.Response.StatusCode = 400; // Bad Request                
-                await context.Response.WriteAsync("pos-end-user is missing");
+                await context.Response.WriteAsync("No pos-end-user token provided");
                 return;
             }
 
-            try 
+            try
             {
                 var endUserToken = context.Request.Headers[HttpClientFactory.EndUserHeaderName].First();
-
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenValidationParameters = await GetTokenValidationParameters(stsDiscoveryEndpoint, validAudience, authority);
+                var tokenValidationParameters = await GetTokenValidationParameters(stsDiscoveryEndpoint, audience, issuer);
 
                 SecurityToken validtoken;
                 ClaimsPrincipal userPrincipal = tokenHandler.ValidateToken(
@@ -55,7 +54,7 @@ namespace Hexa.Core.Web.Identity
             }
             catch
             {
-                context.Response.StatusCode = 401; // UnAuthorized
+                context.Response.StatusCode = 401; // Unauthorized
                 await context.Response.WriteAsync("Invalid pos-end-user");
                 return;
             }
@@ -63,7 +62,8 @@ namespace Hexa.Core.Web.Identity
             await next(context).ConfigureAwait(false);
         }
 
-        private static async Task<TokenValidationParameters> GetTokenValidationParameters(string stsDiscoveryEndpoint, string audience, string authority)
+        // For AzureAD issuer = "https://sts.windows.net/{TenatId}}/"
+        private static async Task<TokenValidationParameters> GetTokenValidationParameters(string stsDiscoveryEndpoint, string audience, string issuer)
         {
             ConfigurationManager<OpenIdConnectConfiguration> configManager =
                 new ConfigurationManager<OpenIdConnectConfiguration>(stsDiscoveryEndpoint, new OpenIdConnectConfigurationRetriever());
@@ -72,20 +72,20 @@ namespace Hexa.Core.Web.Identity
 
             return new TokenValidationParameters()
             {
-                ValidateIssuer = false,
+                ValidateIssuer = true,
                 IssuerSigningKeys = config.SigningKeys,
                 ValidAudience = audience,
-                ValidIssuer = authority
+                ValidIssuer = issuer
             };
         }
     }
 
     public static class IdTokenMiddlewareExtensions
     {
-        // string stsDiscoveryEndpoint = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
-        public static IApplicationBuilder UseIdToken(this IApplicationBuilder app, string stsDiscoveryEndpoint)
+        // For AzureAD string stsDiscoveryEndpoint = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
+        public static IApplicationBuilder UseIdToken(this IApplicationBuilder app, string audience, string issuer, string stsDiscoveryEndpoint)
         {
-            app.UseMiddleware<IdTokenMiddleware>(stsDiscoveryEndpoint);
+            app.UseMiddleware<IdTokenMiddleware>(audience, issuer, stsDiscoveryEndpoint);
 
             return app;
         }
